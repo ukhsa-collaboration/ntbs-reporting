@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>ntbs-reporting</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{79abb441-72fc-4778-9c62-04cb91ea0224}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Reporting_New</RootNamespace>
+    <AssemblyName>Reporting_New</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="ContinuousDeployment" />
+    <Folder Include="ContinuousDeployment\StaticTables" />
+    <Folder Include="ContinuousDeployment\StoredProcedures" />
+    <Folder Include="Scripts" />
+    <Folder Include="ContinuousDeployment\Tables" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="dbo\Functions\Reusable Notification" />
+    <Folder Include="dbo\Tables\Reusable Footer" />
+    <Folder Include="dbo\Tables\Authorization" />
+    <Folder Include="dbo\Tables\Reusable Notification" />
+    <Folder Include="dbo\Functions\Authorization" />
+    <Folder Include="dbo\Functions\View Model" />
+    <Folder Include="dbo\Tables\Report CultureResistance\" />
+    <Folder Include="dbo\Types" />
+    <Folder Include="dbo\Types\Audit" />
+    <Folder Include="dbo\Tables\Audit" />
+    <Folder Include="dbo\Tables\Report OutcomeSummary" />
+    <Folder Include="dbo\Types\Authentication And Authorization" />
+    <Folder Include="dbo\Tables\Report Boilerplate" />
+    <Folder Include="dbo\Tables\Reusable Drop Downs" />
+    <Folder Include="dbo\Views\Reusable Drop Downs" />
+    <Folder Include="dbo\Tables\Report DataQuality" />
+    <Folder Include="dbo\Functions\Report DataQuality" />
+    <Folder Include="dbo\Functions\Error Handling" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Stored Procedures\Audit" />
+    <Folder Include="dbo\Stored Procedures\Authorization" />
+    <Folder Include="dbo\Stored Procedures\Error Handling" />
+    <Folder Include="dbo\Stored Procedures\Report Boilerplate" />
+    <Folder Include="dbo\Stored Procedures\Report CultureResistance" />
+    <Folder Include="dbo\Stored Procedures\Report DataQuality" />
+    <Folder Include="dbo\Stored Procedures\Report EnhancedLineList" />
+    <Folder Include="dbo\Stored Procedures\Report NotificationSummary" />
+    <Folder Include="dbo\Stored Procedures\Report OutcomeSummary" />
+    <Folder Include="dbo\Stored Procedures\Reusable Drop Downs" />
+    <Folder Include="dbo\Stored Procedures\Reusable Footer" />
+    <Folder Include="dbo\Stored Procedures\Reusable Notification" />
+    <Folder Include="dbo\Functions\Report OutcomeSummary" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
+    <Build Include="ContinuousDeployment\StoredProcedures\sp_execute_cd_script.sql" />
+    <Build Include="ContinuousDeployment\Tables\__MigrationLog.sql" />
+    <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnEmptyOrIntValue.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetDrugUseStatus.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetEarliestSpecimenDate.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetHomelessStatus.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetPrisonStatus.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetSpecies.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentOutcome.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnSex.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnYesNo.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnYesNoUnknown.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnYesNoNotknown.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetCountryName.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetAnySocialRiskFactor.sql" />
+    <Build Include="dbo\Tables\Reusable Footer\FooterText.sql" />
+    <Build Include="dbo\Tables\Reusable Footer\TemplateText.sql" />
+    <Build Include="dbo\Tables\Authorization\PhecAdGroup.sql" />
+    <Build Include="dbo\Tables\Authorization\Phec.sql" />
+    <Build Include="dbo\Tables\Report CultureResistance\CultureResistance.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\OrganismNameMapping.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\Organism.sql" />
+    <Build Include="dbo\Functions\Authorization\ufnAuthorizedReusableNotification.sql" />
+    <Build Include="dbo\Functions\Authorization\ufnMaskField.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
+    <Build Include="dbo\Functions\View Model\ufnFormatDateConsistently.sql" />
+    <Build Include="dbo\Types\Audit\ReusableNotificationType.sql" />
+    <Build Include="dbo\Tables\Audit\AccessAudit.sql" />
+    <Build Include="dbo\Tables\Report OutcomeSummary\OutcomeSummary.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\PostcodeLookup.sql" />
+    <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
+    <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
+    <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
+    <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationYear.sql" />
+    <Build Include="dbo\Views\Reusable Drop Downs\vwSpecies.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\ClinicalRiskFactors.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\DrugResistanceProfile.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\SiteOfDisease.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\SocialRiskFactors.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\TreatmentOrResidence.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\UkBorn.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\Species.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\Resistant.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\TreatmentOutcomeTimePeriod.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\MonthYear.sql" />
+    <Build Include="dbo\Tables\Report DataQuality\DataQuality.sql" />
+    <Build Include="dbo\Functions\Report DataQuality\ufnGetDataQualityMsg.sql" />
+    <Build Include="dbo\Functions\Authorization\ufnIsNationalTeam.sql" />
+    <Build Include="dbo\Tables\Authorization\AdGroup.sql" />
+    <Build Include="dbo\uspSeed.sql" />
+    <Build Include="dbo\uspGenerate.sql" />
+    <Build Include="dbo\Functions\Error Handling\ufnLog.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspAddToAudit.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspAuditLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Error Handling\uspDisplayException.sql" />
+    <Build Include="dbo\Stored Procedures\Error Handling\uspHandleException.sql" />
+    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateResidence.sql" />
+    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateTreatment.sql" />
+    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspGenerateBoilerplate.sql" />
+    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceNational.sql" />
+    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspGenerateCultureResistance.sql" />
+    <Build Include="dbo\Stored Procedures\Report DataQuality\uspDataQuality.sql" />
+    <Build Include="dbo\Stored Procedures\Report DataQuality\uspDataQualityLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Report DataQuality\uspGenerateDataQuality.sql" />
+    <Build Include="dbo\Stored Procedures\Report EnhancedLineList\uspEnhancedLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryResidence.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryResidenceGeography.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryTreatment.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryTreatmentGeography.sql" />
+    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspGenerateOutcomeSummary.sql" />
+    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryResidence.sql" />
+    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryTreatment.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspDrugResistanceProfileByResistantId.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspPhec.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Footer\uspFooter.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Footer\uspGenerateFooter.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCulturePositive.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCultureResistance.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationDrugResistanceProfile.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationImmunosuppression.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusablePostcodeLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableResidence.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableTreatment.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspReusableNotification.sql" />
+    <Build Include="dbo\Stored Procedures\Authorization\uspGetAuthenticatedLoginGroups.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\ReusableNotification.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnNormalizeLtbrId.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationMdr.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationXdr.sql" />
+    <Build Include="dbo\Functions\Report OutcomeSummary\ufnOutcomeSummaryResidence1.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetLAsByRegion.sql" />
+    <Build Include="dbo\Functions\View Model\ufnCalculatePercentage.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspUpdateReusableNotificationPostcode.sql" />
+    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceResidence.sql" />
+    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceTreatment.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryLineList.sql" />
+    <Build Include="dbo\Tables\Reusable Drop Downs\TB_Service.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspGenerateTB_Service.sql" />
+    <Build Include="dbo\Tables\Authorization\ServiceAdGroup.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspServicePhec.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspService.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetAgefrom.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Script.PreDeployment.sql" />
+    <None Include="Scripts\RestoreLabbase2.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ContinuousDeployment\1.PreDeployment.Updates.sql" />
+    <None Include="ContinuousDeployment\2.PostDeployment.StaticTablesList.sql" />
+    <None Include="ContinuousDeployment\3.PostDeployment.Updates.sql">
+      <SuppressTSqlWarnings>
+      </SuppressTSqlWarnings>
+    </None>
+    <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
+    <Build Include="Security\Permissions.sql" />
+    <None Include="Scripts\RestoreETS.sql" />
+    <None Include="Scripts\RefreshReporting.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\msdb.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\130\SqlSchemas\msdb.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>msdb</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
+      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Labbase2.dacpac">
+      <HintPath>..\data\DACPAC\Labbase2.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>Labbase2</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
+      <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="ETS">
+      <DefaultValue>ETS</DefaultValue>
+      <Value>$(SqlCmdVar__8)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ETSLabbase">
+      <DefaultValue>ETSLabbase</DefaultValue>
+      <Value>$(SqlCmdVar__4)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Geographies">
+      <DefaultValue>Geographies</DefaultValue>
+      <Value>$(SqlCmdVar__3)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Labbase2">
+      <DefaultValue>Labbase2</DefaultValue>
+      <Value>$(SqlCmdVar__9)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+      <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>
+      <Value>$(SqlCmdVar__10)</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ntbs-reporting.refactorlog" />
+  </ItemGroup>
+</Project>

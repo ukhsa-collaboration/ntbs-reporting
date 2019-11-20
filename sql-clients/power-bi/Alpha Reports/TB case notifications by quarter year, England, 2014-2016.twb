@@ -1,0 +1,650 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20182.18.0925.2120                               -->
+<workbook original-version='18.1' source-build='2018.2.2 (20182.18.0925.2120)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='newop_vi_Notification (DataMigrationAlpha)' inline='true' name='federated.1t36mmv0bgzbcw114kr2q1y19zit' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='danstestserver.database.windows.net' name='sqlserver.0nirpo311t63vs1h0cgm21f4bsbv'>
+            <connection authentication='sqlserver' class='sqlserver' dbname='ntbsreporting' odbc-native-protocol='yes' one-time-sql='' server='ntbs.database.windows.net' username='mary' />
+          </named-connection>
+        </named-connections>
+        <relation connection='sqlserver.0nirpo311t63vs1h0cgm21f4bsbv' name='newop_vi_Notification' table='[dbo].[newop_vi_Notification]' type='table' />
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>CanAccessAll</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[CanAccessAll]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>CanAccessAll</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>CanAccessRegion</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[CanAccessRegion]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>CanAccessRegion</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>CanAccessHospital</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[CanAccessHospital]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>CanAccessHospital</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>App</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[App]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>App</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>4</width>
+            <contains-null>false</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NotificationId</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[NotificationId]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NotificationId</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>100</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NtbsId</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[NtbsId]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NtbsId</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>EtsId</remote-name>
+            <remote-type>72</remote-type>
+            <local-name>[EtsId]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>EtsId</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>40</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='0' name='LROOT' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_GUID&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_GUID&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>LtbrId</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[LtbrId]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>LtbrId</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>17</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NhsNumber</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[NhsNumber]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NhsNumber</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>50</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Forename</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Forename]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>Forename</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>50</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Surname</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Surname]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>Surname</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>50</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Sex</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[Sex]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>Sex</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>20</width>
+            <contains-null>false</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>UkBorn</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[UkBorn]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>UkBorn</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>20</width>
+            <contains-null>false</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>HospitalName</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[HospitalName]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>HospitalName</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>false</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Region</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Region]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>Region</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>100</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_WVARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_WCHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>DateOfBirth</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[DateOfBirth]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>DateOfBirth</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>30</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NotificationStartFriendlyDate</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[NotificationStartFriendlyDate]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NotificationStartFriendlyDate</remote-alias>
+            <ordinal>17</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>30</width>
+            <contains-null>true</contains-null>
+            <padded-semantics>true</padded-semantics>
+            <collation flag='2147483649' name='LEN_RUS_S2_VWIN' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NotificationStartDate</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[NotificationStartDate]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NotificationStartDate</remote-alias>
+            <ordinal>18</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>false</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>NotificationStartMonth</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[NotificationStartMonth]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>NotificationStartMonth</remote-alias>
+            <ordinal>19</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>PatientAgeAtNotification</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[PatientAgeAtNotification]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>PatientAgeAtNotification</remote-alias>
+            <ordinal>20</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>TreatmentEndDate</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[TreatmentEndDate]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>TreatmentEndDate</remote-alias>
+            <ordinal>21</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>IncompletenessPercent</remote-name>
+            <remote-type>3</remote-type>
+            <local-name>[IncompletenessPercent]</local-name>
+            <parent-name>[newop_vi_Notification]</parent-name>
+            <remote-alias>IncompletenessPercent</remote-alias>
+            <ordinal>22</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_INTEGER&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_SLONG&quot;</attribute>
+            </attributes>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Date Of Birth' datatype='string' name='[DateOfBirth]' role='dimension' type='nominal' />
+      <column caption='Ets Id' datatype='string' name='[EtsId]' role='dimension' type='nominal' />
+      <column caption='Hospital Name' datatype='string' name='[HospitalName]' role='dimension' type='nominal' />
+      <column caption='Incompleteness Percent' datatype='integer' name='[IncompletenessPercent]' role='measure' type='quantitative' />
+      <column caption='Ltbr Id' datatype='string' name='[LtbrId]' role='dimension' type='nominal' />
+      <column caption='Nhs Number' datatype='string' name='[NhsNumber]' role='dimension' type='nominal' />
+      <column caption='Notification Id' datatype='string' name='[NotificationId]' role='dimension' type='nominal' />
+      <column caption='Notification Start Date' datatype='datetime' name='[NotificationStartDate]' role='dimension' type='ordinal' />
+      <column caption='Notification Start Friendly Date' datatype='string' name='[NotificationStartFriendlyDate]' role='dimension' type='nominal' />
+      <column caption='Notification Start Month' datatype='datetime' name='[NotificationStartMonth]' role='dimension' type='ordinal' />
+      <column caption='Ntbs Id' datatype='integer' name='[NtbsId]' role='dimension' type='ordinal' />
+      <column datatype='integer' name='[Number of Records]' role='measure' type='quantitative' user:auto-column='numrec'>
+        <calculation class='tableau' formula='1' />
+      </column>
+      <column caption='Patient Age At Notification' datatype='integer' name='[PatientAgeAtNotification]' role='measure' type='quantitative' />
+      <column caption='Treatment End Date' datatype='datetime' name='[TreatmentEndDate]' role='dimension' type='ordinal' />
+      <column caption='Uk Born' datatype='string' name='[UkBorn]' role='dimension' type='nominal' />
+      <layout dim-ordering='alphabetic' dim-percentage='0.68556' measure-ordering='alphabetic' measure-percentage='0.31444' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Reino Unido&quot;' />
+      </semantic-values>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Sheet 1'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>TB case notifications by quarter year, England, 2014-2016</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='newop_vi_Notification (DataMigrationAlpha)' name='federated.1t36mmv0bgzbcw114kr2q1y19zit' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1t36mmv0bgzbcw114kr2q1y19zit'>
+            <column caption='Notification Id' datatype='string' name='[NotificationId]' role='dimension' type='nominal' />
+            <column caption='Notification Start Date' datatype='datetime' name='[NotificationStartDate]' role='dimension' type='ordinal' />
+            <column-instance column='[NotificationId]' derivation='Count' name='[cnt:NotificationId:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[NotificationStartDate]' derivation='Quarter' name='[qr:NotificationStartDate:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[NotificationStartDate]' derivation='Year' name='[yr:NotificationStartDate:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.1t36mmv0bgzbcw114kr2q1y19zit].[yr:NotificationStartDate:ok]'>
+            <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
+              <groupfilter function='member' level='[yr:NotificationStartDate:ok]' member='2014' />
+              <groupfilter function='member' level='[yr:NotificationStartDate:ok]' member='2015' />
+              <groupfilter function='member' level='[yr:NotificationStartDate:ok]' member='2016' />
+            </groupfilter>
+          </filter>
+          <slices>
+            <column>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[yr:NotificationStartDate:ok]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.1t36mmv0bgzbcw114kr2q1y19zit].[cnt:NotificationId:qk]' scope='rows' value='Number of cases' />
+            <format attr='border-color' value='#b0b0b0' />
+            <format attr='border-width' value='1' />
+            <format attr='hnaxis' value='false' />
+            <format attr='hnlabel' value='horizontal' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='width' field='[federated.1t36mmv0bgzbcw114kr2q1y19zit].[qr:NotificationStartDate:ok]' value='112' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='cols' value='false' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <style>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+                <format attr='aspect' value='1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[cnt:NotificationId:qk]</rows>
+        <cols include-empty='true'>([federated.1t36mmv0bgzbcw114kr2q1y19zit].[yr:NotificationStartDate:ok] / [federated.1t36mmv0bgzbcw114kr2q1y19zit].[qr:NotificationStartDate:ok])</cols>
+        <show-full-range>
+          <column>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[NotificationStartDate]</column>
+        </show-full-range>
+      </table>
+    </worksheet>
+  </worksheets>
+  <windows source-height='33'>
+    <window class='worksheet' maximized='true' name='Sheet 1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <selection-collection>
+          <node-selection select-tuples='false'>
+            <oriented-node-reference orientation='horizontal'>
+              <node-reference>
+                <fields>
+                  <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[yr:NotificationStartDate:ok]</field>
+                  <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[qr:NotificationStartDate:ok]</field>
+                </fields>
+                <multibucket>
+                  <bucket>2015</bucket>
+                  <bucket>1</bucket>
+                </multibucket>
+              </node-reference>
+              <page-reference />
+            </oriented-node-reference>
+          </node-selection>
+        </selection-collection>
+        <highlight>
+          <color-one-way>
+            <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[none:NotificationId:nk]</field>
+            <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[none:Region:nk]</field>
+            <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[qr:NotificationStartDate:ok]</field>
+            <field>[federated.1t36mmv0bgzbcw114kr2q1y19zit].[yr:NotificationStartDate:ok]</field>
+          </color-one-way>
+        </highlight>
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Sheet 1' width='192'>
+      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
+    </thumbnail>
+  </thumbnails>
+</workbook>

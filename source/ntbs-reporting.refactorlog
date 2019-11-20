@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="4d15744a-1837-47a5-9ca7-3c7bfbb91962" ChangeDateTime="12/14/2018 16:04:27">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[DrugUse]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CurrentDrugMisuse" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fef61512-a8e9-4499-9e66-513ada806d65" ChangeDateTime="12/14/2018 16:04:48">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[Alcohol]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AlcoholMisuse" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="04580ce5-728d-4c88-9025-a8174ee18c4f" ChangeDateTime="12/14/2018 16:06:41">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[Homeless]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CurrentlyHomeless" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f67738c7-58b3-45a2-b739-97c8a05226ca" ChangeDateTime="12/14/2018 16:09:10">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[MonthsTravelled1InMonths]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsTravelled1" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5442718f-7023-4468-a528-3b16dc2fab02" ChangeDateTime="12/14/2018 16:09:12">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[MonthsTravelled2InMonths]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DurationofTravMonthsTravelled2el2InMonths" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9a97cbab-9f6b-4b1c-8d6f-b647cc63f150" ChangeDateTime="12/14/2018 16:09:20">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[MonthsTravelled3InMonths]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsTravelled3" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="714edd36-8f32-447a-992c-8bb62c15e82e" ChangeDateTime="12/14/2018 16:09:25">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[DurationofTravMonthsTravelled2el2InMonths]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsTravelled2" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bbb40675-f153-4716-ba57-c859aaf0698b" ChangeDateTime="12/14/2018 16:10:26">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[HepB]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HepatitisB" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f843699a-243e-4d06-9ce0-59f461fd92a3" ChangeDateTime="12/14/2018 16:10:29">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[HepC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HepatitisC" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="494fbdb0-647f-46c6-930f-82dba929fe8f" ChangeDateTime="12/14/2018 16:12:09">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[TomEndOfTreatmentDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TreatmentEndDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="52057e43-f9ab-474f-87ac-3cafdbfe6ec4" ChangeDateTime="12/14/2018 16:21:50">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification].[SpecimenDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EarliestSpecimenDate" />
+  </Operation>
+</Operations>
