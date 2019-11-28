@@ -117,7 +117,9 @@ AS
 					INNER JOIN dbo.DataQuality d ON d.NotificationId = n.NotificationId
 			WHERE n.NotificationDate BETWEEN @NotificationDateFrom AND @NotificationDateTo 
 				AND (((@ServiceName IS NULL OR @Region IS NULL) OR @ServiceName <> 'All') OR n.TreatmentPhec = @Region)
-				AND ((@ServiceName IS NULL OR @ServiceName = 'All') OR n.[Service] = @ServiceName)
+								AND ((@ServiceName IS NULL OR @ServiceName = 'All') OR 
+					n.[Service] in (select value from STRING_SPLIT(@ServiceName, ',')) or
+					(@serviceName = 'Blank' and service is null and n.ResidencePhec = @region and n.treatmentphec is null))
 
 				--and @TreatmentEndDate IS NULL OR d.TreatmentEndDate = @TreatmentEndDate
 				
@@ -236,3 +238,4 @@ AS
 	BEGIN CATCH
 		EXEC dbo.uspHandleException
 	END CATCH
+GO
