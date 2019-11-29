@@ -9,7 +9,7 @@ Desc:    This pre-calculates apprx 90 reusable notification data points over-nig
          
 **************************************************************************************************/
 
-CREATE PROCEDURE [dbo].[uspGenerateReusableNotification] AS
+Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
@@ -294,7 +294,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 			-- WARNING: The following 2nd argument will be used as an IN WHERE clause inside a dynamic SQL string that we pass together with single-quotes and commas
 			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'INH', '''ISO'', ''ISO_W'''
 			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'RIF', '''RIF'', ''RIF_W'''
-			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'EMB', '''ETHAM'', ''ETHAM_W'''
+			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'EMB', '''ETHAM'', ''ETHAM_W'', ''ETA_W'''
 			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'PZA', '''PYR'', ''PYR_W'''
 			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'AMINO', '''AK'', ''AMI'', ''KAN'', ''CAP'', ''AMINO_W'''
 			EXEC dbo.uspGenerateReusableNotificationCultureResistance 'QUIN', '''OFX'', ''MOXI'', ''CIP'', ''QUIN_W'''
