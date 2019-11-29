@@ -10,7 +10,7 @@
 		end
 
 		SELECT distinct ReusableNotificationId, postcode,REPLACE(postcode, ' ', '') as CleanedPostcode into #NotificationPostcodes
-		  FROM [NTBS_R1_Reporting_Staging].[dbo].[ReusableNotification] 
+		  FROM [ReusableNotification] 
   
 		  delete from #NotificationPostcodes 
 		  where len(CleanedPostcode)<5 or len(CleanedPostcode)>7 or CleanedPostcode not like '%[^0-9]%'
