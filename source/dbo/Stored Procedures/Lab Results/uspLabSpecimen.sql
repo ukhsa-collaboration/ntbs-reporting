@@ -1,8 +1,14 @@
-/***************************************************************************************************
-Desc:   This creates a single record for each specimen, containing information about it and 
-		summarises the demographics associated with it
+USE [NTBS_Reporting_Staging]
+GO
 
-**************************************************************************************************/
+/****** Object:  StoredProcedure [dbo].[uspLabSpecimen]    Script Date: 29/11/2019 14:19:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
 CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 	SET NOCOUNT ON
 
@@ -12,23 +18,38 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 		DELETE FROM dbo.LabSpecimen
 
 		INSERT INTO dbo.LabSpecimen
+			 
 			/*this brings back info about each specimen - date, type, requesting lab, ref lab, species and patient info - for notifications in January 2019*/
-			SELECT DISTINCT 
-				sr.ReferenceLaboratoryNumber
-				,FORMAT(sr.SpecimenDate, 'dd MMM yyyy') AS 'SpecimenDate'
-				,sr.SpecimenTypeCode
-				,TRIM(a.LaboratoryName) AS 'RequestingLaboratoryName'
+			SELECT DISTINCT
+				CASE
+					WHEN sr.ReferenceLaboratoryNumber is not null THEN TRIM(sr.ReferenceLaboratoryNumber)
+					ELSE CONCAT('TBSURV', a.IdentityColumn)
+				END AS 'ReferenceLaboratoryNumber'
+				--TODO: SPECIMEN DATE MAY BE DIFFERENT BETWEEN ENTRIES FOR THE SAME SPECIMEN
+				,sr.SpecimenDate
+				--SPECIMEN TYPE CODE AND LAB NAME MAY BE DIFFERENT BETWEEN ENTRIES FOR THE SAME SPECIMEN
+				,NULL
+				,NULL
 				,TRIM(a.ReferenceLaboratory) AS 'ReferenceLaboratory'
-				--, [NTBS_R1_Reporting_Staging].dbo.ufnGetSpecies(n.Id) AS 'Species'
-				--TODO manage not putting a comma in if surname is empty
-				,CONCAT(TRIM(UPPER(a.PatientSurname)), ', ', TRIM(a.PatientForename)) AS 'PatientName'
-				,a.PatientNhsNumber
-				,FORMAT(a.PatientBirthDate, 'dd MMM yyyy') AS 'PatientBirthDate'
-				,a.PatientSex
-				,(CONCAT(TRIM(a.AddressLine1), ' ', TRIM(a.AddressLine2), ' ', TRIM(a.AddressLine3))) AS 'PatientAddress'
-				,a.PatientPostcode
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
+				,NULL
 			FROM [labbase2].[dbo].[SpecimenResult] sr
-				LEFT OUTER JOIN [dbo].[Anonymised] a ON sr.LabDataID = a.LabDataID
-				--TODO TEMP MOVE TO REMOVE NULL REF LAB NUMBER and temp fix to bring back less data during dev
-				WHERE sr.ReferenceLaboratoryNumber is not Null
-  
+				LEFT OUTER JOIN [labbase2].[dbo].[Anonymised] a ON sr.LabDataID = a.LabDataID
+				--TODO Temp fix to bring back less data during dev
+				WHERE sr.SpecimenDate > '2019-01-25'
+			ORDER BY ReferenceLaboratoryNumber
+
+		-- now go through and add in specimen type
+
+		
+	END TRY
+	BEGIN CATCH
+		THROW
+	END CATCH
+GO
+
