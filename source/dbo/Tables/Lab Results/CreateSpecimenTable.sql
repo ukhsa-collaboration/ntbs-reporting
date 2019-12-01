@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[LabSpecimen]
+﻿CREATE TABLE [dbo].[LabSpecimen]
 (
 	-- This primary key
 	[LabSpecimenId] [int] IDENTITY(1,1) NOT NULL,
