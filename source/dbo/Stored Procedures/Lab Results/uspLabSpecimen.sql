@@ -163,7 +163,7 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 
 		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q2.ReferenceLaboratoryNumber
 
-		/*END OF REQUESTING LAB NAME + PATIENT DEMOGRAPHICS*/
+		/*END OF SPECIES*/
 	END TRY
 	BEGIN CATCH
 		THROW
