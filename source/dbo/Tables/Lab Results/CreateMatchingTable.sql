@@ -8,7 +8,7 @@
 	[MatchType] [nvarchar](30) NOT NULL,
 	[CreateDateTime] [datetime] NULL,
 	[UpdateDateTime] [datetime] NULL,
-	[Confidence] [decimal](3,2) NULL
+	[ConfidenceLevel] [decimal](3,2) NULL
 	
 	CONSTRAINT [PK_LabSpecimenId] PRIMARY KEY CLUSTERED (
 		[MatchId] ASC
