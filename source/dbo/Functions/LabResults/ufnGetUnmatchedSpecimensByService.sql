@@ -7,15 +7,11 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-ALTER FUNCTION [dbo].[ufnGetUnmatchedSpecimensByService] 
+
+CREATE FUNCTION [dbo].[ufnGetUnmatchedSpecimensByService] 
 (	
-	--should be an array
-	@Service VARCHAR(50)		=	NULL
+	--comma-separated list to be split using select value from STRING_SPLIT(@Service, ',')
+	@Service VARCHAR(1000)		=	NULL
 	
 )
 RETURNS TABLE 
