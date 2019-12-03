@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[TemporaryLabSpecimen]
+CREATE TABLE [NTBS_Reporting_Staging].[dbo].[TemporaryLabSpecimen]
 (
 	-- This primary key
 	[TempLabSpecimenId] [int] IDENTITY(1,1) NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE [dbo].[TemporaryLabSpecimen]
 	[LabPatientAddress] [nvarchar](255) NULL,
 	[LabPatientPostcode] [nvarchar](10) NULL,
 	[NTBSID] [int] NULL,
+	[TB_Service][nvarchar](16),
 	[MatchType] [nvarchar](20) NULL,
 	[CreationDateTime][datetime] NULL,
 	[UpdateDateTime][datetime] NULL,

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [labbase2].[dbo].[NotificationSpecimenMatch]
+﻿CREATE TABLE [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch]
 (
 	-- This primary key
 	[MatchId] [int] IDENTITY(1,1) NOT NULL,
@@ -18,5 +18,6 @@
 ON [PRIMARY]
 GO
 
-CREATE NONCLUSTERED INDEX IX_NotificationSpecimenMatch_ReferenceLaboratoryNumber ON dbo.LabSpecimen(ReferenceLaboratoryNumber)
-GO
+--TODO cannot create index because of lack of cross database functionality
+--CREATE NONCLUSTERED INDEX IX_NotificationSpecimenMatch_ReferenceLaboratoryNumber ON [NTBS_Reporting_Staging].dbo.LabSpecimen(ReferenceLaboratoryNumber)
+--GO
