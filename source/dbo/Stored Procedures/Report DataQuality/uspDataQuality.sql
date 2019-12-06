@@ -38,6 +38,7 @@ AS
 			Begin
 			SELECT 
 				n.[Service]								AS 'Service',
+				s.Serviceid								AS 'Serviceid',
 				SUM(d.TreatmentEndDate)					AS 'Treatment end date',
 				SUM(d.TreatmentOutcome12Months)			AS '12 month treatment outcome',
 				SUM(d.TreatmentOutcome24Months)			AS '24 month treatment outcome',
@@ -76,7 +77,7 @@ AS
 				AND n.TreatmentPhec = @Region
 				and Serviceid in (select value from STRING_SPLIT(@ServiceName, ','))
 				--AND ((@ServiceName IS NULL OR @ServiceName = 'All') OR n.[Service] = @ServiceName)
-			GROUP BY n.[Service]
+			GROUP BY n.[Service],s.Serviceid
 			ORDER BY n.[Service]
 			END
 			If (@ServiceName = 'All')
