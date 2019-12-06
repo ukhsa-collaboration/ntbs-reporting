@@ -150,6 +150,7 @@
     <Build Include="dbo\Tables\Reusable Notification\PostcodeLookup.sql" />
     <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
     <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
+	<Build Include="dbo\Views\Lab Results\CreatevwSpecimen.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationYear.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwSpecies.sql" />
