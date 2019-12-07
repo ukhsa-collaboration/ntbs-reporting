@@ -1,6 +1,6 @@
 -- ================================================
 
-USE [NTBS_Reporting_Staging]
+/*USE [NTBS_Reporting_Staging]
 GO
 
 SET ANSI_NULLS ON
@@ -21,4 +21,4 @@ RETURN
 	
 	SELECT * FROM [dbo].TemporaryLabSpecimen
 )
-GO
+GO*/

@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[ReportLookup]
+(
+	[Id] INT IDENTITY(1,1)NOT NULL PRIMARY KEY,
+	[ItemId] UNIQUEIDENTIFIER NOT NULL,
+	[ReportName] NVARCHAR(75) NOT NULL,
+	[ReportGroup] NVARCHAR(35)
+)

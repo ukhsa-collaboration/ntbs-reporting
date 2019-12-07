@@ -1,4 +1,4 @@
-USE [NTBS_Reporting_Staging]
+/*USE [NTBS_Reporting_Staging]
 GO
 
 /****** Object:  View [dbo].[vwSpecies]    Script Date: 04/12/2019 08:08:41 ******/
@@ -35,7 +35,7 @@ CREATE VIEW [dbo].[vwSpecimen] AS
 				AND a.IsAtypicalOrganismRecord = 0
 
 GO
-
+*/
 
 
 

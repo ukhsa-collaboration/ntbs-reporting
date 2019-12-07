@@ -1,4 +1,4 @@
-﻿CREATE TABLE [NTBS_Specimen_Matching].[dbo].[UnmatchedSpecimen]
+﻿/*CREATE TABLE [NTBS_Specimen_Matching].[dbo].[UnmatchedSpecimen]
 (
 	-- This primary key
 	[Id] [int] IDENTITY(1,1) NOT NULL,
@@ -21,4 +21,4 @@ GO
 --GO
 
 --CREATE NONCLUSTERED INDEX IX_UnmatchedSpecimen_TB_Service_Code ON dbo.TB_Service(TB_Service_Code)
---GO
+--GO*/

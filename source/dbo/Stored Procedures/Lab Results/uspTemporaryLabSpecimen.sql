@@ -1,4 +1,4 @@
-USE [NTBS_Reporting_Staging]
+/*USE [NTBS_Reporting_Staging]
 GO
 /****** Object:  StoredProcedure [dbo].[uspLabSpecimen]    Script Date: 30/11/2019 08:08:06 ******/
 SET ANSI_NULLS ON
@@ -33,4 +33,4 @@ ALTER PROCEDURE [dbo].[uspTemporaryLabSpecimen] AS
 		THROW
 	END CATCH
 
-
+	*/

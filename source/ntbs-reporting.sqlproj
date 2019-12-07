@@ -69,7 +69,7 @@
     <Folder Include="Security\" />
     <Folder Include="dbo\Functions" />
     <Folder Include="dbo\Functions\Reusable Notification" />
-	<Folder Include="dbo\Functions\Lab Results" />
+    <Folder Include="dbo\Functions\Lab Results" />
     <Folder Include="dbo\Tables\Reusable Footer" />
     <Folder Include="dbo\Tables\Authorization" />
     <Folder Include="dbo\Tables\Reusable Notification" />
@@ -81,11 +81,11 @@
     <Folder Include="dbo\Tables\Audit" />
     <Folder Include="dbo\Tables\Report OutcomeSummary" />
     <Folder Include="dbo\Types\Authentication And Authorization" />
-	<Folder Include="dbo\Tables\Lab Results" />
+    <Folder Include="dbo\Tables\Lab Results" />
     <Folder Include="dbo\Tables\Report Boilerplate" />
     <Folder Include="dbo\Tables\Reusable Drop Downs" />
     <Folder Include="dbo\Views\Reusable Drop Downs" />
-	<Folder Include="dbo\Views\Lab Results" />
+    <Folder Include="dbo\Views\Lab Results" />
     <Folder Include="dbo\Tables\Report DataQuality" />
     <Folder Include="dbo\Functions\Report DataQuality" />
     <Folder Include="dbo\Functions\Error Handling" />
@@ -93,7 +93,7 @@
     <Folder Include="dbo\Stored Procedures\Audit" />
     <Folder Include="dbo\Stored Procedures\Authorization" />
     <Folder Include="dbo\Stored Procedures\Error Handling" />
-	<Folder Include="dbo\Stored Procedures\Lab Results" />
+    <Folder Include="dbo\Stored Procedures\Lab Results" />
     <Folder Include="dbo\Stored Procedures\Report Boilerplate" />
     <Folder Include="dbo\Stored Procedures\Report CultureResistance" />
     <Folder Include="dbo\Stored Procedures\Report DataQuality" />
@@ -110,7 +110,7 @@
     <Build Include="ContinuousDeployment\StoredProcedures\sp_execute_cd_script.sql" />
     <Build Include="ContinuousDeployment\Tables\__MigrationLog.sql" />
     <None Include="Scripts\ScriptsIgnoredOnImport.sql" />
-	<Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnEmptyOrIntValue.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
@@ -127,11 +127,11 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnYesNoNotknown.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetCountryName.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetAnySocialRiskFactor.sql" />
-	<Build Include="dbo\Tables\Lab Results\CreateMatchingTable.sql" />
-	<Build Include="dbo\Tables\Lab Results\CreateSampleMapping.sql" />
-	<Build Include="dbo\Tables\Lab Results\CreateSpecimenTable.sql" />
-	<Build Include="dbo\Tables\Lab Results\CreateTemporarySpecimenTable.sql" />
-	<Build Include="dbo\Tables\Lab Results\CreateUnmatchedSpecimenTable.sql" />
+    <Build Include="dbo\Tables\Lab Results\CreateMatchingTable.sql" />
+    <Build Include="dbo\Tables\Lab Results\CreateSampleMapping.sql" />
+    <Build Include="dbo\Tables\Lab Results\CreateSpecimenTable.sql" />
+    <Build Include="dbo\Tables\Lab Results\CreateTemporarySpecimenTable.sql" />
+    <Build Include="dbo\Tables\Lab Results\CreateUnmatchedSpecimenTable.sql" />
     <Build Include="dbo\Tables\Reusable Footer\FooterText.sql" />
     <Build Include="dbo\Tables\Reusable Footer\TemplateText.sql" />
     <Build Include="dbo\Tables\Authorization\PhecAdGroup.sql" />
@@ -141,7 +141,7 @@
     <Build Include="dbo\Tables\Reusable Notification\Organism.sql" />
     <Build Include="dbo\Functions\Authorization\ufnAuthorizedReusableNotification.sql" />
     <Build Include="dbo\Functions\Authorization\ufnMaskField.sql" />
-	<Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
     <Build Include="dbo\Functions\View Model\ufnFormatDateConsistently.sql" />
     <Build Include="dbo\Types\Audit\ReusableNotificationType.sql" />
@@ -150,7 +150,7 @@
     <Build Include="dbo\Tables\Reusable Notification\PostcodeLookup.sql" />
     <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
     <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
-	<Build Include="dbo\Views\Lab Results\CreatevwSpecimen.sql" />
+    <Build Include="dbo\Views\Lab Results\CreatevwSpecimen.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationYear.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwSpecies.sql" />
@@ -173,9 +173,9 @@
     <Build Include="dbo\Functions\Error Handling\ufnLog.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspAddToAudit.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspAuditLineList.sql" />
-	<Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimen.sql" />
-	<Build Include="dbo\Stored Procedures\Lab Results\uspSampleMapping.sql" />
-	<Build Include="dbo\Stored Procedures\Lab Results\uspTemporaryLabSpecimen.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimen.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspSampleMapping.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspTemporaryLabSpecimen.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspDisplayException.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspHandleException.sql" />
     <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateLineList.sql" />
@@ -229,6 +229,12 @@
     <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspServicePhec.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetAgefrom.sql" />
+    <Build Include="dbo\Tables\Audit\CreateUserLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspPopulateUserLookup.sql" />
+    <Build Include="dbo\Tables\Audit\ReportLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspSeedReportLookup.sql" />
+    <Build Include="dbo\Tables\Audit\MIReportData.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspProcessMIData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [NTBS_Reporting_Staging].[dbo].[LabSpecimen]
+﻿/*CREATE TABLE [NTBS_Reporting_Staging].[dbo].[LabSpecimen]
 (
 	-- This primary key
 	[LabSpecimenId] [int] IDENTITY(1,1) NOT NULL,
@@ -27,4 +27,4 @@ GO
 
 --TODO cannot create due to lack of cross-database functionality
 --CREATE NONCLUSTERED INDEX IX_LabSpecimen_ReferenceLaboratoryNumber ON dbo.LabSpecimen(ReferenceLaboratoryNumber)
---GO
+--GO*/

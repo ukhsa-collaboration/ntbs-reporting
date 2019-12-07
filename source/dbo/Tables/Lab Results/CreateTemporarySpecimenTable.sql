@@ -1,4 +1,4 @@
-CREATE TABLE [NTBS_Reporting_Staging].[dbo].[TemporaryLabSpecimen]
+/*CREATE TABLE [NTBS_Reporting_Staging].[dbo].[TemporaryLabSpecimen]
 (
 	-- This primary key
 	[TempLabSpecimenId] [int] IDENTITY(1,1) NOT NULL,
@@ -36,3 +36,4 @@ CREATE TABLE [NTBS_Reporting_Staging].[dbo].[TemporaryLabSpecimen]
 
 ON [PRIMARY]
 GO
+*/
