@@ -4,7 +4,7 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO
+GO*/
 
 
 ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
@@ -15,33 +15,21 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 		-- Reset
 		DELETE FROM dbo.LabSpecimen
 
-		INSERT INTO dbo.LabSpecimen
-			 
-			/*this brings back info about each specimen - date, type, requesting lab, ref lab, species and patient info - for notifications in January 2019*/
-			SELECT DISTINCT
-				CASE
-					WHEN sr.ReferenceLaboratoryNumber is not null THEN TRIM(sr.ReferenceLaboratoryNumber)
-					ELSE CONCAT('TBSURV', a.IdentityColumn)
-				END AS 'ReferenceLaboratoryNumber'
-				--TODO: SPECIMEN DATE MAY BE DIFFERENT BETWEEN ENTRIES FOR THE SAME SPECIMEN
-				,sr.SpecimenDate
-				--SPECIMEN TYPE CODE AND LAB NAME MAY BE DIFFERENT BETWEEN ENTRIES FOR THE SAME SPECIMEN
-				,NULL
-				--,dbo.ufnGetSampleType(sr.ReferenceLaboratoryNumber)			As 'SpecimenTypeCode'
-				,NULL
-				,TRIM(a.ReferenceLaboratory) AS 'ReferenceLaboratory'
-				,NULL
-				,NULL
-				,NULL
-				,NULL
-				,NULL
-				,NULL
-				,NULL
-			FROM [labbase2].[dbo].[SpecimenResult] sr
-				LEFT OUTER JOIN [labbase2].[dbo].[Anonymised] a ON sr.LabDataID = a.LabDataID
-				--TODO Temp fix to bring back less data during dev
-				WHERE sr.SpecimenDate between '2019-06-28' and '2019-07-27'
-			ORDER BY ReferenceLaboratoryNumber
+		--First fetch all the matched specimens, regardless of specimen date
+		INSERT INTO dbo.LabSpecimen (ReferenceLaboratoryNumber)
+			SELECT DISTINCT [ReferenceLaboratoryNumber]
+			FROM [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch]
+			WHERE [MatchType] = 'Confirmed'
+
+		
+		--Now fetch all the unmatched specimens for the last three years
+		--Use the View that has been created so there is a consistent LabRefNumber populated for every record
+		INSERT INTO dbo.LabSpecimen (ReferenceLaboratoryNumber)
+			SELECT DISTINCT s.ReferenceLaboratoryNumber FROM
+				[dbo].[vwSpecimen] s
+			WHERE YEAR(s.SpecimenDate) IN (SELECT NotificationYear FROM vwNotificationYear)
+			AND s.ReferenceLaboratoryNumber NOT IN (SELECT ReferenceLaboratoryNumber FROM LabSpecimen)
+
 
 
 		/*START OF SPECIMEN TYPE CODE CALCULATION*/
@@ -56,16 +44,13 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 						-- innermost query, finds the lowest ranked specimen type for each specimen
 						-- so that 'Unknown' will be picked if that is the best available, but if one entry says Unknown
 						-- and one says Pus, the Pus will be selected
-						(SELECT sr.ReferenceLaboratoryNumber, MIN(sm.SampleRank) As 'MinRank' FROM 
-									[labbase2].[dbo].[SpecimenResult] sr
-									--TODO: this does not handle the specimens where we have had to calculate a RefLabNumber
-									--from anonmyised.  It might be better to have a view on [labbase2].[dbo].[SpecimenResult]
-									-- which sorts this out
+						(SELECT vs.ReferenceLaboratoryNumber, MIN(sm.SampleRank) As 'MinRank' FROM 
+									[dbo].[vwSpecimen] vs
 									INNER JOIN [dbo].[LabSpecimen] ls ON 
-										sr.ReferenceLaboratoryNumber = ls.ReferenceLaboratoryNumber
+										vs.ReferenceLaboratoryNumber = ls.ReferenceLaboratoryNumber
 									LEFT OUTER JOIN [dbo].SampleMapping sm ON
-										sr.SpecimenTypeCode = sm.SampleName
-								GROUP BY sr.ReferenceLaboratoryNumber) as Q1
+										vs.SpecimenTypeCode = sm.SampleName
+								GROUP BY vs.ReferenceLaboratoryNumber) as Q1
 			
 				LEFT OUTER JOIN SampleMapping sm2 ON sm2.SampleRank = Q1.MinRank) as Q2
 
@@ -76,20 +61,15 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 		
 
 
-		/*START OF REQUESTING LAB NAME + PATIENT DEMOGRAPHICS*/
+		/*START OF REQUESTING LAB NAME, REF LAB + PATIENT DEMOGRAPHICS*/
 
 
-		-- we are looking for the most recent anonymised record for a given specimen. The problem is, there may be multiple records
-		-- with the exact same timestamp (AuditCreate).
-		-- so far, in each pair one has 'IsAtypicalOrganismRecord' set to 1, and I suspect that we want to ignore these anyway
-		-- Examples: ('A19U002771A', 'A19U001562A')
-		-- TEMP FIX: choosing a date range I know doesn't have this problem, to discuss with Adil.  I suspect any specimen which only
-		-- has atypical results should be excluded
-		-- so far I can't see any reason not to just select the most recent record to get the demographics
-
+		-- we are looking for the most recent anonymised record for a given specimen
+		-- we are using the 'IdentityColumn' in anonymisedto find this
 
 		UPDATE [dbo].[LabSpecimen] SET 
 			 LaboratoryName = Q2.LaboratoryName
+			,ReferenceLaboratory = Q2.ReferenceLaboratory
 			,PatientNhsNumber = Q2.NHSNumber 
 			,PatientBirthDate = Q2.PatientBirthDate
 			,PatientName = Q2.PatientName
@@ -98,9 +78,11 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 			,PatientPostcode = Q2.Postcode
 			
 			FROM
-			-- second query finds the Lab Name from the corresponding anonymised record
+			-- second query finds the Lab Name and Demogs from the corresponding anonymised record
 			(SELECT		Q1.ReferenceLaboratoryNumber, 
-						a.LaboratoryName, 
+						a.LaboratoryName,
+						a.ReferenceLaboratory,
+						--TODO: some of the NHS numbers have carriage returns in them
 						TRIM(a.PatientNhsNumber) AS 'NHSNumber', 
 						a.PatientBirthDate,
 						CASE
@@ -113,25 +95,35 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 						, TRIM(CONCAT(TRIM(a.AddressLine1), ' ', TRIM(a.AddressLine2), ' ', TRIM(a.AddressLine3))) as PatientAddress
 						, TRIM(a.PatientPostcode) AS 'Postcode'
 						FROM 
-						--innermost query selects the AuditCreate date of the most recent anonymised record for our specimen
-						(SELECT sr.ReferenceLaboratoryNumber, MAX(a.AuditCreate) AS 'MaxAudit'
-							from [labbase2].[dbo].[SpecimenResult] sr
-							--for some reason, not all specimen result entries have a corresponding anonymised entry?	
-								INNER JOIN [labbase2].[dbo].[Anonymised] a ON a.LabDataID = sr.LabDataID
-								INNER JOIN [dbo].[LabSpecimen] ls ON  sr.ReferenceLaboratoryNumber = ls.ReferenceLaboratoryNumber
-						 GROUP BY sr.ReferenceLaboratoryNumber) AS Q1
-			INNER JOIN [labbase2].[dbo].[SpecimenResult] sr ON sr.ReferenceLaboratoryNumber = Q1.ReferenceLaboratoryNumber
-			INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
-				a.LabDataID = sr.LabDataID AND a.AuditCreate = Q1.MaxAudit) AS Q2
+								--innermost query selects the IdentityColumn value of the most recent anonymised record for our specimen
+								 (SELECT vs.ReferenceLaboratoryNumber, MAX(vs.[IdentityColumn]) 'MaxID' FROM vwSpecimen vs
+									INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
+								 GROUP BY vs.ReferenceLaboratoryNumber) AS Q1
+						INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
+						a.IdentityColumn = Q1.MaxID) AS Q2
 
 		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q2.ReferenceLaboratoryNumber
 
 		/*END OF REQUESTING LAB NAME + PATIENT DEMOGRAPHICS*/
 
+		/*START OF SPECIMEN DATE*/
+		-- it is possible for there to be more than one specimen date for the same specimen in the SpecimenResult table
+		-- take the latest one
+
+		UPDATE [dbo].[LabSpecimen] SET SpecimenDate = Q1.MaxDate
+			FROM
+				(SELECT vs.ReferenceLaboratoryNumber, MAX(vs.SpecimenDate) AS 'MaxDate' 
+				FROM vwSpecimen vs
+					INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
+					GROUP BY vs.ReferenceLaboratoryNumber, vs.SpecimenDate) AS Q1
+		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q1.ReferenceLaboratoryNumber	
+
+		/*END OF SPECIMEN DATE*/
+
+
+
 		/*START OF SPECIES*/
-		-- at the moment, this is also just looking up the most recent anonymised record and then mapping its species
-		-- to a record in the Organism lookup tables, so could actually be part of the query above
-		-- many of the records have species names which don't exist in our mapping
+		-- use the view to map the lab-provided species name to something more standardised
 
 		UPDATE [dbo].[LabSpecimen] SET 
 			Species = Q2.OrganismName
@@ -146,26 +138,20 @@ ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
 							ELSE (o.OrganismName)
 						END AS 'OrganismName' 
 						FROM 
-						--innermost query selects the AuditCreate date of the most recent anonymised record for our specimen
-						(SELECT sr.ReferenceLaboratoryNumber, MAX(a.AuditCreate) AS 'MaxAudit'
-							from [labbase2].[dbo].[SpecimenResult] sr
-							--for some reason, not all specimen result entries have a corresponding anonymised entry?	
-								INNER JOIN [labbase2].[dbo].[Anonymised] a ON a.LabDataID = sr.LabDataID
-								INNER JOIN [dbo].[LabSpecimen] ls ON  sr.ReferenceLaboratoryNumber = ls.ReferenceLaboratoryNumber
-						 GROUP BY sr.ReferenceLaboratoryNumber) AS Q1
-						 --end of innermost query
-
-			INNER JOIN [labbase2].[dbo].[SpecimenResult] sr ON sr.ReferenceLaboratoryNumber = Q1.ReferenceLaboratoryNumber
-			INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
-				a.LabDataID = sr.LabDataID AND a.AuditCreate = Q1.MaxAudit
+						--innermost query selects the IdentityColumn value of the most recent anonymised record for our specimen
+								 (SELECT vs.ReferenceLaboratoryNumber, MAX(vs.[IdentityColumn]) 'MaxID' FROM vwSpecimen vs
+									INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
+								 GROUP BY vs.ReferenceLaboratoryNumber) AS Q1
+						INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
+						a.IdentityColumn = Q1.MaxID
 			LEFT OUTER JOIN [dbo].OrganismNameMapping om on a.OrganismName = om.OrganismName
 			LEFT OUTER JOIN [dbo].Organism o ON o.OrganismId = om.OrganismId) AS Q2
 
 		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q2.ReferenceLaboratoryNumber
 
 		/*END OF SPECIES*/
+	
 	END TRY
 	BEGIN CATCH
 		THROW
 	END CATCH
-	*/

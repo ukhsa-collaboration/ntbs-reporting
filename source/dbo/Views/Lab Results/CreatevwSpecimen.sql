@@ -1,4 +1,4 @@
-/*USE [NTBS_Reporting_Staging]
+USE [NTBS_Reporting_Staging]
 GO
 
 /****** Object:  View [dbo].[vwSpecies]    Script Date: 04/12/2019 08:08:41 ******/
@@ -18,24 +18,24 @@ Desc:    This returns a list of specimens with a standardised RefLabNumber colum
 CREATE VIEW [dbo].[vwSpecimen] AS
 		SELECT
 				CASE
-					WHEN sr.ReferenceLaboratoryNumber = '' THEN CONCAT('TBSURV', a.IdentityColumn)
-					WHEN sr.ReferenceLaboratoryNumber is not null THEN TRIM(sr.ReferenceLaboratoryNumber)
+					WHEN a.ReferenceLaboratoryNumber = '' THEN CONCAT('TBSURV', a.IdentityColumn)
+					WHEN a.ReferenceLaboratoryNumber is not null THEN TRIM(a.ReferenceLaboratoryNumber)
 					ELSE CONCAT('TBSURV', a.IdentityColumn)
 				END AS 'ReferenceLaboratoryNumber'
 				,sr.SpecimenDate
 				,sr.LabDataID
-				,sr.OpieId
-				,sr.ResultSequenceNumber
+				,a.OpieId
+				,a.IdentityColumn
 				,sr.SpecimenTypeCode
-				,sr.AuditCreate
+				,a.AuditCreate
 				,a.OrganismName
-			FROM [labbase2].[dbo].[SpecimenResult] sr
+			FROM [labbase2].[dbo].[Anonymised] a 
 				--inner join because we only want TB specimens and isAtypical flag lives in Anonymised
-				INNER JOIN [labbase2].[dbo].[Anonymised] a ON sr.LabDataID = a.LabDataID
+				INNER JOIN [labbase2].[dbo].[SpecimenResult] sr ON sr.LabDataID = a.LabDataID
 				AND a.IsAtypicalOrganismRecord = 0
+				AND a.MergedRecord = 0
 
 GO
-*/
 
 
 
