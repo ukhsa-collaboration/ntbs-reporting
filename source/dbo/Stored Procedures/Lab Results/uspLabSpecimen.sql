@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO*/
 
 
-ALTER PROCEDURE [dbo].[uspLabSpecimen] AS
+Create PROCEDURE [dbo].[uspLabSpecimen] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
