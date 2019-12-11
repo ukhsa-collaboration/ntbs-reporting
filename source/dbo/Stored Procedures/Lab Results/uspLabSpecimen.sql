@@ -18,7 +18,7 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 		--First fetch all the matched specimens, regardless of specimen date
 		INSERT INTO dbo.LabSpecimen (ReferenceLaboratoryNumber)
 			SELECT DISTINCT [ReferenceLaboratoryNumber]
-			FROM [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch]
+			FROM [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch]
 			WHERE [MatchType] = 'Confirmed'
 
 		
@@ -99,7 +99,7 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 								 (SELECT vs.ReferenceLaboratoryNumber, MAX(vs.[IdentityColumn]) 'MaxID' FROM vwSpecimen vs
 									INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
 								 GROUP BY vs.ReferenceLaboratoryNumber) AS Q1
-						INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
+						INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON 
 						a.IdentityColumn = Q1.MaxID) AS Q2
 
 		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q2.ReferenceLaboratoryNumber
@@ -142,7 +142,7 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 								 (SELECT vs.ReferenceLaboratoryNumber, MAX(vs.[IdentityColumn]) 'MaxID' FROM vwSpecimen vs
 									INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
 								 GROUP BY vs.ReferenceLaboratoryNumber) AS Q1
-						INNER JOIN [labbase2].[dbo].[Anonymised] a ON 
+						INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON 
 						a.IdentityColumn = Q1.MaxID
 			LEFT OUTER JOIN [dbo].OrganismNameMapping om on a.OrganismName = om.OrganismName
 			LEFT OUTER JOIN [dbo].Organism o ON o.OrganismId = om.OrganismId) AS Q2

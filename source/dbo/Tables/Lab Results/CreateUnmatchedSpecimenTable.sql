@@ -1,4 +1,4 @@
-﻿/*CREATE TABLE [NTBS_Specimen_Matching].[dbo].[UnmatchedSpecimen]
+﻿/*CREATE TABLE [$(NTBS_Specimen_Matching)].[dbo].[UnmatchedSpecimen]
 (
 	-- This primary key
 	[Id] [int] IDENTITY(1,1) NOT NULL,

@@ -1,4 +1,5 @@
-﻿CREATE TABLE [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch]
+﻿/*
+CREATE TABLE [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch]
 (
 	-- This primary key
 	[MatchId] [int] IDENTITY(1,1) NOT NULL,
@@ -19,5 +20,7 @@ ON [PRIMARY]
 GO
 
 
-CREATE NONCLUSTERED INDEX IX_NotificationSpecimenMatch_ReferenceLaboratoryNumber ON [NTBS_Reporting_Staging].dbo.LabSpecimen(ReferenceLaboratoryNumber)
---GO*/
+CREATE NONCLUSTERED INDEX IX_NotificationSpecimenMatch_ReferenceLaboratoryNumber ON  dbo.LabSpecimen(ReferenceLaboratoryNumber)
+--GO
+
+*/
