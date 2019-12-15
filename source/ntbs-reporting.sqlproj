@@ -235,6 +235,7 @@
     <Build Include="dbo\Stored Procedures\Audit\uspSeedReportLookup.sql" />
     <Build Include="dbo\Tables\Audit\MIReportData.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspProcessMIData.sql" />
+    <Build Include="dbo\Views\Lab Results\vwSusceptibilityResult.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
