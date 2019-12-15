@@ -23,7 +23,7 @@ AS
 		IF (@LoginGroups != '###')
 		BEGIN
 			SELECT distinct 
-				TB_Service_Name
+				s.Serviceid, TB_Service_Name
 			FROM dbo.TB_Service s
 				INNER JOIN dbo.ServiceAdGroup sad ON sad.ServiceId = s.Serviceid
 				INNER JOIN dbo.AdGroup agt ON agt.AdGroupId = sad.AdGroupId
