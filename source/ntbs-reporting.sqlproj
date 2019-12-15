@@ -237,6 +237,9 @@
     <Build Include="dbo\Stored Procedures\Audit\uspProcessMIData.sql" />
     <Build Include="dbo\Views\Lab Results\vwSusceptibilityResult.sql" />
     <Build Include="dbo\Views\Lab Results\vwSusceptibilityResultDetail.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetMatchedSpecimen.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSensitivityResult.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

@@ -151,6 +151,9 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 
 		/*END OF SPECIES*/
 	
+
+	--TODO: THEN CALL uspLabSpecimenSensitivityResult for each antibiotic
+	--TODO: THEN CALL uspSpecimenMDRXDR
 	END TRY
 	BEGIN CATCH
 		THROW
