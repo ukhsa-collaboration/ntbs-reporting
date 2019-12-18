@@ -12,7 +12,7 @@ CREATE VIEW [dbo].[vwSusceptibilityResult]
 			rm.[Rank] 
 		FROM vwSpecimen vs
 			INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
-			INNER JOIN [Labbase2].dbo.Susceptibility su ON su.LabDataID = vs.LabDataID
+			INNER JOIN [$(Labbase2)].dbo.Susceptibility su ON su.LabDataID = vs.LabDataID
 			LEFT OUTER JOIN [dbo].[AntibioticMapping] am  ON am.AntibioticCode = su.AntibioticCode
 			LEFT OUTER JOIN [dbo].[ResultMapping] rm  ON rm.Result = su.SusceptibilityResult
 

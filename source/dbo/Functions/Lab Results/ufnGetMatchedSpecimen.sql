@@ -2,11 +2,13 @@
 (
 	@NTBSId int
 )
-RETURNS TABLE
+--to be changed to return a table?
+RETURNS int
 AS
 BEGIN
 
-
+declare @param1 int = null
+declare @param2 int = null
 --first go to the matching table to get all records corresponding to the passed-in NTBS ID
 
 

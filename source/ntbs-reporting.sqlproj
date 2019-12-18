@@ -240,6 +240,8 @@
     <Build Include="dbo\Functions\Lab Results\ufnGetMatchedSpecimen.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
+    <Build Include="dbo\Tables\Lab Results\AntibioticMapping.sql" />
+    <Build Include="dbo\Tables\Lab Results\ResultMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
