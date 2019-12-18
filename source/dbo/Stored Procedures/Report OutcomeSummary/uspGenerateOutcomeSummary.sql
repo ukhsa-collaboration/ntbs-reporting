@@ -68,132 +68,132 @@ CREATE PROCEDURE [dbo].[uspGenerateOutcomeSummary] AS
 			TreatmentCompleted12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Completed')
+								 WHERE TreatmentOutcome12months = 'Completed')
 
 		UPDATE dbo.OutcomeSummary SET
 			Died12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Died')
+								 WHERE TreatmentOutcome12months = 'Died')
 
 		UPDATE dbo.OutcomeSummary SET
 			LostToFollowUp12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Lost to follow-up')
+								 WHERE TreatmentOutcome12months = 'Lost to follow-up')
 
 		UPDATE dbo.OutcomeSummary SET
 			StillOnTreatment12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Still on treatment')
+								 WHERE TreatmentOutcome12months = 'Still on treatment')
 
 		UPDATE dbo.OutcomeSummary SET
 			TreatmentStopped12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Treatment stopped')
+								 WHERE TreatmentOutcome12months = 'Treatment stopped')
 
 		UPDATE dbo.OutcomeSummary SET
 			NotEvaluated12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Not evaluated')
+								 WHERE TreatmentOutcome12months = 'Not evaluated')
 
 		UPDATE dbo.OutcomeSummary SET
 			Unknown12Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome12Months = 'Unknown'
-								 OR TreatmentOutcome12Months = 'Patient did not have TB')
+								 WHERE TreatmentOutcome12months = 'Unknown'
+								 OR TreatmentOutcome12months = 'Patient did not have TB')
 
 		-- Populate 24 MONTH treatment outcome
 		UPDATE dbo.OutcomeSummary SET
 			TreatmentCompleted24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Completed')
+								 WHERE TreatmentOutcome24months = 'Completed')
 
 		UPDATE dbo.OutcomeSummary SET
 			Died24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Died')
+								 WHERE TreatmentOutcome24months = 'Died')
 
 		UPDATE dbo.OutcomeSummary SET
 			LostToFollowUp24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Lost to follow-up')
+								 WHERE TreatmentOutcome24months = 'Lost to follow-up')
 
 		UPDATE dbo.OutcomeSummary SET
 			StillOnTreatment24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Still on treatment')
+								 WHERE TreatmentOutcome24months = 'Still on treatment')
 
 		UPDATE dbo.OutcomeSummary SET
 			TreatmentStopped24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Treatment stopped')
+								 WHERE TreatmentOutcome24months = 'Treatment stopped')
 
 		UPDATE dbo.OutcomeSummary SET
 			NotEvaluated24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Not evaluated')
+								 WHERE TreatmentOutcome24months = 'Not evaluated')
 
 		UPDATE dbo.OutcomeSummary SET
 			Unknown24Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome24Months = 'Unknown'
-								 OR TreatmentOutcome24Months = 'Patient did not have TB')
+								 WHERE TreatmentOutcome24months = 'Unknown'
+								 OR TreatmentOutcome24months = 'Patient did not have TB')
 
 		-- Populate 36 MONTH treatment outcome
 		UPDATE dbo.OutcomeSummary SET
 			TreatmentCompleted36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Completed')
+								 WHERE TreatmentOutcome36months = 'Completed')
 
 		UPDATE dbo.OutcomeSummary SET
 			Died36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Died')
+								 WHERE TreatmentOutcome36months = 'Died')
 
 		UPDATE dbo.OutcomeSummary SET
 			LostToFollowUp36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Lost to follow-up')
+								 WHERE TreatmentOutcome36months = 'Lost to follow-up')
 
 		UPDATE dbo.OutcomeSummary SET
 			StillOnTreatment36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Still on treatment')
+								 WHERE TreatmentOutcome36months = 'Still on treatment')
 
 		UPDATE dbo.OutcomeSummary SET
 			TreatmentStopped36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Treatment stopped')
+								 WHERE TreatmentOutcome36months = 'Treatment stopped')
 
 		UPDATE dbo.OutcomeSummary SET
 			NotEvaluated36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Not evaluated')
+								 WHERE TreatmentOutcome36months = 'Not evaluated')
 
 		UPDATE dbo.OutcomeSummary SET
 			Unknown36Month = 1
 		WHERE NotificationId IN (SELECT NotificationId
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
-								 WHERE TreatmentOutcome36Months = 'Unknown'
-								 OR TreatmentOutcome36Months = 'Patient did not have TB')
+								 WHERE TreatmentOutcome36months = 'Unknown'
+								 OR TreatmentOutcome36months = 'Patient did not have TB')
 	END TRY
 	BEGIN CATCH
 		THROW

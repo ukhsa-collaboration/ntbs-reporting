@@ -25,10 +25,10 @@ insert into #Service (phecid, SortOrder,PHEC_Code, PhecName,TB_Service_Code,TB_S
 
 
  SELECT distinct phecid, SortOrder,PHEC_Code, PhecName,s.TB_Service_Code,s.TB_Service_Name
-  FROM [NTBS_R1_Reporting_Staging].[dbo].[Phec] p inner join 
+  FROM [dbo].[Phec] p inner join 
 
-  NTBS_R1_Geography_Staging..TB_Service_to_PHEC l on l.PHEC_Code = p.PhecCode
-  inner join NTBS_R1_Geography_Staging..TB_Service s on s.TB_Service_Code = l.TB_Service_Code
+  [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC l on l.PHEC_Code = p.PhecCode
+  inner join [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s on s.TB_Service_Code = l.TB_Service_Code
    order by SortOrder,TB_Service_Name
 
 

@@ -9,7 +9,7 @@
 			drop table #NotificationPostcodes
 		end
 
-		SELECT distinct ReusableNotificationId, postcode,REPLACE(postcode, ' ', '') as CleanedPostcode into #NotificationPostcodes
+		SELECT distinct ReusableNotificationId, Postcode, REPLACE(Postcode, ' ', '') as CleanedPostcode into #NotificationPostcodes
 		  FROM [ReusableNotification] 
   
 		  delete from #NotificationPostcodes 

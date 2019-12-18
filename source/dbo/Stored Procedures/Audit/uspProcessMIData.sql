@@ -11,7 +11,7 @@ AS
 		,CONCAT(DATEPART(year, els.TimeEnd), '-', DATEPART(ISO_WEEK, els.TimeEnd)) As WeekNum
 		,els.ReportID
 		,getDate() as DateRetrieved 
-	FROM [ReportServer].[dbo].[ExecutionLogStorage] els
+	FROM [$(ReportServer)].[dbo].[ExecutionLogStorage] els
 	LEFT OUTER JOIN 
 		--get just one AD group per user - choosing the 'MIN' arbitrarily
 		(SELECT 

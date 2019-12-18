@@ -273,10 +273,10 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>Labbase2</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
-      <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\$(NTBS_R1_Geography_Staging).dacpac">
+      <HintPath>..\data\DACPAC\$(NTBS_R1_Geography_Staging).dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
+      <DatabaseSqlCmdVariable>$(NTBS_R1_Geography_Staging)</DatabaseSqlCmdVariable>
     </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\NTBS_Specimen_Matching.dacpac">
       <HintPath>..\data\DACPAC\NTBS_Specimen_Matching.dacpac</HintPath>
@@ -293,10 +293,10 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>msdb</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\ReportServer.dacpac">
-      <HintPath>..\data\DACPAC\ReportServer.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\$(ReportServer).dacpac">
+      <HintPath>..\data\DACPAC\$(ReportServer).dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>ReportServer</DatabaseSqlCmdVariable>
+      <DatabaseSqlCmdVariable>$(ReportServer)</DatabaseSqlCmdVariable>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
@@ -324,16 +324,16 @@
       <DefaultValue>msdb</DefaultValue>
       <Value>$(SqlCmdVar__13)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>
+    <SqlCmdVariable Include="$(NTBS_R1_Geography_Staging)">
+      <DefaultValue>$(NTBS_R1_Geography_Staging)</DefaultValue>
       <Value>$(SqlCmdVar__10)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <DefaultValue>NTBS_Specimen_Matching</DefaultValue>
       <Value>$(SqlCmdVar__11)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="ReportServer">
-      <DefaultValue>ReportServer</DefaultValue>
+    <SqlCmdVariable Include="$(ReportServer)">
+      <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
   </ItemGroup>

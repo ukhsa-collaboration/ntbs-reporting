@@ -21,5 +21,5 @@ GO
 CREATE NONCLUSTERED INDEX IX_Organism_OrganismId ON dbo.Organism(OrganismId)
 GO
 
-ALTER TABLE [dbo].[OrganismNameMapping]  WITH CHECK ADD CONSTRAINT [FK_OrganismNameMapping_Organism] FOREIGN KEY([OrganismID]) REFERENCES [dbo].[Organism] ([OrganismID]) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE [dbo].[OrganismNameMapping]  WITH CHECK ADD CONSTRAINT [FK_OrganismNameMapping_Organism] FOREIGN KEY([OrganismID]) REFERENCES [dbo].[Organism] ([OrganismId]) ON UPDATE CASCADE ON DELETE CASCADE;
 GO

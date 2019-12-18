@@ -5,7 +5,7 @@ AS
 
 	INSERT INTO [dbo].ReportLookup (ItemId, ReportName)
 		
-		SELECT C.ItemID, C.[Name] FROM [ReportServer].[dbo].[Catalog] C 
+		SELECT C.ItemID, C.[Name] FROM [$(ReportServer)].[dbo].[Catalog] C 
 		WHERE C.[Type] = 2
 
 	UPDATE [dbo].ReportLookup SET ReportGroup = 'Audit' WHERE ReportName like '%Audit%'

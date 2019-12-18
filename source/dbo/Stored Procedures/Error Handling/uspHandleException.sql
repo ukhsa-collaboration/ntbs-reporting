@@ -22,7 +22,7 @@ CREATE PROCEDURE [dbo].[uspHandleException] AS
 							'Username: ' + SUSER_SNAME()
 
 			-- Log error for investigation
-			EXEC master..xp_logevent 60000, @ErrorMsg
+			EXEC master.dbo.xp_logevent 60000, @ErrorMsg
 
 			-- Generic error message for the end-user
 			SELECT 'An error has occurred, which has been logged. Please contact the DB administrator for further investigation.' AS 'ErrorMessage'
