@@ -293,6 +293,11 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>msdb</DatabaseSqlCmdVariable>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\ReportServer.dacpac">
+      <HintPath>..\data\DACPAC\ReportServer.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>ReportServer</DatabaseSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
@@ -326,6 +331,10 @@
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <DefaultValue>NTBS_Specimen_Matching</DefaultValue>
       <Value>$(SqlCmdVar__11)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportServer">
+      <DefaultValue>ReportServer</DefaultValue>
+      <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
   </ItemGroup>
   <ItemGroup>
