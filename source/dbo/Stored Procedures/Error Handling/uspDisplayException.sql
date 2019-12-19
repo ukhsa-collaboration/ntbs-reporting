@@ -20,7 +20,7 @@ CREATE PROCEDURE [dbo].[uspDisplayException] AS
 												 'Username: ' + SUSER_SNAME()
 
 			-- Log error
-			EXEC master.dbo.xp_logevent 60000, @ErrorMsg
+			EXEC [$(master)].sys.xp_logevent 60000, @ErrorMsg
 
 			-- Display error
 			SELECT @ErrorMsg AS 'ErrorMessage'

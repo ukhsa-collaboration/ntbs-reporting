@@ -32,7 +32,7 @@ AS
 		BEGIN
 			SET @ReturnValue = (SELECT TOP 1 o.OrganismName
 								FROM Organism o
-									INNER JOIN OrganismNameMapping om ON om.OrganismID = o.OrganismId
+									INNER JOIN OrganismNameMapping om ON om.OrganismId = o.OrganismId
 									INNER JOIN [$(Labbase2)].dbo.Anonymised a ON RTRIM(a.OrganismName) = om.OrganismName
 									INNER JOIN [$(ETS)].dbo.LaboratoryResult l ON l.OpieId = a.OpieId
 								WHERE l.NotificationId = @NotificationId

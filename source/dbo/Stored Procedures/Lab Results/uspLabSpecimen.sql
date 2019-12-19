@@ -134,7 +134,7 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 			(SELECT		Q1.ReferenceLaboratoryNumber, 
 						om.OrganismId,
 						CASE
-							WHEN om.OrganismID is null THEN TRIM(a.OrganismName)
+							WHEN om.OrganismId is null THEN TRIM(a.OrganismName)
 							ELSE (o.OrganismName)
 						END AS 'OrganismName' 
 						FROM 

@@ -33,7 +33,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		-- When was ETS last loaded ?
 		SET @EtsLastRefreshed = (SELECT TOP 1
 									restore_date AS last_refresh_datetime
-								FROM msdb.dbo.restorehistory 
+								FROM [$(msdb)].dbo.restorehistory 
 								WHERE destination_database_name = '$(ETS)'
 								ORDER BY last_refresh_datetime DESC)
 

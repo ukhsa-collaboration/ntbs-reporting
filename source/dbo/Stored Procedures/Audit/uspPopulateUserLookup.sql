@@ -21,7 +21,7 @@ AS
 		INSERT INTO [dbo].UserLookup
 		( [ACCOUNTNAME], [TYPE],[PRIVILEGE], [MAPPEDLOGINNAME],[PERMISSIONPATH] )
 	
-		EXEC XP_LOGININFO @AdGroupName, 'members'
+		EXEC [$(master)].sys.XP_LOGININFO @AdGroupName, 'members'
 		SET @Iteration += 1  
 	END;    
 

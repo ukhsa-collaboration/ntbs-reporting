@@ -19,7 +19,7 @@ AS
 				REPLACE(MIN([PERMISSIONPATH]),'PHE\','') AS AdGroup
 			FROM [dbo].[UserLookup]
 			GROUP BY ACCOUNTNAME) AS Q1
-	ON els.Username COLLATE DATABASE_DEFAULT = Q1.AccountName
+	ON els.UserName COLLATE DATABASE_DEFAULT = Q1.AccountName
 	WHERE els.TimeEnd > (
 	-- the first time this is run, there won't be an existing records in MIReportData, so this CASE
 	-- clause allows for an arbitary date to be added which will select all records

@@ -17,7 +17,7 @@ AS
 						'Username: ' + SUSER_SNAME()
 
 		--DECLARE @LogStatus AS TINYINT = 0
-		EXEC master.dbo.xp_logevent 60000, @LogText
+		EXEC [$(master)].sys.xp_logevent 60000, @LogText
 
 		RETURN 0
 	END

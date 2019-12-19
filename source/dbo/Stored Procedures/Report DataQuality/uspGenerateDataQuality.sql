@@ -19,25 +19,25 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE TreatmentEndDate is null and LastRecordedTreatmentOutcome = 'Completed'
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome12Months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome12months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 365
-								  and  TreatmentOutcome12Months in ('Error: Invalid value','Unknown','Not evaluated','')
+								  and  TreatmentOutcome12months in ('Error: Invalid value','Unknown','Not evaluated','')
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome24Months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome24months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 730 
-								 and  TreatmentOutcome12Months = 'Still on treatment'
-										and TreatmentOutcome24Months in ('Error: Invalid value','Unknown','Not evaluated','')			
+								 and  TreatmentOutcome12months = 'Still on treatment'
+										and TreatmentOutcome24months in ('Error: Invalid value','Unknown','Not evaluated','')			
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome36Months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome36months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 1095 
-								 and  TreatmentOutcome24Months = 'Still on treatment'
-								 and TreatmentOutcome36Months in ('Error: Invalid value','Unknown','Not evaluated','') 	
+								 and  TreatmentOutcome24months = 'Still on treatment'
+								 and TreatmentOutcome36months in ('Error: Invalid value','Unknown','Not evaluated','') 	
 
 		INSERT INTO dbo.DataQuality (NotificationId,DateOfDeath)
 		SELECT NotificationId,1
