@@ -1,6 +1,11 @@
 ﻿CREATE PROCEDURE [dbo].[uspProcessMIData]
 	
 AS
+
+	EXEC [dbo].uspSeedReportLookup
+
+	EXEC [dbo].uspPopulateUserLookup
+
 	INSERT INTO [dbo].MIReportData
 
 	--fetch new records from the ReportServer database
