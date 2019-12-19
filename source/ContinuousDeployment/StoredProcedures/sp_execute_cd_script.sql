@@ -37,7 +37,7 @@ AS
 				PRINT 'Executing ' + CONVERT(varchar(max), @sqlHash, 1) + 
 					': ' + LEFT(@sql, 15) + '...';
 
-				EXECUTE msdb.sys.sp_executesql @sql;
+				EXECUTE [$(msdb)].sys.sp_executesql @sql;
 			
 				UPDATE [dbo].[__MigrationLog]
 				SET [EndTime] = SYSUTCDATETIME(),

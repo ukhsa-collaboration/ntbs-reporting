@@ -97,7 +97,7 @@ AS
 				AND (((@LocalAuthority IS NULL OR @Region IS NULL) OR @LocalAuthority <> 'All') OR n.ResidencePhec = @Region)
 				AND ((@Service IS NULL OR @Service = 'All') OR 
 					n.[Service] in (select value from STRING_SPLIT(@Service, ',')) or
-					(@Service = 'Blank' and service is null and n.ResidencePhec = @region and n.treatmentphec is null))
+					(@Service = 'Blank' and service is null and n.ResidencePhec = @region and n.TreatmentPhec is null))
 				AND ((@LocalAuthority IS NULL OR @LocalAuthority = 'All') OR n.LocalAuthority = @LocalAuthority)
 					AND (@SOD IS NULL OR n.SiteOfDisease = @SOD)
 					-- Buckets			

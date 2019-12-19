@@ -25,7 +25,7 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 								 WHERE datediff(day, NotificationDate, getdate()) > 365
 								  and  TreatmentOutcome12months in ('Error: Invalid value','Unknown','Not evaluated','')
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome24months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome24Months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 730 

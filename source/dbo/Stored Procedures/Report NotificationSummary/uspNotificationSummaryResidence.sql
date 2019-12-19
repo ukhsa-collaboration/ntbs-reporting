@@ -42,7 +42,7 @@ AS
 				FORMAT(n.NotificationDate, 'yyyy-MM')		AS 'Notification period sortable',
 				FORMAT(n.NotificationDate, 'MMM yyyy')		AS 'Notification period',
 				n.LocalAuthority							AS 'Local Authority',
-				COUNT(n.notificationId)						AS 'Notification count'
+				COUNT(n.NotificationId)						AS 'Notification count'
 			FROM dbo.ReusableNotification n WITH (NOLOCK)
 			WHERE 
 					n.ResidencePhec = @Region
@@ -59,7 +59,7 @@ AS
 				FORMAT(n.NotificationDate, 'yyyy')			AS 'Notification period sortable',
 				FORMAT(n.NotificationDate, 'yyyy')			AS 'Notification period',
 				n.LocalAuthority							AS 'Local Authority',
-				COUNT(n.notificationId)						AS 'Notification count'
+				COUNT(n.NotificationId)						AS 'Notification count'
 			FROM dbo.ReusableNotification n WITH (NOLOCK)
 			WHERE 
 					n.ResidencePhec = @Region

@@ -37,7 +37,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 				p.Forename                                                  AS Forename,
 				p.Surname                                                   AS Surname,
 				CONVERT(DATE, p.DateOfBirth)                                AS DateOfBirth,
-				dbo.ufnGetAgefrom(p.dateofbirth,n.notificationdate)			As Age,
+				dbo.ufnGetAgefrom(p.dateofbirth,n.NotificationDate)			As Age,
 				dbo.ufnSex(p.Sex)                                           AS Sex,
 				dbo.ufnYesNoUnknown(p.UkBorn)                               AS UkBorn,
 				eg.Name                                                     AS EthnicGroup,

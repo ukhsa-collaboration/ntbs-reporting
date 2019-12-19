@@ -101,7 +101,7 @@ AS
 			dbo.ufnFormatDateConsistently(n.DateOfBirth)           AS 'Date of birth',
 			n.Age                                                  AS 'Age',
 			n.Sex                                                  AS 'Sex',
-			n.Ukborn                                               AS 'UK born',
+			n.UkBorn                                               AS 'UK born',
 			n.EthnicGroup                                          AS 'Ethnic group',
 			n.BirthCountry                                         AS 'Birth country',
 			n.UkEntryYear                                          AS 'UK entry year',
