@@ -29,7 +29,7 @@ CREATE PROCEDURE [dbo].[uspGetAuthenticatedLoginGroups] (
 
 		-- Get all paths for a user to authenticate into this sql server instance
 		INSERT INTO @LoginInfo
-			EXEC master.sys.xp_logininfo
+			EXEC [$(master)].sys.xp_logininfo
 					@acctname = @LoggedInUser,
 					@option = 'all'
 

@@ -273,12 +273,6 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>Labbase2</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\.dacpac">
-      <HintPath>..\data\DACPAC\.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>
-      </DatabaseSqlCmdVariable>
-    </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\NTBS_Specimen_Matching.dacpac">
       <HintPath>..\data\DACPAC\NTBS_Specimen_Matching.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
@@ -293,12 +287,6 @@
       <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>msdb</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\.dacpac">
-      <HintPath>..\data\DACPAC\.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>
-      </DatabaseSqlCmdVariable>
     </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\ReportServer.dacpac">
       <HintPath>..\data\DACPAC\ReportServer.dacpac</HintPath>
