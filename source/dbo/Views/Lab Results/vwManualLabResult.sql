@@ -2,12 +2,14 @@
 	AS 
 	
 	/*this fetches the highest ranked (i.e. Positive outranks Negative) result for each type of manual lab result
-	for each notification in the reusable notification table
-	(currently within a date range for performance during development)*/
+	for each notification in the reusable notification table)*/
+
+	/*First get non-microscopy, we have to do something a bit different for them*/
 
 	--OUTER QUERY converts the minrank back to a result
 	SELECT Q1.LegacyID, 
 		Q1.[Name],
+		NULL AS 'Sputum'
 		--rn.ResidencePhec,
 		--rn.TreatmentPhec, 
 		(CASE Q1.ResultRank
@@ -19,7 +21,6 @@
 		END) AS 'Result' FROM
 		--INNER QUERY SELECTS THE HIGHEST RANKED RESULT FOR EACH COMBINATION OF NOTIFICATION ID AND TEST
 		(SELECT DISTINCT n.LegacyId
-			  --,lr.Id
 			  ,lc.[Name]
 				,MIN((CASE lr.Result
 					WHEN 0 THEN 2
@@ -28,14 +29,12 @@
 					WHEN 3 THEN 4
 					ELSE NULL
 				END)) AS 'ResultRank'
-				--,lr.StatusSet AS [TestDate]
-			  --,[Result]
-			  --,[StatusSet]
+				
 		  FROM [$(ETS)].[dbo].[LaboratoryResult] lr
 			INNER JOIN [$(ETS)].[dbo].[Notification] n on n.Id = lr.NotificationId
-			LEFT OUTER JOIN [$(ETS)].[dbo].[LaboratoryCategory] lc on lc.Id = lr.LaboratoryCategoryId
-			LEFT OUTER JOIN [$(ETS)].[dbo].[SpecimenType] st on st.Id = lr.SpecimenTypeId
+			INNER JOIN [$(ETS)].[dbo].[LaboratoryCategory] lc on lc.Id = lr.LaboratoryCategoryId
+			INNER JOIN [$(ETS)].[dbo].[SpecimenType] st on st.Id = lr.SpecimenTypeId
 		WHERE OpieId is NULL
-		
+		AND lc.LegacyId != 1
 		GROUP BY n.LegacyId, lc.[Name]) AS Q1
 			INNER JOIN [dbo].ReusableNotification rn ON rn.EtsId = Q1.LegacyId

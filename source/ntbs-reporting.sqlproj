@@ -266,11 +266,6 @@
     <None Include="Scripts\RefreshReporting.sql" />
   </ItemGroup>
   <ItemGroup>
-    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
-      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
-    </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\Labbase2.dacpac">
       <HintPath>..\data\DACPAC\Labbase2.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
@@ -301,11 +296,16 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
+      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
       <DefaultValue>ETS</DefaultValue>
-      <Value>$(SqlCmdVar__8)</Value>
+      <Value>$(SqlCmdVar__16)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ETSLabbase">
       <DefaultValue>ETSLabbase</DefaultValue>
