@@ -19,7 +19,7 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE TreatmentEndDate is null and LastRecordedTreatmentOutcome = 'Completed'
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome12months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome12Months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 365
@@ -32,7 +32,7 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 								 and  TreatmentOutcome12months = 'Still on treatment'
 										and TreatmentOutcome24months in ('Error: Invalid value','Unknown','Not evaluated','')			
 
-		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome36months)
+		INSERT INTO dbo.DataQuality (NotificationId,TreatmentOutcome36Months)
 		SELECT NotificationId,1
 								 FROM dbo.ReusableNotification WITH (NOLOCK)
 								 WHERE datediff(day, NotificationDate, getdate()) > 1095 

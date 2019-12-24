@@ -83,7 +83,7 @@ AS
 					AND ((@Service IS NULL OR @Service = 'All') OR 
 						n.[Service] in (select value from STRING_SPLIT(@Service, ',')) or
 					--n.[Service] = @Service or 
-								(@Service = 'Blank' and [service] is null and n.ResidencePhec = @region and n.treatmentphec is null))
+								(@Service = 'Blank' and [Service] is null and n.ResidencePhec = @region and n.TreatmentPhec is null))
 					AND ((@LocalAuthority IS NULL OR @LocalAuthority = 'All') OR n.LocalAuthority = @LocalAuthority)
 
 

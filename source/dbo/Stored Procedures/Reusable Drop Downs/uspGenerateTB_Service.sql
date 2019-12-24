@@ -38,7 +38,7 @@ SET IDENTITY_INSERT [dbo].[TB_Service] ON
 insert into dbo.TB_Service ([Serviceid]
       ,[TB_Service_Code]
       ,[TB_Service_Name]
-      ,[PhecId]
+      ,[phecid]
       ,[SortOrder]
       ,[PHEC_Code]
       ,[PhecName]) select [Serviceid]
