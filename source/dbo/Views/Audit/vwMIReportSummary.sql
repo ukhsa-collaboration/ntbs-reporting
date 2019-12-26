@@ -11,7 +11,7 @@
 		(SELECT DISTINCT
 			  [WeekNumber]
       
-		  FROM [NTBS_Reporting_Staging].[dbo].[MIReportData]
+		  FROM [dbo].[MIReportData]
 		  ) as Q1
 		ORDER BY [WeekNumber] DESC),
 
