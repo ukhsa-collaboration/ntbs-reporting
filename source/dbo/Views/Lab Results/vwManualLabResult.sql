@@ -4,14 +4,11 @@
 	/*this fetches the highest ranked (i.e. Positive outranks Negative) result for each type of manual lab result
 	for each notification in the reusable notification table)*/
 
-	/*First get non-microscopy, we have to do something a bit different for them*/
+	
 
 	--OUTER QUERY converts the minrank back to a result
 	SELECT Q1.LegacyID, 
 		Q1.[Name],
-		NULL AS 'Sputum'
-		--rn.ResidencePhec,
-		--rn.TreatmentPhec, 
 		(CASE Q1.ResultRank
 			WHEN 1 THEN 'Positive'
 			WHEN 2 THEN 'Negative'
@@ -35,6 +32,5 @@
 			INNER JOIN [$(ETS)].[dbo].[LaboratoryCategory] lc on lc.Id = lr.LaboratoryCategoryId
 			INNER JOIN [$(ETS)].[dbo].[SpecimenType] st on st.Id = lr.SpecimenTypeId
 		WHERE OpieId is NULL
-		AND lc.LegacyId != 1
 		GROUP BY n.LegacyId, lc.[Name]) AS Q1
 			INNER JOIN [dbo].ReusableNotification rn ON rn.EtsId = Q1.LegacyId
