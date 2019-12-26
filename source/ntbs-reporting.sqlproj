@@ -242,9 +242,12 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticMapping.sql" />
     <Build Include="dbo\Tables\Lab Results\ResultMapping.sql" />
-    <Build Include="dbo\Views\Lab Results\vwManualLabResult.sql" />
     <Build Include="dbo\Tables\Lab Results\ManualLabResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResult.sql" />
+    <Build Include="dbo\Tables\Lab Results\ManualLabResultAll.sql" />
+    <Build Include="dbo\Tables\Lab Results\ManualLabResultMicroscopy.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultAll.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultMicroscopy.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

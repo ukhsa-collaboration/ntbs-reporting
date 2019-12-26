@@ -8,6 +8,12 @@
 	--Microscopy Result
 	[Microscopy] [nvarchar](9) NULL,
 
+	--Microscopy Result for Sputum
+	[MicroscopySputum] [nvarchar](9) NULL,
+
+	--Microscopy Result for non-Sputum Samples
+	[MicroscopyNonSputum] [nvarchar](9) NULL,
+
 	--Histology
 	[Histology] [nvarchar](9) NULL,
 
