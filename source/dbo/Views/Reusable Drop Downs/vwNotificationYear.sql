@@ -10,7 +10,7 @@ Desc:    This SQL query goes 3 calendar years back, eg when in 2019 the followin
 **************************************************************************************************/
 
 CREATE VIEW [dbo].[vwNotificationYear] AS
-	SELECT TOP 4 
+	SELECT TOP 5 
 		Id,
 		NotificationYear
 	FROM (
@@ -29,5 +29,9 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 			SELECT
 				-3 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -3, 0)) AS NotificationYear
+			UNION
+			SELECT
+				-4 AS Id,
+				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -4, 0)) AS NotificationYear
 		) NotificationYear
 	ORDER BY NotificationYear DESC
