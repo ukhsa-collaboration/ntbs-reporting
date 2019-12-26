@@ -104,6 +104,7 @@
     <Folder Include="dbo\Stored Procedures\Reusable Footer" />
     <Folder Include="dbo\Stored Procedures\Reusable Notification" />
     <Folder Include="dbo\Functions\Report OutcomeSummary" />
+    <Folder Include="dbo\Views\Audit" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -248,6 +249,7 @@
     <Build Include="dbo\Tables\Lab Results\ManualLabResultMicroscopy.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultAll.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultMicroscopy.sql" />
+    <Build Include="dbo\Views\Audit\vwMIReportSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
