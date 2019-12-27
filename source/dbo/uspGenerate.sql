@@ -15,6 +15,9 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		-- Re-seed drop-downs (in case data has changed)
 		EXEC dbo.uspSeed
 
+		-- Populate Reference Lab Result data
+		EXEC dbo.uspLabSpecimen
+
 		-- Populate reusable notification table
 		EXEC dbo.uspGenerateReusableNotification
 
