@@ -1,4 +1,4 @@
-CREATE PROCEDURE [dbo].[uspResultMapping] AS
+﻿CREATE PROCEDURE [dbo].[uspResultMapping] AS
 
 
 	SET NOCOUNT ON
