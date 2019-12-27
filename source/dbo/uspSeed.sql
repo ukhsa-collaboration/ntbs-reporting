@@ -194,6 +194,10 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT dbo.MonthYear (MonthYearId, MonthYear) VALUES ('MONTH', 'Month')
 		INSERT dbo.MonthYear (MonthYearId, MonthYear) VALUES ('YEAR', 'Year')
 
+		EXEC dbo.uspSampleMapping
+
+		EXEC dbo.uspResultMapping
+
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
 		;WITH x AS 
