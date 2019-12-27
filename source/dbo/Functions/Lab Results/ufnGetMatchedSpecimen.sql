@@ -2,47 +2,36 @@
 (
 	@NTBSId int
 )
---to be changed to return a table?
-RETURNS int
+
+RETURNS TABLE
 AS
-BEGIN
 
-declare @param1 int = null
-declare @param2 int = null
---first go to the matching table to get all records corresponding to the passed-in NTBS ID
-
-
-
--- then many of the required fields can be returned from the table [reporting].[dbo].LabSpecimen
--- the rest need to come from a companion table or an extension to the LabSpecimen table at least which includes the fields
--- for the drug resistance fields
-
-/*returns
-LaboratoryReferenceNumber
-SpecimenDate
-SpecimenType
-Species
-Status Positive @Tehreem Mohiyuddin I don’t know what this is - I guess if the specimen is positive but no other info is available, this is what will be shown?
-Isoniazid
-Rifampicin
-Ethambutol
-Pyrazinamide
-MDR
-Aminoglycocide
-Quinolone
-XDR
-Patient NHS number
-Patient Name
-Patient date of birth
-Patient sex
-Patient address
-Patient postcode*/
-
- 
-
-
-
-
-
-	RETURN @param1 + @param2
-END
+RETURN
+SELECT rn.EtsId
+      ,ls.ReferenceLaboratoryNumber
+	  ,ls.SpecimenDate
+	  ,ls.SpecimenTypeCode
+	  ,ls.LaboratoryName
+	  ,ls.ReferenceLaboratory
+	  ,ls.Species
+	  ,ls.ISO AS 'Isoniazid'
+	  ,ls.RIF AS 'Rifampicin'
+	  ,ls.PYR AS 'Pyrazinamide'
+	  ,ls.ETHAM AS 'Ethambutol'
+	  ,ls.AMINO AS 'Aminoglycoside'
+	  ,ls.QUIN AS 'Quinolone'
+	  ,ls.MDR
+	  ,ls.XDR
+	  ,ls.PatientNhsNumber
+	  ,ls.PatientBirthDate
+	  ,ls.PatientName
+	  ,ls.PatientSex
+	  ,ls.PatientAddress
+	  ,ls.PatientPostcode
+      
+  FROM dbo.ReusableNotification --placeholder for NTBS Notification Table
+	rn 
+  LEFT OUTER JOIN [$(NTBS_Specimen_Matching)].[dbo].NotificationSpecimenMatch nms ON nms.NotificationID = rn.EtsId
+	AND nms.MatchType = 'Confirmed'
+  LEFT OUTER JOIN [dbo].[LabSpecimen] ls ON ls.ReferenceLaboratoryNumber = nms.ReferenceLaboratoryNumber
+  WHERE rn.EtsId = @NTBSId
