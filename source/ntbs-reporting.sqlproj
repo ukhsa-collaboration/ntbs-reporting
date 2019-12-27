@@ -255,6 +255,7 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspResultMapping.sql" />
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSecondLineSensitivityResult.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
