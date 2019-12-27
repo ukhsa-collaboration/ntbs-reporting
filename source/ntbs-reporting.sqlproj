@@ -252,6 +252,7 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultMicroscopy.sql" />
     <Build Include="dbo\Views\Audit\vwMIReportSummary.sql" />
     <Build Include="dbo\Stored Procedures\Report Lab Results\uspManualLabResultLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspResultMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
