@@ -151,9 +151,26 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 
 		/*END OF SPECIES*/
 	
+		/*START OF SENSITIVITY RESULT*/
 
-	--TODO: THEN CALL uspLabSpecimenSensitivityResult for each antibiotic
-	--TODO: THEN CALL uspSpecimenMDRXDR
+		--First line done individually
+		EXEC uspLabSpecimenSensitivityResult 'ISO'
+		EXEC uspLabSpecimenSensitivityResult 'ETHAM'
+		EXEC uspLabSpecimenSensitivityResult 'PYR'
+		EXEC uspLabSpecimenSensitivityResult 'RIF'
+
+		--Second line summarised by group
+		EXEC uspLabSpecimenSecondLineSensitivityResult 'AMINO'
+
+		EXEC uspLabSpecimenSecondLineSensitivityResult 'QUIN'
+		/*END OF SENSITIVITY RESULT*/
+		
+
+		/*START OF MDR/XDR RESULT*/
+		EXEC uspSpecimenMDRXDR
+		/*END OF SENSITIVITY RESULT*/
+	
+	
 	END TRY
 	BEGIN CATCH
 		THROW

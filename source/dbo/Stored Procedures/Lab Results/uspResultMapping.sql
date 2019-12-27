@@ -15,7 +15,7 @@
 		INSERT INTO ResultMapping VALUES ('U', 'Unknown', 4)
 		INSERT INTO ResultMapping VALUES ('Unknown', 'Unknown', 4)
 		INSERT INTO ResultMapping VALUES ('Awaiting', 'Awaiting', 5)
-		INSERT INTO ResultMapping VALUES ('No Result', 'No Result', 6)
+		INSERT INTO ResultMapping VALUES ('No Result', 'No result', 6)
 		INSERT INTO ResultMapping VALUES ('New', 'New', 7)
 
 
