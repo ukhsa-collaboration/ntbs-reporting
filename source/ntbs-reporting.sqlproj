@@ -37,7 +37,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
     <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DebugSymbols>true</DebugSymbols>
@@ -53,6 +52,18 @@
     <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'int-azure|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
@@ -132,7 +143,6 @@
     <Build Include="dbo\Tables\Lab Results\CreateMatchingTable.sql" />
     <Build Include="dbo\Tables\Lab Results\CreateSampleMapping.sql" />
     <Build Include="dbo\Tables\Lab Results\CreateSpecimenTable.sql" />
-    <Build Include="dbo\Tables\Lab Results\CreateTemporarySpecimenTable.sql" />
     <Build Include="dbo\Tables\Lab Results\CreateUnmatchedSpecimenTable.sql" />
     <Build Include="dbo\Tables\Reusable Footer\FooterText.sql" />
     <Build Include="dbo\Tables\Reusable Footer\TemplateText.sql" />
@@ -256,6 +266,11 @@
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSecondLineSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
+    <Build Include="dbo\Tables\Lab Results\CultureAndResistanceSummary.sql" />
+    <Build Include="dbo\Views\Lab Results\vwConfirmedMatch.sql" />
+    <Build Include="dbo\Views\Lab Results\vwResultMapping.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationSensitivityResult.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationMDRXDR.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
