@@ -11,9 +11,8 @@ AS
 		DELETE FROM [dbo].CultureAndResistanceSummary
 
 		--create one row for each notification
-		--TODO: should be in NTBS Notification table, using reusablenotification table as a proxy
 		INSERT INTO [dbo].CultureAndResistanceSummary (NotificationId)
-			SELECT DISTINCT EtsId FROM dbo.ReusableNotification
+			SELECT DISTINCT NotificationId FROM [$(NTBS)].dbo.[Notification]
 
 		
 		/*CALCULATE CULTURE POSITIVE FIELD. This is determined by presence of at least one matched lab specimen for the notification*/

@@ -328,6 +328,11 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\NTBS.dacpac">
+      <HintPath>..\data\DACPAC\NTBS.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS</DatabaseSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
@@ -357,6 +362,10 @@
     <SqlCmdVariable Include="$(NTBS_R1_Geography_Staging)">
       <DefaultValue>$(NTBS_R1_Geography_Staging)</DefaultValue>
       <Value>$(SqlCmdVar__10)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS">
+      <DefaultValue>NTBS</DefaultValue>
+      <Value>$(SqlCmdVar__17)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>

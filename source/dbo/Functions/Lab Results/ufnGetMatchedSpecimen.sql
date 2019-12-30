@@ -7,31 +7,27 @@ RETURNS TABLE
 AS
 
 RETURN
-SELECT rn.EtsId
-      ,ls.ReferenceLaboratoryNumber
-	  ,ls.SpecimenDate
-	  ,ls.SpecimenTypeCode
-	  ,ls.LaboratoryName
-	  ,ls.ReferenceLaboratory
-	  ,ls.Species
-	  ,ls.INH AS 'Isoniazid'
-	  ,ls.RIF AS 'Rifampicin'
-	  ,ls.PYR AS 'Pyrazinamide'
-	  ,ls.ETHAM AS 'Ethambutol'
-	  ,ls.AMINO AS 'Aminoglycocide'
-	  ,ls.QUIN AS 'Quinolone'
-	  ,ls.MDR
-	  ,ls.XDR
-	  ,ls.PatientNhsNumber
-	  ,ls.PatientBirthDate
-	  ,ls.PatientName
-	  ,ls.PatientSex
-	  ,ls.PatientAddress
-	  ,ls.PatientPostcode
+SELECT vcm.NotificationId
+      ,vcm.ReferenceLaboratoryNumber
+	  ,vcm.SpecimenDate
+	  ,vcm.SpecimenTypeCode
+	  ,vcm.LaboratoryName
+	  ,vcm.ReferenceLaboratory
+	  ,vcm.Species
+	  ,vcm.INH AS 'Isoniazid'
+	  ,vcm.RIF AS 'Rifampicin'
+	  ,vcm.PYR AS 'Pyrazinamide'
+	  ,vcm.ETHAM AS 'Ethambutol'
+	  ,vcm.AMINO AS 'Aminoglycocide'
+	  ,vcm.QUIN AS 'Quinolone'
+	  ,vcm.MDR
+	  ,vcm.XDR
+	  ,vcm.PatientNhsNumber
+	  ,vcm.PatientBirthDate
+	  ,vcm.PatientName
+	  ,vcm.PatientSex
+	  ,vcm.PatientAddress
+	  ,vcm.PatientPostcode
       
-  FROM dbo.ReusableNotification --placeholder for NTBS Notification Table
-	rn 
-  LEFT OUTER JOIN [$(NTBS_Specimen_Matching)].[dbo].NotificationSpecimenMatch nms ON nms.NotificationID = rn.EtsId
-	AND nms.MatchType = 'Confirmed'
-  LEFT OUTER JOIN [dbo].[LabSpecimen] ls ON ls.ReferenceLaboratoryNumber = nms.ReferenceLaboratoryNumber
-  WHERE rn.EtsId = @NTBSId
+  FROM [dbo].[vwConfirmedMatch] vcm
+  WHERE vcm.NotificationId = @NTBSId

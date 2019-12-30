@@ -29,11 +29,7 @@ AS
 					--OR RIF = 'Failed' 
 				)
 
-		/*-- 4. An error has occurred
-		UPDATE dbo.ReusableNotification SET
-			MDR = 'Error: Invalid value'
-		WHERE MDR IS NULL*/
-
+	
 		--calculate XDR using same rules as R1
 
 		-- 1. Both QUIN and AMINO are set to 'Resistant'
@@ -62,8 +58,4 @@ AS
 					--OR RIF = 'Failed' 
 				)
 
-		/*-- 4. An error has occurred
-		UPDATE dbo.ReusableNotification SET
-			MDR = 'Error: Invalid value'
-		WHERE MDR IS NULL*/
 RETURN 0
