@@ -14,11 +14,11 @@ SELECT rn.EtsId
 	  ,ls.LaboratoryName
 	  ,ls.ReferenceLaboratory
 	  ,ls.Species
-	  ,ls.ISO AS 'Isoniazid'
+	  ,ls.INH AS 'Isoniazid'
 	  ,ls.RIF AS 'Rifampicin'
 	  ,ls.PYR AS 'Pyrazinamide'
 	  ,ls.ETHAM AS 'Ethambutol'
-	  ,ls.AMINO AS 'Aminoglycoside'
+	  ,ls.AMINO AS 'Aminoglycocide'
 	  ,ls.QUIN AS 'Quinolone'
 	  ,ls.MDR
 	  ,ls.XDR

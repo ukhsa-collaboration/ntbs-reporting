@@ -7,13 +7,13 @@ AS
 		UPDATE [dbo].CultureAndResistanceSummary SET
 			MDR = 'Yes'
 		WHERE MDR IS NULL
-			AND (ISO = 'Resistant' AND RIF = 'Resistant')
+			AND (INH = 'Resistant' AND RIF = 'Resistant')
 
 		-- 2. One of INH and RIF (or both) is 'Sensitive'
 		UPDATE [dbo].CultureAndResistanceSummary SET
 			MDR = 'No'
 		WHERE MDR IS NULL
-			AND (ISO = 'Sensitive' OR RIF = 'Sensitive')
+			AND (INH = 'Sensitive' OR RIF = 'Sensitive')
 
 		-- 3. One of INH and RIF (or both) is 'No result' or 'Unknown'
 		-- TODO: Handle other values (New, Awaiting, No result)
@@ -21,9 +21,9 @@ AS
 			MDR = 'No result'
 		WHERE MDR IS NULL
 			AND (
-					   ISO = 'No result' 
+					   INH = 'No result' 
 					OR RIF = 'No result' 
-					OR ISO = 'Unknown' 
+					OR INH = 'Unknown' 
 					OR RIF = 'Unknown'
 					--OR INH = 'Failed' 
 					--OR RIF = 'Failed' 

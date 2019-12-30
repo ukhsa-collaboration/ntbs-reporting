@@ -5,7 +5,7 @@
 	[Species] [varchar](50) NULL,
 	[DrugResistanceProfile] [nvarchar](30) NULL,
 	[EarliestSpecimenDate] [datetime] NULL,
-	[ISO][nvarchar](25) NULL,
+	[INH][nvarchar](25) NULL,
 	[RIF][nvarchar](25) NULL,
 	[PYR][nvarchar](25) NULL,
 	[ETHAM][nvarchar](25) NULL,

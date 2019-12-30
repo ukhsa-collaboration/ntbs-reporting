@@ -6,7 +6,7 @@
 	[LaboratoryName] [nvarchar](65) NULL,
 	[ReferenceLaboratory] [nvarchar](65) NULL,
 	[Species] [varchar](50) NULL,
-	[ISO][nvarchar](25) NULL,
+	[INH][nvarchar](25) NULL,
 	[RIF][nvarchar](25) NULL,
 	[PYR][nvarchar](25) NULL,
 	[ETHAM][nvarchar](25) NULL,

@@ -154,7 +154,7 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 		/*START OF SENSITIVITY RESULT*/
 
 		--First line done individually
-		EXEC uspLabSpecimenSensitivityResult 'ISO'
+		EXEC uspLabSpecimenSensitivityResult 'INH'
 		EXEC uspLabSpecimenSensitivityResult 'ETHAM'
 		EXEC uspLabSpecimenSensitivityResult 'PYR'
 		EXEC uspLabSpecimenSensitivityResult 'RIF'

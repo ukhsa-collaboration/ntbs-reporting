@@ -62,7 +62,7 @@ AS
 
 		/*CALCULATE EACH OF THE DRUG SENSITIVITY TEST RESULTS IN TURN*/
 
-		EXEC [dbo].uspNotificationSensitivityResult 'ISO'
+		EXEC [dbo].uspNotificationSensitivityResult 'INH'
 		EXEC [dbo].uspNotificationSensitivityResult 'RIF'
 		EXEC [dbo].uspNotificationSensitivityResult 'ETHAM'
 		EXEC [dbo].uspNotificationSensitivityResult 'PYR'
