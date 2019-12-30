@@ -194,6 +194,8 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT dbo.MonthYear (MonthYearId, MonthYear) VALUES ('MONTH', 'Month')
 		INSERT dbo.MonthYear (MonthYearId, MonthYear) VALUES ('YEAR', 'Year')
 
+		EXEC dbo.uspAntibioticMapping
+
 		EXEC dbo.uspSampleMapping
 
 		EXEC dbo.uspResultMapping

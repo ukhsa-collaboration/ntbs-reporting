@@ -7,7 +7,7 @@ RETURNS TABLE
 AS
 
 RETURN
-SELECT vcm.NotificationId
+SELECT vcm.NotificationID
       ,vcm.ReferenceLaboratoryNumber
 	  ,vcm.SpecimenDate
 	  ,vcm.SpecimenTypeCode
