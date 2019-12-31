@@ -132,20 +132,19 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 			-- second query attempts to look up the name of the species from the Organism table. If it can't find a mapping, it uses
 			-- the lab-supplied value
 			(SELECT		Q1.ReferenceLaboratoryNumber, 
-						om.OrganismId,
 						CASE
-							WHEN om.OrganismId is null THEN TRIM(a.OrganismName)
+							WHEN o.OrganismName is null THEN (SELECT TOP (1) [OrganismName] FROM [dbo].[vwSpecimen] WHERE ReferenceLaboratoryNumber = Q1.ReferenceLaboratoryNumber)
 							ELSE (o.OrganismName)
 						END AS 'OrganismName' 
 						FROM 
-						--innermost query selects the IdentityColumn value of the most recent anonymised record for our specimen
-								 (SELECT vs.ReferenceLaboratoryNumber, MAX(vs.[IdentityColumn]) 'MaxID' FROM vwSpecimen vs
+						--innermost query selects the highest ranked organism for the notification
+								 (SELECT vs.ReferenceLaboratoryNumber, MIN(om.OrganismId) AS 'MinRank' FROM vwSpecimen vs
 									INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
-								 GROUP BY vs.ReferenceLaboratoryNumber) AS Q1
-						INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON 
-						a.IdentityColumn = Q1.MaxID
-			LEFT OUTER JOIN [dbo].OrganismNameMapping om on a.OrganismName = om.OrganismName
-			LEFT OUTER JOIN [dbo].Organism o ON o.OrganismId = om.OrganismId) AS Q2
+									INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a on a.LabDataID = vs.LabDataID
+									INNER JOIN OrganismNameMapping om on om.OrganismName = a.OrganismName
+								 GROUP BY vs.ReferenceLaboratoryNumber
+								 ) AS Q1
+			LEFT OUTER JOIN [dbo].Organism o ON o.OrganismId = Q1.MinRank) AS Q2
 
 		WHERE [dbo].[LabSpecimen].ReferenceLaboratoryNumber = Q2.ReferenceLaboratoryNumber
 

@@ -365,7 +365,7 @@
       <Value>$(SqlCmdVar__10)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <DefaultValue>NTBS</DefaultValue>
+      <DefaultValue>test-ntbs</DefaultValue>
       <Value>$(SqlCmdVar__17)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
