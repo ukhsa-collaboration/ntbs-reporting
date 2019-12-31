@@ -118,6 +118,10 @@ AS
 		SET Amplification = 'No Result'
 		WHERE Amplification IS NULL
 
+		--finally clear out the look-up tables ManualLabResultAll and ManualLabResultMicroscopy
+		DELETE FROM [dbo].ManualLabResultAll
+		DELETE FROM [dbo].ManualLabResultMicroscopy
+
 	END TRY
 	BEGIN CATCH
 		THROW
