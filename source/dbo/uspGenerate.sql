@@ -18,6 +18,9 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		-- Populate Reference Lab Result data
 		EXEC dbo.uspLabSpecimen
 
+		-- Populate manual lab result tables
+		EXEC dbo.uspManualLabResult
+
 		-- Populate reusable notification table
 		EXEC dbo.uspGenerateReusableNotification
 
