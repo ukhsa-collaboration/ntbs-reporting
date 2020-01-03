@@ -272,6 +272,7 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationMDRXDR.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspAntibioticMapping.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetNotificationCultureAndResistanceSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
