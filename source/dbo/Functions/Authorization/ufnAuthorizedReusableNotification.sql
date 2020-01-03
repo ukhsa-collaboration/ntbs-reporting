@@ -156,7 +156,7 @@ RETURN
 		n.XDR
 	FROM dbo.ReusableNotification n WITH (NOLOCK)
 		INNER JOIN dbo.Phec p ON (p.PhecName = n.TreatmentPhec OR p.PhecName = n.ResidencePhec)
-		inner join TB_Service s on s.phecid = p.PhecId and s.TB_Service_Name = n.Service
+		Left Outer join TB_Service s on s.phecid = p.PhecId and s.TB_Service_Name = n.Service
 		--For Regional user
 		inner JOIN dbo.PhecAdGroup pa ON pa.PhecId = p.PhecId
 		inner JOIN dbo.AdGroup ag ON ag.AdGroupId = pa.AdGroupId 
