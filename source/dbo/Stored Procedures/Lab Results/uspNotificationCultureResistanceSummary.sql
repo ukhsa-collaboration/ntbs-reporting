@@ -77,6 +77,51 @@ AS
 	
 		/*CALCULATE DRUG RESISTANCE PROFILE AT THE END - DEPENDS ON THE OTHER VALUES*/
 
+		--1. Set RR/MDR/XDR
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'RR/MDR/XDR' 
+			WHERE
+				DrugResistanceProfile IS NULL
+				AND (MDR = 'Yes' OR RIF = 'Resistant')
+			
+
+		--2. Set INH resistant
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'INH resistant' 
+			WHERE
+				DrugResistanceProfile IS NULL
+				AND INH = 'Resistant'
+
+		--3. Set INH + RIF sensitive (ISO and RIF are both 'Sensitive' but one or both of ETHAM and PYR are 'Resistant')
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'INH+RIF sensitive' 
+			WHERE
+				DrugResistanceProfile IS NULL
+				AND
+				(INH = 'Sensitive' AND RIF = 'Sensitive') AND (ETHAM = 'Resistant' OR PYR = 'Resistant')
+			
+
+		--4. INH, RIF, EMB & PZA are all 'Sensitive'
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'Sensitive to first line'
+			WHERE DrugResistanceProfile IS NULL
+				AND (INH = 'Sensitive'
+				AND RIF = 'Sensitive'
+				AND ETHAM = 'Sensitive'
+				AND PYR = 'Sensitive')
+
+		-- 5. Notification does not have culture positive confirmation
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'No result'
+			WHERE DrugResistanceProfile IS NULL
+				AND CulturePositive != 'Yes'
+
+		--6. Finally set remaining records to No result
+		UPDATE [dbo].CultureAndResistanceSummary SET
+			DrugResistanceProfile = 'No result'
+			WHERE DrugResistanceProfile IS NULL
+
+
 	END TRY
 	BEGIN CATCH
 		THROW
