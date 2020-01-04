@@ -1,5 +1,4 @@
-﻿/*
-CREATE TABLE [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch]
+﻿CREATE TABLE [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch]
 (
 	-- This primary key
 	[MatchId] [int] IDENTITY(1,1) NOT NULL,
@@ -9,7 +8,7 @@ CREATE TABLE [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch]
 	[MatchType] [nvarchar](30) NOT NULL,
 	[CreateDateTime] [datetime] NULL,
 	[UpdateDateTime] [datetime] NULL,
-	[ConfidenceLevel] [decimal](3,2) NULL
+	[ConfidenceLevel] [decimal](5,2) NULL
 	
 	CONSTRAINT [PK_LabSpecimenId] PRIMARY KEY CLUSTERED (
 		[MatchId] ASC
