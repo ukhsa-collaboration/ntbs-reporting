@@ -18,7 +18,7 @@
 		--then a count of reports per week
 		 cteCount (ReportGroup, WeekNumber, NumberofReports) AS
 		 (select rl.ReportGroup, mr.WeekNumber, COUNT(ReportID) AS 'NumberofReports' from MIReportData mr, reportlookup rl
-			where mr.ReportID = rl.ItemId
+			where mr.ReportID = rl.ItemID
 			and rl.ReportGroup is not null
 			GROUP BY rl.ReportGroup, mr.WeekNumber)
 		

@@ -18,11 +18,11 @@ AS
 		/*CALCULATE CULTURE POSITIVE FIELD. This is determined by presence of at least one matched lab specimen for the notification*/
 		UPDATE [dbo].CultureAndResistanceSummary SET
 			CulturePositive = 'Yes' WHERE NotificationId IN (
-				SELECT DISTINCT NotificationId FROM dbo.vwConfirmedMatch)
+				SELECT DISTINCT NotificationID FROM dbo.vwConfirmedMatch)
 
 		UPDATE [dbo].CultureAndResistanceSummary SET
 			CulturePositive = 'No' WHERE NotificationId NOT IN (
-				SELECT DISTINCT NotificationId FROM dbo.vwConfirmedMatch)
+				SELECT DISTINCT NotificationID FROM dbo.vwConfirmedMatch)
 
 		/*END OF CALCULATE CULTURE POSITIVE FIELD*/
 		--TODO: if not culture positive, there is no real point in running the logic on the rest of the fields - just set to 'No result' or blank?
