@@ -30,4 +30,4 @@ SELECT vcm.NotificationID
 	  ,vcm.PatientPostcode
       
   FROM [dbo].[vwConfirmedMatch] vcm
-  WHERE vcm.NotificationId = @NTBSId
+  WHERE vcm.NotificationID = @NTBSId

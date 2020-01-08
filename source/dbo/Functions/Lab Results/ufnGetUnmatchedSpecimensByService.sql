@@ -23,7 +23,7 @@ RETURN
 	ls.PatientSex AS 'LabPatientSex', 
 	ls.PatientAddress AS 'LabPatientAddress', 
 	ls.PatientPostcode AS 'LabPatientPostcode',  
-	nsm.NotificationId, 
+	nsm.NotificationID, 
 	n.NotificationDate,
 	--TODO: CONCAT THIS WITH NOT KNOWN FIELD
 	p.NhsNumber as 'NTBSPatientNHSNumber', 
