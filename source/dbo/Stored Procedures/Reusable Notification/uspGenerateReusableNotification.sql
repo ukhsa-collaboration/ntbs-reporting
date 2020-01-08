@@ -32,6 +32,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 				n.PatientConsultant                                         AS Consultant,
 				CONVERT(VARCHAR(36), h.Id)                                  AS HospitalId,
 				h.Name                                                      AS Hospital,
+				NULL														AS [TBServiceCode],
 				NULL                                                        AS [Service],
 				p.NhsNumber                                                 AS NhsNumber,
 				p.Forename                                                  AS Forename,
@@ -58,7 +59,9 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 				-- Geographies
 				NULL                                                        AS LocalAuthority,
 				NULL														AS LocalAuthorityCode,
+				NULL														AS ResidencePhecCode,
 				NULL                                                        AS ResidencePhec,
+				NULL														AS TreatmentPhecCode,
 				NULL                                                        AS TreatmentPhec,
 
 				-- Clinical Details

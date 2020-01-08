@@ -16,7 +16,9 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 		-- 1. Only include english hospitals
 		UPDATE n SET
 			[Service] = s.TB_Service_Name,
-			TreatmentPhec = p.PHEC_Name
+			[TBServiceCode] = s.TB_Service_Code,
+			TreatmentPhec = p.PHEC_Name,
+			TreatmentPhecCode = p.PHEC_Code
 		-- SELECT n.NotificationId -- Debugging
 		FROM dbo.ReusableNotification n WITH (NOLOCK)
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalId = n.HospitalId

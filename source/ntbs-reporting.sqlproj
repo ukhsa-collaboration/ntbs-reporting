@@ -117,6 +117,7 @@
     <Folder Include="dbo\Functions\Report OutcomeSummary" />
     <Folder Include="dbo\Views\Audit" />
     <Folder Include="dbo\Stored Procedures\Report Lab Results" />
+    <Folder Include="dbo\Views\KPI" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -273,6 +274,7 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationMDRXDR.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspAntibioticMapping.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetNotificationCultureAndResistanceSummary.sql" />
+    <Build Include="dbo\Views\KPI\vwServiceKPI.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
