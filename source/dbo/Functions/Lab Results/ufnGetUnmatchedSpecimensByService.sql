@@ -15,7 +15,7 @@ SELECT
 	,ls.LaboratoryName
 	,ls.ReferenceLaboratory
 	,ls.Species
-	
+
 	,ls.PatientNhsNumber AS 'LabNhsNumber'
 	,ls.PatientBirthDate AS 'LabBirthDate'
 	,ls.PatientName AS 'LabName'
@@ -24,7 +24,7 @@ SELECT
 	,ls.PatientPostcode AS 'LabPostcode'
 	,tbs.TB_Service_Name AS 'TbServiceName'
 ,
-	,nsm.NotificationID AS 'NotificationId'
+	,nsm.NotificationID
 	,n.NotificationDate
 	,--TODO: CONCAT THIS WITH NOT KNOWN FIELD
 	,p.NhsNumber AS 'NtbsNhsNumber'

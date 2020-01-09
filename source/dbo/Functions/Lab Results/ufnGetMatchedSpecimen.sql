@@ -8,7 +8,7 @@ AS
 
 RETURN
 SELECT 
-	vcm.NotificationID AS 'NotificationId'
+	vcm.NotificationID
 	,vcm.ReferenceLaboratoryNumber
 	,vcm.SpecimenDate
 	,vcm.SpecimenTypeCode
