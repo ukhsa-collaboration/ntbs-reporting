@@ -277,6 +277,7 @@
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="ntbs-int-reporting.publish.xml" />
+    <None Include="ntbs-test-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
