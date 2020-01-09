@@ -15,6 +15,7 @@
 	[Consultant] [nvarchar](255) NULL,
 	[HospitalId] [nvarchar](36) NULL,
 	[Hospital] [nvarchar](255) NULL,
+	[TBServiceCode] [nvarchar] (50) NULL,
 	[Service] [nvarchar](150) NULL,
 	[NhsNumber] [nvarchar](50) NULL,
 	[Forename] [nvarchar](50) NULL,
@@ -32,7 +33,9 @@
 	-- Geographies
 	[LocalAuthority] [nvarchar](50) NULL,
 	[LocalAuthorityCode] [nvarchar](50) NULL,
+	[ResidencePhecCode] [nvarchar] (50) NULL,
 	[ResidencePhec] [nvarchar](50) NULL,
+	[TreatmentPhecCode] [nvarchar] (50) NULL,
 	[TreatmentPhec] [nvarchar](50) NULL,
 
 	-- Clinical Details
@@ -158,11 +161,17 @@ CREATE NONCLUSTERED INDEX IX_ReusableNotification_UkBorn ON dbo.ReusableNotifica
 GO
 CREATE NONCLUSTERED INDEX IX_ReusableNotification_Service ON dbo.ReusableNotification([Service])
 GO
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_TBServiceCode ON dbo.ReusableNotification([TBServiceCode])
+GO
 CREATE NONCLUSTERED INDEX IX_ReusableNotification_LocalAuthority ON dbo.ReusableNotification(LocalAuthority)
 GO
 CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhec ON dbo.ReusableNotification(TreatmentPhec)
 GO
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhecCode ON dbo.ReusableNotification(TreatmentPhecCode)
+GO
 CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhec ON dbo.ReusableNotification(ResidencePhec)
+GO
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhecCode ON dbo.ReusableNotification(ResidencePhecCode)
 GO
 CREATE NONCLUSTERED INDEX IX_ReusableNotification_AnySocialRiskFactor ON dbo.ReusableNotification(AnySocialRiskFactor)
 GO

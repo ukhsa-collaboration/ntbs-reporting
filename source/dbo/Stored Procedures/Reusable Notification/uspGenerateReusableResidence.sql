@@ -17,7 +17,8 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 		UPDATE n SET
 			LocalAuthority = l.LA_Name,
 			LocalAuthorityCode = l.LA_Code,
-			ResidencePhec = p.PHEC_Name
+			ResidencePhec = p.PHEC_Name,
+			ResidencePhecCode = p.PHEC_Code
 		-- SELECT n.NotificationId -- Debugging
 		FROM dbo.ReusableNotification n WITH (NOLOCK)
 			INNER JOIN dbo.PostcodeLookup pl ON pl.Pcd2 = n.Postcode
