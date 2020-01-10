@@ -272,6 +272,7 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspAntibioticMapping.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetNotificationCultureAndResistanceSummary.sql" />
     <Build Include="dbo\Views\KPI\vwServiceKPI.sql" />
+    <Build Include="dbo\Views\KPI\vwPhecKPI.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
