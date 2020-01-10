@@ -118,6 +118,7 @@
     <Folder Include="dbo\Views\Audit" />
     <Folder Include="dbo\Stored Procedures\Report Lab Results" />
     <Folder Include="dbo\Views\KPI" />
+    <Folder Include="dbo\Functions\KPI" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -273,6 +274,8 @@
     <Build Include="dbo\Functions\Lab Results\ufnGetNotificationCultureAndResistanceSummary.sql" />
     <Build Include="dbo\Views\KPI\vwServiceKPI.sql" />
     <Build Include="dbo\Views\KPI\vwPhecKPI.sql" />
+    <Build Include="dbo\Functions\KPI\ufnGetKPIforService.sql" />
+    <Build Include="dbo\Functions\KPI\ufnGetKPIforPhec.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
