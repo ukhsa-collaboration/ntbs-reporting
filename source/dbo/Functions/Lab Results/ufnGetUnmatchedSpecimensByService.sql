@@ -23,10 +23,9 @@ SELECT
 	,ls.PatientAddress AS 'LabAddress'
 	,ls.PatientPostcode AS 'LabPostcode'
 	,tbs.TB_Service_Name AS 'TbServiceName'
-,
 	,nsm.NotificationID
 	,n.NotificationDate
-	,--TODO: CONCAT THIS WITH NOT KNOWN FIELD
+	--TODO: CONCAT THIS WITH NOT KNOWN FIELD
 	,p.NhsNumber AS 'NtbsNhsNumber'
 	,CONCAT(UPPER(p.FamilyName), ', ', p.GivenName) AS 'NtbsName'
 	,s.Label AS 'NtbsSex'
