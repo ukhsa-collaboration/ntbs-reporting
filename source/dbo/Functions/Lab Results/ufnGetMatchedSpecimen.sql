@@ -27,7 +27,7 @@ SELECT
 	,vcm.RIF AS 'Rifampicin'
 	,vcm.PYR AS 'Pyrazinamide'
 	,vcm.ETHAM AS 'Ethambutol'
-	,vcm.AMINO AS 'Aminoglycocide'
+	,vcm.AMINO AS 'Aminoglycoside'
 	,vcm.QUIN AS 'Quinolone'
 	,vcm.MDR
 	,vcm.XDR

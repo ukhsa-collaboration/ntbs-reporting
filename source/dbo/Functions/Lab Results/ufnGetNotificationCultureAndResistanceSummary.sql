@@ -16,7 +16,7 @@ SELECT	cars.NotificationId
 		,cars.RIF AS 'Rifampicin'
 		,cars.PYR AS 'Pyrazinamide'
 		,cars.ETHAM AS 'Ethambutol'
-		,cars.AMINO AS 'Aminoglycocide'
+		,cars.AMINO AS 'Aminoglycoside'
 		,cars.QUIN AS 'Quinolone'
 		,cars.MDR
 		,cars.XDR
