@@ -10,7 +10,7 @@ AS
 		COALESCE (CAST((Q1.HIVOffered * 100.0) / NULLIF(Q1.hivdenominator,0) AS DECIMAL(10, 1)), 0.0) As '%HIVOffered',
 		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / Q1.NumberOfNotifications AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
 		
-		FROM [dbo].[TB_Service] tbs
+		FROM [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs
 		LEFT OUTER JOIN 
 			(SELECT rn.TBServiceCode, 
 					SUM(CASE WHEN CulturePositive='Yes' AND SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS CPCount,
