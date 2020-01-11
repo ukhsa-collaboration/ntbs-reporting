@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>NTBS_Reporting_Staging</TargetDatabaseName>
+    <DeployScriptFileName>ntbs-dev-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=SQLNTBSDEVCOL01;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="ETS">
+      <Value>ETS</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ETSLabbase">
+      <Value>LabBase2</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Geographies">
+      <Value>NTBS_R1_Geography_Staging</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Labbase2">
+      <Value>LabBase2</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="master">
+      <Value>master</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="msdb">
+      <Value>msdb</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS">
+      <Value>test-ntbs</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+      <Value>NTBS_R1_Geography_Staging</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_Specimen_Matching">
+      <Value>NTBS_Specimen_Matching</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportServer">
+      <Value>ReportServer</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>
