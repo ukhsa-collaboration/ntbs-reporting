@@ -276,6 +276,7 @@
     <Build Include="dbo\Views\KPI\vwPhecKPI.sql" />
     <Build Include="dbo\Functions\KPI\ufnGetKPIforService.sql" />
     <Build Include="dbo\Functions\KPI\ufnGetKPIforPhec.sql" />
+    <Build Include="dbo\Views\Lab Results\vwPossibleMatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

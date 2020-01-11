@@ -8,37 +8,36 @@ RETURNS TABLE
 AS
 
 RETURN 
+	--we want to return all specimens with a possible match in the services supplied
+	--however, for each of these specimens, we want to return all possible matches for them, including with notifications NOT
+	--in the services supplied. This means the user will see all possible matches for specimens where at least one of the matches
+	--is a notification in their own service/group of services, to prevent people from just selecting the one match that relates to
+	--their own service
+
 SELECT 
-	nsm.ReferenceLaboratoryNumber
-	,ls.SpecimenDate
-	,ls.SpecimenTypeCode
-	,ls.LaboratoryName
-	,ls.ReferenceLaboratory
-	,ls.Species
-
-	,ls.PatientNhsNumber AS 'LabNhsNumber'
-	,ls.PatientBirthDate AS 'LabBirthDate'
-	,ls.PatientName AS 'LabName'
-	,ls.PatientSex AS 'LabSex'
-	,ls.PatientAddress AS 'LabAddress'
-	,ls.PatientPostcode AS 'LabPostcode'
-	,tbs.TB_Service_Name AS 'TbServiceName'
-	,nsm.NotificationID
-	,n.NotificationDate
-	--TODO: CONCAT THIS WITH NOT KNOWN FIELD
-	,p.NhsNumber AS 'NtbsNhsNumber'
-	,CONCAT(UPPER(p.FamilyName), ', ', p.GivenName) AS 'NtbsName'
-	,s.Label AS 'NtbsSex'
-	,p.Dob AS 'NtbsBirthDate'
-	,p.[Address] AS 'NtbsAddress'
-	,p.Postcode AS 'NtbsPostcode'
-	,nsm.ConfidenceLevel
-
-FROM [$(NTBS_Specimen_Matching)].[dbo].NotificationSpecimenMatch nsm
-	INNER JOIN [dbo].[LabSpecimen] ls ON ls.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
-	INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = nsm.NotificationID
-	INNER JOIN [$(NTBS)].[dbo].[Episode] e ON e.NotificationId = nsm.NotificationID
-	INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = n.NotificationId
-	LEFT OUTER JOIN [dbo].[TB_Service] tbs ON e.TBServiceCode = tbs.TB_Service_Code
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
-WHERE nsm.MatchType = 'Possible'
+	vpm.ReferenceLaboratoryNumber
+	,vpm.SpecimenDate
+	,vpm.SpecimenTypeCode
+	,vpm.LaboratoryName
+	,vpm.ReferenceLaboratory
+	,vpm.Species
+	,vpm.LabNhsNumber
+	,vpm.LabBirthDate
+	,vpm.LabName
+	,vpm.LabSex
+	,vpm.LabAddress
+	,vpm.LabPostcode
+	,vpm.TbServiceName
+	,vpm.NotificationID
+	,vpm.NotificationDate
+	,vpm.NtbsNhsNumber
+	,vpm.NtbsName
+	,vpm.NtbsSex
+	,vpm.NtbsBirthDate
+	,vpm.NtbsAddress
+	,vpm.NtbsPostcode
+	,vpm.ConfidenceLevel
+FROM [dbo].vwPossibleMatch vpm
+	WHERE vpm.ReferenceLaboratoryNumber IN 
+		(SELECT DISTINCT ReferenceLaboratoryNumber FROM [dbo].vwPossibleMatch WHERE [Code] IN 
+			(SELECT VALUE FROM STRING_SPLIT(@Service, ',')))
