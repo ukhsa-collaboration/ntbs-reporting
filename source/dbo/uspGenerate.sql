@@ -35,6 +35,9 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		-- Needs to be executed after any report requiring use of PostcodeLookup table
 		EXEC dbo.uspUpdateReusableNotificationPostcode
 
+		--TODO: temporary until new code is integrated into uspGenerateReusableNotification
+		EXEC dbo.uspNotificationCultureResistanceSummary
+
 		-- Save last refresh date to footer
 		EXEC dbo.uspGenerateFooter
 
