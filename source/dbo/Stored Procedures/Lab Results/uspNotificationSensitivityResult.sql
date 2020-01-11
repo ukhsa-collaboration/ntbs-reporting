@@ -26,10 +26,11 @@ AS
 			EXEC sp_executesql @Sql
 	
 
-		
-	
-			--TODO: what to do for notifications with no matching lab results
-
+			SET @Sql = 'UPDATE [dbo].CultureAndResistanceSummary SET '
+			 + @Antibiotic + ' = ''No result'' WHERE ' + @Antibiotic + ' IS NULL'
+			
+			PRINT @Sql
+			EXEC sp_executesql @Sql
 END TRY
 BEGIN CATCH
 	THROW
