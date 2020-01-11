@@ -8,18 +8,18 @@ AS
 		COALESCE (CAST((Q1.ResistantCount * 100.0) / Q1.NumberOfNotifications AS DECIMAL(10, 1)), 0.0) As '%Resistant',
 		--this should be on Q1.HIVDenominator but it causes a divide by zero error?  Maybe use a NULLIF?
 		COALESCE (CAST((Q1.HIVOffered * 100.0) / NULLIF(Q1.hivdenominator,0) AS DECIMAL(10, 1)), 0.0) As '%HIVOffered',
-		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / Q1.NumberOfNotifications AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
+		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / NULLIF(Q1.NumberOfPulmonaryNotifications, 0) AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
 		
 		FROM [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p
 		LEFT OUTER JOIN 
 			(SELECT rn.TreatmentPhecCode, 
-					SUM(CASE WHEN CulturePositive='Yes' AND SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS CPCount,
-					SUM(CASE WHEN CulturePositive='No' AND SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS CNCount,
+					SUM(CASE WHEN CulturePositive='Yes' THEN 1 ELSE 0 END) AS CPCount,
+					SUM(CASE WHEN CulturePositive='No' THEN 1 ELSE 0 END) AS CNCount,
 					SUM(CASE WHEN DrugResistanceProfile IN ('RR/MDR/XDR', 'INH Resistant') THEN 1 ELSE 0 END) AS ResistantCount, 
 					SUM(CASE WHEN HivTestOffered = 'Offered' THEN 1 ELSE 0 END) AS HIVOffered,
 					SUM(CASE WHEN HivTestOffered IN ('Offered', 'Not offered') THEN 1 ELSE 0 END) AS HIVDenominator,
 					SUM(CASE WHEN OnsetToTreatmentDays > 120 and SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS TreatmentDelays,
-					--should this be a count of pulmonary cases? Poss for %positive and %TreatmentDelay
+					SUM(CASE WHEN SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS NumberOfPulmonaryNotifications,
 					COUNT(rn.EtsId) as 'NumberOfNotifications'
 				from  [dbo].ReusableNotification rn 
 				WHERE rn.NotificationDate between getDate()-395 and getDate()-30
