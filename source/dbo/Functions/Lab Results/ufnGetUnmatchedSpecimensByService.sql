@@ -40,4 +40,4 @@ SELECT
 FROM [dbo].vwPossibleMatch vpm
 	WHERE vpm.ReferenceLaboratoryNumber IN 
 		(SELECT DISTINCT ReferenceLaboratoryNumber FROM [dbo].vwPossibleMatch WHERE [Code] IN 
-			(SELECT VALUE FROM STRING_SPLIT(@Service, ',')))
+			(SELECT TRIM(VALUE) FROM STRING_SPLIT(@Service, ',')))
