@@ -1,12 +1,14 @@
 ﻿CREATE FUNCTION [dbo].[ufnGetKPIforPhec]
 (
-	@Phec VARCHAR(50)
+	--comma-separated list to be split using select value from STRING_SPLIT
+	@Phec VARCHAR(200)		=	NULL
 )
 RETURNS TABLE
 AS
 RETURN 
 
 	SELECT 
+		Phec_Code AS Code,
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',
@@ -15,5 +17,5 @@ RETURN
 		23.6 AS 'PercentMissingOutcome'
 	
 	FROM [dbo].[vwPhecKPI]
-	WHERE Phec_Code = @Phec
+	WHERE Phec_Code IN (SELECT TRIM(VALUE) FROM STRING_SPLIT(@Phec, ','))
 

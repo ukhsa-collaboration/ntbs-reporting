@@ -1,12 +1,14 @@
 ﻿CREATE FUNCTION [dbo].[ufnGetKPIforService]
 (
-	@Service VARCHAR(50)
+	--comma-separated list to be split using select value from STRING_SPLIT(@Service, ',')
+	@Service VARCHAR(1000)		=	NULL
 )
 RETURNS TABLE
 AS
 RETURN 
 
 	SELECT 
+		TB_Service_Code AS Code,
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',
@@ -15,5 +17,6 @@ RETURN
 		23.6 AS 'PercentMissingOutcome'
 	
 	FROM [dbo].[vwServiceKPI]
-	WHERE TB_Service_Code = @Service
+	WHERE TB_Service_Code IN  
+			(SELECT TRIM(VALUE) FROM STRING_SPLIT(@Service, ','))
 
