@@ -17,10 +17,13 @@
 	[PatientNhsNumber] [nvarchar](12) NULL,
 	[PatientBirthDate] [datetime] NULL,
 	[PatientName] [nvarchar](150) NULL,
+	[PatientGivenName] NVARCHAR(75) NULL, 
+    [PatientFamilyName] NVARCHAR(75) NULL, 
 	[PatientSex] [nvarchar](1) NULL,
 	[PatientAddress] [nvarchar](255) NULL,
 	[PatientPostcode] [nvarchar](10) NULL,
- CONSTRAINT [PK_LabSpecimenId] PRIMARY KEY CLUSTERED 
+ 
+    CONSTRAINT [PK_LabSpecimenId] PRIMARY KEY CLUSTERED 
 (
 	[LabSpecimenId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]

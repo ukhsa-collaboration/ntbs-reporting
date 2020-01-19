@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwPhecKPI]
 	
 AS
-	SELECT p.Phec_Code, 
+	SELECT p.PHEC_Code, 
 		COALESCE (Q1.NumberofNotifications, 0) As NumberOfNotifications,
 		--COALESCE (Q1.HIVDenominator, 0) As HIVDenominator,
 		COALESCE (CAST((Q1.CPCount * 100.0) / Q1.NumberOfNotifications AS DECIMAL(10, 1)), 0.0) AS '%Positive', 
@@ -24,4 +24,4 @@ AS
 				from  [dbo].ReusableNotification rn 
 				WHERE rn.NotificationDate between getDate()-395 and getDate()-30
 				GROUP BY rn.TreatmentPhecCode) AS Q1
-		ON Q1.TreatmentPhecCode = p.Phec_Code
+		ON Q1.TreatmentPhecCode = p.PHEC_Code

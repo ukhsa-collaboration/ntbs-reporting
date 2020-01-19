@@ -8,7 +8,7 @@ AS
 RETURN 
 
 	SELECT 
-		Phec_Code AS Code,
+		PHEC_Code AS Code,
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',
@@ -17,5 +17,5 @@ RETURN
 		23.6 AS 'PercentMissingOutcome'
 	
 	FROM [dbo].[vwPhecKPI]
-	WHERE Phec_Code IN (SELECT TRIM(VALUE) FROM STRING_SPLIT(@Phec, ','))
+	WHERE PHEC_Code IN (SELECT TRIM(VALUE) FROM STRING_SPLIT(@Phec, ','))
 

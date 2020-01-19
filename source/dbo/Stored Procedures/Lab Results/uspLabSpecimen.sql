@@ -1,3 +1,9 @@
+/*
+uspLabSpecimen:
+	This stored proc processes specimen data from LabBase2 into a more digestible format
+
+*/
+
 /*USE [NTBS_Reporting_Staging]
 GO
 /****** Object:  StoredProcedure [dbo].[uspLabSpecimen]    Script Date: 30/11/2019 08:08:06 ******/
@@ -72,7 +78,10 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 			,ReferenceLaboratory = Q2.ReferenceLaboratory
 			,PatientNhsNumber = Q2.NHSNumber 
 			,PatientBirthDate = Q2.PatientBirthDate
+			--TODO: remove PatientName calculation from here - store separate values in LabSpecimen
 			,PatientName = Q2.PatientName
+			,PatientGivenName = Q2.PatientForename
+			,PatientFamilyName = Q2.PatientSurname
 			,PatientSex = Q2.PatientSex
 			,PatientAddress = Q2.PatientAddress
 			,PatientPostcode = Q2.Postcode
@@ -90,7 +99,8 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 							WHEN UPPER(TRIM(a.PatientSurname)) is not null THEN CONCAT(UPPER(TRIM(a.PatientSurname)), ', ', TRIM(a.PatientForename))
 							ELSE TRIM(a.PatientForename)
 						END AS 'PatientName'
-						, a.PatientForename 
+						, a.PatientForename
+						, a.PatientSurname
 						, a.PatientSex
 						, TRIM(CONCAT(TRIM(a.AddressLine1), ' ', TRIM(a.AddressLine2), ' ', TRIM(a.AddressLine3))) as PatientAddress
 						, TRIM(a.PatientPostcode) AS 'Postcode'

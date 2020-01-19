@@ -52,8 +52,8 @@ AS
 
 		UPDATE [dbo].CultureAndResistanceSummary SET
 			EarliestSpecimenDate = Q1.MinDate FROM
-				(SELECT NotificationId, MIN(SpecimenDate) AS 'MinDate' FROM [dbo].vwConfirmedMatch
-				GROUP BY NotificationId) AS Q1
+				(SELECT NotificationID, MIN(SpecimenDate) AS 'MinDate' FROM [dbo].vwConfirmedMatch
+				GROUP BY NotificationID) AS Q1
 			WHERE Q1.NotificationID = [dbo].CultureAndResistanceSummary.NotificationId
 
 		/*END OF CALCULATE EARLIEST SPECIMEN DATE*/
