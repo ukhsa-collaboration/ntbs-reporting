@@ -12,9 +12,7 @@ RETURN
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',
-		[%TreatmentDelay] AS 'PercentTreatmentDelay',
-		--TODO: replace with value once definition of missing treatment outcome understood for NTBS outcomes
-		23.6 AS 'PercentMissingOutcome'
+		[%TreatmentDelay] AS 'PercentTreatmentDelay'
 	
 	FROM [dbo].[vwServiceKPI]
 	WHERE TB_Service_Code IN  
