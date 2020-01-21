@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwPhecKPI]
 	
 AS
-	SELECT p.PHEC_Code, 
+	SELECT p.PHEC_Code, p.PHEC_Name,
 		COALESCE (Q1.NumberofNotifications, 0) As NumberOfNotifications,
 		--COALESCE (Q1.HIVDenominator, 0) As HIVDenominator,
 		COALESCE (CAST((Q1.CPCount * 100.0) / Q1.NumberOfNotifications AS DECIMAL(10, 1)), 0.0) AS '%Positive', 

@@ -9,6 +9,7 @@ RETURN
 
 	SELECT 
 		TB_Service_Code AS Code,
+		TB_Service_Name AS 'Name',
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',

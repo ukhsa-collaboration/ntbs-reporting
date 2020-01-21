@@ -9,6 +9,7 @@ RETURN
 
 	SELECT 
 		PHEC_Code AS Code,
+		PHEC_Name AS 'Name',
 		[%Positive] AS 'PercentPositive',
 		[%Resistant] AS 'PercentResistant',
 		[%HIVOffered] AS 'PercentHIVOffered',
