@@ -2,8 +2,8 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>NTBS_Reporting_Staging_UAT</TargetDatabaseName>
-    <DeployScriptFileName>phe-ntbs-uat-reporting.sql</DeployScriptFileName>
+    <TargetDatabaseName>NTBS_Reporting_Staging_Live</TargetDatabaseName>
+    <DeployScriptFileName>phe-ntbs-live-reporting.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=SQLClusPorDC17\DC17;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
@@ -17,7 +17,7 @@
       <Value>NTBS_Labbase2_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Geographies">
-      <Value>NTBS_R1_Geography_Staging_UAT</Value>
+      <Value>NTBS_R1_Geography_Staging_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>NTBS_Labbase2_Live</Value>
@@ -32,13 +32,13 @@
       <Value>NTBS_UAT</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>NTBS_R1_Geography_Staging_UAT</Value>
+      <Value>NTBS_R1_Geography_Staging_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>NTBS_Specimen_Matching_UAT</Value>
+      <Value>NTBS_Specimen_Matching_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
-      <Value>NTBS_ReportServer_UAT</Value>
+      <Value>NTBS_ReportServer_Live</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>

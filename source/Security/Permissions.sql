@@ -11,6 +11,10 @@ Desc:    This implements permissions on the DB objects in the NTBS_R1_Reporting_
 
 -- Deny by default. SQL Server should behave this way anyway, so this is just
 -- for good measures (in case this is a non-default SQL Server instance)
+
+
+--removed as do not have full permissions on PHE Cluster to edit permissions
+/*
 DENY DELETE TO PUBLIC
 GO
 DENY ALTER TO PUBLIC
@@ -31,3 +35,4 @@ GO
 -- Deny regional users notifications across all regions
 DENY SELECT ON ReusableNotification TO PUBLIC AS [dbo]
 GO
+*/

@@ -6,6 +6,8 @@
     <DeployScriptFileName>phe-ntbs-uat-reporting.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=SQLClusPorDC17\DC17;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
+    <BlockOnPossibleDataLoss>True</BlockOnPossibleDataLoss>
+    <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
