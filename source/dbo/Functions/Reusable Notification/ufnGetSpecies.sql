@@ -20,7 +20,7 @@ AS
 		IF (@ReturnValue IS NULL)
 		BEGIN
 			IF NOT EXISTS (SELECT TOP 1 ''
-							FROM [$(ETS)].dbo.LaboratoryResult l
+							FROM dbo.vwETSLaboratoryResult l
 								INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 							WHERE l.NotificationId = @NotificationId)
 			SET @ReturnValue = ''
@@ -34,7 +34,7 @@ AS
 								FROM Organism o
 									INNER JOIN OrganismNameMapping om ON om.OrganismId = o.OrganismId
 									INNER JOIN [$(Labbase2)].dbo.Anonymised a ON RTRIM(a.OrganismName) = om.OrganismName
-									INNER JOIN [$(ETS)].dbo.LaboratoryResult l ON l.OpieId = a.OpieId
+									INNER JOIN [dbo].[vwETSLaboratoryResult] l ON l.OpieId = a.OpieId
 								WHERE l.NotificationId = @NotificationId
 								ORDER BY o.OrganismId) -- Order by ID means: Order by organism severity
 		END
