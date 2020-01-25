@@ -3,4 +3,4 @@ logically deleted, for example, manually unmatched reference lab result*/
 
 CREATE VIEW [dbo].[vwETSLaboratoryResult]
 	AS SELECT * FROM [$(ETS)].[dbo].[LaboratoryResult] lr
-		WHERE lr.AuditDelete IS NOT NULL
+		WHERE lr.AuditDelete IS NULL
