@@ -16,7 +16,6 @@ AS
 			AND (INH = 'Sensitive' OR RIF = 'Sensitive')
 
 		-- 3. One of INH and RIF (or both) is 'No result' or 'Unknown'
-		-- TODO: Handle other values (New, Awaiting, No result)
 		UPDATE dbo.LabSpecimen SET
 			MDR = 'No result'
 		WHERE MDR IS NULL
@@ -25,8 +24,6 @@ AS
 					OR RIF = 'No result' 
 					OR INH = 'Unknown' 
 					OR RIF = 'Unknown'
-					--OR INH = 'Failed' 
-					--OR RIF = 'Failed' 
 				)
 
 	
@@ -45,7 +42,6 @@ AS
 			AND (AMINO = 'Sensitive' OR QUIN = 'Sensitive')
 
 		-- 3. One of AMINO and QUIN (or both) is 'No result' or 'Unknown'
-		-- TODO: Handle other values (New, Awaiting, No result)
 		UPDATE dbo.LabSpecimen SET
 			XDR = 'No result'
 		WHERE XDR IS NULL
@@ -54,8 +50,6 @@ AS
 					OR QUIN = 'No result' 
 					OR AMINO = 'Unknown' 
 					OR QUIN = 'Unknown'
-					--OR INH = 'Failed' 
-					--OR RIF = 'Failed' 
 				)
 
 RETURN 0
