@@ -18,15 +18,12 @@ AS
 		,getUTCDate() as DateRetrieved 
 	FROM [$(ReportServer)].[dbo].[ExecutionLogStorage] els
 	LEFT OUTER JOIN 
-		--get just one AD group per user - choosing the 'MIN' arbitrarily
+		
 		(SELECT 
 				Username,
-				(CASE
-					WHEN CHARINDEX(',', AdGroups) = 0 THEN AdGroups
-					--we have a special group called Admin but this isn't useful for reporting, so take the next group
-					WHEN CHARINDEX('ADMIN', AdGroups) != 0 THEN SUBSTRING(AdGroups, CHARINDEX('ADMIN,', AdGroups), CHARINDEX(',', AdGroups)-1)
-					ELSE SUBSTRING(AdGroups, 1, CHARINDEX(',', AdGroups)-1)
-				END) AS AdGroup
+				--This selects the final AD group in the list, which means we exclude the 'ADMIN' group, which is not
+				--useful for this report
+				RIGHT(AdGroups, CHARINDEX(',', REVERSE(AdGroups) + ',') - 1) AS AdGroup
 			FROM [$(NTBS)].[dbo].[User]) AS Q1
 	ON els.UserName COLLATE DATABASE_DEFAULT = Q1.Username
 	WHERE els.TimeEnd > (
