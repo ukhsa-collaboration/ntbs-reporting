@@ -12,20 +12,23 @@ CREATE PROCEDURE [dbo].[uspHandleException] AS
 	BEGIN TRY
 		BEGIN
 			-- Compile error message for investigation
-			DECLARE @ErrorMsg AS VARCHAR(1000);
+		--	DECLARE @ErrorMsg AS VARCHAR(1000);
+			-- Compile error message
+		/*	DECLARE @ErrorMsg AS VARCHAR(1000) = CHAR(13) + CHAR(13) +
+												 'Message: ' + ERROR_MESSAGE() + CHAR(13) +
+												 'Proc: ' + ERROR_PROCEDURE() + CHAR(13) +
+												 'Line: ' + CONVERT(VARCHAR, ERROR_LINE()) + CHAR(13) +
+												 'Error no: ' + CONVERT(VARCHAR, ERROR_NUMBER()) + CHAR(13) +
+												 'Username: ' + SUSER_SNAME()
+	*/
+												 insert into DBO.ErrorLog (ErrorDateTime,UserName,ErrorNumber,ErrorMessage,ProcName,LineNumber)
+		values( GETUTCDATE(),  SYSTEM_USER, CONVERT(VARCHAR, ERROR_NUMBER()),ERROR_MESSAGE(),ERROR_PROCEDURE(),CONVERT(VARCHAR, ERROR_LINE()))
 
-			SET @ErrorMsg = CHAR(13) + CHAR(13) +
-							'Message: ' + ERROR_MESSAGE() + CHAR(13) +
-							'Proc: ' + ERROR_PROCEDURE() + CHAR(13) +
-							'Line: ' + CONVERT(VARCHAR, ERROR_LINE()) + CHAR(13) +
-							'Error no: ' + CONVERT(VARCHAR, ERROR_NUMBER()) + CHAR(13) +
-							'Username: ' + SUSER_SNAME()
+			-- Log error
+		--	EXEC [$(master)].sys.xp_logevent 60000, @ErrorMsg
 
-			-- Log error for investigation
-			EXEC [$(master)].sys.xp_logevent 60000, @ErrorMsg
-
-			-- Generic error message for the end-user
-			SELECT 'An error has occurred, which has been logged. Please contact the DB administrator for further investigation.' AS 'ErrorMessage'
+			-- Display error
+			SELECT ERROR_MESSAGE() AS 'ErrorMessage'
 		END
 	END TRY
 	BEGIN CATCH

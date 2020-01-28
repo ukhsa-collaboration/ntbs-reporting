@@ -12,12 +12,12 @@ CREATE FUNCTION dbo.ufnLog (
 	RETURNS TINYINT
 AS
 	BEGIN
-		SET @LogText = CHAR(13) + CHAR(13) +
-						'Log: ' + @LogText + CHAR(13) +
-						'Username: ' + SUSER_SNAME()
+		--SET @LogText = 'Log: ' + @LogText
 
 		--DECLARE @LogStatus AS TINYINT = 0
-		EXEC [$(master)].sys.xp_logevent 60000, @LogText
+		insert into DBO.ErrorLog (ErrorDateTime,UserName,ErrorMessage)
+		values( GETUTCDATE(),  SYSTEM_USER, @LogText)
+		--EXEC [$(master)].sys.xp_logevent 60000, @LogText
 
 		RETURN 0
 	END
