@@ -279,6 +279,7 @@
     <Build Include="dbo\Views\Lab Results\vwPossibleMatch.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByPhec.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetAllUnmatchedSpecimens.sql" />
+    <Build Include="dbo\Views\Lab Results\vwETSLaboratoryResults.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

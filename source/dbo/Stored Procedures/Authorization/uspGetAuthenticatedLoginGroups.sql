@@ -20,36 +20,9 @@ CREATE PROCEDURE [dbo].[uspGetAuthenticatedLoginGroups] (
 		-- DECLARE @LoginGroups AS VARCHAR(500);
 
 		SET @LoginGroups = '###'
-
-		DECLARE @LoggedInUser SYSNAME
-		SET @LoggedInUser = SUSER_SNAME()
-
-		-- Temporary login info holder
-		DECLARE @LoginInfo LoginInfoType 
-
-		-- Get all paths for a user to authenticate into this sql server instance
-		INSERT INTO @LoginInfo
-			EXEC [$(master)].sys.xp_logininfo
-					@acctname = @LoggedInUser,
-					@option = 'all'
-
-		-- Regional user
-		DECLARE LoginCursor CURSOR LOCAL FOR 
-			SELECT RIGHT(permissionpath, (LEN(permissionpath) - CHARINDEX('\', permissionpath)))
-			FROM @LoginInfo
-			WHERE accountname = @LoggedInUser
-				AND permissionpath IS NOT NULL -- Exclude empty/powerful permissions
-		OPEN LoginCursor 
-
-		DECLARE @PermissionPath VARCHAR(100)
-
-		FETCH NEXT FROM LoginCursor INTO @PermissionPath
-
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-			SET @LoginGroups = @LoginGroups + @PermissionPath + '###'
-			FETCH NEXT FROM LoginCursor INTO @PermissionPath
-		END
+		
+		SELECT @LoginGroups = CONCAT('###',REPLACE(AdGroups, ',', '###'),'###') from [$(NTBS)].[dbo].[User]
+				WHERE Username = SYSTEM_USER
 
 		-- Debugging
 		-- PRINT @LoginGroups

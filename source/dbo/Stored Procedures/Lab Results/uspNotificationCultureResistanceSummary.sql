@@ -44,7 +44,8 @@ AS
 			INNER JOIN [dbo].Organism o on o.OrganismId = Q1.MinRank) AS Q2
 			WHERE Q2.NotificationID = [dbo].CultureAndResistanceSummary.NotificationId
 
-		--TODO: what to set Species to if notification has no matching lab results. Empty string? 'No result'?
+		UPDATE [dbo].CultureAndResistanceSummary SET Species = 'No result'
+			WHERE Species IS NULL
 
 		/*END OF CALCULATE THE SPECIES*/
 
