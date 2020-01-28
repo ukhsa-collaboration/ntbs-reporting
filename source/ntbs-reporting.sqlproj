@@ -99,7 +99,6 @@
     <Folder Include="dbo\Views\Lab Results" />
     <Folder Include="dbo\Tables\Report DataQuality" />
     <Folder Include="dbo\Functions\Report DataQuality" />
-    <Folder Include="dbo\Functions\Error Handling" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="dbo\Stored Procedures\Audit" />
     <Folder Include="dbo\Stored Procedures\Authorization" />
@@ -182,7 +181,6 @@
     <Build Include="dbo\Tables\Authorization\AdGroup.sql" />
     <Build Include="dbo\uspSeed.sql" />
     <Build Include="dbo\uspGenerate.sql" />
-    <Build Include="dbo\Functions\Error Handling\ufnLog.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspAddToAudit.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspAuditLineList.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimen.sql" />
@@ -281,6 +279,7 @@
     <Build Include="dbo\Functions\Lab Results\ufnGetAllUnmatchedSpecimens.sql" />
     <Build Include="dbo\Views\Lab Results\vwETSLaboratoryResults.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspLog.sql" />
+    <Build Include="dbo\Tables\Audit\ErrorLog.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -318,12 +317,12 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\master.dacpac">
+    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\master.dacpac">
       <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\master.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>master</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac">
+    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac">
       <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>msdb</DatabaseSqlCmdVariable>

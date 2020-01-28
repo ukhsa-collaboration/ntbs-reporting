@@ -8,7 +8,7 @@ Desc:    This handles an exception in a way that information about the problem g
          
 **************************************************************************************************/
 
-CREATE PROCEDURE [dbo].[uspHandleException] AS
+Create PROCEDURE [dbo].[uspHandleException] AS
 	BEGIN TRY
 		BEGIN
 			-- Compile error message for investigation
@@ -21,7 +21,7 @@ CREATE PROCEDURE [dbo].[uspHandleException] AS
 												 'Error no: ' + CONVERT(VARCHAR, ERROR_NUMBER()) + CHAR(13) +
 												 'Username: ' + SUSER_SNAME()
 	*/
-												 insert into DBO.ErrorLog (ErrorDateTime,UserName,ErrorNumber,ErrorMessage,ProcName,LineNumber)
+												 insert into dbo.ErrorLog (ErrorDateTime,UserName,ErrorNumber,ErrorMessage,ProcName,LineNumber)
 		values( GETUTCDATE(),  SYSTEM_USER, CONVERT(VARCHAR, ERROR_NUMBER()),ERROR_MESSAGE(),ERROR_PROCEDURE(),CONVERT(VARCHAR, ERROR_LINE()))
 
 			-- Log error
