@@ -219,5 +219,5 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		ROLLBACK		
 
 		-- Show error on screen
-		EXEC dbo.uspDisplayException
+		EXEC dbo.uspHandleException
 	END CATCH

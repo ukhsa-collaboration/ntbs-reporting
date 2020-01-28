@@ -48,5 +48,5 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		ROLLBACK		
 
 		-- Show error on screen
-		EXEC dbo.uspDisplayException
+		EXEC dbo.uspHandleException
 	END CATCH
