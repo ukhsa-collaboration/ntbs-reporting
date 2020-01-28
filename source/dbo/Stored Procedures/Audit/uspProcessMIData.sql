@@ -4,7 +4,7 @@ AS
 
 	EXEC [dbo].uspSeedReportLookup
 
-	EXEC [dbo].uspPopulateUserLookup
+	
 
 	INSERT INTO [dbo].MIReportData
 
@@ -20,11 +20,15 @@ AS
 	LEFT OUTER JOIN 
 		--get just one AD group per user - choosing the 'MIN' arbitrarily
 		(SELECT 
-				CAST([ACCOUNTNAME] AS nvarchar) AS AccountName, 
-				REPLACE(MIN([PERMISSIONPATH]),'PHE\','') AS AdGroup
-			FROM [dbo].[UserLookup]
-			GROUP BY ACCOUNTNAME) AS Q1
-	ON els.UserName COLLATE DATABASE_DEFAULT = Q1.AccountName
+				Username,
+				(CASE
+					WHEN CHARINDEX(',', AdGroups) = 0 THEN AdGroups
+					--we have a special group called Admin but this isn't useful for reporting, so take the next group
+					WHEN CHARINDEX('ADMIN', AdGroups) != 0 THEN SUBSTRING(AdGroups, CHARINDEX('ADMIN,', AdGroups), CHARINDEX(',', AdGroups)-1)
+					ELSE SUBSTRING(AdGroups, 1, CHARINDEX(',', AdGroups)-1)
+				END) AS AdGroup
+			FROM [$(NTBS)].[dbo].[User]) AS Q1
+	ON els.UserName COLLATE DATABASE_DEFAULT = Q1.Username
 	WHERE els.TimeEnd > (
 	-- the first time this is run, there won't be an existing records in MIReportData, so this CASE
 	-- clause allows for an arbitary date to be added which will select all records

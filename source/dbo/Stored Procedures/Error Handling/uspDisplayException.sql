@@ -19,8 +19,8 @@ Create PROCEDURE [dbo].[uspDisplayException] AS
 												 'Error no: ' + CONVERT(VARCHAR, ERROR_NUMBER()) + CHAR(13) +
 												 'Username: ' + SUSER_SNAME()
 	*/
-												 insert into dbo.ErrorLog (ErrorDateTime,UserName,ErrorNumber,ErrorMessage,ProcName,LineNumber)
-		values( GETUTCDATE(),  SYSTEM_USER, CONVERT(VARCHAR, ERROR_NUMBER()),ERROR_MESSAGE(),ERROR_PROCEDURE(),CONVERT(VARCHAR, ERROR_LINE()))
+		INSERT INTO dbo.ErrorLog (ErrorDateTime,UserName,ErrorNumber,ErrorMessage,ProcName,LineNumber)
+			VALUES( GETUTCDATE(),  SYSTEM_USER, CONVERT(VARCHAR, ERROR_NUMBER()),ERROR_MESSAGE(),ERROR_PROCEDURE(),CONVERT(VARCHAR, ERROR_LINE()))
 
 			-- Log error
 		--	EXEC [$(master)].sys.xp_logevent 60000, @ErrorMsg
