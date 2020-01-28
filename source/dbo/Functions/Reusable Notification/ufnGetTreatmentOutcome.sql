@@ -91,6 +91,14 @@ AS
 			ELSE IF (@AnswerToInCompleteReason2 = 'Treatment stopped - Patient subsequently found not to have TB (including atypical mycobacterial infection)')
 				SET @ReturnValue = 'Patient did not have TB'
 		END
+
+
+		--RP-1297: The treatment outcome is recorded in AnswerToCompleteQuestion as 'No, the patient did not complete a full course within X months' and no reason has been provided
+		IF (@ReturnValue IS NULL)
+		BEGIN
+			IF (@AnswerToCompleteQuestion = 'No, the patient did not complete a full course within ' + @Month + ' months' AND (@AnswerToIncompleteReason1 IS NULL OR @AnswerToIncompleteReason2 IS NULL))
+				SET @ReturnValue = 'Lost to follow-up'
+		END
 			
 		-- 9. The values in the relevant fields are all set to NULL
 		IF (@ReturnValue IS NULL)
