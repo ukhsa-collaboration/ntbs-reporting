@@ -1,4 +1,4 @@
-﻿IF EXISTS (SELECT * 
+﻿/*IF EXISTS (SELECT * 
 			FROM master.dbo.sysdatabases 
 			WHERE name = 'Labbase2')
 ALTER DATABASE Labbase2
@@ -9,4 +9,4 @@ RESTORE DATABASE [Labbase2]
 FROM DISK = N'ADD PATH TO BACKUP FILE HERE'
 WITH REPLACE,
 NOUNLOAD, STATS = 10
-GO
+GO*/

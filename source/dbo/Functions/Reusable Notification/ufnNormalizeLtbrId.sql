@@ -26,10 +26,6 @@ AS
 			-- Return value as is
 			SET @ReturnValue = @UnNormalizedLtbrId
 
-			DECLARE @LogStatus AS TINYINT
-			--SET @LogStatus = dbo.ufnLog('Error: LTBR ID must be 14 characters long: ' + @UnNormalizedLtbrId)
-			declare @usplogtext as nvarchar(1000) = 'Error: LTBR ID must be 14 characters long: ' + @UnNormalizedLtbrId
-			execute @LogStatus = dbo.uspLog @usplogtext
 		END
 
 		RETURN @ReturnValue

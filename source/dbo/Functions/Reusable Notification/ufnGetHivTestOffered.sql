@@ -38,11 +38,6 @@ AS
 		BEGIN
 			SET @ReturnValue = 'Error: Invalid value'
 
-			-- TODO: Log 'Error: Invalid value' instead of writing it to the 'HivTestOffered' column above.
-			--       This is to be done not just in this case, but across the whole reporting application !!!
-			DECLARE @LogStatus AS TINYINT
-			declare @usplogtext as nvarchar(1000) = 'Error: Invalid value in ufnGetHivTestOffered() for Notification ID: ' + @NotificationId
-			execute @LogStatus = dbo.uspLog @usplogtext
 		END
 
 		RETURN @ReturnValue

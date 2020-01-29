@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[uspPopulateUserLookup]
 	
 AS
+	/*
 	/*Get all AD Groups*/
 	DECLARE @Iteration Integer = 1
 	/*Temporary value for testing*/
@@ -24,6 +25,6 @@ AS
 		EXEC [$(master)].sys.XP_LOGININFO @AdGroupName, 'members'
 		SET @Iteration += 1  
 	END;    
-
+	*/
 
 RETURN 0

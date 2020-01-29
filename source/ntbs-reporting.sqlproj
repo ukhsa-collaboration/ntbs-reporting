@@ -318,16 +318,6 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\master.dacpac">
-      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\master.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>master</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac">
-      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SQLSchemas\msdb.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>msdb</DatabaseSqlCmdVariable>
-    </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\ReportServer.dacpac">
       <HintPath>..\data\DACPAC\ReportServer.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
@@ -365,14 +355,6 @@
     <SqlCmdVariable Include="Labbase2">
       <DefaultValue>Labbase2</DefaultValue>
       <Value>$(SqlCmdVar__9)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="master">
-      <DefaultValue>master</DefaultValue>
-      <Value>$(SqlCmdVar__12)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="msdb">
-      <DefaultValue>msdb</DefaultValue>
-      <Value>$(SqlCmdVar__13)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="$(NTBS_R1_Geography_Staging)">
       <DefaultValue>$(NTBS_R1_Geography_Staging)</DefaultValue>

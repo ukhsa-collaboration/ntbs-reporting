@@ -19,7 +19,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 							FROM TemplateText)
 		
 		-- When were the generated reusable tables last refreshed ?
-		SET @ReportingLastRefreshed = (SELECT TOP 1
+		/*SET @ReportingLastRefreshed = (SELECT TOP 1
 										--us.database_id,
 										--t.name,
 										us.last_user_update AS last_refresh_datetime
@@ -35,7 +35,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 									restore_date AS last_refresh_datetime
 								FROM [$(msdb)].dbo.restorehistory 
 								WHERE destination_database_name = '$(ETS)'
-								ORDER BY last_refresh_datetime DESC)
+								ORDER BY last_refresh_datetime DESC)*/
 
 		-- Fail gracefully
 		IF (@ReportingLastRefreshed IS NOT NULL)
