@@ -118,6 +118,8 @@
     <Folder Include="dbo\Stored Procedures\Report Lab Results" />
     <Folder Include="dbo\Views\KPI" />
     <Folder Include="dbo\Functions\KPI" />
+    <Folder Include="dbo\Tables\ClusterMatching" />
+    <Folder Include="dbo\Views\ClusterMatching" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -280,6 +282,8 @@
     <Build Include="dbo\Views\Lab Results\vwETSLaboratoryResults.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspLog.sql" />
     <Build Include="dbo\Tables\Audit\ErrorLog.sql" />
+    <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
+    <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
