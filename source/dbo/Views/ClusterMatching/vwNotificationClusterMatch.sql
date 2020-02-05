@@ -19,6 +19,7 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 			ON n1.NotificationId = ncm1.NotificationId
 		WHERE 
 			ncm1.ClusterId <> n1.ClusterId
+			OR n1.ClusterId IS NULL
 
 		UNION ALL
 
@@ -33,4 +34,6 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 		FROM [$(NTBS)].[dbo].[Notification] n2
 		LEFT OUTER JOIN [dbo].[NotificationClusterMatch] ncm2
 			ON n2.NotificationId = ncm2.NotificationId
-		WHERE ncm2.NotificationId IS NULL
+		WHERE 
+			n2.ClusterId IS NOT NULL
+			AND ncm2.NotificationId IS NULL
