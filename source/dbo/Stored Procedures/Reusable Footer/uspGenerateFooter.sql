@@ -19,23 +19,11 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 							FROM TemplateText)
 		
 		-- When were the generated reusable tables last refreshed ?
-		/*SET @ReportingLastRefreshed = (SELECT TOP 1
-										--us.database_id,
-										--t.name,
-										us.last_user_update AS last_refresh_datetime
-									  FROM [$(DatabaseName)].sys.dm_db_index_usage_stats us
-										INNER JOIN [$(DatabaseName)].sys.tables t ON t.object_id = us.object_id
-									  WHERE us.last_user_update IS NOT NULL
-										AND us.database_id = DB_ID('$(DatabaseName)')
-										AND t.[name] LIKE 'Reusable%'
-									  ORDER BY last_refresh_datetime)
+		Set @ReportingLastRefreshed = (select top 1 DataRefreshedAt from ReusableNotification n order by DataRefreshedAt desc)
 
 		-- When was ETS last loaded ?
-		SET @EtsLastRefreshed = (SELECT TOP 1
-									restore_date AS last_refresh_datetime
-								FROM [$(msdb)].dbo.restorehistory 
-								WHERE destination_database_name = '$(ETS)'
-								ORDER BY last_refresh_datetime DESC)*/
+		Set @EtsLastRefreshed = (SELECT top 1 AuditAlter FROM [$(ETS)].[dbo].[Notification] order by AuditAlter desc)
+		--This is not correct but is the best approximation that can be obtained.
 
 		-- Fail gracefully
 		IF (@ReportingLastRefreshed IS NOT NULL)
