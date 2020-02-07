@@ -284,6 +284,7 @@
     <Build Include="dbo\Tables\Audit\ErrorLog.sql" />
     <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
+    <Build Include="dbo\Views\Lab Results\vwChangesToDRPSpecies.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
