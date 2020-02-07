@@ -34,6 +34,7 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 		FROM [$(NTBS)].[dbo].[Notification] n2
 		LEFT OUTER JOIN [dbo].[NotificationClusterMatch] ncm2
 			ON n2.NotificationId = ncm2.NotificationId
-		WHERE 
-			n2.ClusterId IS NOT NULL
+		WHERE
+			n2.NotificationStatus <> 'Deleted'
+			AND n2.ClusterId IS NOT NULL
 			AND ncm2.NotificationId IS NULL
