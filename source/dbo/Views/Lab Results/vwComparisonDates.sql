@@ -6,5 +6,5 @@ CREATE VIEW [dbo].[vwComparisonDates]
 SELECT n.NotificationId, n.NotificationDate, drp.DrugResistanceProfileString AS DrugResistanceProfile, n.NotificationDate as 'OutcomeDate'
     FROM [$(NTBS)].[dbo].[Notification] n
 	INNER JOIN [$(NTBS)].[dbo].DrugResistanceProfile drp ON drp.NotificationId = n.NotificationId
-	WHERE n.NotificationId IN (SELECT rclientsourceID from [$(NTBS_Specimen_Matching)].[dbo].PotentialMatchComparisonDates)
+	
 
