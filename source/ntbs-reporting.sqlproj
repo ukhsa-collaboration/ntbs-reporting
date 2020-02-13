@@ -285,6 +285,7 @@
     <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwChangesToDRPSpecies.sql" />
+    <Build Include="dbo\Views\Lab Results\vwComparisonDates.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
