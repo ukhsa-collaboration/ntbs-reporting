@@ -34,7 +34,7 @@
 	FROM [$(NTBS_Specimen_Matching)].[dbo].NotificationSpecimenMatch nsm
 		INNER JOIN [dbo].[LabSpecimen] ls ON ls.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = nsm.NotificationID
-		INNER JOIN [$(NTBS)].[dbo].[Episode] e ON e.NotificationId = nsm.NotificationID
+		INNER JOIN [$(NTBS)].[dbo].[HospitalDetails] e ON e.NotificationId = nsm.NotificationID
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TbService] tbs ON e.TBServiceCode = tbs.Code
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
