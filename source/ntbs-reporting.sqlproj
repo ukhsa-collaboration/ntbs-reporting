@@ -296,7 +296,6 @@
     <None Include="phe-ntbs-uat-reporting.publish.xml" />
     <None Include="ntbs-uat-reporting.publish.xml" />
     <None Include="phe-ntbs-live-reporting.publish.xml" />
-    <None Include="phe-ntbs-R1Live-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
