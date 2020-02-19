@@ -284,16 +284,11 @@
     <Build Include="dbo\Tables\Audit\ErrorLog.sql" />
     <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
+    <Build Include="dbo\Tables\Authorization\User.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
-    <None Include="ntbs-int-reporting.publish.xml" />
-    <None Include="ntbs-test-reporting.publish.xml" />
-    <None Include="ntbs-dev-reporting.publish.xml" />
-    <None Include="phe-ntbs-uat-reporting.publish.xml" />
-    <None Include="ntbs-uat-reporting.publish.xml" />
-    <None Include="phe-ntbs-live-reporting.publish.xml" />
     <None Include="phe-ntbs-R1Live-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -384,8 +379,5 @@
       <DefaultValue>ReportServer</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="ntbs-reporting.refactorlog" />
   </ItemGroup>
 </Project>
