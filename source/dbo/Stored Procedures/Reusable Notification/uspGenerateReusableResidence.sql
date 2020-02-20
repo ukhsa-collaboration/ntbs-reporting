@@ -20,7 +20,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 			ResidencePhec = p.PHEC_Name,
 			ResidencePhecCode = p.PHEC_Code
 		-- SELECT n.NotificationId -- Debugging
-		FROM dbo.ReusableNotification n WITH (NOLOCK)
+		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
 			INNER JOIN dbo.PostcodeLookup pl ON pl.Pcd2 = n.Postcode
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = pl.Pcd2NoSpaces
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Local_Authority l ON l.LA_Code = r.LA_Code
@@ -32,7 +32,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 		UPDATE n SET
 			ResidencePhec = 'Unknown'
 		-- SELECT n.NotificationId -- Debugging
-		FROM dbo.ReusableNotification n WITH (NOLOCK)
+		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
 			LEFT OUTER JOIN dbo.PostcodeLookup pl ON pl.Pcd2 = n.Postcode
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = pl.Pcd2NoSpaces
 		WHERE (r.Country IS NULL or (r.Country = 'E92000001' and r.LA_Code is null)) and ResidencePhec is null

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ReusableNotification](
+﻿CREATE TABLE [dbo].[ReusableNotification_ETS](
 	-- This primary key
 	[ReusableNotificationId] [int] IDENTITY(1,1) NOT NULL,
 

@@ -20,7 +20,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 			TreatmentPhec = p.PHEC_Name,
 			TreatmentPhecCode = p.PHEC_Code
 		-- SELECT n.NotificationId -- Debugging
-		FROM dbo.ReusableNotification n WITH (NOLOCK)
+		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalId = n.HospitalId
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_Hospital sh ON sh.HospitalID = h.HospitalId
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s ON s.TB_Service_Code = sh.TB_Service_Code
@@ -32,7 +32,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 		UPDATE n SET
 			TreatmentPhec = 'Unknown'
 		-- SELECT n.NotificationId -- Debugging
-		FROM dbo.ReusableNotification n WITH (NOLOCK)
+		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalId = n.HospitalId
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_Hospital sh ON sh.HospitalID = h.HospitalId
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s ON s.TB_Service_Code = sh.TB_Service_Code

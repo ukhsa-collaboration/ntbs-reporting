@@ -13,19 +13,19 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationMdr] AS
 		SET NOCOUNT ON
 
 		-- 1. Both INH and RIF are set to 'Resistant'
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			MDR = 'Yes'
 		WHERE MDR IS NULL
 			AND (INH = 'Resistant' AND RIF = 'Resistant')
 
 		-- 2. One of INH and RIF (or both) is 'Sensitive'
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			MDR = 'No'
 		WHERE MDR IS NULL
 			AND (INH = 'Sensitive' OR RIF = 'Sensitive')
 
 		-- 3. One of INH and RIF (or both) is 'No result' or 'Unknown'
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			MDR = 'No result'
 		WHERE MDR IS NULL
 			AND (
@@ -38,7 +38,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationMdr] AS
 				)
 
 		-- 4. An error has occurred
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			MDR = 'Error: Invalid value'
 		WHERE MDR IS NULL
 	END TRY

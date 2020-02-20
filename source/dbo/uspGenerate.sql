@@ -22,6 +22,7 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC dbo.uspManualLabResult
 
 		-- Populate reusable notification table
+		EXEC dbo.uspGenerateReusableNotification_ETS
 		EXEC dbo.uspGenerateReusableNotification
 
 		-- Populate report-specific tables

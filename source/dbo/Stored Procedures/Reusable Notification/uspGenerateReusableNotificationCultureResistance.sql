@@ -23,7 +23,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 		DECLARE @Sql NVARCHAR(2000)
 
 		-- 1. Patient has no drug sensitivity test results for the given antibiotic
-		SET @Sql = 'UPDATE dbo.ReusableNotification SET
+		SET @Sql = 'UPDATE dbo.ReusableNotification_ETS SET
 						' + @ReportingAntibioticCode + ' = ''No result''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 						AND NotificationId NOT IN (SELECT DISTINCT l.NotificationId
@@ -37,7 +37,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 		EXEC sp_executesql @Sql
 
 		-- 2. Patient has one or more drug sensitivity test results for the given antibiotic with the value 'Resistant' or 'R'
-		SET @Sql = 'UPDATE dbo.ReusableNotification SET
+		SET @Sql = 'UPDATE dbo.ReusableNotification_ETS SET
 						' + @ReportingAntibioticCode + ' = ''Resistant''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 						AND NotificationId IN (SELECT DISTINCT l.NotificationId
@@ -52,7 +52,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 		EXEC sp_executesql @Sql
 
 		-- 3. Patient has one or more drug sensitivity test results for the given antibiotic with the value 'Sensitive' or 'S'
-		SET @Sql = 'UPDATE dbo.ReusableNotification SET
+		SET @Sql = 'UPDATE dbo.ReusableNotification_ETS SET
 						' + @ReportingAntibioticCode + ' = ''Sensitive''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 					AND NotificationId IN (SELECT DISTINCT l.NotificationId
@@ -68,7 +68,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 
 		-- 4. Patient ONLY has drug sensitivity test results which are 'Unknown' or 'Failed'
 		-- The SQL where clause below "looks" duplicated, but watch out for the 2 "NOT IN" differences
-		SET @Sql = 'UPDATE dbo.ReusableNotification SET
+		SET @Sql = 'UPDATE dbo.ReusableNotification_ETS SET
 						' + @ReportingAntibioticCode + ' = ''Unknown''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 					AND NotificationId IN (SELECT DISTINCT l.NotificationId
@@ -91,7 +91,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 		EXEC sp_executesql @Sql
 
 		-- 5. An error has occurred
-		SET @Sql = 'UPDATE dbo.ReusableNotification SET
+		SET @Sql = 'UPDATE dbo.ReusableNotification_ETS SET
 						' + @ReportingAntibioticCode + ' = ''Error: Invalid value''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL'
 

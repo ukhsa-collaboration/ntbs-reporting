@@ -212,7 +212,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspPhec.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspFooter.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspGenerateFooter.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification_ETS.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCulturePositive.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCultureResistance.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationDrugResistanceProfile.sql" />
@@ -286,6 +286,8 @@
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwChangesToDRPSpecies.sql" />
     <Build Include="dbo\Views\Lab Results\vwComparisonDates.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\ReusableNotification_ETS.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

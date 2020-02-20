@@ -13,7 +13,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 	BEGIN TRY
 		SET NOCOUNT ON
 
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			BiologicalTherapy = 'Yes'
 		WHERE NotificationId IN (SELECT n.Id
 								 FROM [$(ETS)].dbo.Notification n
@@ -22,7 +22,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 									INNER JOIN [$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
 								 WHERE ims.Name = 'Biological therapy (e.g. Anti-TNF-Alpha-Treatment)')
 
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			Transplantation = 'Yes'
 		WHERE NotificationId IN (SELECT n.Id
 								 FROM [$(ETS)].dbo.Notification n
@@ -31,7 +31,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 									INNER JOIN [$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
 								 WHERE ims.Name = 'Transplantation')
 
-		UPDATE dbo.ReusableNotification SET
+		UPDATE dbo.ReusableNotification_ETS SET
 			OtherImmunoSuppression = 'Yes'
 		WHERE NotificationId IN (SELECT n.Id
 								 FROM [$(ETS)].dbo.Notification n
