@@ -9,7 +9,9 @@ AS
 TRUNCATE TABLE ReusableNotification
 
 INSERT INTO ReusableNotification ([NotificationId]
+      ,[NtbsId]
       ,[EtsId]
+      ,[SourceSystem]
       ,[LtbrId]
       ,[NotificationDate]
       ,[CaseManager]
@@ -135,8 +137,10 @@ INSERT INTO ReusableNotification ([NotificationId]
       ,[MDR]
       ,[XDR]
       ,[DataRefreshedAt]) 
-	  select [NotificationId]
+SELECT	[NotificationId]
+      ,[NtbsId]
       ,[EtsId]
+      ,[SourceSystem]
       ,[LtbrId]
       ,[NotificationDate]
       ,[CaseManager]
