@@ -15,6 +15,8 @@ SELECT
 	n.NotificationId AS 'NotificationId'
 	,'NTBS' AS 'SourceSystem'
 	,n.NotificationId AS 'NTBS_ID'
+    ,n.ETSID as 'EtsId'
+	,n.LTBRID as 'LtbrId'
 	,n.NotificationDate AS 'NotificationDate' --TODO turn into date only
 	,u.DisplayName AS 'CaseManager'
 	,hd.Consultant AS 'Consultant'
