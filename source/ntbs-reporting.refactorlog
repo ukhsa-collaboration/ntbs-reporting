@@ -77,4 +77,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="EarliestSpecimenDate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="3abde451-22b5-452f-8d4a-52c2e67ceb34" ChangeDateTime="02/21/2020 08:19:52">
+    <Property Name="ElementName" Value="[dbo].[NTBSOutcome].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[NTBSOutcome]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="OutcomeId" />
+  </Operation>
 </Operations>

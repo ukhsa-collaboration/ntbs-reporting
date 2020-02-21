@@ -288,6 +288,9 @@
     <Build Include="dbo\Views\Lab Results\vwComparisonDates.sql" />
     <Build Include="dbo\Tables\Reusable Notification\ReusableNotification_ETS.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\Outcome.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcome.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\OutcomeLookup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

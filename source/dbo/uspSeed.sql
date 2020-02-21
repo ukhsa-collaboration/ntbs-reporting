@@ -200,6 +200,17 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		EXEC dbo.uspResultMapping
 
+		DELETE FROM [dbo].[OutcomeLookup]
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Completed', 'Completed')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Cured', 'Cured')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Died', 'Died')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Lost', 'Lost to follow-up')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('NotEvaluated', 'Not evaluated')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TreatmentStopped', 'Treatment stopped')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Failed', 'Failed')
+		
+       
+
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
 		;WITH x AS 
