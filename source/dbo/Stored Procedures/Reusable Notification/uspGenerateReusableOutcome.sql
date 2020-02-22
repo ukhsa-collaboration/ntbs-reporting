@@ -61,46 +61,47 @@ AS
     
 		2. 24 month outcome is present (whether expected or not)
 
-		3. 24 month outcome is expected and not present
+		3. 24 month outcome is expected and not present*/
 
 
-		First set the ones that are present
+		
+		--24 MONTH
+		/*First set the ones that are present
 			- set the ones that are outcomes to the outcome
-			- set the ones that aren't outcomes (i.e. transfers, treatment restart) to 'No outcome recorded'
+			- set the ones that aren't outcomes (i.e. transfers, treatment restart) to 'No outcome recorded'*/
+		UPDATE [dbo].[Outcome] SET TreatmentOutcome24Months = Q2.[TwentyFourMonthOutcome], TreatmentOutcome24MonthsSubType = Q2.TreatmentOutcomeSubType
+		FROM
+			--outer query joins the most recent event between 12 and 24 months back to the event details
+			(SELECT n.NotificationID, COALESCE(tro.TreatmentOutcomeType, 'No outcome recorded') AS 'TwentyFourMonthOutcome', te.TreatmentEventType, tro.TreatmentOutcomeSubType FROM
+			[$(NTBS)].[dbo].[Notification] n
+				--inner join as we only want a record for each notification which has an event 
+				INNER JOIN
+				--innermost query - first find the most recent event for each notification
+				(SELECT n.[NotificationId], MAX([EventDate]) AS 'MaxEvent'
+				  FROM [$(NTBS)].[dbo].[TreatmentEvent] te
+				  INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = te.NotificationId
+				  INNER JOIN [$(NTBS)].[dbo].ClinicalDetails cd ON cd.NotificationId = n.NotificationId
+				  WHERE DATEDIFF(DAY, COALESCE(cd.TreatmentStartDate, n.NotificationDate), te.EventDate) > 365 AND DATEDIFF(DAY, COALESCE(cd.TreatmentStartDate, n.NotificationDate), te.EventDate) < 731
+				  GROUP BY n.[NotificationId]
+				  ) AS Q1 ON Q1.NotificationId = n.NotificationId
+  			LEFT OUTER JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = n.NotificationId AND te.EventDate = Q1.MaxEvent
+			LEFT OUTER JOIN [$(NTBS)].[dbo].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId) AS Q2
+		WHERE Q2.NotificationId = [dbo].[Outcome].NotificationId
 
-
-		Then where still null, set the ones that aren't expected to ''
-
-		Then where still null set whatever is left to 'No outcome recorded'*/
-
-		--for 24 month outcome, first set to '' where no 24 month outcome is expected	
-			--where 12 month outcome is final
-			--where 24 month outcome is not yet due
+		/*Now set the records where no outcome is expected - the 12 month outcome was a final one or the record is less than 12 months old*/
 
 		UPDATE [dbo].[Outcome] SET TreatmentOutcome24Months = '' WHERE
-			DATEDIFF(DAY, TreatmentStartDate, GETUTCDATE()) < 731
-			OR TreatmentOutcome12Months = 'No outcome recorded'
+			(TreatmentOutcome12Months != 'No outcome recorded'
 			OR (TreatmentOutcome12Months = 'NotEvaluated' AND TreatmentOutcome12MonthsSubType = 'TransferredAbroad')
+			OR DATEDIFF(DAY, TreatmentStartDate, GETUTCDATE()) < 366)
+			AND TreatmentOutcome24Months IS NULL
 
+		/*Finally, everything now left where TreatmentOutcome24Months is NULL should have a value but doesn't*/
 
-		/*initial query
-		--24 MONTH
-		SELECT n.NotificationID, CASE WHEN tro.TreatmentOutcomeType IS NULL THEN 'No outcome recorded' ELSE tro.TreatmentOutcomeType END AS '24monthoutcome', te.TreatmentEventType, tro.TreatmentOutcomeSubType FROM
-		[test-ntbs].[dbo].[Notification] n
-			LEFT OUTER JOIN
-			--first find the most recent event for each notification
-			(SELECT n.[NotificationId], MAX([EventDate]) AS 'MaxEvent'
-			  FROM [test-ntbs].[dbo].[TreatmentEvent] te
-			  INNER JOIN [test-ntbs].[dbo].[Notification] n ON n.NotificationId = te.NotificationId
-			  WHERE DATEDIFF(DAY, n.NotificationDate, te.EventDate) > 365 AND DATEDIFF(DAY, n.NotificationDate, te.EventDate) < 731
-			  GROUP BY n.[NotificationId]
-			  ) AS Q1 ON Q1.NotificationId = n.NotificationId
-  				LEFT OUTER JOIN [test-ntbs].[dbo].[TreatmentEvent] te ON te.NotificationId = n.NotificationId AND te.EventDate = Q1.MaxEvent
-				LEFT OUTER JOIN [test-ntbs].[dbo].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId*/
+		UPDATE [dbo].[Outcome] SET TreatmentOutcome24Months = 'No outcome recorded' WHERE TreatmentOutcome24Months IS NULL
 
-
-
-
+		--TODO: consider what this means for the banner - should it start saying 'No outcome recorded' as soon as the clock ticks over to the start of year 2, even if the user
+		--entered 'still on treatment' the day before?
 
 	--WRAP-UP STEPS
 		--at the end when copying back to reusable, set to proper names

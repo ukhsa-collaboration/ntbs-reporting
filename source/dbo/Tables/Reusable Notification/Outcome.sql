@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Outcome]
 (
-	[OutcomeId] [tinyint] IDENTITY(1,1) NOT NULL, 
+	[OutcomeId] [int] IDENTITY(1,1) NOT NULL, 
     [NotificationId] INT NOT NULL, 
     [TreatmentStartDate] DATETIME NULL, 
     [TreatmentOutcome12Months] VARCHAR(30) NULL, 
