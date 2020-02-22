@@ -51,6 +51,23 @@ AS
 
 
 	--24 MONTH OUTCOME
+	
+	
+		/*Conditions we have to satisfy:
+
+		1. No 24 month outcome is expected
+    			-final at 12 + no further events
+    			-not yet time for there to be one
+    
+		2. 24 month outcome is present (whether expected or not)
+
+		3. 24 month outcome is expected and not present
+
+
+		First set the ones that are present
+		Then where still null, set the ones that aren't expected to ''
+
+		Then where still null set whatever is left to 'No outcome recorded'*/
 
 		--for 24 month outcome, first set to '' where no 24 month outcome is expected	
 			--where 12 month outcome is final
