@@ -103,6 +103,19 @@ AS
 		--TODO: consider what this means for the banner - should it start saying 'No outcome recorded' as soon as the clock ticks over to the start of year 2, even if the user
 		--entered 'still on treatment' the day before?
 
+
+	--36 MONTH OUTCOME
+
+
+
+
+
+
+
+
+
+	--LAST RECORDED TREATMENT OUTCOME
+
 	--WRAP-UP STEPS
 		--at the end when copying back to reusable, set to proper names
 		--TODO: need to convert 'codes' to proper names, i.e. Lost to Lost to follow-up
