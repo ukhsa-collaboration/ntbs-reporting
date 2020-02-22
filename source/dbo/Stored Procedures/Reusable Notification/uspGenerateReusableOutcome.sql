@@ -65,6 +65,10 @@ AS
 
 
 		First set the ones that are present
+			- set the ones that are outcomes to the outcome
+			- set the ones that aren't outcomes (i.e. transfers, treatment restart) to 'No outcome recorded'
+
+
 		Then where still null, set the ones that aren't expected to ''
 
 		Then where still null set whatever is left to 'No outcome recorded'*/
