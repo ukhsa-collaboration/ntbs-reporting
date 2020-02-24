@@ -12,151 +12,165 @@ TRUNCATE TABLE ReusableNotification
 
 
 SELECT 
-	n.NotificationId AS 'NotificationId'
-	,'NTBS' AS 'SourceSystem'
-	,n.NotificationId AS 'NTBS_ID'
-    ,n.ETSID as 'EtsId'
-	,n.LTBRID as 'LtbrId'
-	,n.NotificationDate AS 'NotificationDate' --TODO turn into date only
-	,u.DisplayName AS 'CaseManager'
-	,hd.Consultant AS 'Consultant'
-	,hd.HospitalId AS 'HospitalID'
-	,h.[Name] AS 'Hospital'
-	,hd.TBServiceCode AS 'TBServiceCode'
-	,tbs.[Name] AS 'Service'
-	,p.NhsNumber AS 'NhsNumber' --populate not known?
-	,p.GivenName AS 'Forename'
-	,p.FamilyName AS 'Surname'
-	,p.Dob AS 'DateOfBirth' --TODO turn into date only
-	,NULL as 'Age' --TODO: will need to get the logic that calculates the age correctly
-	,s.Label as 'Sex' 
-	,p.UkBorn AS 'UKBorn' --TODO: will need yes/no conversion
-	,e.Label AS 'EthnicGroup'
-	,c.[Name] AS 'BirthCountry'
-	,p.YearOfUkEntry AS 'UkEntryYear'
-	,p.Postcode --NB: p.PostcodeToLookup doesn't seem to be being uniformly populated. Raise bug but could also code around
-	,p.NoFixedAbode --TODO: will need yes/no conversion
-	,la.[Name] AS 'LocalAuthority'
-	,la.Code AS 'LocalAuthorityCode'
-	,resphec.Code AS 'ResidencePhecCode' --NB not being uniformly populated, something is wrong with the lookup table in ntbs. Failing in front end too
-	,resphec.[Name] AS 'ResidencePhec'
-	,treatphec.Code AS 'TreatmentPhecCode'
-	,treatphec.[Name] AS 'TreatmentPhec'
+	n.NotificationId								AS 'NotificationId'
+	,'NTBS'											AS 'SourceSystem'
+	,n.NotificationId								AS 'NTBS_ID'
+    ,n.ETSID										AS 'EtsId'
+	,n.LTBRID										AS 'LtbrId'
+	,CONVERT(DATE, n.NotificationDate)				AS 'NotificationDate' 
+	,u.DisplayName									AS 'CaseManager'
+	,hd.Consultant									AS 'Consultant'
+	,hd.HospitalId									AS 'HospitalID'
+	,h.[Name]										AS 'Hospital'
+	,hd.TBServiceCode								AS 'TBServiceCode'
+	,tbs.[Name]										AS 'Service'
+	,p.NhsNumber									AS 'NhsNumber' --populate not known?
+	,p.GivenName									AS 'Forename'
+	,p.FamilyName									AS 'Surname'
+	,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth' 
+	,NULL											AS 'Age' --TODO: will need to get the logic that calculates the age correctly
+	,s.Label										AS 'Sex' 
+	,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
+	,e.Label										AS 'EthnicGroup'
+	,c.[Name]										AS 'BirthCountry'
+	,p.YearOfUkEntry								AS 'UkEntryYear'
+	,p.Postcode										AS 'Postcode' --NB: p.PostcodeToLookup doesn't seem to be being uniformly populated. Raise bug but could also code around
+	,dbo.ufnYesNo(p.NoFixedAbode)					AS 'NoFixedAbode'
+	,la.[Name]										AS 'LocalAuthority'
+	,la.Code										AS 'LocalAuthorityCode'
+	,resphec.Code									AS 'ResidencePhecCode' --NB not being uniformly populated, something is wrong with the lookup table in ntbs. Failing in front end too
+	,resphec.[Name]									AS 'ResidencePhec'
+	,treatphec.Code									AS 'TreatmentPhecCode'
+	,treatphec.[Name]								AS 'TreatmentPhec'
 	--clinical dates are next. We will want to extend these to include the additional dates captured in NTBS
-	,cd.SymptomStartDate AS 'SymptomOnsetDate'
-	,cd.TBServicePresentationDate AS 'PresentedDate' --TODO: check this is what the date in ETS refers to, as we have two presentation dates now
-	,NULL AS 'OnsetToPresentationDays' --TODO: add day calculation
-	,cd.DiagnosisDate AS 'DiagnosisDate'
-	,NULL AS 'PresentationToDiagnosisDays' --TODO: add day calculation
-	,cd.TreatmentStartDate AS 'StartOfTreatmentDate'
-	,NULL AS 'DiagnosisToTreatmentDays' --TODO: add day calculation
-	,NULL AS 'OnsetToTreatmentDays' --TODO: add day calculation
-	,cd.HIVTestState AS 'HivTestOffered' --TODO: actually needs summarising as per R1 rules
+	,cd.SymptomStartDate							AS 'SymptomOnsetDate'
+	,cd.TBServicePresentationDate					AS 'PresentedDate' --TODO: check this is what the date in ETS refers to, as we have two presentation dates now
+	,CAST((DATEDIFF(DAY,
+					cd.SymptomStartDate, 
+					cd.TBServicePresentationDate))
+				AS SMALLINT)						AS 'OnsetToPresentationDays' 
+	,cd.DiagnosisDate								AS 'DiagnosisDate'
+	,CAST((DATEDIFF(DAY,
+					cd.TBServicePresentationDate, 
+					cd.DiagnosisDate))
+				AS SMALLINT)						AS 'PresentationToDiagnosisDays' 
+	,cd.TreatmentStartDate							AS 'StartOfTreatmentDate'
+	,CAST((DATEDIFF(DAY,
+					cd.DiagnosisDate, 
+					cd.TreatmentStartDate))
+				AS SMALLINT)						AS 'DiagnosisToTreatmentDays' 
+	,CAST((DATEDIFF(DAY,
+					cd.SymptomStartDate, 
+					cd.TreatmentStartDate))
+				AS SMALLINT)						AS 'OnsetToTreatmentDays' 
+	,cd.HIVTestState								AS 'HivTestOffered' --TODO: actually needs summarising as per R1 rules
 	--NEXT: need to join to NotificationSite and Site tables to summarise site of disease
-	,NULL as 'SiteOfDisease' --TODO
+	,NULL											AS 'SiteOfDisease' --TODO
 	--Contact Tracing
-	,ct.AdultsIdentified AS 'AdultContactsIdentified'
-	,ct.ChildrenIdentified AS 'ChildContactsIdentified'
-	,ct.AdultsIdentified + ct.ChildrenIdentified AS 'TotalContactsIdentified'
-	,ct.AdultsScreened AS 'AdultContactsAssessed'
-	,ct.ChildrenScreened AS 'ChildContactsAssessed'
-	,ct.AdultsScreened + ct.ChildrenScreened AS 'TotalContactsAssessed'
-	,ct.AdultsActiveTB AS 'AdultContactsActiveTB'
-	,ct.ChildrenActiveTB AS 'ChildContactsActiveTB'
-	,ct.AdultsActiveTB + ct.ChildrenActiveTB AS 'TotalContactsActiveTB'
-	,ct.AdultsLatentTB AS 'AdultContactsLTBI'
-	,ct.ChildrenLatentTB AS 'ChildContactsLTBI'
-	,ct.AdultsLatentTB + ct.ChildrenLatentTB AS 'TotalContactsLTBI'
-	,ct.AdultsStartedTreatment AS 'AdultContactsLTBITreat'
-	,ct.ChildrenStartedTreatment  AS 'ChildContactsLTBITreat'
-	,ct.AdultsStartedTreatment + ct.ChildrenStartedTreatment AS 'TotalContactsLTBITreat'
-	,ct.AdultsFinishedTreatment AS 'AdultContactsLTBITreatComplete'
-	,ct.ChildrenFinishedTreatment AS 'ChildContactsLTBITreatComplete'
-	,ct.AdultsFinishedTreatment + ct.ChildrenFinishedTreatment AS 'TotalContactsLTBITreatComplete'
+	,ct.AdultsIdentified							AS 'AdultContactsIdentified'
+	,ct.ChildrenIdentified							AS 'ChildContactsIdentified'
+	,ct.AdultsIdentified + ct.ChildrenIdentified	AS 'TotalContactsIdentified'
+	,ct.AdultsScreened								AS 'AdultContactsAssessed'
+	,ct.ChildrenScreened							AS 'ChildContactsAssessed'
+	,ct.AdultsScreened + ct.ChildrenScreened		AS 'TotalContactsAssessed'
+	,ct.AdultsActiveTB								AS 'AdultContactsActiveTB'
+	,ct.ChildrenActiveTB							AS 'ChildContactsActiveTB'
+	,ct.AdultsActiveTB + ct.ChildrenActiveTB		AS 'TotalContactsActiveTB'
+	,ct.AdultsLatentTB								AS 'AdultContactsLTBI'
+	,ct.ChildrenLatentTB							AS 'ChildContactsLTBI'
+	,ct.AdultsLatentTB + ct.ChildrenLatentTB		AS 'TotalContactsLTBI'
+	,ct.AdultsStartedTreatment						AS 'AdultContactsLTBITreat'
+	,ct.ChildrenStartedTreatment					AS 'ChildContactsLTBITreat'
+	,ct.AdultsStartedTreatment + 
+		ct.ChildrenStartedTreatment					AS 'TotalContactsLTBITreat'
+	,ct.AdultsFinishedTreatment						AS 'AdultContactsLTBITreatComplete'
+	,ct.ChildrenFinishedTreatment					AS 'ChildContactsLTBITreatComplete'
+	,ct.AdultsFinishedTreatment + 
+		ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
 	--non-NTBS Diagnosis
-	,pth.PreviouslyHadTB AS 'PreviouslyDiagnosed' --TODO: convert to yes/no
-	,pth.PreviousTBDiagnosisYear AS 'YearsSinceDiagnosis' --TODO: calculate number of years
-	,NULL AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
-	,NULL AS 'TreatmentInUK' --ditto
-	,NULL AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
-	,cd.BCGVaccinationState AS 'BcgVaccinated' --NB: this data item is about to change in NTBS
+	,dbo.ufnYesNo(pth.PreviouslyHadTB)				AS 'PreviouslyDiagnosed' 
+	,pth.PreviousTBDiagnosisYear					AS 'YearsSinceDiagnosis' --TODO: calculate number of years
+	,NULL											AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
+	,NULL											AS 'TreatmentInUK' --ditto
+	,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
+	,cd.BCGVaccinationState							AS 'BcgVaccinated' --NB: this data item is about to change in NTBS
 	--social risk factors
 	-- we have additional ones in NTBS for asylym seeker and immigration detainee, smoker (currently in co-morbid) and mental health
-	,NULL AS 'AnySocialRiskFactor' --not sure of best way to set this now
-	,srf.AlcoholMisuseStatus AS 'AlcoholMisuse' 
-	,rfd.[Status] AS 'DrugMisuse' 
-	,rfd.IsCurrent AS 'CurrentDrugMisuse' --TODO: convert from 1/0 to Yes/No
-	,rfd.InPastFiveYears AS 'DrugMisuseInLast5Years' --TODO: convert from 1/0 to Yes/No
-	,rfd.MoreThanFiveYearsAgo AS 'DrugMisuseMoreThan5YearsAgo' --TODO: convert from 1/0 to Yes/No
-	,rfh.[Status] AS 'Homeless'
-	,rfh.IsCurrent AS 'CurrentlyHomeless' --TODO: convert from 1/0 to Yes/No
-	,rfh.InPastFiveYears AS 'HomelessInLast5Years' --TODO: convert from 1/0 to Yes/No
-	,rfh.MoreThanFiveYearsAgo AS 'HomelessMoreThan5YearsAgo' --TODO: convert from 1/0 to Yes/No
-	,rfp.[Status] AS 'Prison'
-	,rfp.IsCurrent AS 'CurrentlyInPrisonOrInPrisonWhenFirstSeen' --TODO: convert from 1/0 to Yes/No
-	,rfp.InPastFiveYears AS 'InPrisonInLast5Years' --TODO: convert from 1/0 to Yes/No
-	,rfp.MoreThanFiveYearsAgo AS 'InPrisonMoreThan5YearsAgo' --TODO: convert from 1/0 to Yes/No
+	,NULL											AS 'AnySocialRiskFactor' --not sure of best way to set this now
+	,srf.AlcoholMisuseStatus						AS 'AlcoholMisuse' 
+	,rfd.[Status]									AS 'DrugMisuse' 
+	,dbo.ufnYesNo(rfd.IsCurrent)					AS 'CurrentDrugMisuse'
+	,dbo.ufnYesNo(rfd.InPastFiveYears)				AS 'DrugMisuseInLast5Years'
+	,dbo.ufnYesNo(rfd.MoreThanFiveYearsAgo)			AS 'DrugMisuseMoreThan5YearsAgo'
+	,rfh.[Status]									AS 'Homeless'
+	,dbo.ufnYesNo(rfh.IsCurrent)					AS 'CurrentlyHomeless'
+	,dbo.ufnYesNo(rfh.InPastFiveYears)				AS 'HomelessInLast5Years'
+	,dbo.ufnYesNo(rfh.MoreThanFiveYearsAgo)			AS 'HomelessMoreThan5YearsAgo'
+	,rfp.[Status]									AS 'Prison'
+	,dbo.ufnYesNo(rfp.IsCurrent)					AS 'CurrentlyInPrisonOrInPrisonWhenFirstSeen'
+	,dbo.ufnYesNo(rfp.InPastFiveYears)				AS 'InPrisonInLast5Years'
+	,dbo.ufnYesNo(rfp.MoreThanFiveYearsAgo)			AS 'InPrisonMoreThan5YearsAgo'
 	--travel and visitors
 	--TODO: is there a better way to do this than just joining to the country table 6 or 7 times? A function?
-	,td.HasTravel AS 'TravelledOutsideUk' --TODO: convert from 1/0 to Yes/No
-	,td.TotalNumberOfCountries AS 'ToHowManyCountries'
-	,c1.[Name] AS 'TravelCountry1'
-	,td.StayLengthInMonths1 AS 'MonthsTravelled1'
-	,c2.[Name] AS 'TravelCountry2'
-	,td.StayLengthInMonths2 AS 'MonthsTravelled2'
-	,NULL AS 'TravelCountry3' --TODO: waiting to see if a function would be better
-	,td.StayLengthInMonths3 AS 'MonthsTravelled3'
-	,vd.HasVisitor AS 'ReceivedVisitors' --TODO: convert from 1/0 to Yes/No
-	,vd.TotalNumberOfCountries AS 'FromHowManyCountries'
-	,NULL AS 'VisitorCountry1'
-	,vd.StayLengthInMonths1 AS 'DaysVisitorsStayed1' --NB is this captured in days in ETS? It's captured in months in NTBS
-	,NULL AS 'VisitorCountry2'
-	,vd.StayLengthInMonths2 AS 'DaysVisitorsStayed2'
-	,NULL AS 'VisitorCountry3' --TODO: waiting to see if a function would be better
-	,vd.StayLengthInMonths3 AS 'DaysVisitorsStayed3'
+	,dbo.ufnYesNo(td.HasTravel)						AS 'TravelledOutsideUk'
+	,td.TotalNumberOfCountries						AS 'ToHowManyCountries'
+	,c1.[Name]										AS 'TravelCountry1'
+	,td.StayLengthInMonths1							AS 'MonthsTravelled1'
+	,c2.[Name]										AS 'TravelCountry2'
+	,td.StayLengthInMonths2							AS 'MonthsTravelled2'
+	,NULL											AS 'TravelCountry3' --TODO: waiting to see if a function would be better
+	,td.StayLengthInMonths3							AS 'MonthsTravelled3'
+	,dbo.ufnYesNo(vd.HasVisitor)					AS 'ReceivedVisitors'
+	,vd.TotalNumberOfCountries						AS 'FromHowManyCountries'
+	,NULL											AS 'VisitorCountry1'
+	,vd.StayLengthInMonths1							AS 'DaysVisitorsStayed1' --NB is this captured in days in ETS? It's captured in months in NTBS
+	,NULL											AS 'VisitorCountry2'
+	,vd.StayLengthInMonths2							AS 'DaysVisitorsStayed2'
+	,NULL											AS 'VisitorCountry3' --TODO: waiting to see if a function would be better
+	,vd.StayLengthInMonths3							AS 'DaysVisitorsStayed3'
 	--comorbidities
-	,cod.DiabetesStatus AS 'Diabetes' --TODO: convert from 1/0 to Yes/No
-	,cod.HepatitisBStatus AS 'HepatitisB' --TODO: convert from 1/0 to Yes/No
-	,cod.HepatitisCStatus AS 'HepatitisC' --TODO: convert from 1/0 to Yes/No
-	,cod.LiverDiseaseStatus AS 'ChronicLiverDisease' --TODO: convert from 1/0 to Yes/No
-	,cod.RenalDiseaseStatus AS 'ChronicRenalDisease' --TODO: convert from 1/0 to Yes/No
-	,id.[Status] AS 'ImmunoSuppression'
-	,id.HasBioTherapy AS 'BiologicalTherapy' --TODO: convert from 1/0 to Yes/No
-	,id.HasTransplantation as 'Transplantation' --TODO: convert from 1/0 to Yes/No
-	,id.HasOther AS 'OtherImmunoSuppression' --TODO: convert from 1/0 to Yes/No
-	,srf.SmokingStatus AS 'CurrentSmoker' 
+	,dbo.ufnYesNo(cod.DiabetesStatus)				AS 'Diabetes' 
+	,dbo.ufnYesNo(cod.HepatitisBStatus)				AS 'HepatitisB'
+	,dbo.ufnYesNo(cod.HepatitisCStatus)				AS 'HepatitisC' 
+	,dbo.ufnYesNo(cod.LiverDiseaseStatus)			AS 'ChronicLiverDisease'
+	,dbo.ufnYesNo(cod.RenalDiseaseStatus)			AS 'ChronicRenalDisease'
+	,id.[Status]									AS 'ImmunoSuppression'
+	,dbo.ufnYesNo(id.HasBioTherapy)					AS 'BiologicalTherapy'
+	,dbo.ufnYesNo(id.HasTransplantation)			AS 'Transplantation' 
+	,dbo.ufnYesNo(id.HasOther)						AS 'OtherImmunoSuppression'
+	,srf.SmokingStatus								AS 'CurrentSmoker' 
 	--treatment details
-	,cd.IsPostMortem AS 'PostMortemDiagnosis' --TODO: check if conversion needed
-	,cd.DidNotStartTreatment AS 'DidNotStartTreatment' --TODO: check if conversion needed
-	,cd.IsShortCourseTreatment AS 'ShortCourse' --TODO: check if conversion needed
-	,cd.IsMDRTreatment AS 'MdrTreatment' --TODO: check if conversion needed
-	,cd.MDRTreatmentStartDate AS 'MdrTreatmentDate' --TODO: check if conversion needed
+	,cd.IsPostMortem								AS 'PostMortemDiagnosis' --TODO: check if conversion needed
+	,cd.DidNotStartTreatment						AS 'DidNotStartTreatment' --TODO: check if conversion needed
+	,cd.IsShortCourseTreatment						AS 'ShortCourse' --TODO: check if conversion needed
+	,cd.IsMDRTreatment								AS 'MdrTreatment' --TODO: check if conversion needed
+	,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate' --TODO: check if conversion needed
 	--Outcomes
 	--TODO: currently in the too hard pile!
-	,NULL AS 'TreatmentOutcome12months'
-	,NULL AS 'TreatmentOutcome24months'
-	,NULL AS 'TreatmentOutcome36months'
-	,NULL AS 'LastRecordedTreatmentOutcome'
+	,NULL											AS 'TreatmentOutcome12months'
+	,NULL											AS 'TreatmentOutcome24months'
+	,NULL											AS 'TreatmentOutcome36months'
+	,NULL											AS 'LastRecordedTreatmentOutcome'
 	--dates
 	--date of death can be fetched from the Treatment Event table, even though for post-mortem it will also be stored on clinical details. This is one consistent way to obtain it
-	,NULL AS 'DateOfDeath'
+	,NULL											AS 'DateOfDeath'
 	--this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
-	,NULL AS 'TreatmentEndDate'
-	,ted.HasTestCarriedOut AS 'NoSampleTaken'
+	,NULL											AS 'TreatmentEndDate'
+	,ted.HasTestCarriedOut							AS 'NoSampleTaken'
 	--TEMPORARY WAY OF ADDING THESE TO QUERY - IN REALITY THESE WILL BE ADDED TO THE TABLE AFTER INSERTION
-	,crs.CulturePositive AS 'CulturePositive'
-	,crs.Species AS 'Species'
-	,crs.EarliestSpecimenDate AS 'EarliestSpecimenDate'
-	,crs.DrugResistanceProfile AS 'DrugResistanceProfile'
-	,crs.INH AS 'INH'
-	,crs.RIF AS 'RIF'
-	,crs.ETHAM AS 'EMB'
-	,crs.PYR AS 'PZA'
-	,crs.AMINO AS 'AMINO'
-	,crs.QUIN AS 'QUIN'
-	,crs.MDR AS 'MDR'
-	,crs.XDR AS 'XDR'
-	,GETUTCDATE() AS 'DataRefreshedAt'
+	,crs.CulturePositive							AS 'CulturePositive'
+	,crs.Species									AS 'Species'
+	,crs.EarliestSpecimenDate						AS 'EarliestSpecimenDate'
+	,crs.DrugResistanceProfile						AS 'DrugResistanceProfile'
+	,crs.INH										AS 'INH'
+	,crs.RIF										AS 'RIF'
+	,crs.ETHAM										AS 'EMB'
+	,crs.PYR										AS 'PZA'
+	,crs.AMINO										AS 'AMINO'
+	,crs.QUIN										AS 'QUIN'
+	,crs.MDR										AS 'MDR'
+	,crs.XDR										AS 'XDR'
+	,GETUTCDATE()									AS 'DataRefreshedAt'
 	
 	FROM [$(NTBS)].[dbo].[Notification] n
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
