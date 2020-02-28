@@ -129,11 +129,11 @@ SELECT
 	,NULL											AS 'VisitorCountry3' --TODO: waiting to see if a function would be better
 	,vd.StayLengthInMonths3							AS 'DaysVisitorsStayed3'
 	--comorbidities
-	,dbo.ufnYesNo(cod.DiabetesStatus)				AS 'Diabetes' 
-	,dbo.ufnYesNo(cod.HepatitisBStatus)				AS 'HepatitisB'
-	,dbo.ufnYesNo(cod.HepatitisCStatus)				AS 'HepatitisC' 
-	,dbo.ufnYesNo(cod.LiverDiseaseStatus)			AS 'ChronicLiverDisease'
-	,dbo.ufnYesNo(cod.RenalDiseaseStatus)			AS 'ChronicRenalDisease'
+	,cod.DiabetesStatus								AS 'Diabetes' 
+	,cod.HepatitisBStatus							AS 'HepatitisB'
+	,cod.HepatitisCStatus							AS 'HepatitisC' 
+	,cod.LiverDiseaseStatus							AS 'ChronicLiverDisease'
+	,cod.RenalDiseaseStatus							AS 'ChronicRenalDisease'
 	,id.[Status]									AS 'ImmunoSuppression'
 	,dbo.ufnYesNo(id.HasBioTherapy)					AS 'BiologicalTherapy'
 	,dbo.ufnYesNo(id.HasTransplantation)			AS 'Transplantation' 
