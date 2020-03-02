@@ -28,7 +28,7 @@ SELECT
 	,p.GivenName									AS 'Forename'
 	,p.FamilyName									AS 'Surname'
 	,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth' 
-	,NULL											AS 'Age' --TODO: will need to get the logic that calculates the age correctly
+	,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)	AS 'Age' --Should be ok. Age function was updated in RP-1207
 	,s.Label										AS 'Sex' 
 	,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
 	,e.Label										AS 'EthnicGroup'
@@ -65,7 +65,7 @@ SELECT
 				AS SMALLINT)						AS 'OnsetToTreatmentDays' 
 	,cd.HIVTestState								AS 'HivTestOffered' --TODO: actually needs summarising as per R1 rules
 	--NEXT: need to join to NotificationSite and Site tables to summarise site of disease
-	,NULL											AS 'SiteOfDisease' --TODO
+	,dbo.ufnGetSiteOfDisease(n.NotificationId)		AS 'SiteOfDisease' -- New function created for this. To be checked.
 	--Contact Tracing
 	,ct.AdultsIdentified							AS 'AdultContactsIdentified'
 	,ct.ChildrenIdentified							AS 'ChildContactsIdentified'
