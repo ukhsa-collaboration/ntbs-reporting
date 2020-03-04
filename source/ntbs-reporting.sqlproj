@@ -216,7 +216,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCulturePositive.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationCultureResistance.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationDrugResistanceProfile.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome_ETS.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationImmunosuppression.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusablePostcodeLookup.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableResidence.sql" />
@@ -291,6 +291,7 @@
     <Build Include="dbo\Tables\Reusable Notification\Outcome.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcome.sql" />
     <Build Include="dbo\Tables\Reusable Notification\OutcomeLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

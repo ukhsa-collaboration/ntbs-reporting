@@ -64,8 +64,7 @@ AS
 		3. 24 month outcome is expected and not present*/
 
 
-		
-		--24 MONTH
+	
 		/*First set the ones that are present
 			- set the ones that are outcomes to the outcome
 			- set the ones that aren't outcomes (i.e. transfers, treatment restart) to 'No outcome recorded'*/
@@ -106,15 +105,67 @@ AS
 
 	--36 MONTH OUTCOME
 
+	/*Conditions we have to satisfy:
+
+		1. No 36 month outcome is expected
+    			-final at 12 or 24 + no further events
+    			-not yet time for there to be one
+    
+		2. 36 month outcome is present (whether expected or not)
+
+		3. 36 month outcome is expected and not present*/
 
 
+	
+		/*First set the ones that are present
+			- set the ones that are outcomes to the outcome
+			- set the ones that aren't outcomes (i.e. transfers, treatment restart) to 'No outcome recorded'*/
 
+		UPDATE [dbo].[Outcome] SET TreatmentOutcome36Months = Q2.[ThirtySixMonthOutcome], TreatmentOutcome24MonthsSubType = Q2.TreatmentOutcomeSubType
+		FROM
+			--outer query joins the most recent event between 12 and 24 months back to the event details
+			(SELECT n.NotificationID, COALESCE(tro.TreatmentOutcomeType, 'No outcome recorded') AS 'ThirtySixMonthOutcome', te.TreatmentEventType, tro.TreatmentOutcomeSubType FROM
+			[$(NTBS)].[dbo].[Notification] n
+				--inner join as we only want a record for each notification which has an event 
+				INNER JOIN
+				--innermost query - first find the most recent event for each notification
+				(SELECT n.[NotificationId], MAX([EventDate]) AS 'MaxEvent'
+				  FROM [$(NTBS)].[dbo].[TreatmentEvent] te
+				  INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = te.NotificationId
+				  INNER JOIN [$(NTBS)].[dbo].ClinicalDetails cd ON cd.NotificationId = n.NotificationId
+				  WHERE DATEDIFF(DAY, COALESCE(cd.TreatmentStartDate, n.NotificationDate), te.EventDate) > 731 
+				  GROUP BY n.[NotificationId]
+				  ) AS Q1 ON Q1.NotificationId = n.NotificationId
+  			LEFT OUTER JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = n.NotificationId AND te.EventDate = Q1.MaxEvent
+			LEFT OUTER JOIN [$(NTBS)].[dbo].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId) AS Q2
+		WHERE Q2.NotificationId = [dbo].[Outcome].NotificationId
 
+		/*Now set the records where no outcome is expected - the 12 month outcome was a final, the 24 month outcome was a final, one or the record is less than 24 months old*/
 
+		UPDATE [dbo].[Outcome] SET TreatmentOutcome36Months = '' WHERE
+			--condition 1: final at 12 months
+			((TreatmentOutcome12Months != 'No outcome recorded'
+			OR (TreatmentOutcome12Months = 'NotEvaluated' AND TreatmentOutcome12MonthsSubType = 'TransferredAbroad'))
+			--condition 2: final at 24 months
+			OR
+			(TreatmentOutcome24Months != 'No outcome recorded'
+			OR (TreatmentOutcome24Months = 'NotEvaluated' AND TreatmentOutcome24MonthsSubType = 'TransferredAbroad'))
+			--condition 3: record is less than 24 months old
+			OR DATEDIFF(DAY, TreatmentStartDate, GETUTCDATE()) < 731)
+			--condition 4: TreatmentOutcome36Months does not have a value already
+			AND TreatmentOutcome36Months IS NULL
 
+		/*Finally, everything now left where TreatmentOutcome24Months is NULL should have a value but doesn't*/
+
+		UPDATE [dbo].[Outcome] SET TreatmentOutcome36Months = 'No outcome recorded' WHERE TreatmentOutcome36Months IS NULL
 
 
 	--LAST RECORDED TREATMENT OUTCOME
+
+		/*use the most recent of the 3 possible outcome periods which has a value and copy this to Last Recorded Treatment Outcome*/
+
+
+
 
 	--WRAP-UP STEPS
 		--at the end when copying back to reusable, set to proper names

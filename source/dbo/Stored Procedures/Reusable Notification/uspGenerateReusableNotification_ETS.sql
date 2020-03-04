@@ -291,7 +291,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 			EXEC dbo.uspGenerateReusableResidence
 			EXEC dbo.uspGenerateReusableTreatment
 			EXEC dbo.uspGenerateReusableNotificationImmunosuppression
-			EXEC dbo.uspGenerateReusableNotificationLastRecordedTreatmentOutcome
+			EXEC dbo.uspGenerateReusableNotificationLastRecordedTreatmentOutcome_ETS
 			EXEC dbo.uspGenerateReusableNotificationCulturePositive
 
 			

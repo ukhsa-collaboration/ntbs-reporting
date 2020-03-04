@@ -204,7 +204,10 @@ SELECT
 		LEFT OUTER JOIN [dbo].[CultureAndResistanceSummary] crs ON crs.NotificationId = n.NotificationId
 	WHERE n.NotificationStatus NOT IN ('Draft', 'Deleted')
 
+    EXEC [dbo].uspGenerateReusableOutcome
 
+    EXEC [dbo].uspGenerateReusableNotificationLastRecordedTreatmentOutcome
+    
 
 INSERT INTO ReusableNotification ([NotificationId]
       ,[NtbsId]
