@@ -162,7 +162,7 @@ AS
 
 	--LAST RECORDED TREATMENT OUTCOME
 
-		/*use the most recent of the 3 possible outcome periods which has a value and copy this to Last Recorded Treatment Outcome*/
+		--this will be calculated once the data has been moved back to the main ReusableNotification table
 
 
 
