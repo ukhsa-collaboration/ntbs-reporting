@@ -8,8 +8,8 @@ Desc:    This re/calculates the value for the data point ReusableNotification.Si
          
 **************************************************************************************************/
 
-CREATE FUNCTION [dbo].[ufnGetSiteOfDisease] (
-	@NotificationId INT
+CREATE FUNCTION [dbo].[ufnGetETSSiteOfDisease] (
+	@TuberculosisEpisodeId UNIQUEIDENTIFIER
 )
 	RETURNS NVARCHAR(50)
 AS
@@ -20,18 +20,20 @@ AS
 		-- 4. Sites of disease do not include Pulmonary (LegacyId=1), Laryngeal (LegacyID=11), Miliary (LegacyID=12), set field to 'Extra-pulmonary'
 		SET @ReturnValue = (SELECT TOP 1
 								(CASE
-									WHEN s.SiteId  in (1,12,13)  THEN 'Pulmonary' -- Set to Pulmonary where Pulmonary, Laryngeal or Miliary 
-									ELSE 'Extra-pulmonary' -- All records that are not "Pulmonary"  are set to be "Extra-pulmonary"
+									WHEN d.LegacyId = 1 THEN 'Pulmonary' -- Set to Pulmonary
+									WHEN d.LegacyId = 11 THEN 'Pulmonary'
+									WHEN d.LegacyId = 12 THEN 'Pulmonary'
+									ELSE 'Extra-pulmonary' -- All records that are not "Pulmonary" or "Unknown" are set to be "Extra-pulmonary"
 								END) AS SiteOfDisease
-
-							FROM [$(NTBS)].dbo.NotificationSite ns
-								INNER JOIN [$(NTBS)].dbo.Site s ON s.SiteId = ns.SiteId
-							WHERE
-								ns.NotificationId = @NotificationId
-							ORDER BY [Description] DESC) -- Pulmonary record(s) to come out on top
+							FROM [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite t
+								INNER JOIN [$(ETS)].dbo.DiseaseSite d ON d.Id = t.DiseaseSiteId
+							WHERE t.AuditDelete IS NULL
+								AND d.LegacyId != 16 -- Set to Unknown in all other cases (see below)
+								AND t.TuberculosisEpisodeId = @TuberculosisEpisodeId
+							ORDER BY SiteOfDisease DESC) -- Pulmonary record(s) to come out on top
 
 		-- 1. Patient has no site of disease records
-		-- 2. All sites of disease are 'Unknown' 
+		-- 2. All sites of disease are 'Unknown' (LegacyId=16)
 		IF (@ReturnValue IS NULL)
 			SET @ReturnValue = 'Unknown'
 

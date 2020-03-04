@@ -129,7 +129,7 @@
     <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnEmptyOrIntValue.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
-    <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetETSSiteOfDisease.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDrugUseStatus.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetEarliestSpecimenDate.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHomelessStatus.sql" />
@@ -291,6 +291,7 @@
     <Build Include="dbo\Tables\Reusable Notification\Outcome.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcome.sql" />
     <Build Include="dbo\Tables\Reusable Notification\OutcomeLookup.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome.sql" />
   </ItemGroup>
   <ItemGroup>

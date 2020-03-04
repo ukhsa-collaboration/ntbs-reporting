@@ -28,7 +28,7 @@ SELECT
 	,p.GivenName									AS 'Forename'
 	,p.FamilyName									AS 'Surname'
 	,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth' 
-	,NULL											AS 'Age' --TODO: will need to get the logic that calculates the age correctly
+	,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)	AS 'Age' --Should be ok. Age function was updated in RP-1207
 	,s.Label										AS 'Sex' 
 	,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
 	,e.Label										AS 'EthnicGroup'
@@ -65,7 +65,7 @@ SELECT
 				AS SMALLINT)						AS 'OnsetToTreatmentDays' 
 	,cd.HIVTestState								AS 'HivTestOffered' --TODO: actually needs summarising as per R1 rules
 	--NEXT: need to join to NotificationSite and Site tables to summarise site of disease
-	,NULL											AS 'SiteOfDisease' --TODO
+	,dbo.ufnGetSiteOfDisease(n.NotificationId)		AS 'SiteOfDisease' -- New function created for this. To be checked.
 	--Contact Tracing
 	,ct.AdultsIdentified							AS 'AdultContactsIdentified'
 	,ct.ChildrenIdentified							AS 'ChildContactsIdentified'
@@ -96,7 +96,7 @@ SELECT
 	,cd.BCGVaccinationState							AS 'BcgVaccinated' --NB: this data item is about to change in NTBS
 	--social risk factors
 	-- we have additional ones in NTBS for asylym seeker and immigration detainee, smoker (currently in co-morbid) and mental health
-	,NULL											AS 'AnySocialRiskFactor' --not sure of best way to set this now
+	,NULL											AS 'AnySocialRiskFactor' -- updated at end
 	,srf.AlcoholMisuseStatus						AS 'AlcoholMisuse' 
 	,rfd.[Status]									AS 'DrugMisuse' 
 	,dbo.ufnYesNo(rfd.IsCurrent)					AS 'CurrentDrugMisuse'
@@ -203,6 +203,14 @@ SELECT
 		--TEMPORARY
 		LEFT OUTER JOIN [dbo].[CultureAndResistanceSummary] crs ON crs.NotificationId = n.NotificationId
 	WHERE n.NotificationStatus NOT IN ('Draft', 'Deleted')
+
+	Update ReusableNotification 
+	SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' or 
+										DrugMisuse = 'Yes' or 
+										Homeless = 'Yes' or 
+										Prison = 'Yes' 
+										THEN 'Yes' ELSE 'No' END  --do we want/are there any other scenarios?
+
 
     EXEC [dbo].uspGenerateReusableOutcome
 

@@ -90,7 +90,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					n.Id, 
 					te.HIVTestOffered
 				)															AS HivTestOffered,
-				dbo.ufnGetSiteOfDisease(n.TuberculosisEpisodeId)            AS SiteOfDisease,
+				dbo.ufnGetETSSiteOfDisease(n.TuberculosisEpisodeId)            AS SiteOfDisease,
 				ct.AdultContactsIdentified									AS AdultContactsIdentified,
 				ct.ChildContactsIdentified									AS ChildContactsIdentified,
 				ct.TotalContactsIdentified									AS TotalContactsIdentified,	
