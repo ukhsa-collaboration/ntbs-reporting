@@ -264,6 +264,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 				NULL                                                        AS QUIN,
 				NULL                                                        AS MDR,
 				NULL                                                        AS XDR,
+				NULL														AS RecordCreateDate,
 				GETDATE()                                                   AS DataAsAt
 			FROM [$(ETS)].dbo.Patient p
 				INNER JOIN [$(ETS)].dbo.Notification n ON n.PatientId = p.Id

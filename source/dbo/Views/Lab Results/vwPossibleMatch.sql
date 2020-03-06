@@ -1,4 +1,4 @@
-﻿CREATE VIEW [dbo].[vwPossibleMatch]
+﻿/*CREATE VIEW [dbo].[vwPossibleMatch]
 	AS 
 	SELECT 
 		nsm.ReferenceLaboratoryNumber
@@ -38,4 +38,4 @@
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TbService] tbs ON e.TBServiceCode = tbs.Code
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
-	WHERE nsm.MatchType = 'Possible' 
+	WHERE nsm.MatchType = 'Possible' */

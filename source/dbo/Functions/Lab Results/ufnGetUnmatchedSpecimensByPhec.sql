@@ -1,4 +1,4 @@
-CREATE FUNCTION [dbo].[ufnGetUnmatchedSpecimensByPhec] 
+/*CREATE FUNCTION [dbo].[ufnGetUnmatchedSpecimensByPhec] 
 (	
 	--comma-separated list to be split using select value from STRING_SPLIT
 	@Phec VARCHAR(200)		=	NULL
@@ -40,4 +40,4 @@ SELECT
 FROM [dbo].vwPossibleMatch vpm
 	WHERE vpm.ReferenceLaboratoryNumber IN 
 		(SELECT DISTINCT ReferenceLaboratoryNumber FROM [dbo].vwPossibleMatch WHERE [PHECCode] IN 
-			(SELECT TRIM(VALUE) FROM STRING_SPLIT(@Phec, ',')))
+			(SELECT TRIM(VALUE) FROM STRING_SPLIT(@Phec, ',')))*/

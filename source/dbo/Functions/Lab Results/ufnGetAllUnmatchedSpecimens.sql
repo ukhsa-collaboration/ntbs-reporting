@@ -1,4 +1,4 @@
-CREATE FUNCTION [dbo].[ufnGetAllUnmatchedSpecimens] 
+/*CREATE FUNCTION [dbo].[ufnGetAllUnmatchedSpecimens] 
 (	
 	
 )
@@ -31,4 +31,4 @@ SELECT
 	,vpm.NtbsAddress
 	,vpm.NtbsPostcode
 	,vpm.ConfidenceLevel
-FROM [dbo].vwPossibleMatch vpm
+FROM [dbo].vwPossibleMatch vpm*/
