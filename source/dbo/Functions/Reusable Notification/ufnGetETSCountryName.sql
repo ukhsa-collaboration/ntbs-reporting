@@ -9,7 +9,7 @@ Desc:    This re/calculates the value for the data points ReusableNotification.T
          
 **************************************************************************************************/
 
-CREATE FUNCTION [dbo].[ufnGetCountryName] (
+CREATE FUNCTION [dbo].[ufnGetETSCountryName] (
 	@CountryId uniqueidentifier
 )
 	RETURNS nvarchar(255)
@@ -19,7 +19,7 @@ AS
 	
 		IF (@CountryId IS NOT NULL)
 		BEGIN
-			SET @CountryName = (SELECT Name FROM [$(NTBS)].dbo.Country WHERE CountryId = @CountryId)
+			SET @CountryName = (SELECT Name FROM [$(ETS)].dbo.Country WHERE Id = @CountryId)
 
 			-- Country name not found =  An error has occurred
 			IF (@CountryName IS NULL)
