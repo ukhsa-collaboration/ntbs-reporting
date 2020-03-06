@@ -20,7 +20,7 @@ AS
 					SUM(CASE WHEN HivTestOffered IN ('Offered', 'Not offered') THEN 1 ELSE 0 END) AS HIVDenominator,
 					SUM(CASE WHEN OnsetToTreatmentDays > 120 and SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS TreatmentDelays,
 					SUM(CASE WHEN SiteOfDisease = 'Pulmonary' THEN 1 ELSE 0 END) AS NumberOfPulmonaryNotifications,
-					COUNT(rn.EtsId) as 'NumberOfNotifications'
+					COUNT(rn.ReusableNotificationId) as 'NumberOfNotifications'
 				from  [dbo].ReusableNotification rn 
 				WHERE rn.NotificationDate between getDate()-395 and getDate()-30
 				GROUP BY rn.TBServiceCode) AS Q1

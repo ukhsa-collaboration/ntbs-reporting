@@ -168,9 +168,26 @@ AS
 
 
 	--WRAP-UP STEPS
-		--at the end when copying back to reusable, set to proper names
-		--TODO: need to convert 'codes' to proper names, i.e. Lost to Lost to follow-up
-		--using OutcomeLookup
+
+		--update the main table with the decoded values for each outcome
+		--if it can be found in the look-up table it means the user has entered an outcome (these are stored as text codes in NTBS
+		--so 'NotEvaluted' or 'Died')
+		--if not, we have calcualted it as either an empty string or 'No outcome recorded' above
+
+		UPDATE [dbo].ReusableNotification 
+			SET 
+				TreatmentOutcome12months = COALESCE(ol12.OutcomeDescription, o.TreatmentOutcome12Months),
+				TreatmentOutcome24months = COALESCE(ol24.OutcomeDescription, o.TreatmentOutcome24Months),
+				TreatmentOutcome36months = COALESCE(ol36.OutcomeDescription, o.TreatmentOutcome36Months)
+			FROM [dbo].[Outcome] o
+			  LEFT OUTER JOIN [dbo].[OutcomeLookup] ol12 ON ol12.OutcomeCode = o.TreatmentOutcome12Months
+			  LEFT OUTER JOIN [dbo].[OutcomeLookup] ol24 ON ol24.OutcomeCode = o.TreatmentOutcome24Months
+			  LEFT OUTER JOIN [dbo].[OutcomeLookup] ol36 ON ol36.OutcomeCode = o.TreatmentOutcome36Months
+			WHERE o.NotificationId = [dbo].ReusableNotification.NotificationId
+
+
+		--finally delete this table. Leave commented out for now for debugging
+		--DELETE FROM [dbo].[Outcome]
 
 
 RETURN 0
