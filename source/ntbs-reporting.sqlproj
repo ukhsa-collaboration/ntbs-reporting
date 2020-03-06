@@ -285,11 +285,13 @@
     <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
     <Build Include="dbo\Tables\Authorization\User.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableCreateDate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="phe-ntbs-R1Live-reporting.publish.xml" />
+    <None Include="phe-ntbs-R1Branch-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />

@@ -22,12 +22,12 @@
 	[Surname] [nvarchar](50) NULL,
 	[DateOfBirth] [date] NULL,
 	[Age] [tinyint] NULL,
-	[Sex] [varchar](30) NOT NULL,
-	[UkBorn] [varchar](30) not null,
-	[EthnicGroup] [varchar](255) NOT NULL,
+	[Sex] [varchar](30) NULL,
+	[UkBorn] [varchar](30) null,
+	[EthnicGroup] [varchar](255) NULL,
 	[BirthCountry] [varchar](255) NULL,
 	[UkEntryYear] [int] NULL,
-	[Postcode] [nvarchar](20) not null,
+	[Postcode] [nvarchar](20) null,
 	[NoFixedAbode] [nvarchar](30) NULL,
 
 	-- Geographies
@@ -48,7 +48,7 @@
 	[DiagnosisToTreatmentDays] smallint NULL,
 	[OnsetToTreatmentDays] smallint NULL,
 	[HivTestOffered] [nvarchar](255) NULL,
-	[SiteOfDisease] [nvarchar](50) NOT NULL,
+	[SiteOfDisease] [nvarchar](50) NULL,
 	[AdultContactsIdentified] [int] NULL,
 	[ChildContactsIdentified] [int] NULL,	
 	[TotalContactsIdentified] [int] NULL,
@@ -141,11 +141,13 @@
 	[QUIN] [varchar](30) NULL,
 	[MDR] [varchar](30) NULL,
 	[XDR] [varchar](30) NULL,
+	[RecordCreateDate] DATETIME NULL,
 	[DataRefreshedAt] [datetime] NOT NULL
 
 	 CONSTRAINT [PK_ReusableNotification] PRIMARY KEY CLUSTERED (
 		[ReusableNotificationId] ASC
-	)
+	), 
+    
 ) ON [PRIMARY]
 GO
 
