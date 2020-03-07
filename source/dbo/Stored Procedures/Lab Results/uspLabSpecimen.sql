@@ -164,8 +164,8 @@ Create PROCEDURE [dbo].[uspLabSpecimen] AS
 
 		--First line done individually
 		EXEC uspLabSpecimenSensitivityResult 'INH'
-		EXEC uspLabSpecimenSensitivityResult 'ETHAM'
-		EXEC uspLabSpecimenSensitivityResult 'PYR'
+		EXEC uspLabSpecimenSensitivityResult 'EMB'
+		EXEC uspLabSpecimenSensitivityResult 'PZA'
 		EXEC uspLabSpecimenSensitivityResult 'RIF'
 
 		--Second line summarised by group

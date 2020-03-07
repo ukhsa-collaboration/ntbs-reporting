@@ -4,20 +4,20 @@ AS
 		--calculate MDR using same rules as R1
 
 		-- 1. Both INH and RIF are set to 'Resistant'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			MDR = 'Yes'
 		WHERE MDR IS NULL
 			AND (INH = 'Resistant' AND RIF = 'Resistant')
 
 		-- 2. One of INH and RIF (or both) is 'Sensitive'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			MDR = 'No'
 		WHERE MDR IS NULL
 			AND (INH = 'Sensitive' OR RIF = 'Sensitive')
 
 		-- 3. One of INH and RIF (or both) is 'No result' or 'Unknown'
 		
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			MDR = 'No result'
 		WHERE MDR IS NULL
 			AND (
@@ -30,19 +30,19 @@ AS
 		--calculate XDR using same rules as R1
 
 		-- 1. Both QUIN and AMINO are set to 'Resistant'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			XDR = 'Yes'
 		WHERE XDR IS NULL
 			AND (AMINO = 'Resistant' AND QUIN = 'Resistant')
 
 		-- 2. One of QUIN or AMINO (or both) is 'Sensitive'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			XDR = 'No'
 		WHERE XDR IS NULL
 			AND (AMINO = 'Sensitive' OR QUIN = 'Sensitive')
 
 		-- 3. One of AMINO and QUIN (or both) is 'No result' or 'Unknown'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			XDR = 'No result'
 		WHERE XDR IS NULL
 			AND (

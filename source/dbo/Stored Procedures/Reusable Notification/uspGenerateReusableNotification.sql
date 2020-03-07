@@ -288,18 +288,18 @@ SELECT
 	,NULL											AS 'TreatmentEndDate'
 	,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
 	--TEMPORARY WAY OF ADDING THESE TO QUERY - IN REALITY THESE WILL BE ADDED TO THE TABLE AFTER INSERTION
-	,crs.CulturePositive							AS 'CulturePositive'
-	,crs.Species									AS 'Species'
-	,crs.EarliestSpecimenDate						AS 'EarliestSpecimenDate'
-	,crs.DrugResistanceProfile						AS 'DrugResistanceProfile'
-	,crs.INH										AS 'INH'
-	,crs.RIF										AS 'RIF'
-	,crs.ETHAM										AS 'EMB'
-	,crs.PYR										AS 'PZA'
-	,crs.AMINO										AS 'AMINO'
-	,crs.QUIN										AS 'QUIN'
-	,crs.MDR										AS 'MDR'
-	,crs.XDR										AS 'XDR'
+	,NULL               							AS 'CulturePositive'
+	,NULL									        AS 'Species'
+	,NULL						                    AS 'EarliestSpecimenDate'
+	,NULL						                    AS 'DrugResistanceProfile'
+	,NULL										    AS 'INH'
+	,NULL										    AS 'RIF'
+	,NULL										    AS 'EMB'
+	,NULL										    AS 'PZA'
+	,NULL										    AS 'AMINO'
+	,NULL										    AS 'QUIN'
+	,NULL										    AS 'MDR'
+	,NULL										    AS 'XDR'
 	,GETUTCDATE()									AS 'DataRefreshedAt'
 	
 	FROM [$(NTBS)].[dbo].[Notification] n
@@ -330,8 +330,6 @@ SELECT
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ComorbidityDetails] cod ON cod.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
-		--TEMPORARY
-		LEFT OUTER JOIN [dbo].[CultureAndResistanceSummary] crs ON crs.NotificationId = n.NotificationId
 	WHERE n.NotificationStatus IN ('Notified', 'Closed')
 
 	UPDATE ReusableNotification 
@@ -345,6 +343,8 @@ SELECT
     EXEC [dbo].uspGenerateReusableOutcome
 
     EXEC [dbo].uspGenerateReusableNotificationLastRecordedTreatmentOutcome
+
+    EXEC [dbo].uspNotificationCultureResistanceSummary
     
     --now add the records from the ReusableNotification_ETS table which aren't already in the ReusableNotification table
     --these will be ETS records within the reporting time period (currently 2016 onwards) which haven't been migrated into NTBS

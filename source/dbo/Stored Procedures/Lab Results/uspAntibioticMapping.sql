@@ -8,15 +8,15 @@ AS
 		--RESET
 		DELETE FROM [dbo].[AntibioticMapping]
 		--REPOPULATE
-		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETA_W', 1, N'ETHAM')
-		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETHAM', 0, N'ETHAM')
-		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETHAM_W', 1, N'ETHAM')
+		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETA_W', 1, N'EMB')
+		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETHAM', 0, N'EMB')
+		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETHAM_W', 1, N'EMB')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ISO', 0, N'INH')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ISO_W', 1, N'INH')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'RIF', 0, N'RIF')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'RIF_W', 1, N'RIF')
-		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'PYR', 0, N'PYR')
-		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'PYR_W', 1, N'PYR')
+		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'PYR', 0, N'PZA')
+		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'PYR_W', 1, N'PZA')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'CLA', 0, N'CLA')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'AK', 0, N'AK')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'AMI', 0, N'AMI')

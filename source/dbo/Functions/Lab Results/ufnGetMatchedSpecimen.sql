@@ -25,8 +25,8 @@ SELECT
 
 	,vcm.INH AS 'Isoniazid'
 	,vcm.RIF AS 'Rifampicin'
-	,vcm.PYR AS 'Pyrazinamide'
-	,vcm.ETHAM AS 'Ethambutol'
+	,vcm.PZA AS 'Pyrazinamide'
+	,vcm.EMB AS 'Ethambutol'
 	,vcm.AMINO AS 'Aminoglycoside'
 	,vcm.QUIN AS 'Quinolone'
 	,vcm.MDR

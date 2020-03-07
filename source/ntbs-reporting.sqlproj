@@ -265,7 +265,6 @@
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSecondLineSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
-    <Build Include="dbo\Tables\Lab Results\CultureAndResistanceSummary.sql" />
     <Build Include="dbo\Views\Lab Results\vwConfirmedMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwResultMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationSensitivityResult.sql" />
@@ -395,8 +394,5 @@
       <DefaultValue>ReportServer</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
-  </ItemGroup>
-  <ItemGroup>
-    <RefactorLog Include="ntbs-reporting.refactorlog" />
   </ItemGroup>
 </Project>

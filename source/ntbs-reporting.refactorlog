@@ -84,4 +84,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OutcomeId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="48a02ae5-430f-4761-9f44-a292b81bed66" ChangeDateTime="03/07/2020 15:36:53">
+    <Property Name="ElementName" Value="[dbo].[LabSpecimen].[ETHAM]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LabSpecimen]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="EMB" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6e492218-47cc-435c-bd3c-cd4fa7a3eca1" ChangeDateTime="03/07/2020 15:36:56">
+    <Property Name="ElementName" Value="[dbo].[LabSpecimen].[PYR]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[LabSpecimen]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PZA" />
+  </Operation>
 </Operations>

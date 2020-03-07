@@ -4,23 +4,17 @@ AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		/*This will populate a new table, which gives a culture and resistance summary for each notification, built from the
+		/*This will populate ReusableNotification with fields which give a culture and resistance summary for each notification, built from the
 		LabSpecimen summaries which are matched to the notification*/
 
-		--reset
-		DELETE FROM [dbo].CultureAndResistanceSummary
-
-		--create one row for each notification
-		INSERT INTO [dbo].CultureAndResistanceSummary (NotificationId)
-			SELECT DISTINCT NotificationId FROM [$(NTBS)].dbo.[Notification]
-
+		
 		
 		/*CALCULATE CULTURE POSITIVE FIELD. This is determined by presence of at least one matched lab specimen for the notification*/
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			CulturePositive = 'Yes' WHERE NotificationId IN (
 				SELECT DISTINCT NotificationID FROM dbo.vwConfirmedMatch)
 
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			CulturePositive = 'No' WHERE NotificationId NOT IN (
 				SELECT DISTINCT NotificationID FROM dbo.vwConfirmedMatch)
 
@@ -32,7 +26,7 @@ AS
 
 		--grab the highest ranked species for each notification
 
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			Species = Q2.OrganismName FROM
 			--next query links the rank back to the organism name
 			(SELECT Q1.NotificationId, o.OrganismName FROM
@@ -42,20 +36,20 @@ AS
 				INNER JOIN [dbo].Organism o on o.OrganismName = vcm.Species
 				GROUP BY vcm.[NotificationID]) AS Q1
 			INNER JOIN [dbo].Organism o on o.OrganismId = Q1.MinRank) AS Q2
-			WHERE Q2.NotificationID = [dbo].CultureAndResistanceSummary.NotificationId
+			WHERE Q2.NotificationID = [dbo].ReusableNotification.NotificationId
 
-		UPDATE [dbo].CultureAndResistanceSummary SET Species = 'No result'
+		UPDATE [dbo].ReusableNotification SET Species = 'No result'
 			WHERE Species IS NULL
 
 		/*END OF CALCULATE THE SPECIES*/
 
 		/*CALCULATE EARLIEST SPECIMEN DATE*/
 
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			EarliestSpecimenDate = Q1.MinDate FROM
 				(SELECT NotificationID, MIN(SpecimenDate) AS 'MinDate' FROM [dbo].vwConfirmedMatch
 				GROUP BY NotificationID) AS Q1
-			WHERE Q1.NotificationID = [dbo].CultureAndResistanceSummary.NotificationId
+			WHERE Q1.NotificationID = [dbo].ReusableNotification.NotificationId
 
 		/*END OF CALCULATE EARLIEST SPECIMEN DATE*/
 
@@ -64,8 +58,8 @@ AS
 
 		EXEC [dbo].uspNotificationSensitivityResult 'INH'
 		EXEC [dbo].uspNotificationSensitivityResult 'RIF'
-		EXEC [dbo].uspNotificationSensitivityResult 'ETHAM'
-		EXEC [dbo].uspNotificationSensitivityResult 'PYR'
+		EXEC [dbo].uspNotificationSensitivityResult 'EMB'
+		EXEC [dbo].uspNotificationSensitivityResult 'PZA'
 		EXEC [dbo].uspNotificationSensitivityResult 'QUIN'
 		EXEC [dbo].uspNotificationSensitivityResult 'AMINO'
 
@@ -79,7 +73,7 @@ AS
 		/*CALCULATE DRUG RESISTANCE PROFILE AT THE END - DEPENDS ON THE OTHER VALUES*/
 
 		--1. Set RR/MDR/XDR
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'RR/MDR/XDR' 
 			WHERE
 				DrugResistanceProfile IS NULL
@@ -87,38 +81,38 @@ AS
 			
 
 		--2. Set INH resistant
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'INH resistant' 
 			WHERE
 				DrugResistanceProfile IS NULL
 				AND INH = 'Resistant'
 
 		--3. Set INH + RIF sensitive (ISO and RIF are both 'Sensitive' but one or both of ETHAM and PYR are 'Resistant')
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'INH+RIF sensitive' 
 			WHERE
 				DrugResistanceProfile IS NULL
 				AND
-				(INH = 'Sensitive' AND RIF = 'Sensitive') AND (ETHAM = 'Resistant' OR PYR = 'Resistant')
+				(INH = 'Sensitive' AND RIF = 'Sensitive') AND (EMB = 'Resistant' OR PZA = 'Resistant')
 			
 
 		--4. INH, RIF, EMB & PZA are all 'Sensitive'
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'Sensitive to first line'
 			WHERE DrugResistanceProfile IS NULL
 				AND (INH = 'Sensitive'
 				AND RIF = 'Sensitive'
-				AND ETHAM = 'Sensitive'
-				AND PYR = 'Sensitive')
+				AND EMB = 'Sensitive'
+				AND PZA = 'Sensitive')
 
 		-- 5. Notification does not have culture positive confirmation
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'No result'
 			WHERE DrugResistanceProfile IS NULL
 				AND CulturePositive != 'Yes'
 
 		--6. Finally set remaining records to No result
-		UPDATE [dbo].CultureAndResistanceSummary SET
+		UPDATE [dbo].ReusableNotification SET
 			DrugResistanceProfile = 'No result'
 			WHERE DrugResistanceProfile IS NULL
 

@@ -14,12 +14,12 @@ SELECT	cars.NotificationId
 		,cars.DrugResistanceProfile
 		,cars.INH AS 'Isoniazid'
 		,cars.RIF AS 'Rifampicin'
-		,cars.PYR AS 'Pyrazinamide'
-		,cars.ETHAM AS 'Ethambutol'
+		,cars.PZA AS 'Pyrazinamide'
+		,cars.EMB AS 'Ethambutol'
 		,cars.AMINO AS 'Aminoglycoside'
 		,cars.QUIN AS 'Quinolone'
 		,cars.MDR
 		,cars.XDR
       
-  FROM [dbo].[CultureAndResistanceSummary] cars
-  WHERE cars.NotificationId = @NTBSId
+  FROM [dbo].ReusableNotification cars
+  WHERE cars.NotificationId = CONVERT(nvarchar, @NTBSId)
