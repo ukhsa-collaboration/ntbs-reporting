@@ -217,7 +217,7 @@ SELECT
 		ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
 	--non-NTBS Diagnosis
 	,dbo.ufnYesNo(pth.PreviouslyHadTB)				AS 'PreviouslyDiagnosed' 
-	,DATEDIFF(pth.PreviousTBDiagnosisYear, 
+	,DATEDIFF(YEAR, pth.PreviousTBDiagnosisYear, 
         n.NotificationDate)					        AS 'YearsSinceDiagnosis' 
 	,NULL											AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
 	,NULL											AS 'TreatmentInUK' --ditto
@@ -282,8 +282,8 @@ SELECT
 	,NULL											AS 'TreatmentOutcome36months'
 	,NULL											AS 'LastRecordedTreatmentOutcome'
 	--dates
-	--date of death can be fetched from the Treatment Event table, even though for post-mortem it will also be stored on clinical details. This is one consistent way to obtain it
-	,NULL											AS 'DateOfDeath'
+	--date of death fetched from the Treatment Event table
+	,dbo.ufnGetDateOfDeath(n.NotificationId)		AS 'DateOfDeath'
 	--TODO:this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
 	,NULL											AS 'TreatmentEndDate'
 	,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
@@ -332,7 +332,7 @@ SELECT
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
 		--TEMPORARY
 		LEFT OUTER JOIN [dbo].[CultureAndResistanceSummary] crs ON crs.NotificationId = n.NotificationId
-	WHERE n.NotificationStatus = 'Notified'
+	WHERE n.NotificationStatus IN ('Notified', 'Closed')
 
 	UPDATE ReusableNotification 
 	SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' OR 

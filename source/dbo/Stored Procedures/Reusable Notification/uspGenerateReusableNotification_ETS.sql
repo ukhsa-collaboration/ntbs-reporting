@@ -239,7 +239,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 						 )
 				END)                                                        AS TreatmentOutcome36months,
 				NULL                                                        AS LastRecordedTreatmentOutcome,
-				dbo.ufnGetDateOfDeath(
+				dbo.ufnGetDateOfDeath_ETS(
 					te.DateOfDeath,
 					tr12.DeathDate,
 					tr24.DeathDate,
