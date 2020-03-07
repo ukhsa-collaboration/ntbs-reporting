@@ -28,7 +28,7 @@ AS
 								INNER JOIN [$(NTBS)].dbo.Site s ON s.SiteId = ns.SiteId
 							WHERE
 								ns.NotificationId = @NotificationId
-							ORDER BY [Description] DESC) -- Pulmonary record(s) to come out on top
+							ORDER BY SiteOfDisease DESC) -- Pulmonary record(s) to come out on top
 
 		-- 1. Patient has no site of disease records
 		-- 2. All sites of disease are 'Unknown' 

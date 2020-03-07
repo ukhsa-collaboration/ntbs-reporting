@@ -10,7 +10,7 @@ Desc:    This re/calculates the value for the data points ReusableNotification.T
 **************************************************************************************************/
 
 CREATE FUNCTION [dbo].[ufnGetCountryName] (
-	@CountryId uniqueidentifier
+	@CountryId int
 )
 	RETURNS nvarchar(255)
 AS
