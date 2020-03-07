@@ -186,7 +186,7 @@ AS
 			WHERE o.NotificationId = [dbo].ReusableNotification.NotificationId
 
 
-		--finally delete this table. Leave commented out for now for debugging
+		--finally delete this table. TODO: Leave commented out for now for debugging
 		--DELETE FROM [dbo].[Outcome]
 
 

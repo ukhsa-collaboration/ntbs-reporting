@@ -191,7 +191,7 @@ SELECT
 					cd.SymptomStartDate, 
 					cd.TreatmentStartDate))
 				AS SMALLINT)						AS 'OnsetToTreatmentDays' 
-	,cd.HIVTestState								AS 'HivTestOffered' --TODO: actually needs summarising as per R1 rules
+	,dbo.ufnGetHivTestOffered (cd.HIVTestState)		AS 'HivTestOffered' 
 	--NEXT: need to join to NotificationSite and Site tables to summarise site of disease
 	,dbo.ufnGetSiteOfDisease(n.NotificationId)		AS 'SiteOfDisease' -- New function created for this. To be checked.
 	--Contact Tracing

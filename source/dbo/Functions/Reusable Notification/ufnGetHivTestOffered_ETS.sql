@@ -8,7 +8,8 @@ Desc:    This re/calculates the value for the data point ReusableNotification.Hi
          
 **************************************************************************************************/
 
-CREATE FUNCTION [dbo].[ufnGetHivTestOffered] (
+CREATE FUNCTION [dbo].[ufnGetHivTestOffered_ETS] (
+	@NotificationId VARCHAR(36),
 	@HivTestOffered NVARCHAR(255)
 )
 	RETURNS NVARCHAR(255)
@@ -17,15 +18,15 @@ AS
 		DECLARE @ReturnValue AS NVARCHAR(255) = NULL
 
 		-- 1. HIVTestOffered is 'HIV status already known'
-		IF (@HivTestOffered = 'HIVStatusKnown')
+		IF (@HivTestOffered = 'HIV status already known')
 			SET @ReturnValue = 'Status already known'
 
 		-- 2. HIVTestOffered is 'Not offered'
-		IF (@HivTestOffered = 'NotOffered')
+		IF (@HivTestOffered = 'Not offered')
 			SET @ReturnValue = 'Not offered'
 
 		-- 3. HIVTestOffered is one of 'Offered and done', 'Offered but not done', 'Offered but refused'
-		IF (@HivTestOffered = 'Offered' OR @HivTestOffered = 'OfferedButNotDone' OR @HivTestOffered = 'OfferedButRefused')
+		IF (@HivTestOffered = 'Offered and done' OR @HivTestOffered = 'Offered but not done' OR @HivTestOffered = 'Offered but refused')
 			SET @ReturnValue = 'Offered'
 
 		-- 4. HIVTestOffered is NULL

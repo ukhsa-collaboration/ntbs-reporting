@@ -155,7 +155,7 @@
     <Build Include="dbo\Functions\Authorization\ufnAuthorizedReusableNotification.sql" />
     <Build Include="dbo\Functions\Authorization\ufnMaskField.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
-    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered_ETS.sql" />
     <Build Include="dbo\Functions\View Model\ufnFormatDateConsistently.sql" />
     <Build Include="dbo\Types\Audit\ReusableNotificationType.sql" />
     <Build Include="dbo\Tables\Audit\AccessAudit.sql" />
@@ -294,6 +294,7 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetETSCountryName.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

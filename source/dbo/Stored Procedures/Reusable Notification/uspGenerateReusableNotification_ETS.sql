@@ -86,7 +86,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					te.SymptomOnset, 
 					te.StartOfTreatment)) 
 				AS SMALLINT)                                                AS OnsetToTreatmentDays,
-				dbo.ufnGetHivTestOffered (
+				dbo.ufnGetHivTestOffered_ETS (
 					n.Id, 
 					te.HIVTestOffered
 				)															AS HivTestOffered,
