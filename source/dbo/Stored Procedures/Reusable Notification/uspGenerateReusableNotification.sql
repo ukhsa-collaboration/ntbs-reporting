@@ -307,6 +307,9 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification] AS
 			EXEC dbo.uspGenerateReusableNotificationMdr
 			EXEC dbo.uspGenerateReusableNotificationXdr
 			EXEC dbo.uspGenerateReusableNotificationDrugResistanceProfile
+
+			--Finally populate a pseudo'create' date for each record
+			EXEC dbo.uspGenerateReusableCreateDate
 	END TRY
 	BEGIN CATCH
 		THROW
