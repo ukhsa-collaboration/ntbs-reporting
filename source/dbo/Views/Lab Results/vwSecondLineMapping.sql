@@ -11,6 +11,8 @@
 		UNION
 		SELECT 'AMINO' AS GroupName, 'CAP' AS AntibioticOutputName
 		UNION
+		SELECT 'AMINO' AS GroupName, 'STR' AS AntibioticOutputName
+		UNION
 		SELECT 'QUIN' AS GroupName, 'QUIN' AS AntibioticOutputName
 		UNION
 		SELECT 'QUIN' AS GroupName, 'OFX' AS AntibioticOutputName
@@ -18,17 +20,6 @@
 		SELECT 'QUIN' AS GroupName, 'MOXI' AS AntibioticOutputName
 		UNION
 		SELECT 'QUIN' AS GroupName, 'CIP' AS AntibioticOutputName
+		UNION
+		SELECT 'QUIN' As 'GroupName', 'OFL' AS AntibioticOutputName
 
-/*TODO: the following codes are not mapped
-AZI
-CLA
-ETHION
-LINZ
-LZD
-OFL
-PAS
-PRO
-RIFB
-STR*/
-
-		
