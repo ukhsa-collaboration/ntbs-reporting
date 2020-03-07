@@ -217,7 +217,8 @@ SELECT
 		ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
 	--non-NTBS Diagnosis
 	,dbo.ufnYesNo(pth.PreviouslyHadTB)				AS 'PreviouslyDiagnosed' 
-	,pth.PreviousTBDiagnosisYear					AS 'YearsSinceDiagnosis' --TODO: calculate number of years
+	,DATEDIFF(pth.PreviousTBDiagnosisYear, 
+        n.NotificationDate)					        AS 'YearsSinceDiagnosis' 
 	,NULL											AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
 	,NULL											AS 'TreatmentInUK' --ditto
 	,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
@@ -268,13 +269,14 @@ SELECT
 	,dbo.ufnYesNo(id.HasOther)						AS 'OtherImmunoSuppression'
 	,srf.SmokingStatus								AS 'CurrentSmoker' 
 	--treatment details
-	,cd.IsPostMortem								AS 'PostMortemDiagnosis' 
-	,cd.DidNotStartTreatment						AS 'DidNotStartTreatment' 
-	,cd.IsShortCourseTreatment						AS 'ShortCourse' 
-	,cd.IsMDRTreatment								AS 'MdrTreatment' 
+	,dbo.ufnYesNo(cd.IsPostMortem)					AS 'PostMortemDiagnosis' 
+	,dbo.ufnYesNo(cd.DidNotStartTreatment)			AS 'DidNotStartTreatment' 
+    --TODO: the way this is stored in NTBS is about to change, see NTBS-890
+	,NULL						                    AS 'ShortCourse' 
+	,NULL							                AS 'MdrTreatment' 
 	,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate' 
 	--Outcomes
-	--TODO: currently in the too hard pile!
+	--Done in a separate function later on
 	,NULL											AS 'TreatmentOutcome12months'
 	,NULL											AS 'TreatmentOutcome24months'
 	,NULL											AS 'TreatmentOutcome36months'
@@ -282,9 +284,9 @@ SELECT
 	--dates
 	--date of death can be fetched from the Treatment Event table, even though for post-mortem it will also be stored on clinical details. This is one consistent way to obtain it
 	,NULL											AS 'DateOfDeath'
-	--this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
+	--TODO:this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
 	,NULL											AS 'TreatmentEndDate'
-	,ted.HasTestCarriedOut							AS 'NoSampleTaken'
+	,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
 	--TEMPORARY WAY OF ADDING THESE TO QUERY - IN REALITY THESE WILL BE ADDED TO THE TABLE AFTER INSERTION
 	,crs.CulturePositive							AS 'CulturePositive'
 	,crs.Species									AS 'Species'
