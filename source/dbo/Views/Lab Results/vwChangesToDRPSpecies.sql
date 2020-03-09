@@ -9,7 +9,7 @@
 	FROM [$(NTBS)].[dbo].[DrugResistanceProfile] drp
 			INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = drp.NotificationId
 			--TODO: Update this to reusable notification when NTBS-804 is implemented
-			LEFT OUTER JOIN [dbo].[ReusableNotification] rn ON rn.NotificationId = drp.NotificationId
+			LEFT OUTER JOIN [dbo].[ReusableNotification] rn ON rn.NtbsId = drp.NotificationId
 	WHERE	n.NotificationStatus NOT IN ('Draft', 'Deleted')
 			AND (((drp.Species != rn.Species) OR (drp.Species IS NULL AND rn.Species IS NOT NULL))
 			OR ((drp.DrugResistanceProfileString != rn.DrugResistanceProfile) OR (drp.DrugResistanceProfileString IS NULL AND rn.DrugResistanceProfile IS NOT NULL)))
