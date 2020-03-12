@@ -172,7 +172,7 @@ SELECT
 	,treatphec.[Name]								AS 'TreatmentPhec'
 	--clinical dates are next. We will want to extend these to include the additional dates captured in NTBS
 	,cd.SymptomStartDate							AS 'SymptomOnsetDate'
-	,cd.TBServicePresentationDate					AS 'PresentedDate' --TODO: check this is what the date in ETS refers to, as we have two presentation dates now
+	,cd.FirstPresentationDate					    AS 'PresentedDate' 
 	,CAST((DATEDIFF(DAY,
 					cd.SymptomStartDate, 
 					cd.TBServicePresentationDate))
