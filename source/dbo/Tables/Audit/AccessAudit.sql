@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[AccessAudit] (
     [AccessDate]     DATETIME         NOT NULL,
     [User]           NVARCHAR(128)    NOT NULL,
     [Group]          VARCHAR(500)     NOT NULL,
-    [NotificationId] UNIQUEIDENTIFIER NOT NULL,
+    [NotificationId] NVARCHAR(50)     NOT NULL,
     [EtsId]          BIGINT           NULL
 
 	CONSTRAINT [PK_AccessAudit] PRIMARY KEY CLUSTERED (

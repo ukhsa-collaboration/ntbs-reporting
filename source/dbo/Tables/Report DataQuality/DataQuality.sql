@@ -8,7 +8,7 @@ Desc:    This contains the pre-calculated figures for the "Data Quality" report 
 
 CREATE TABLE [dbo].[DataQuality] (
 	[DataQualityId] [int] IDENTITY(1,1) NOT NULL,
-	[NotificationId] [uniqueidentifier] NOT NULL,
+	[NotificationId] NVARCHAR(50) NOT NULL,
 	TreatmentEndDate tinyint NOT NULL DEFAULT(0),
 	TreatmentOutcome12Months tinyint NOT NULL DEFAULT(0),
 	TreatmentOutcome24Months tinyint NOT NULL DEFAULT(0),

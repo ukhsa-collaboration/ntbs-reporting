@@ -8,7 +8,7 @@ Desc:    This contains the pre-calculated figures for the "Culture And Resistanc
 
 CREATE TABLE [dbo].[CultureResistance](
 	[CultureResistanceId] [int] IDENTITY(1,1) NOT NULL,
-	[NotificationId] [uniqueidentifier] NOT NULL,
+	[NotificationId] NVARCHAR(50) NOT NULL,
 	[CulturePositiveCases] [tinyint] NOT NULL DEFAULT(0),
 	[NonCulturePositiveCases] [tinyint] NOT NULL DEFAULT(0),
 	[SensitiveToAll4FirstLineDrugs] [tinyint] NOT NULL DEFAULT(0),

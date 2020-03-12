@@ -9,7 +9,7 @@ Desc:    This re/calculates the value for the data point ReusableNotification.Ea
 **************************************************************************************************/
 
 CREATE FUNCTION [dbo].[ufnGetEarliestSpecimenDate] (
-	@NotificationId UNIQUEIDENTIFIER
+	@NotificationId nvarchar(50)
 )
 	RETURNS DATE
 AS
