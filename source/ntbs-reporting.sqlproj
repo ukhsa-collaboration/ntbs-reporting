@@ -295,6 +295,7 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetETSCountryName.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

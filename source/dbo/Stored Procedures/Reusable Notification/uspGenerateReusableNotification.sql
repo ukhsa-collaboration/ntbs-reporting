@@ -160,7 +160,7 @@ SELECT
 	,s.Label										AS 'Sex' 
 	,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
 	,e.Label										AS 'EthnicGroup'
-	,c.[Name]										AS 'BirthCountry'
+	,dbo.ufnGetCountryName(p.CountryId)			    AS 'BirthCountry'
 	,p.YearOfUkEntry								AS 'UkEntryYear'
 	,p.Postcode										AS 'Postcode' 
 	,dbo.ufnYesNo(p.NoFixedAbode)					AS 'NoFixedAbode'
@@ -240,22 +240,21 @@ SELECT
 	,dbo.ufnYesNo(rfp.InPastFiveYears)				AS 'InPrisonInLast5Years'
 	,dbo.ufnYesNo(rfp.MoreThanFiveYearsAgo)			AS 'InPrisonMoreThan5YearsAgo'
 	--travel and visitors
-	--TODO: is there a better way to do this than just joining to the country table 6 or 7 times? A function?
 	,dbo.ufnYesNo(td.HasTravel)						AS 'TravelledOutsideUk'
 	,td.TotalNumberOfCountries						AS 'ToHowManyCountries'
-	,c1.[Name]										AS 'TravelCountry1'
+	,dbo.ufnGetCountryName(td.Country1Id)			AS 'TravelCountry1'
 	,td.StayLengthInMonths1							AS 'MonthsTravelled1'
-	,c2.[Name]										AS 'TravelCountry2'
+	,dbo.ufnGetCountryName(td.Country2Id)			AS 'TravelCountry2'
 	,td.StayLengthInMonths2							AS 'MonthsTravelled2'
-	,NULL											AS 'TravelCountry3' --TODO: waiting to see if a function would be better
+	,dbo.ufnGetCountryName(td.Country3Id)			AS 'TravelCountry3' 
 	,td.StayLengthInMonths3							AS 'MonthsTravelled3'
 	,dbo.ufnYesNo(vd.HasVisitor)					AS 'ReceivedVisitors'
 	,vd.TotalNumberOfCountries						AS 'FromHowManyCountries'
-	,NULL											AS 'VisitorCountry1'
+	,dbo.ufnGetCountryName(vd.Country1Id)			AS 'VisitorCountry1'
 	,vd.StayLengthInMonths1							AS 'DaysVisitorsStayed1' --NB is this captured in days in ETS? It's captured in months in NTBS
-	,NULL											AS 'VisitorCountry2'
+	,dbo.ufnGetCountryName(vd.Country2Id)			AS 'VisitorCountry2'
 	,vd.StayLengthInMonths2							AS 'DaysVisitorsStayed2'
-	,NULL											AS 'VisitorCountry3' --TODO: waiting to see if a function would be better
+	,dbo.ufnGetCountryName(vd.Country3Id)			AS 'VisitorCountry3' 
 	,vd.StayLengthInMonths3							AS 'DaysVisitorsStayed3'
 	--comorbidities
 	,cod.DiabetesStatus								AS 'Diabetes' 
@@ -267,16 +266,15 @@ SELECT
 	,dbo.ufnYesNo(id.HasBioTherapy)					AS 'BiologicalTherapy'
 	,dbo.ufnYesNo(id.HasTransplantation)			AS 'Transplantation' 
 	,dbo.ufnYesNo(id.HasOther)						AS 'OtherImmunoSuppression'
-	,srf.SmokingStatus								AS 'CurrentSmoker' 
+    ,rfs.[Status]                                   AS 'CurrentSmoker'
 	--treatment details
 	,dbo.ufnYesNo(cd.IsPostMortem)					AS 'PostMortemDiagnosis' 
 	,dbo.ufnYesNo(cd.DidNotStartTreatment)			AS 'DidNotStartTreatment' 
-    --TODO: the way this is stored in NTBS is about to change, see NTBS-890
+    --next two fields set in separate function later on
 	,NULL						                    AS 'ShortCourse' 
 	,NULL							                AS 'MdrTreatment' 
 	,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate' 
-	--Outcomes
-	--Done in a separate function later on
+	--Outcomes are done in a separate function later on
 	,NULL											AS 'TreatmentOutcome12months'
 	,NULL											AS 'TreatmentOutcome24months'
 	,NULL											AS 'TreatmentOutcome36months'
@@ -287,7 +285,6 @@ SELECT
 	--TODO:this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
 	,NULL											AS 'TreatmentEndDate'
 	,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
-	--TEMPORARY WAY OF ADDING THESE TO QUERY - IN REALITY THESE WILL BE ADDED TO THE TABLE AFTER INSERTION
 	,NULL               							AS 'CulturePositive'
 	,NULL									        AS 'Species'
 	,NULL						                    AS 'EarliestSpecimenDate'
@@ -310,7 +307,6 @@ SELECT
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId 
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Country] c ON c.CountryId = p.CountryId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[PostcodeLookup] pl ON pl.Postcode = p.PostcodeToLookup
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[LocalAuthority] la ON pl.LocalAuthorityCode = la.Code
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[LocalAuthorityToPHEC] la2p ON la2p.LocalAuthorityCode = pl.LocalAuthorityCode
@@ -323,9 +319,8 @@ SELECT
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorDrugs] rfd ON rfd.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorHomelessness] rfh ON rfh.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorImprisonment] rfp ON rfp.SocialRiskFactorsNotificationId = n.NotificationId
+        LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorSmoking] rfs ON rfs.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TravelDetails] td ON td.NotificationId = n.NotificationId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Country] c1 ON c1.CountryId = td.Country1Id
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Country] c2 ON c2.CountryId = td.Country2Id
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[VisitorDetails] vd ON vd.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ComorbidityDetails] cod ON cod.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
@@ -337,8 +332,9 @@ SELECT
 										DrugMisuse = 'Yes' OR 
 										Homeless = 'Yes' OR
 										Prison = 'Yes' 
-										THEN 'Yes' ELSE 'No' END  --do we want/are there any other scenarios?
+										THEN 'Yes' ELSE 'No' END  --TODO: do we want/are there any other scenarios?
 
+    EXEC [dbo].uspGenerateReusableNotificationTreatmentRegimen                                  
 
     EXEC [dbo].uspGenerateReusableOutcome
 
