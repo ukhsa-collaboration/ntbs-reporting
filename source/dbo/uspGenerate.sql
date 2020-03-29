@@ -25,14 +25,13 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC dbo.uspGenerateReusableNotification_ETS
 		EXEC dbo.uspGenerateReusableNotification
 
-		--TODO: currently not working due to change of data type in ReusableNotification
 		-- Populate report-specific tables
-		--EXEC dbo.uspGenerateCultureResistance
-		--EXEC dbo.uspGenerateOutcomeSummary
-		--EXEC dbo.uspGenerateDataQuality
+		EXEC dbo.uspGenerateCultureResistance
+		EXEC dbo.uspGenerateOutcomeSummary
+		EXEC dbo.uspGenerateDataQuality
 
 		-- Populate boilerplate report too (not much overhead, so might as well for demo purposes)
-		--EXEC dbo.uspGenerateBoilerplate
+		EXEC dbo.uspGenerateBoilerplate
 
 		-- Needs to be executed after any report requiring use of PostcodeLookup table
 		EXEC dbo.uspUpdateReusableNotificationPostcode
