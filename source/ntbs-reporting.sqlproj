@@ -135,7 +135,7 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHomelessStatus.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetPrisonStatus.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetSpecies.sql" />
-    <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate_ETS.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentOutcome.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnSex.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnYesNo.sql" />
@@ -296,6 +296,7 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

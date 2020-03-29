@@ -245,7 +245,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					tr24.DeathDate,
 					tr36.DeathDate
 				)                                                           AS DateOfDeath,
-				dbo.ufnGetTreatmentEndDate(
+				dbo.ufnGetTreatmentEndDate_ETS(
 					tr12.EndOfTreatmentDate,
 					tr24.EndOfTreatmentDate,
 					tr36.EndOfTreatmentDate

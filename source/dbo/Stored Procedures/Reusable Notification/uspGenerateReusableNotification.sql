@@ -222,7 +222,7 @@ SELECT
 	,NULL											AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
 	,NULL											AS 'TreatmentInUK' --ditto
 	,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
-	,cd.BCGVaccinationState							AS 'BcgVaccinated' --NB: this data item is about to change in NTBS
+	,cd.BCGVaccinationState							AS 'BcgVaccinated' 
 	--social risk factors
 	-- we have additional ones in NTBS for asylym seeker and immigration detainee, smoker (currently in co-morbid) and mental health
 	,NULL											AS 'AnySocialRiskFactor' -- updated at end
@@ -282,8 +282,7 @@ SELECT
 	--dates
 	--date of death fetched from the Treatment Event table
 	,dbo.ufnGetDateOfDeath(n.NotificationId)		AS 'DateOfDeath'
-	--TODO:this will need to be the date of an 'ending' event, assuming there is no 'starting' event after it
-	,NULL											AS 'TreatmentEndDate'
+	,dbo.ufnGetTreatmentEndDate(n.NotificationId)	AS 'TreatmentEndDate'
 	,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
 	,NULL               							AS 'CulturePositive'
 	,NULL									        AS 'Species'
