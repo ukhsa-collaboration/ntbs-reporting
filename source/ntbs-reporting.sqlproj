@@ -297,6 +297,9 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\PeriodicOutcome.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetPeriodicOutcome.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcomePeriodic.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -396,5 +399,8 @@
       <DefaultValue>ReportServer</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ntbs-reporting.refactorlog" />
   </ItemGroup>
 </Project>
