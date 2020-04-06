@@ -36,6 +36,6 @@
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = nsm.NotificationID
 		INNER JOIN [$(NTBS)].[dbo].[HospitalDetails] e ON e.NotificationId = nsm.NotificationID
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = n.NotificationId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[TbService] tbs ON e.TBServiceCode = tbs.Code
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON e.TBServiceCode = tbs.Code
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Sex] s ON s.SexId = p.SexId
 	WHERE nsm.MatchType = 'Possible' 

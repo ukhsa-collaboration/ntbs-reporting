@@ -38,11 +38,13 @@ AS
 		--	this just pulls out the treatment start date if one has been entered by the user (I guess maybe this does make sense)
 		-- 2. Should I use this set of SPs to calculate the Treatment End Date, rather than doing it in ufnGetTreatmentEndDate? That is a very simple function,
 		--	however.
+		-- 3. At the moment this will produce some incongruous results, i.e. result for 1, result for 3 with nothing in between. This is if 1 was final but
+		-- then some activity happens again during period 3.  This shouldn't happen as the notification should become read-only before it can
 
 
 	--WRAP-UP STEPS
 
-		--update the main table with the decoded values for each outcome
+		--update the main table with the values for each outcome
 		--if it can be found in the Periodic Outcome table, use this
 		--if not, set it to an empty string
 		

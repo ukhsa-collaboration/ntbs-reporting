@@ -32,7 +32,7 @@ SELECT TOP(1)
 		END) AS EndingEvent,
 	 COALESCE(ol.OutcomeDescription, 'No outcome recorded') AS 'OutcomeValue'
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
+	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
 	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType 
 	INNER JOIN [dbo].[Outcome] o ON o.NotificationId = te.NotificationId
 	--look for records which are on or after the start of the period
