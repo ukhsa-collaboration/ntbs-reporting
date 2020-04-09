@@ -38,15 +38,15 @@ AS
 		INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, IsFinal)
 			SELECT NotificationId, @TimePeriod, 'No outcome recorded', 0  FROM [dbo].[Outcome] o 
 			--find the records that are old enough for inclusion - they should be older by at least one day than the end of the previous time period
-			WHERE DATEDIFF(DAY, o.TreatmentStartDate, GETUTCDATE()) > DATEDIFF(DAY, o.TreatmentStartDate, DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate))
+			WHERE GETUTCDATE() > DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate)
 			--and the previous period's outcome was non-final
 			AND o.NotificationId IN 
-			(SELECT o.NotificationId FROM [dbo].[PeriodicOutcome] o 
-				WHERE o.IsFinal = 0
-				AND o.TimePeriod = @TimePeriod-1)
+			(SELECT po.NotificationId FROM [dbo].[PeriodicOutcome] po 
+				WHERE po.IsFinal = 0
+				AND po.TimePeriod = @TimePeriod-1)
 			--and we haven't already found an outcome for them in this time period
 			AND o.NotificationId NOT IN 
-				(SELECT o.NotificationId FROM [dbo].[PeriodicOutcome] o WHERE TimePeriod = @TimePeriod)
+				(SELECT po.NotificationId FROM [dbo].[PeriodicOutcome] po WHERE TimePeriod = @TimePeriod)
 	
 
 

@@ -36,10 +36,10 @@ SELECT TOP(1)
 	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType 
 	INNER JOIN [dbo].[Outcome] o ON o.NotificationId = te.NotificationId
 	--look for records which are on or after the start of the period
-	WHERE DATEDIFF(DAY, o.TreatmentStartDate, te.EventDate) >= DATEDIFF(DAY, o.TreatmentStartDate, DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate))
+	WHERE te.EventDate >= DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate)
 		--and before the end of the period.  Adding a year in this way deals with the problem of leap days
-		AND DATEDIFF(DAY, o.TreatmentStartDate, te.EventDate) < DATEDIFF(DAY, o.TreatmentStartDate, DATEADD(YEAR, @TimePeriod, o.TreatmentStartDate))
-		AND  te.NotificationId = @NotificationId
+		AND te.EventDate < DATEADD(YEAR, @TimePeriod, o.TreatmentStartDate)
+		AND te.NotificationId = @NotificationId
 
 	ORDER BY te.EventDate DESC, EventOrder DESC
 	
