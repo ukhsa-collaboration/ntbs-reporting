@@ -301,16 +301,16 @@ SELECT
 	FROM [$(NTBS)].[dbo].[Notification] n
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Username = hd.CaseManagerUsername
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Hospital] h ON h.HospitalId = hd.HospitalId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[TbService] tbs ON tbs.Code = hd.TBServiceCode
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Hospital] h ON h.HospitalId = hd.HospitalId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hd.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId 
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Sex] s ON s.SexId = p.SexId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[PostcodeLookup] pl ON pl.Postcode = p.PostcodeToLookup
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[LocalAuthority] la ON pl.LocalAuthorityCode = la.Code
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[LocalAuthorityToPHEC] la2p ON la2p.LocalAuthorityCode = pl.LocalAuthorityCode
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[PHEC] resphec ON resphec.Code = la2p.PHECCode
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[PHEC] treatphec ON treatphec.Code = tbs.PHECCode
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Sex] s ON s.SexId = p.SexId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PostcodeLookup] pl ON pl.Postcode = p.PostcodeToLookup
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[LocalAuthority] la ON pl.LocalAuthorityCode = la.Code
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[LocalAuthorityToPHEC] la2p ON la2p.LocalAuthorityCode = pl.LocalAuthorityCode
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] resphec ON resphec.Code = la2p.PHECCode
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] treatphec ON treatphec.Code = tbs.PHECCode
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ContactTracing] ct ON ct.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[PatientTBHistories] pth ON pth.NotificationId = n.NotificationId

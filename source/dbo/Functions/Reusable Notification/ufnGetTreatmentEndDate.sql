@@ -19,7 +19,7 @@ AS
 
 		SET @ReturnValue = 
 			(SELECT MAX(te.EventDate) FROM [$(NTBS)].[dbo].[TreatmentEvent] te
-			INNER JOIN [$(NTBS)].[dbo].[TreatmentOutcome] tout ON tout.TreatmentOutcomeId = te.TreatmentOutcomeId
+			INNER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tout ON tout.TreatmentOutcomeId = te.TreatmentOutcomeId
 			WHERE tout.TreatmentOutcomeType IN ('Completed', 'Cured')
 			AND te.NotificationId = @NotificationId)
 

@@ -19,7 +19,7 @@ AS
 	
 		IF (@CountryId IS NOT NULL)
 		BEGIN
-			SET @CountryName = (SELECT Name FROM [$(NTBS)].dbo.Country WHERE CountryId = @CountryId)
+			SET @CountryName = (SELECT Name FROM [$(NTBS)].ReferenceData.Country WHERE CountryId = @CountryId)
 
 			-- Country name not found =  An error has occurred
 			IF (@CountryName IS NULL)

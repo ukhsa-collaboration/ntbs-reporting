@@ -25,7 +25,7 @@ AS
 								END) AS SiteOfDisease
 
 							FROM [$(NTBS)].dbo.NotificationSite ns
-								INNER JOIN [$(NTBS)].dbo.Site s ON s.SiteId = ns.SiteId
+								INNER JOIN [$(NTBS)].ReferenceData.Site s ON s.SiteId = ns.SiteId
 							WHERE
 								ns.NotificationId = @NotificationId
 							ORDER BY SiteOfDisease DESC) -- Pulmonary record(s) to come out on top
