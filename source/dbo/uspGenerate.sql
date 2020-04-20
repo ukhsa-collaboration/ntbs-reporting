@@ -14,6 +14,7 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 
 		-- Re-seed drop-downs (in case data has changed)
 		EXEC dbo.uspSeed
+		EXEC dbo.uspGenerateTB_Service
 
 		-- Populate Reference Lab Result data
 		EXEC dbo.uspLabSpecimen
@@ -43,7 +44,8 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 	END TRY
 	BEGIN CATCH
 		-- A "Generate" proc has errored
-		ROLLBACK		
+		IF @@TRANCOUNT > 0  
+			ROLLBACK TRANSACTION;  
 
 		-- Show error on screen
 		EXEC dbo.uspHandleException
