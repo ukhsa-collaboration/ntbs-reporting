@@ -4,12 +4,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="PHE">
-      <ConnectionProperties>
-        <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SQLNTBSdevcol01;Initial Catalog=NTBS_Reporting_Staging</ConnectString>
-        <IntegratedSecurity>true</IntegratedSecurity>
-        <Prompt>Please enter PHE username and password</Prompt>
-      </ConnectionProperties>
+      <DataSourceReference>/DataSources/Staging</DataSourceReference>
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>1e0f1bdc-5473-4a91-bd1f-e4018fb33fc9</rd:DataSourceID>
     </DataSource>
@@ -4576,6 +4571,6 @@ gbhjVxw9dpTH0TnZWVgRYjSUY4BJBgb7m0X/W/7wRKguubWdn/g8UbiuKFcENywlxNfKEgEWG16+fNnF
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://sqlntbsdevcol01/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>77441d36-313b-427e-8265-b6b40a65c7a1</rd:ReportID>
 </Report>

@@ -4,12 +4,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="PHE">
-      <ConnectionProperties>
-        <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=SQLNISNTBSCOL02;Initial Catalog=NTBS_R1_Reporting_Staging</ConnectString>
-        <IntegratedSecurity>true</IntegratedSecurity>
-        <Prompt>Enter a user name and password to access the data source:</Prompt>
-      </ConnectionProperties>
+      <DataSourceReference>/DataSources/Staging</DataSourceReference>
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>32e5bf19-c560-43af-9d3b-dc0193cfd90f</rd:DataSourceID>
     </DataSource>
@@ -1434,7 +1429,6 @@ FROM
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -9028,6 +9022,6 @@ gbhjVxw9dpTH0TnZWVgRYjSUY4BJBgb7m0X/W/7wRKguubWdn/g8UbiuKFcENywlxNfKEgEWG16+fNnF
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Mm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://sqlnisntbscol02/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>062f04d5-4fbe-47e1-a80b-1f2299313ca2</rd:ReportID>
 </Report>
