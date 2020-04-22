@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>dev-reporting</TargetDatabaseName>
+    <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=ntbs-ops-dbs.uksouth.cloudapp.azure.com;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="ETS">
+      <Value>ets</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ETSLabbase">
+      <Value>ETSLabbase</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Geographies">
+      <Value>geography</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Labbase2">
+      <Value>labbase2</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS">
+      <Value>int-ntbs</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+      <Value>geography</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_Specimen_Matching">
+      <Value>dev-specimen-matching</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportServer">
+      <Value>ReportServer</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>
