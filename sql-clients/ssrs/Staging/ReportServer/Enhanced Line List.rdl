@@ -874,10 +874,11 @@ FROM
         <QueryParameters>
           <QueryParameter Name="@Region">
             <Value>=Parameters!Region.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select Serviceid,TB_Service_Name from TB_Service 
-where PhecName = @Region</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspService</CommandText>
       </Query>
       <Fields>
         <Field Name="Serviceid">
