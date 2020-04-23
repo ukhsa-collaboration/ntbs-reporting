@@ -4,12 +4,8 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="PHE">
-      <ConnectionProperties>
-        <DataProvider>SQL</DataProvider>
-        <ConnectString>Data Source=sqlnisntbscol01;Initial Catalog=NTBS_R1_Reporting_Staging</ConnectString>
-        <Prompt>Please enter PHE username and password</Prompt>
-      </ConnectionProperties>
-      <rd:SecurityType>Windows</rd:SecurityType>
+      <DataSourceReference>/DataSources/Staging</DataSourceReference>
+      <rd:SecurityType>DataBase</rd:SecurityType>
       <rd:DataSourceID>2afd9bc6-68e7-454c-853a-18e9a9f4d729</rd:DataSourceID>
     </DataSource>
   </DataSources>
@@ -9392,6 +9388,6 @@ gbhjVxw9dpTH0TnZWVgRYjSUY4BJBgb7m0X/W/7wRKguubWdn/g8UbiuKFcENywlxNfKEgEWG16+fNnF
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Mm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://sqlnisntbscol03.phe.gov.uk/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>062f04d5-4fbe-47e1-a80b-1f2299313ca2</rd:ReportID>
 </Report>
