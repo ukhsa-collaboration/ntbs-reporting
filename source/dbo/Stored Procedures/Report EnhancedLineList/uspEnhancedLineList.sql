@@ -14,7 +14,7 @@ CREATE PROCEDURE [dbo].[uspEnhancedLineList]
 		@NotificationYearTo		INTEGER			=	0,
 		@NotificationMonthTo	INTEGER			=	1,
 		@ResidenceTreatment		TINYINT			=   1,
-		@Region					VARCHAR(50)		=	NULL,
+		@Region					VARCHAR(1000)	=	NULL,
 		@AgeFrom				INTEGER			=	NULL,
 		@AgeTo					INTEGER			=	NULL,
 		@UKBorn					VARCHAR(3)		=	NULL,
@@ -63,9 +63,16 @@ AS
 			DECLARE @SOD					VARCHAR(16) = (CASE WHEN @SiteOfDisease = 'All' THEN NULL ELSE @SiteOfDisease END)
 			--DECLARE @DRP					VARCHAR(30) = (CASE WHEN @DrugResistanceProfile = 'All' THEN NULL ELSE @DrugResistanceProfile END)
 			DECLARE @SpeciesValue			VARCHAR(25) = (CASE WHEN @Species = 'All' THEN NULL ELSE @Species END)
-			set @Service					= case when len(@Service) - len(replace(@Service, ',', '')) +1 = (select count(*) from TB_Service where PhecName = @Region) then 'All' else @Service end
-
-
+			set @Service					= CASE
+												WHEN
+													-- the number of services provided into the parameter
+													LEN(@Service) - LEN(REPLACE(@Service, ',', '')) +1 
+													-- the number of services that exist in the provieded regions
+													= (SELECT COUNT(*) FROM TB_Service WHERE PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
+													THEN'All' 
+												ELSE @Service
+											END
+			
 			DECLARE @ReusableNotification ReusableNotificationType
 
 			If (@Service = 'All')
@@ -78,13 +85,13 @@ AS
 					AND (
 							(
 									@ResidenceTreatment = 1 AND
-									(n.TreatmentPhec = @Region OR n.ResidencePhec = @Region)
+									(n.TreatmentPhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')) OR n.ResidencePhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 							) OR (
 									@ResidenceTreatment = 2 AND
-									n.TreatmentPhec = @Region
+									n.TreatmentPhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
 							) OR (
 									@ResidenceTreatment = 3 AND
-									n.ResidencePhec = @Region
+									n.ResidencePhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
 							)
 					)
 					AND (@AgeFrom IS NULL OR n.Age IS NULL OR n.Age >= @AgeFrom)
@@ -120,13 +127,13 @@ AS
 					AND (
 							(
 									@ResidenceTreatment = 1 AND
-									(n.TreatmentPhec = @Region OR n.ResidencePhec = @Region)
+									(n.TreatmentPhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')) OR n.ResidencePhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 							) OR (
 									@ResidenceTreatment = 2 AND
-									n.TreatmentPhec = @Region
+									n.TreatmentPhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
 							) OR (
 									@ResidenceTreatment = 3 AND
-									n.ResidencePhec = @Region
+									n.ResidencePhec IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
 							)
 					)
 					and Serviceid in (select value from STRING_SPLIT(@Service, ','))

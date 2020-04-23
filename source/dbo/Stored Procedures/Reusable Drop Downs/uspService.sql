@@ -6,7 +6,7 @@ Author:  Public Health England
 **************************************************************************************************/
 
 CREATE PROCEDURE [dbo].[uspService] 
-	@Region VARCHAR(100) = 'AllowAll' -- The region to narrow down services by. 
+	@Region VARCHAR(100) = 'AllowAll' -- The regions to narrow down services by. 
 	-- The AllowAll default value means we can move reports to use this one by one, rathar than updating them all at once.
 	-- The default value (and the condition it satisfies below) can be removed once all service user reports are merged into their base counterparts
 AS
@@ -31,14 +31,14 @@ AS
 					INNER JOIN dbo.ServiceAdGroup sad ON sad.ServiceId = s.Serviceid
 					INNER JOIN dbo.AdGroup agt ON agt.AdGroupId = sad.AdGroupId
 				WHERE PhecName != 'Unknown'
-					AND (@Region = 'AllowAll' OR PhecName = @Region)
+					AND (@Region = 'AllowAll' OR PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 					AND CHARINDEX('###' + agt.AdGroupName + '###', @LoginGroups) != 0
 					order by TB_Service_Name
 			ELSE IF (@UserType = 'R' OR @UserType = 'N') 
-				-- regional user or national team user, only restrict by selected region
+				-- regional user or national team user, only restrict by selected regions
 				SELECT Serviceid,TB_Service_Name 
 				FROM dbo.TB_Service s
-				WHERE PhecName = @Region
+				WHERE PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
 			ELSE
 				RAISERROR ('This user does not have a recognized user type', 16, 1) WITH NOWAIT
 		END

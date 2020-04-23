@@ -868,7 +868,7 @@ FROM
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
+            <Value>=Join(Parameters!Region.Value,",")</Value>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
@@ -19283,7 +19283,8 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Parameters!Region.Label</Value>
+                                  <Value>=IIF(Parameters!Region.Count = COUNT(1, "RegionShared")
+    , "All", Join(Parameters!Region.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -20187,7 +20188,12 @@ FROM
   <ReportParameters>
     <ReportParameter Name="Region">
       <DataType>String</DataType>
-      <Nullable>true</Nullable>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>RegionShared</DataSetName>
+          <ValueField>PhecName</ValueField>
+        </DataSetReference>
+      </DefaultValue>
       <Prompt>*Region</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -20196,6 +20202,7 @@ FROM
           <LabelField>PhecName</LabelField>
         </DataSetReference>
       </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
     <ReportParameter Name="Service">
       <DataType>String</DataType>
