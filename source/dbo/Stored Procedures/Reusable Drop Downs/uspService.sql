@@ -14,12 +14,8 @@ AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
-
 		DECLARE	@UserType VARCHAR(1)
-		SELECT @UserType = ADGroupType
-		FROM AdGroup
-		WHERE CHARINDEX('###' + AdGroupName + '###', @LoginGroups) != 0
+		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT, @UserType OUTPUT
 
 		-- Debugging
 		-- EXEC master..xp_logevent 60000, @LoginGroups
