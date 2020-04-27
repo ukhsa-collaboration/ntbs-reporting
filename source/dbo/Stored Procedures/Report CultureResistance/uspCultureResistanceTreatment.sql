@@ -16,7 +16,7 @@ CREATE PROCEDURE [dbo].[uspCultureResistanceTreatment]
 	--	@ResidenceTreatment		TINYINT			=   3,		-- The report's "Residence or Treatment?" drop-down that controls whether notifications are within a certain PHEC rgion
 		@Region					VARCHAR(50)		=	NULL,	-- The report's "Region" drop-down that allows to view notifications of others PHECs (based on permissions)
 		@SiteOfDisease			VARCHAR(16)		=	NULL,	-- The report's "Site Of Disease" drop-down that filters on "Pulmonary, Extra-Pulmonary" notifications
-		@Service				varchar(1000)	=	NULL
+		@Service				varchar(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON

@@ -1,7 +1,7 @@
 /*CREATE FUNCTION [dbo].[ufnGetUnmatchedSpecimensByService] 
 (	
 	--comma-separated list to be split using select value from STRING_SPLIT(@Service, ',')
-	@Service VARCHAR(1000)		=	NULL
+	@Service VARCHAR(5000)		=	NULL
 )
 
 RETURNS TABLE 

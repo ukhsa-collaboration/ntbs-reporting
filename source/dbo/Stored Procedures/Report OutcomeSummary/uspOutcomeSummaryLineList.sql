@@ -17,7 +17,7 @@ CREATE PROCEDURE [dbo].[uspOutcomeSummaryLineList]
 		@Region							VARCHAR(50)		=	NULL,
 		@DrugResistanceProfile			VARCHAR(50)		=	NULL,
 		@LocalAuthority					VARCHAR(50)		=	NULL,
-		@ServiceName					VARCHAR(1000)	=	NULL,
+		@ServiceName					VARCHAR(5000)	=	NULL,
 		@Bucket							VARCHAR(50)		=	NULL,
 		@TreatmentOutcomeTimePeriodId	VARCHAR(50)		=	NULL
 	)

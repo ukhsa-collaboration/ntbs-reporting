@@ -23,7 +23,7 @@ CREATE PROCEDURE [dbo].[uspEnhancedLineList]
 		@SiteOfDisease			VARCHAR(16)		=	NULL,	
 		@DrugResistanceProfile	varchar(1000)	=	NULL,
 		@Species				VARCHAR(25)		=	NULL,	
-		@Service				varchar(1000)	=	NULL
+		@Service				varchar(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON
