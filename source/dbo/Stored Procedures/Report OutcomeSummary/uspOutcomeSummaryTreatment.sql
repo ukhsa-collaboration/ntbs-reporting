@@ -16,7 +16,7 @@ CREATE PROCEDURE [dbo].[uspOutcomeSummaryTreatment]
 		@TreatmentOutcomeTimePeriodId	VARCHAR(50)		=	NULL, -- TODO: This should be an INTEGER, but somehow an INTEGER does not get passed through!
 		@ResistantId					VARCHAR(50)		=	NULL, -- TODO: This should be an INTEGER, but somehow an INTEGER does not get passed through!
 		@DrugResistanceProfile			VARCHAR(50)		=	NULL,
-		@Service				varchar(1000)	=	NULL
+		@Service				varchar(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON

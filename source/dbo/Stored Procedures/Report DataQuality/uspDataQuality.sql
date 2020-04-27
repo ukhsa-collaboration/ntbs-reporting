@@ -12,7 +12,7 @@ CREATE PROCEDURE [dbo].[uspDataQuality]
 		@NotificationYearTo				INTEGER			=	0,
 		@NotificationMonthTo			INTEGER			=	1,
 		@Region							VARCHAR(50)		=	NULL,
-		@ServiceName					VARCHAR(1000)	=	NULL
+		@ServiceName					VARCHAR(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON
