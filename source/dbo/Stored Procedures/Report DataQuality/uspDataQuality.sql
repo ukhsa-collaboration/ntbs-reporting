@@ -19,7 +19,7 @@ AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
 
 		--Debugging
 		--EXEC master..xp_logevent 60000, @Region
