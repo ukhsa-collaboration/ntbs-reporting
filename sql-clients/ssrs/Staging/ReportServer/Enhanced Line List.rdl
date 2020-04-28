@@ -873,11 +873,12 @@ FROM
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
+            <Value>=Join(Parameters!Region.Value,",")</Value>
+            <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select Serviceid,TB_Service_Name from TB_Service 
-where PhecName = @Region</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspService</CommandText>
       </Query>
       <Fields>
         <Field Name="Serviceid">
@@ -19287,7 +19288,8 @@ where PhecName = @Region</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Parameters!Region.Label</Value>
+                                  <Value>=IIF(Parameters!Region.Count = COUNT(1, "RegionShared")
+    , "All", Join(Parameters!Region.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -20191,7 +20193,12 @@ where PhecName = @Region</CommandText>
   <ReportParameters>
     <ReportParameter Name="Region">
       <DataType>String</DataType>
-      <Nullable>true</Nullable>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>RegionShared</DataSetName>
+          <ValueField>PhecName</ValueField>
+        </DataSetReference>
+      </DefaultValue>
       <Prompt>*Region</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -20200,6 +20207,7 @@ where PhecName = @Region</CommandText>
           <LabelField>PhecName</LabelField>
         </DataSetReference>
       </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
     <ReportParameter Name="Service">
       <DataType>String</DataType>

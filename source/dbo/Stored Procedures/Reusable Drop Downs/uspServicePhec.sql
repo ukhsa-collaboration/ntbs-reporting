@@ -1,5 +1,6 @@
 ﻿/***************************************************************************************************
 Desc:    This returns the permission-filtered PHEC regions for each Service level AD group user. 
+		 TODO NTBS-1003: Remove this proc when all reports are merged.
 
 Author:  Public Health England
          Adil Mirza    <adil.mirza@phe.gov.uk>
