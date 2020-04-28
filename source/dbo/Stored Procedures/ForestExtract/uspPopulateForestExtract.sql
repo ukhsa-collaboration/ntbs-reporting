@@ -20,7 +20,7 @@ AS
 		GROUP BY NotificationId
 	
 	INSERT INTO ForestExtract (
-			-- NotificationId,
+			-- NotificationId,		This column is GUID in OxfordForestExtract and integer in ReusableNotification
 			CaseId
 			, Casereportdate, Forename, Surname, NHSNumber, DateOfBirth, AddressLine1
 			, NoFixedAbode, Postcode, Sex, Hospital, ResidenceLocalAuthority
@@ -29,17 +29,14 @@ AS
 			, Occupation, OccupationCategory, EthnicGroup
 			, UKBorn, BirthCountry, UKEntryYear
 			, SymptomOnset, DatePresented, DateOfDiagnosis, StartOfTreatment
-			, DrugUse 
-			--DrugUseLast5Years, DrugUseMoreThan5YearsAgo, CurrentDrugUse
-			, Homeless 
-			--HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
-			, Prison 
-			--PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInprisonOrWhenFirstSeen
+			, DrugUse, DrugUseLast5Years, DrugUseMoreThan5YearsAgo, CurrentDrugUse
+			, Homeless, HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
+			, Prison, PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInprisonOrWhenFirstSeen
 			, AlcoholUse
 			, SmearSample, SmearSampleResult, SpecimenDate, ReferenceLaboratoryNumber
 			, ExtractDate
 			, Localpatientid, Age
-			--, OwnerUserId
+			--, OwnerUserId			This column is GUID in OxfordForestExtract and integer in ReusableNotification
 			, CaseManager, PatientsConsultant, DiseaseSites
 			)
 	SELECT
@@ -81,37 +78,37 @@ AS
 		CONVERT(varchar, StartOfTreatmentDate, 103) AS StartOfTreatment,
 
 		reusableNotification.DrugMisuse AS DrugUse,
-		--CASE DrugMisuseInLast5Years 
-		--	WHEN 'Yes' THEN 'Drug use in the last 5 years'
-		--END AS DrugMisuseLast5Years
-		--CASE DrugMisuseMoreThan5YearsAgo 
-		--	WHEN 'Yes' THEN 'Drug use more than 5 years ago'
-		--END AS DrugUseMoreThan5YearsAgo,
-		--CASE CurrentDrugMisuse 
-		--	WHEN 'Yes' THEN 'Currently using drugs'
-		--END AS CurrentDrugUse,
+		CASE DrugMisuseInLast5Years 
+			WHEN 'Yes' THEN DrugMisuseInLast5Years ELSE ''
+		END AS DrugMisuseLast5Years,
+		CASE DrugMisuseMoreThan5YearsAgo 
+			WHEN 'Yes' THEN DrugMisuseMoreThan5YearsAgo ELSE ''
+		END AS DrugUseMoreThan5YearsAgo,
+		CASE CurrentDrugMisuse 
+			WHEN 'Yes' THEN CurrentDrugMisuse ELSE ''
+		END AS CurrentDrugUse,
 	
 		reusableNotification.Homeless,
-		--CASE HomelessInLast5Years 
-		--	WHEN 'Yes' THEN 'Homeless in the last 5 years'
-		--END AS HomelessLast5Years,
-		--CASE HomelessMoreThan5YearsAgo 
-		--	WHEN 'Yes' THEN 'Homeless more than 5 years ago'
-		--END AS HomelessMoreThan5YearsAgo,
-		--CASE CurrentlyHomeless
-		--	WHEN 'Yes' THEN 'Currently homeless'
-		--END AS CurrentlyHomeless,
+		CASE HomelessInLast5Years 
+			WHEN 'Yes' THEN HomelessInLast5Years ELSE ''
+		END AS HomelessLast5Years,
+		CASE HomelessMoreThan5YearsAgo 
+			WHEN 'Yes' THEN HomelessMoreThan5YearsAgo ELSE ''
+		END AS HomelessMoreThan5YearsAgo,
+		CASE CurrentlyHomeless
+			WHEN 'Yes' THEN CurrentlyHomeless ELSE ''
+		END AS CurrentlyHomeless,
 
 		reusableNotification.Prison,
-		--CASE InPrisonInLast5Years 
-		--	WHEN 'Yes' THEN 'In prison in the last 5 years'
-		--END AS PrisonLast5Years,
-		--CASE InPrisonMoreThan5YearsAgo 
-		--	WHEN 'Yes' THEN 'In prison more than 5 years ago'
-		--END AS PrisonMoreThan5YearsAgo,
-		--CASE CurrentlyInPrisonOrInPrisonWhenFirstSeen 
-		--	WHEN 'Yes' THEN 'Currently in prison or in prison when first seen'
-		--END AS CurrentlyInprisonOrWhenFirstSeen,
+		CASE InPrisonInLast5Years 
+			WHEN 'Yes' THEN InPrisonInLast5Years ELSE ''
+		END AS PrisonLast5Years,
+		CASE InPrisonMoreThan5YearsAgo 
+			WHEN 'Yes' THEN InPrisonMoreThan5YearsAgo ELSE ''
+		END AS PrisonMoreThan5YearsAgo,
+		CASE CurrentlyInPrisonOrInPrisonWhenFirstSeen 
+			WHEN 'Yes' THEN CurrentlyInPrisonOrInPrisonWhenFirstSeen ELSE ''
+		END AS CurrentlyInprisonOrWhenFirstSeen,
 
 		reusableNotification.AlcoholMisuse AS AlcoholUse,
 
@@ -138,6 +135,3 @@ AS
 	LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcode ON postcode.Postcode = REPLACE(reusableNotification.Postcode, ' ', '')
 	LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = pt.NotificationId
 	WHERE TreatmentPhecCode NOT IN ('PHECNI', 'PHECSCOT', 'PHECWAL') OR phec.Code IS NULL -- Exclude Wales, Scotland and Northern Ireland
-
-
-	SELECT * FROM [$(ETS)].dbo.ETSOxfordExtract
