@@ -13,8 +13,8 @@ CREATE PROCEDURE [dbo].[uspPhec] (
 	
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		DECLARE	@UserType VARCHAR(1)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT, @UserType OUTPUT
+		DECLARE	@LoginType VARCHAR(1)
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT, @LoginType OUTPUT
 
 		-- Debugging
 		-- EXEC master..xp_logevent 60000, @LoginGroups
@@ -27,7 +27,7 @@ CREATE PROCEDURE [dbo].[uspPhec] (
 			FROM dbo.Phec
 			WHERE PhecName != 'Unknown'
 				-- Show all regions to national team users
-				AND @UserType = 'N'
+				AND @LoginType = 'N'
 			UNION
 			SELECT 
 				PhecCode, 

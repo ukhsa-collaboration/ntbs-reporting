@@ -14,15 +14,15 @@ AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		DECLARE	@UserType VARCHAR(1)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT, @UserType OUTPUT
+		DECLARE	@LoginType VARCHAR(1)
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT, @LoginType OUTPUT
 
 		-- Debugging
 		-- EXEC master..xp_logevent 60000, @LoginGroups
 
 		IF (@LoginGroups != '###')
 		BEGIN
-			IF (@UserType = 'S') 
+			IF (@LoginType = 'S') 
 				-- service user, restrict by selected region and by user access to services
 				SELECT distinct 
 					s.Serviceid,
@@ -34,7 +34,7 @@ AS
 					AND (@Region = 'AllowAll' OR PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 					AND CHARINDEX('###' + agt.AdGroupName + '###', @LoginGroups) != 0
 					order by TB_Service_Name
-			ELSE IF (@UserType = 'R' OR @UserType = 'N') 
+			ELSE IF (@LoginType = 'R' OR @LoginType = 'N') 
 				-- regional user or national team user, only restrict by selected regions
 				SELECT Serviceid,TB_Service_Name 
 				FROM dbo.TB_Service s

@@ -10,7 +10,7 @@ CREATE PROCEDURE [dbo].[uspNotificationSummaryTreatmentGeography] AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500);
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT;
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT;
 
 		IF (@LoginGroups != '###')
 		BEGIN
