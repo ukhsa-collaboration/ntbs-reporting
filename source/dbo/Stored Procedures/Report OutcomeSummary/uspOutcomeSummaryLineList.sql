@@ -17,7 +17,7 @@ CREATE PROCEDURE [dbo].[uspOutcomeSummaryLineList]
 		@Region							VARCHAR(50)		=	NULL,
 		@DrugResistanceProfile			VARCHAR(50)		=	NULL,
 		@LocalAuthority					VARCHAR(50)		=	NULL,
-		@ServiceName					VARCHAR(1000)	=	NULL,
+		@ServiceName					VARCHAR(5000)	=	NULL,
 		@Bucket							VARCHAR(50)		=	NULL,
 		@TreatmentOutcomeTimePeriodId	VARCHAR(50)		=	NULL
 	)
@@ -30,7 +30,7 @@ AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
 
 		IF (@LoginGroups != '###')
 		BEGIN

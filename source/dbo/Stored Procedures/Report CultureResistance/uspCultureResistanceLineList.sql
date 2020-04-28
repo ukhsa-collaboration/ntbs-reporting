@@ -15,7 +15,7 @@ CREATE PROCEDURE [dbo].[uspCultureResistanceLineList]
 		@NotificationMonthTo	INTEGER			=	1,
 	--	@ResidenceTreatment		TINYINT			=   3,
 		@Region					VARCHAR(50)		=	NULL,
-		@Service				VARCHAR(1000)	=	NULL,
+		@Service				VARCHAR(5000)	=	NULL,
 		@LocalAuthority					VARCHAR(50)		=	NULL,
 		@SiteOfDisease			VARCHAR(16)		=	NULL,	
 		@Bucket					VARCHAR(50)		=	NULL	
@@ -28,7 +28,7 @@ AS
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
 
 		IF (@LoginGroups != '###')
 		BEGIN

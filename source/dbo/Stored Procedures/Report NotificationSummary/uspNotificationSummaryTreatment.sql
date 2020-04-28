@@ -14,7 +14,7 @@ CREATE PROCEDURE [dbo].[uspNotificationSummaryTreatment]
 			@NotificationMonthTo			INTEGER			=	1,
 			@Region							VARCHAR(50)		=	NULL,
 			@GroupBy						VARCHAR(50)		=	'MONTH',
-			@Service						Varchar(1000)	=	NULL
+			@Service						Varchar(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON

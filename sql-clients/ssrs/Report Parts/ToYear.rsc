@@ -8,36 +8,12 @@
   <RdlFragment>
     <rdl:Report>
       <rdl:AutoRefresh>0</rdl:AutoRefresh>
-      <rdl:DataSources>
-        <rdl:DataSource Name="PHE">
-          <rdl:ConnectionProperties>
-            <rdl:DataProvider>SQL</rdl:DataProvider>
-            <rdl:ConnectString>Data Source=sqlnisntbscol02;Initial Catalog=NTBS_R1_Reporting_Staging</rdl:ConnectString>
-            <rdl:IntegratedSecurity>true</rdl:IntegratedSecurity>
-            <rdl:Prompt>Enter a user name and password to access the data source:</rdl:Prompt>
-          </rdl:ConnectionProperties>
-          <rd:SecurityType>Integrated</rd:SecurityType>
-          <rd:DataSourceID>c4640378-9393-438a-a618-034c268737e7</rd:DataSourceID>
-        </rdl:DataSource>
-      </rdl:DataSources>
       <rdl:DataSets>
         <rdl:DataSet Name="YearShared">
-          <rdl:Query>
-            <rdl:DataSourceName>PHE</rdl:DataSourceName>
-            <rdl:CommandText>SELECT
-  vwNotificationYear.Id
-  ,vwNotificationYear.NotificationYear
-FROM
-  vwNotificationYear</rdl:CommandText>
-            <rd:DesignerState>
-              <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
-                <SelectedColumns>
-                  <ColumnExpression ColumnOwner="vwNotificationYear" ColumnName="Id" />
-                  <ColumnExpression ColumnOwner="vwNotificationYear" ColumnName="NotificationYear" />
-                </SelectedColumns>
-              </QueryDefinition>
-            </rd:DesignerState>
-          </rdl:Query>
+          <rdl:SharedDataSet>
+            <rdl:SharedDataSetReference>/Report Parts/YearShared</rdl:SharedDataSetReference>
+            <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+          </rdl:SharedDataSet>
           <rdl:Fields>
             <rdl:Field Name="Id">
               <rdl:DataField>Id</rdl:DataField>
@@ -76,7 +52,7 @@ FROM
           <ComponentMetadata xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/componentdefinition">
             <ComponentId>59445244-695b-4eb1-976b-eab1edface68</ComponentId>
             <SourcePath>/Report Parts/ToYear</SourcePath>
-            <SyncDate>2019-01-03T10:17:56.3270000+00:00</SyncDate>
+            <SyncDate>2020-04-28T10:22:38.2600000+01:00</SyncDate>
           </ComponentMetadata>
         </rdl:ReportParameter>
       </rdl:ReportParameters>
@@ -87,7 +63,7 @@ FROM
         </rdl:GridLayoutDefinition>
       </rdl:ReportParametersLayout>
       <rd:ReportUnitType>Invalid</rd:ReportUnitType>
-      <rd:ReportID>6606f4de-e6a3-4904-b8a9-026c5b0937d5</rd:ReportID>
+      <rd:ReportID>1be2d1fb-e494-4f55-aa72-8ab1952bf05c</rd:ReportID>
     </rdl:Report>
   </RdlFragment>
 </ComponentItem>

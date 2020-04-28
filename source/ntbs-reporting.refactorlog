@@ -105,4 +105,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="OutcomePeriodId" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="0493de8a-2727-4ff3-9221-4900cb4dadd6" ChangeDateTime="04/28/2020 11:28:40">
+    <Property Name="ElementName" Value="[dbo].[uspGetAuthenticatedLoginGroups]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[uspGetAuthenticatedLoginGroupsAndType]" />
+  </Operation>
 </Operations>
