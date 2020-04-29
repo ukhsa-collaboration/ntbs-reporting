@@ -33,12 +33,13 @@ AS
 				WHERE PhecName != 'Unknown'
 					AND (@Region = 'AllowAll' OR PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 					AND CHARINDEX('###' + agt.AdGroupName + '###', @LoginGroups) != 0
-					order by TB_Service_Name
+				ORDER BY TB_Service_Name
 			ELSE IF (@LoginType = 'R' OR @LoginType = 'N') 
 				-- regional user or national team user, only restrict by selected regions
 				SELECT Serviceid,TB_Service_Name 
 				FROM dbo.TB_Service s
 				WHERE PhecName IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
+				ORDER BY TB_Service_Name
 			ELSE
 				RAISERROR ('This user does not have a recognized user type', 16, 1) WITH NOWAIT
 		END
