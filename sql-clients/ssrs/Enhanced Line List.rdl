@@ -874,6 +874,18 @@ FROM
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="UserType">
+      <SharedDataSet>
+        <SharedDataSetReference>/Report Parts/UserTypeShared</SharedDataSetReference>
+        <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+      </SharedDataSet>
+      <Fields>
+        <Field Name="UserType">
+          <DataField>UserType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -19271,8 +19283,8 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Parameters!Region.Count = COUNT(1, "RegionShared")
-    , "All", Join(Parameters!Region.Label, ","))</Value>
+                                  <Value>=IIF(First(Fields!UserType.Value, "UserType") = "N" And Parameters!Region.Count = COUNT(1, "RegionShared")
+, "All", Join(Parameters!Region.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -19909,8 +19921,8 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Parameters!Service.Count = COUNT(1, "ServiceShared")
-    , "All", Join(Parameters!Service.Label, ","))</Value>
+                                  <Value>=IIF(First(Fields!UserType.Value, "UserType")  &lt;&gt; "S" And Parameters!Service.Count = COUNT(1, "ServiceShared")
+, "All", Join(Parameters!Service.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
