@@ -121,6 +121,8 @@
     <Folder Include="dbo\Functions\KPI" />
     <Folder Include="dbo\Tables\ClusterMatching" />
     <Folder Include="dbo\Views\ClusterMatching" />
+    <Folder Include="dbo\Stored Procedures\National Team" />
+    <Folder Include="dbo\Tables\National Team" />
     <Folder Include="dbo\Stored Procedures\ClusterMatching" />
     <Folder Include="dbo\Stored Procedures\Extracts" />
     <Folder Include="dbo\Tables\Extracts" />
