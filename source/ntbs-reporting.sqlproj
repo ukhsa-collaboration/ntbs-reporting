@@ -120,8 +120,8 @@
     <Folder Include="dbo\Functions\KPI" />
     <Folder Include="dbo\Tables\ClusterMatching" />
     <Folder Include="dbo\Views\ClusterMatching" />
-    <Folder Include="dbo\Stored Procedures\ForestExtract" />
-    <Folder Include="dbo\Tables\Forest" />
+    <Folder Include="dbo\Stored Procedures\Extracts" />
+    <Folder Include="dbo\Tables\Extracts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -302,8 +302,8 @@
     <Build Include="dbo\Tables\Reusable Notification\PeriodicOutcome.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetPeriodicOutcome.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcomePeriodic.sql" />
-    <Build Include="dbo\Stored Procedures\ForestExtract\uspPopulateForestExtract.sql" />
-    <Build Include="dbo\Tables\Forest\CreateForestExtractTable.sql" />
+    <Build Include="dbo\Stored Procedures\Extracts\uspPopulateForestExtract.sql" />
+    <Build Include="dbo\Tables\Extracts\CreateForestExtractTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
