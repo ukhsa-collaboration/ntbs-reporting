@@ -55,4 +55,4 @@
 	[CurrentlyHomeless] [nvarchar](10) NULL,
 	[CaseManager] [nvarchar](255) NULL,
 	[PatientsConsultant] [nvarchar](255) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+)

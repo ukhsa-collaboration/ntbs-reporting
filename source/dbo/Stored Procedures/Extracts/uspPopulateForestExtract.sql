@@ -15,24 +15,25 @@ GO
 CREATE PROCEDURE [dbo].[uspPopulateForestExtract]
 AS
 BEGIN
-	IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'ForestExtract')
-		BEGIN
-			DELETE FROM [dbo].ForestExtract
-		END
-
-	DECLARE @TempDiseaseSites TABLE
-	(
-	   NotificationId int,
-	   description nvarchar(2000)
-	);
-
-	INSERT INTO @TempDiseaseSites
-	SELECT NotificationId, Description = STRING_AGG(Description, N', ')
-		FROM [$(NTBS)].[dbo].[NotificationSite] notificationSite
-		JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId 
-		GROUP BY NotificationId
-
 	BEGIN TRY
+		IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'ForestExtract')
+			BEGIN
+				DELETE FROM [dbo].ForestExtract
+			END
+
+		DECLARE @TempDiseaseSites TABLE
+		(
+		   NotificationId int,
+		   description nvarchar(2000)
+		);
+
+		INSERT INTO @TempDiseaseSites
+		SELECT NotificationId, Description = STRING_AGG(Description, N', ')
+			FROM [$(NTBS)].[dbo].[NotificationSite] notificationSite
+			JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId 
+			GROUP BY NotificationId
+
+	
 		INSERT INTO ForestExtract (
 			-- NotificationId,
 			CaseId
@@ -119,8 +120,9 @@ BEGIN
 			diseaseSites.Description AS DiseaseSites
 
 		FROM ([dbo].[ReusableNotification] reusableNotification
-		INNER JOIN [dbo].LabSpecimen lab ON lab.PatientNhsNumber = reusableNotification.NhsNumber AND SourceSystem = 'NTBS')
-		LEFT JOIN [$(NTBS)].[dbo].Patients pt ON CAST(pt.NotificationId AS varchar(50)) = reusableNotification.NotificationId
+		INNER JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch specimentMatch ON specimentMatch.NotificationID = reusableNotification.NtbsId
+		INNER JOIN [dbo].LabSpecimen lab ON lab.ReferenceLaboratoryNumber = specimentMatch.ReferenceLaboratoryNumber)
+		LEFT JOIN [$(NTBS)].[dbo].Patients pt ON pt.NotificationId = reusableNotification.NtbsId
 		LEFT JOIN [$(NTBS)].[dbo].HospitalDetails hospital ON hospital.NotificationId = pt.NotificationId 
 		LEFT JOIN [$(NTBS)].[ReferenceData].Occupation occupation ON occupation.OccupationId = pt.OccupationId
 		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC phec ON phec.Code = TreatmentPhecCode
@@ -134,3 +136,5 @@ BEGIN
 END
 
 DROP FUNCTION dbo.GetSiteDiseaseDurationStatus
+
+
