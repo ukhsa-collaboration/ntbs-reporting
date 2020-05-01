@@ -5,8 +5,6 @@
 		UNION
 		SELECT 'AMINO' AS GroupName, 'AK' AS AntibioticOutputName
 		UNION
-		SELECT 'AMINO' AS GroupName, 'AMI' AS AntibioticOutputName
-		UNION
 		SELECT 'AMINO' AS GroupName, 'KAN' AS AntibioticOutputName
 		UNION
 		SELECT 'AMINO' AS GroupName, 'CAP' AS AntibioticOutputName
@@ -20,6 +18,4 @@
 		SELECT 'QUIN' AS GroupName, 'MOXI' AS AntibioticOutputName
 		UNION
 		SELECT 'QUIN' AS GroupName, 'CIP' AS AntibioticOutputName
-		UNION
-		SELECT 'QUIN' As 'GroupName', 'OFL' AS AntibioticOutputName
 
