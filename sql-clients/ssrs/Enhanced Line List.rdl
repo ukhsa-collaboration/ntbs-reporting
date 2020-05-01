@@ -617,34 +617,6 @@ FROM
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="YearShared">
-      <Query>
-        <DataSourceName>PHE</DataSourceName>
-        <CommandText>SELECT
-  vwNotificationYear.Id
-  ,vwNotificationYear.NotificationYear
-FROM
-  vwNotificationYear</CommandText>
-        <rd:DesignerState>
-          <QueryDefinition xmlns="http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational">
-            <SelectedColumns>
-              <ColumnExpression ColumnOwner="vwNotificationYear" ColumnName="Id" />
-              <ColumnExpression ColumnOwner="vwNotificationYear" ColumnName="NotificationYear" />
-            </SelectedColumns>
-          </QueryDefinition>
-        </rd:DesignerState>
-      </Query>
-      <Fields>
-        <Field Name="Id">
-          <DataField>Id</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="NotificationYear">
-          <DataField>NotificationYear</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="SocialRiskFactors">
       <Query>
         <DataSourceName>PHE</DataSourceName>
@@ -868,11 +840,12 @@ FROM
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
           <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
+            <Value>=Join(Parameters!Region.Value,",")</Value>
+            <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>select Serviceid,TB_Service_Name from TB_Service 
-where PhecName = @Region</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspService</CommandText>
       </Query>
       <Fields>
         <Field Name="Serviceid">
@@ -881,6 +854,34 @@ where PhecName = @Region</CommandText>
         </Field>
         <Field Name="TB_Service_Name">
           <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="YearShared">
+      <SharedDataSet>
+        <SharedDataSetReference>/Report Parts/YearShared</SharedDataSetReference>
+        <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+      </SharedDataSet>
+      <Fields>
+        <Field Name="Id">
+          <DataField>Id</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="NotificationYear">
+          <DataField>NotificationYear</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="UserType">
+      <SharedDataSet>
+        <SharedDataSetReference>/Report Parts/UserTypeShared</SharedDataSetReference>
+        <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+      </SharedDataSet>
+      <Fields>
+        <Field Name="UserType">
+          <DataField>UserType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -19282,7 +19283,8 @@ where PhecName = @Region</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Parameters!Region.Label</Value>
+                                  <Value>=IIF(First(Fields!UserType.Value, "UserType") = "N" And Parameters!Region.Count = COUNT(1, "RegionShared")
+, "All", Join(Parameters!Region.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -19919,8 +19921,8 @@ where PhecName = @Region</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(Parameters!Service.Count = COUNT(1, "ServiceShared")
-    , "All", Join(Parameters!Service.Label, ","))</Value>
+                                  <Value>=IIF(First(Fields!UserType.Value, "UserType")  &lt;&gt; "S" And Parameters!Service.Count = COUNT(1, "ServiceShared")
+, "All", Join(Parameters!Service.Label, ","))</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                   </Style>
@@ -20186,7 +20188,12 @@ where PhecName = @Region</CommandText>
   <ReportParameters>
     <ReportParameter Name="Region">
       <DataType>String</DataType>
-      <Nullable>true</Nullable>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>RegionShared</DataSetName>
+          <ValueField>PhecName</ValueField>
+        </DataSetReference>
+      </DefaultValue>
       <Prompt>*Region</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -20195,6 +20202,7 @@ where PhecName = @Region</CommandText>
           <LabelField>PhecName</LabelField>
         </DataSetReference>
       </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
     <ReportParameter Name="Service">
       <DataType>String</DataType>
@@ -20303,6 +20311,11 @@ where PhecName = @Region</CommandText>
           <LabelField>NotificationYear</LabelField>
         </DataSetReference>
       </ValidValues>
+      <cl:ComponentMetadata>
+        <cl:ComponentId>589711bf-e429-451c-9a7c-cd2ceec3ea4e</cl:ComponentId>
+        <cl:SourcePath>/Report Parts/FromYear</cl:SourcePath>
+        <cl:SyncDate>2020-04-28T11:59:00.1520018+01:00</cl:SyncDate>
+      </cl:ComponentMetadata>
     </ReportParameter>
     <ReportParameter Name="ToYear">
       <DataType>String</DataType>
@@ -20314,6 +20327,11 @@ where PhecName = @Region</CommandText>
           <LabelField>NotificationYear</LabelField>
         </DataSetReference>
       </ValidValues>
+      <cl:ComponentMetadata>
+        <cl:ComponentId>59445244-695b-4eb1-976b-eab1edface68</cl:ComponentId>
+        <cl:SourcePath>/Report Parts/ToYear</cl:SourcePath>
+        <cl:SyncDate>2020-04-28T11:59:00.5895290+01:00</cl:SyncDate>
+      </cl:ComponentMetadata>
     </ReportParameter>
     <ReportParameter Name="AgeTo">
       <DataType>Integer</DataType>
@@ -20422,16 +20440,6 @@ where PhecName = @Region</CommandText>
           <ParameterName>TreatmentOrResidence</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
-          <RowIndex>2</RowIndex>
-          <ParameterName>FromYear</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>1</ColumnIndex>
-          <RowIndex>2</RowIndex>
-          <ParameterName>ToYear</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>DateValidation</ParameterName>
@@ -20485,6 +20493,16 @@ where PhecName = @Region</CommandText>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>Service</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>FromYear</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>2</RowIndex>
+          <ParameterName>ToYear</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>

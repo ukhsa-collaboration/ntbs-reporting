@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <Description />
+  <DataSet Name="UserType">
+    <Query>
+      <DataSourceReference>/DataSources/Staging</DataSourceReference>
+      <CommandText>DECLARE @LoginType NVARCHAR(1);
+EXEC uspGetAuthenticatedLoginGroupsAndType '', @LoginType OUTPUT
+SELECT @LoginType AS [UserType]</CommandText>
+      <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
+    </Query>
+    <Fields>
+      <Field Name="UserType">
+        <DataField>UserType</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+  <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+</SharedDataSet>

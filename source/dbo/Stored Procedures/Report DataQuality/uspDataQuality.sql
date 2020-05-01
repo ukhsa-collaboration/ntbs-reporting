@@ -12,14 +12,14 @@ CREATE PROCEDURE [dbo].[uspDataQuality]
 		@NotificationYearTo				INTEGER			=	0,
 		@NotificationMonthTo			INTEGER			=	1,
 		@Region							VARCHAR(50)		=	NULL,
-		@ServiceName					VARCHAR(1000)	=	NULL
+		@ServiceName					VARCHAR(5000)	=	NULL
 	)
 AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
 
 		--Debugging
 		--EXEC master..xp_logevent 60000, @Region

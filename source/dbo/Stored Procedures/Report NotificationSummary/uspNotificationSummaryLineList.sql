@@ -14,7 +14,7 @@ Create PROCEDURE [dbo].[uspNotificationSummaryLineList]
 		@NotificationMonthTo	INTEGER			=	NULL,
 		@NotificationPeriod		VARCHAR(8)		=	NULL,
 		@LocalAuthority			VARCHAR(50)		=	NULL,
-		@Service				VARCHAR(1000)	=	NULL,
+		@Service				VARCHAR(5000)	=	NULL,
 		@GroupBy				VARCHAR(50)		=	NULL,
 		@Region					VARCHAR(50)		=	NULL
 	)
@@ -26,7 +26,7 @@ AS
 	
 	BEGIN TRY
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
 
 		IF (@LoginGroups != '###')
 		BEGIN

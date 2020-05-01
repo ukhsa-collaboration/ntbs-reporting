@@ -10,8 +10,9 @@ Desc:    This proc must get called by EVERY end-user proc (= procs that deliver 
          
 **************************************************************************************************/
 
-CREATE PROCEDURE [dbo].[uspGetAuthenticatedLoginGroups] (
-	@LoginGroups VARCHAR(500) = '' OUTPUT
+CREATE PROCEDURE dbo.uspGetAuthenticatedLoginGroupsAndType (
+	@LoginGroups VARCHAR(500) = '' OUTPUT,
+	@LoginType VARCHAR(1) = '' OUTPUT
 ) AS
 	BEGIN TRY
 		SET NOCOUNT ON
@@ -30,6 +31,10 @@ CREATE PROCEDURE [dbo].[uspGetAuthenticatedLoginGroups] (
 		-- Log, if user not found
 		IF (@LoginGroups = '###')
 			RAISERROR ('This user is not authorized to log into NTBS Reporting', 16, 1) WITH NOWAIT
+
+		SELECT @LoginType = ADGroupType
+		FROM AdGroup
+		WHERE CHARINDEX('###' + AdGroupName + '###', @LoginGroups) != 0
 	END TRY
 	BEGIN CATCH
 		THROW
