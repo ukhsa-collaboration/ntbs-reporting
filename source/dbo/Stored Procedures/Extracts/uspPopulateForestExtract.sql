@@ -1,18 +1,4 @@
-﻿CREATE FUNCTION dbo.GetSiteDiseaseDurationStatus
-	(
-		@durationStatus varchar(100)
-	)
-	RETURNS varchar(10) 
-	AS
-	BEGIN
-		RETURN
-		CASE @durationStatus WHEN 'Yes' THEN 'Yes' ELSE '' 
-	END
-END
-
-
-GO
-CREATE PROCEDURE [dbo].[uspPopulateForestExtract]
+﻿CREATE PROCEDURE [dbo].[uspPopulateForestExtract]
 AS
 BEGIN
 	BEGIN TRY
@@ -48,7 +34,7 @@ BEGIN
 			, Homeless 
 			, HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
 			, Prison 
-			, PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInprisonOrWhenFirstSeen
+			, PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonOrWhenFirstSeen
 			, AlcoholUse
 			, SmearSample, SmearSampleResult, SpecimenDate, ReferenceLaboratoryNumber
 			, ExtractDate
@@ -87,17 +73,17 @@ BEGIN
 			CONVERT(varchar, DiagnosisDate, 103)								AS DateOfDiagnosis,
 			CONVERT(varchar, StartOfTreatmentDate, 103)							AS StartOfTreatment,
 			reusableNotification.DrugMisuse										AS DrugUse,
-			dbo.GetSiteDiseaseDuration(DrugMisuseInLast5Years)					AS DrugMisuseLast5Years,
-			dbo.GetSiteDiseaseDuration(DrugMisuseMoreThan5YearsAgo)				AS DrugUseMoreThan5YearsAgo,
-			dbo.GetSiteDiseaseDuration(CurrentDrugMisuse)						AS CurrentDrugUse,
+			dbo.ufnGetSiteDiseaseDurationStatus(DrugMisuseInLast5Years)			AS DrugMisuseLast5Years,
+			dbo.ufnGetSiteDiseaseDurationStatus(DrugMisuseMoreThan5YearsAgo)	AS DrugUseMoreThan5YearsAgo,
+			dbo.ufnGetSiteDiseaseDurationStatus(CurrentDrugMisuse)				AS CurrentDrugUse,
 			reusableNotification.Homeless										AS Homeless,
-			dbo.GetSiteDiseaseDuration(HomelessInLast5Years)					AS HomelessLast5Years,
-			dbo.GetSiteDiseaseDuration(HomelessMoreThan5YearsAgo)				AS HomelessMoreThan5YearsAgo,
-			dbo.GetSiteDiseaseDuration(CurrentlyHomeless)						AS CurrentlyHomeless,
+			dbo.ufnGetSiteDiseaseDurationStatus(HomelessInLast5Years)			AS HomelessLast5Years,
+			dbo.ufnGetSiteDiseaseDurationStatus(HomelessMoreThan5YearsAgo)		AS HomelessMoreThan5YearsAgo,
+			dbo.ufnGetSiteDiseaseDurationStatus(CurrentlyHomeless)				AS CurrentlyHomeless,
 			reusableNotification.Prison											AS Prison,
-			dbo.GetSiteDiseaseDuration(InPrisonInLast5Years)					AS InPrisonInLast5Years,
-			dbo.GetSiteDiseaseDuration(InPrisonMoreThan5YearsAgo)				AS PrisonMoreThan5YearsAgo,
-			dbo.GetSiteDiseaseDuration(CurrentlyInPrisonOrInPrisonWhenFirstSeen) AS CurrentlyInprisonOrWhenFirstSeen,
+			dbo.ufnGetSiteDiseaseDurationStatus(InPrisonInLast5Years)			AS InPrisonInLast5Years,
+			dbo.ufnGetSiteDiseaseDurationStatus(InPrisonMoreThan5YearsAgo)		AS PrisonMoreThan5YearsAgo,
+			dbo.ufnGetSiteDiseaseDurationStatus(CurrentlyInPrisonOrInPrisonWhenFirstSeen) AS CurrentlyInPrisonOrWhenFirstSeen,
 			reusableNotification.AlcoholMisuse									AS AlcoholUse,
 			lab.[SpecimenTypeCode]												AS SmearSample,
 			'Positive'															AS SmearSampleResult,
@@ -132,7 +118,4 @@ BEGIN
 		EXEC dbo.uspHandleException
 	END CATCH
 END
-
-DROP FUNCTION dbo.GetSiteDiseaseDurationStatus
-
 
