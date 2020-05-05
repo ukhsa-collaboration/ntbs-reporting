@@ -122,6 +122,7 @@
     <Folder Include="dbo\Views\ClusterMatching" />
     <Folder Include="dbo\Stored Procedures\Extracts" />
     <Folder Include="dbo\Tables\Extracts" />
+    <Folder Include="dbo\Functions\Extracts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -304,6 +305,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcomePeriodic.sql" />
     <Build Include="dbo\Stored Procedures\Extracts\uspPopulateForestExtract.sql" />
     <Build Include="dbo\Tables\Extracts\CreateForestExtractTable.sql" />
+    <Build Include="dbo\Functions\Extracts\ufnGetFormattedSiteDiseaseDurationStatusForForest.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
