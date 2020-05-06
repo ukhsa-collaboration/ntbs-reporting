@@ -7,7 +7,7 @@
     <Name>ntbs-reporting</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{79abb441-72fc-4778-9c62-04cb91ea0224}</ProjectGuid>
+    <ProjectGuid>{00903ab8-5be1-4195-9677-566baa463341}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
@@ -122,6 +122,7 @@
     <Folder Include="dbo\Views\ClusterMatching" />
     <Folder Include="dbo\Stored Procedures\National Team" />
     <Folder Include="dbo\Tables\National Team" />
+    <Folder Include="dbo\Functions\Extracts\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -292,6 +293,8 @@
     <Build Include="dbo\Tables\National Team\LabMappings.sql" />
     <Build Include="dbo\Tables\National Team\SGSS_MTBC_Isolates.sql" />
     <Build Include="dbo\Tables\National Team\SGSS_MTBC_Patients.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
+    <Build Include="dbo\Tables\Audit\Calendar.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
