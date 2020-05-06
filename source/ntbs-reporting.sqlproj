@@ -306,6 +306,8 @@
     <Build Include="dbo\Stored Procedures\Extracts\uspPopulateForestExtract.sql" />
     <Build Include="dbo\Tables\Extracts\CreateForestExtractTable.sql" />
     <Build Include="dbo\Functions\Extracts\ufnGetFormattedSiteDiseaseDurationStatusForForest.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
+    <Build Include="dbo\Tables\Audit\Calendar.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
