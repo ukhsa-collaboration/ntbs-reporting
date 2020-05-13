@@ -295,6 +295,7 @@
     <Build Include="dbo\Tables\National Team\SGSS_MTBC_Patients.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
     <Build Include="dbo\Tables\Audit\Calendar.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryByRegion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
