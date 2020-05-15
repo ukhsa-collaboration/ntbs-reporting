@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [ForestClusterBuild]
 (
-	BuildNumber int
+	BuildNumber int,
+	LastExtractionDate DateTime
 )
 GO
