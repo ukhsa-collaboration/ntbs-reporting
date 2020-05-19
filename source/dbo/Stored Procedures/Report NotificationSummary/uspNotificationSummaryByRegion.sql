@@ -4,7 +4,7 @@
 			@NotificationMonthFrom			INTEGER			=	1,
 			@NotificationYearTo				INTEGER			=	0,
 			@NotificationMonthTo			INTEGER			=	1,
-			@Region							VARCHAR(5000)	=	NULL,
+			@Regions						VARCHAR(5000)	=	NULL,
 			@GroupBy						VARCHAR(50)		=	'MONTH'
 
 	)
@@ -20,9 +20,9 @@ BEGIN TRY
 
 	DECLARE @DateFormat					VARCHAR(10)	= CASE @GroupBy WHEN 'MONTH' THEN 'yyyy-MM' ELSE 'yyyy' END;
 
-	SELECT [Name] AS [Region] 
+	SELECT [PHEC_Name] AS [Region]
 	INTO #RegionGroup
-	FROM [$(NTBS)].ReferenceData.PHEC 
+	FROM [$(NTBS_R1_Geography_Staging)].dbo.PHEC
 	UNION SELECT 'Unknown' AS Region
 
 	-- Get the list of months
@@ -61,7 +61,7 @@ BEGIN TRY
 			LEFT OUTER JOIN #Count AS c
 			ON c.[Region] = r.[Region]
 			AND c.[DateGroup] = m.[YearMonthValue]
-		WHERE (@Region IS NULL OR r.Region IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
+		WHERE (@Regions IS NULL OR r.Region IN (SELECT VALUE FROM STRING_SPLIT(@Regions, ',')))
 		ORDER BY
 			r.[Region],
 			m.[FirstOfMonthValue]
@@ -75,7 +75,7 @@ BEGIN TRY
 			LEFT OUTER JOIN #Count as c
 			ON c.[Region] = r.[Region]
 			AND c.[DateGroup] = m.[YearValue]
-		WHERE (@Region IS NULL OR r.Region IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
+		WHERE (@Regions IS NULL OR r.Region IN (SELECT VALUE FROM STRING_SPLIT(@Regions, ',')))
 		ORDER BY
 			r.[Region],
 			m.[YearValue]
@@ -89,5 +89,6 @@ BEGIN TRY
 	DROP TABLE #Count
 END TRY
 BEGIN CATCH
+	EXEC dbo.uspHandleException
 END CATCH
 GO
