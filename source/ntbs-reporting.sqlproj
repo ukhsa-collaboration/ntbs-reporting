@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -121,6 +121,9 @@
     <Folder Include="dbo\Tables\ClusterMatching" />
     <Folder Include="dbo\Views\ClusterMatching" />
     <Folder Include="dbo\Stored Procedures\ClusterMatching" />
+    <Folder Include="dbo\Stored Procedures\Extracts" />
+    <Folder Include="dbo\Tables\Extracts" />
+    <Folder Include="dbo\Functions\Extracts" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -303,6 +306,12 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableOutcomePeriodic.sql" />
     <Build Include="dbo\Stored Procedures\ClusterMatching\uspUpdateNotificationClusterMatchWithForestClusterData.sql" />
     <Build Include="dbo\Tables\ClusterMatching\ForestClusterBuild.sql" />
+    <Build Include="dbo\Stored Procedures\Extracts\uspPopulateForestExtract.sql" />
+    <Build Include="dbo\Tables\Extracts\CreateForestExtractTable.sql" />
+    <Build Include="dbo\Functions\Extracts\ufnGetFormattedSiteDiseaseDurationStatusForForest.sql" />
+    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryByRegion.sql" />
+    <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
+    <Build Include="dbo\Tables\Audit\Calendar.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
