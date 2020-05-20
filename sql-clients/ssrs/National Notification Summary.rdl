@@ -174,7 +174,7 @@ FROM
           <QueryParameter Name="@NotificationMonthTo">
             <Value>=Parameters!DateMonthTo.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@Region">
+          <QueryParameter Name="@Regions">
             <Value>=Parameters!Region.Value</Value>
           </QueryParameter>
           <QueryParameter Name="@GroupBy">
@@ -273,7 +273,7 @@ where @MonthYear = 'Year'</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Notification Summary </Value>
+                    <Value>National Notification Summary </Value>
                     <Style>
                       <FontStyle>Normal</FontStyle>
                       <FontFamily>Arial</FontFamily>
@@ -317,7 +317,7 @@ where @MonthYear = 'Year'</CommandText>
             </Paragraphs>
             <rd:WatermarkTextbox>Title</rd:WatermarkTextbox>
             <rd:DefaultName>ReportTitle</rd:DefaultName>
-            <Top>54.17778mm</Top>
+            <Top>53.82501mm</Top>
             <Left>1.38046cm</Left>
             <Height>26.4375mm</Height>
             <Width>467.32985mm</Width>
@@ -369,8 +369,8 @@ where @MonthYear = 'Year'</CommandText>
                 </Style>
               </Paragraph>
             </Paragraphs>
-            <Top>212.48617mm</Top>
-            <Left>13.80457mm</Left>
+            <Top>181.08895mm</Top>
+            <Left>13.63947mm</Left>
             <Height>6.35mm</Height>
             <Width>508.43889mm</Width>
             <ZIndex>2</ZIndex>
@@ -406,8 +406,8 @@ where @MonthYear = 'Year'</CommandText>
                 <Style />
               </Paragraph>
             </Paragraphs>
-            <Top>21.95416cm</Top>
-            <Left>1.38046cm</Left>
+            <Top>18.81444cm</Top>
+            <Left>1.36395cm</Left>
             <Height>0.6cm</Height>
             <Width>12.55417cm</Width>
             <ZIndex>3</ZIndex>
@@ -981,10 +981,10 @@ where @MonthYear = 'Year'</CommandText>
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.095cm</Width>
+                  <Width>1.48709cm</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>6.44972cm</Width>
+                  <Width>1.82833cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>2.5cm</Width>
@@ -1396,7 +1396,7 @@ where @MonthYear = 'Year'</CommandText>
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>8.5522cm</Size>
+                    <Size>3.82964cm</Size>
                     <CellContents>
                       <Textbox Name="Region">
                         <CanGrow>true</CanGrow>
@@ -1469,7 +1469,7 @@ where @MonthYear = 'Year'</CommandText>
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>8.5522cm</Size>
+                    <Size>3.82964cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox17">
                         <CanGrow>true</CanGrow>
@@ -1516,7 +1516,7 @@ where @MonthYear = 'Year'</CommandText>
             <Top>13.59975cm</Top>
             <Left>1.28457cm</Left>
             <Height>2.55cm</Height>
-            <Width>18.59692cm</Width>
+            <Width>9.64506cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -1525,7 +1525,7 @@ where @MonthYear = 'Year'</CommandText>
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>324.01957mm</Height>
+        <Height>225.77096mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
