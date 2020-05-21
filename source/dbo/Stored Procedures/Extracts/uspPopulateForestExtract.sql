@@ -108,7 +108,8 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC phec ON phec.Code = TreatmentPhecCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcode ON postcode.Postcode = REPLACE(reusableNotification.Postcode, ' ', '')
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
-		WHERE TreatmentPhecCode NOT IN ('PHECNI', 'PHECSCOT', 'PHECWAL') OR phec.Code IS NULL -- Exclude Wales, Scotland and Northern Ireland
+		WHERE specimenMatch.MatchType = 'Confirmed' 
+			AND (TreatmentPhecCode NOT IN ('PHECNI', 'PHECSCOT', 'PHECWAL') OR phec.Code IS NULL) -- Exclude Wales, Scotland and Northern Ireland
 
 		INSERT INTO [dbo].ForestExtract 
 		SELECT etsForest.*
