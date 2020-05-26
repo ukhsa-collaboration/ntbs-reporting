@@ -7,13 +7,11 @@
 
 		--get the list of week numbers
 		 cteWeekNumber(WeekNumber) AS
-		(SELECT TOP 10 [WeekNumber] FROM
-		(SELECT DISTINCT
-			  [WeekNumber]
-      
-		  FROM [dbo].[MIReportData]
-		  ) as Q1
-		ORDER BY [WeekNumber] DESC),
+		(SELECT TOP(10) ISOYearWeek FROM
+			--use today's date-7 as there's no point including the current week; the MI data
+			--is pulled in on a Monday morning for the previous week
+		(SELECT DISTINCT ISOYearWeek from [dbo].[Calendar] WHERE DateValue <= GETUTCDATE()-7) AS Q1
+		ORDER BY ISOYearWeek DESC),
 
 		--then a count of reports per week
 		 cteCount (ReportGroup, WeekNumber, NumberofReports) AS
