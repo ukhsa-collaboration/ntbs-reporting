@@ -31,6 +31,7 @@ SELECT TOP(1)
 		WHEN te.TreatmentEventType = 'TransferIn' THEN 3
 		WHEN te.TreatmentEventType = 'TreatmentRestart' THEN 4
 		WHEN te.TreatmentEventType = 'TreatmentOutcome' THEN 5
+		ELSE 6
 		END) AS EventOrder,
 	--calculate whether the event is an ending one or not
 	(CASE 
