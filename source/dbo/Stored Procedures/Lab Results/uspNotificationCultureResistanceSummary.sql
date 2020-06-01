@@ -77,7 +77,7 @@ AS
 			DrugResistanceProfile = 'RR/MDR/XDR' 
 			WHERE
 				DrugResistanceProfile IS NULL
-				AND (MDR = 'Yes' OR RIF = 'Resistant')
+				AND (MDR = 'Yes' OR (RIF = 'Resistant' AND INH = 'Sensitive'))
 			
 
 		--2. Set INH resistant
@@ -85,7 +85,7 @@ AS
 			DrugResistanceProfile = 'INH resistant' 
 			WHERE
 				DrugResistanceProfile IS NULL
-				AND INH = 'Resistant'
+				AND INH = 'Resistant' AND RIF = 'Sensitive'
 
 		--3. Set INH + RIF sensitive (ISO and RIF are both 'Sensitive' but one or both of ETHAM and PYR are 'Resistant')
 		UPDATE [dbo].ReusableNotification SET
