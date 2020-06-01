@@ -285,7 +285,6 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 			WHERE n.Submitted = 1
 				AND n.AuditDelete IS NULL
 				AND n.DenotificationId IS NULL
-				AND YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear)
 
 			-- Populate NULL columns from above
 			EXEC dbo.uspGenerateReusableResidence
