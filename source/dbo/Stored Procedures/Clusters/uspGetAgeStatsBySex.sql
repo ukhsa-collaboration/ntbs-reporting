@@ -10,16 +10,11 @@ BEGIN
 	)
 
 	INSERT INTO #AgeRangeTempTable
-	VALUES ('0-9'),
-	('10-19'),
-	('20-29'),
-	('30-39'),
-	('40-49'),
-	('50-59'),
-	('60-69'),
-	('70-79'),
-	('80-89'),
-	('90+')
+	VALUES 
+		('0-14'),
+		('15-44'),
+		('45-64'),
+		('65+')
 
 	SELECT
 		ar.AgeRange,
@@ -35,16 +30,10 @@ BEGIN
 				n.NotificationId,
 				n.Sex,
 				CASE
-					WHEN n.Age BETWEEN 0 AND 9 THEN '0-9'
-					WHEN n.Age BETWEEN 10 AND 19 THEN '10-19'
-					WHEN n.Age BETWEEN 20 AND 29 THEN '20-29'
-					WHEN n.Age BETWEEN 30 AND 39 THEN '30-39'
-					WHEN n.Age BETWEEN 40 AND 49 THEN '40-49'
-					WHEN n.Age BETWEEN 50 AND 59 THEN '50-59'
-					WHEN n.Age BETWEEN 60 AND 69 THEN '60-69'
-					WHEN n.Age BETWEEN 70 AND 79 THEN '70-79'
-					WHEN n.Age BETWEEN 80 AND 89 THEN '80-89'
-					WHEN n.Age > 90 THEN '90+'
+					WHEN n.Age BETWEEN 0 AND 14 THEN '0-14'
+					WHEN n.Age BETWEEN 15 AND 44 THEN '15-44'
+					WHEN n.Age BETWEEN 45 AND 64 THEN '45-64'
+					WHEN n.Age >= 65 THEN '65+'
 				END AS AgeRange
 			FROM ReusableNotification n WITH (NOLOCK)
 			LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = n.NotificationId
