@@ -7,7 +7,7 @@ BEGIN
 	DECLARE @LoginGroups VARCHAR(500)
 	EXEC uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT;
 
-	WITH accessibleNotifications AS (
+	WITH unmaskedNotifications AS (
 		SELECT
 			notifications.NotificationId,
 			COALESCE(Forename, '') AS Forename,
@@ -27,11 +27,11 @@ BEGIN
 		FORMAT(notifications.NotificationDate, 'dd MMM yyyy') AS NotificationDate,
 		notifications.Hospital,
 		notifications.[Service],
-		COALESCE(an.Forename, 'Withheld') AS Forename,
-		COALESCE(an.Surname, 'Withheld') AS Surname,
-		COALESCE(an.NhsNumber, 'Withheld') AS NhsNumber,
-		COALESCE(FORMAT(an.DateOfBirth, 'dd MMM yyyy'), 'Withheld') AS DateOfBirth,
-		COALESCE(an.Postcode, 'Withheld') AS Postcode,
+		COALESCE(un.Forename, 'Withheld') AS Forename,
+		COALESCE(un.Surname, 'Withheld') AS Surname,
+		COALESCE(un.NhsNumber, 'Withheld') AS NhsNumber,
+		COALESCE(FORMAT(un.DateOfBirth, 'dd MMM yyyy'), 'Withheld') AS DateOfBirth,
+		COALESCE(un.Postcode, 'Withheld') AS Postcode,
 		notifications.Age,
 		notifications.Sex,
 		notifications.EthnicGroup,
@@ -56,7 +56,7 @@ BEGIN
 		notifications.DrugResistanceProfile
 	FROM ReusableNotification notifications
 	LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = notifications.NotificationId
-	LEFT JOIN accessibleNotifications an ON an.NotificationId = notifications.NotificationId
+	LEFT JOIN unmaskedNotifications un ON un.NotificationId = notifications.NotificationId
 	WHERE ClusterId = @ClusterId
 
 END
