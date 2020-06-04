@@ -4,7 +4,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="PHE">
-      <DataSourceReference>/DataSources/Dev</DataSourceReference>
+      <DataSourceReference>/DataSources/Staging</DataSourceReference>
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>82628b42-0588-4674-9135-829a30705c40</rd:DataSourceID>
     </DataSource>
@@ -881,7 +881,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Ets Id</Value>
+                                  <Value>ETS ID</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -926,7 +926,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Ltbr Id</Value>
+                                  <Value>LTBR No.</Value>
                                   <Style>
                                     <FontSize>11pt</FontSize>
                                     <FontWeight>Bold</FontWeight>
@@ -4174,8 +4174,12 @@
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
-                <TablixMember />
-                <TablixMember />
+                <TablixMember>
+                  <FixedData>true</FixedData>
+                </TablixMember>
+                <TablixMember>
+                  <FixedData>true</FixedData>
+                </TablixMember>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -4211,7 +4215,9 @@
             <TablixRowHierarchy>
               <TablixMembers>
                 <TablixMember>
+                  <FixedData>true</FixedData>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details6" />
@@ -4224,7 +4230,7 @@
             <Top>411.39534mm</Top>
             <Left>10.02242mm</Left>
             <Height>22.75972mm</Height>
-            <Width>1118.13616mm</Width>
+            <Width>1118.13617mm</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -4245,7 +4251,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Cluster report example - </Value>
+                    <Value>Cluster report for </Value>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>28pt</FontSize>
@@ -5082,38 +5088,6 @@
               </Border>
             </Style>
           </Tablix>
-          <Textbox Name="Textbox45">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>Please be aware that data is incomplete. It only counts notifications from 2016</Value>
-                    <Style>
-                      <Color>Red</Color>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox45</rd:DefaultName>
-            <Top>15.84325mm</Top>
-            <Left>9.22867mm</Left>
-            <Height>7.67292mm</Height>
-            <Width>196.58542mm</Width>
-            <ZIndex>7</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
           <Tablix Name="Tablix9">
             <TablixBody>
               <TablixColumns>
@@ -5326,7 +5300,7 @@
             <Left>137.02243mm</Left>
             <Height>15.61042mm</Height>
             <Width>132.24444mm</Width>
-            <ZIndex>8</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5355,7 +5329,7 @@
             <Left>10.02242mm</Left>
             <Height>7.5875mm</Height>
             <Width>118.00417mm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5371,7 +5345,7 @@
             <Left>9.22867mm</Left>
             <Height>0mm</Height>
             <Width>178.6255mm</Width>
-            <ZIndex>10</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Color>Silver</Color>
@@ -5402,7 +5376,7 @@
             <Left>10.55159mm</Left>
             <Height>6.86681mm</Height>
             <Width>72.31945mm</Width>
-            <ZIndex>11</ZIndex>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5436,7 +5410,7 @@
             <Left>10.55159mm</Left>
             <Height>6.86681mm</Height>
             <Width>72.31945mm</Width>
-            <ZIndex>12</ZIndex>
+            <ZIndex>11</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5452,7 +5426,7 @@
             <Left>9.49325mm</Left>
             <Height>0mm</Height>
             <Width>192.38383mm</Width>
-            <ZIndex>13</ZIndex>
+            <ZIndex>12</ZIndex>
             <Style>
               <Border>
                 <Color>Silver</Color>
@@ -5481,7 +5455,7 @@
             <Left>66.37867mm</Left>
             <Height>7.67292mm</Height>
             <Width>25mm</Width>
-            <ZIndex>14</ZIndex>
+            <ZIndex>13</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5513,7 +5487,7 @@
             <Left>9.49325mm</Left>
             <Height>7.67292mm</Height>
             <Width>56.88542mm</Width>
-            <ZIndex>15</ZIndex>
+            <ZIndex>14</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -5907,7 +5881,7 @@
             <Left>10.55159mm</Left>
             <Height>31.12582mm</Height>
             <Width>55.15092mm</Width>
-            <ZIndex>16</ZIndex>
+            <ZIndex>15</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -6157,7 +6131,7 @@
             <Left>137.02243mm</Left>
             <Height>19.12582mm</Height>
             <Width>88.40258mm</Width>
-            <ZIndex>17</ZIndex>
+            <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -6522,7 +6496,7 @@
             <Left>10.02242mm</Left>
             <Height>3.5in</Height>
             <Width>10.125in</Width>
-            <ZIndex>18</ZIndex>
+            <ZIndex>17</ZIndex>
             <Style>
               <Border>
                 <Color>#5c5c5c</Color>
@@ -6534,14 +6508,14 @@
             </Style>
           </Chart>
         </ReportItems>
-        <Height>474.98351mm</Height>
+        <Height>447.11407mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>1128.15858mm</Width>
+      <Width>1128.15859mm</Width>
       <Page>
         <PageFooter>
           <Height>27.305mm</Height>
