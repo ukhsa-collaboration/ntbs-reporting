@@ -10,6 +10,7 @@ BEGIN
 	WITH unmaskedNotifications AS (
 		SELECT
 			notifications.NotificationId,
+			-- Make sure none of these are NULL to avoid them being wrongly marked as "withheld" below.
 			COALESCE(Forename, '') AS Forename,
 			COALESCE(Surname, '') AS Surname,
 			COALESCE(NhsNumber, '') AS NhsNumber,

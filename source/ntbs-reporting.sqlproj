@@ -313,7 +313,6 @@
     <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryByRegion.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
     <Build Include="dbo\Tables\Audit\Calendar.sql" />
-    <Build Include="dbo\Functions\Authorization\ufnIsAdGroupNameInLoginGroups.sql" />
     <Build Include="dbo\Stored Procedures\Clusters\uspGetAgeStatsBySex.sql" />
     <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsInClusterWithMask.sql" />
     <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsLocalAuthorityStatsInCluster.sql" />

@@ -264,7 +264,6 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				NULL                                                        AS AMINO,
 				NULL                                                        AS QUIN,
 				NULL                                                        AS MDR,
-				NULL                                                        AS MDR,
 				NULL                                                        AS XDR,
 				GETDATE()                                                   AS DataAsAt
 			FROM [$(ETS)].dbo.Patient p
@@ -283,7 +282,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				LEFT OUTER JOIN [$(ETS)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
 				LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
 				LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
-				LEFT OUTER JOIN dbo.NotificationClusterMatch cluster ON cluster.NotificationId = n.Id
+				LEFT OUTER JOIN dbo.NotificationClusterMatch cluster ON cluster.NotificationId = n.LegacyId
 			WHERE n.Submitted = 1
 				AND n.AuditDelete IS NULL
 				AND n.DenotificationId IS NULL
