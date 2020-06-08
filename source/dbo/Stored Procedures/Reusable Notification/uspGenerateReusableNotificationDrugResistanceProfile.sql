@@ -22,13 +22,13 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationDrugResistanceProfile] AS
 		UPDATE dbo.ReusableNotification_ETS SET
 			DrugResistanceProfile = 'RR/MDR/XDR'
 		WHERE DrugResistanceProfile IS NULL
-			AND RIF = 'Resistant'
+			AND RIF = 'Resistant' AND INH = 'Sensitive'
 
 		-- 3. INH has the value 'Resistant'
 		UPDATE dbo.ReusableNotification_ETS SET
 			DrugResistanceProfile = 'INH resistant'
 		WHERE DrugResistanceProfile IS NULL
-			AND INH = 'Resistant'
+			AND INH = 'Resistant' AND RIF = 'Sensitive'
 
 		-- 4. INH and RIF are both 'Sensitive' but one or both of EMB and PZA are 'Resistant'
 		UPDATE dbo.ReusableNotification_ETS SET
