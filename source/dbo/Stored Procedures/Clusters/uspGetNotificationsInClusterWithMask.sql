@@ -5,7 +5,7 @@
 AS
 BEGIN
 	DECLARE @LoginGroups VARCHAR(500)
-	EXEC uspGetAuthenticatedLoginGroups @LoginGroups OUTPUT;
+	EXEC uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT;
 
 	WITH unmaskedNotifications AS (
 		SELECT
@@ -56,7 +56,7 @@ BEGIN
 		FORMAT(notifications.EarliestSpecimenDate, 'dd MMM yyyy') AS EarliestSpecimenDate,
 		notifications.DrugResistanceProfile
 	FROM ReusableNotification notifications
-	LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = notifications.NotificationId
+	LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = (CASE WHEN notifications.NtbsId IS NULL THEN notifications.EtsId ELSE notifications.NtbsId END)
 	LEFT JOIN unmaskedNotifications un ON un.NotificationId = notifications.NotificationId
 	WHERE ClusterId = @ClusterId
 
