@@ -600,7 +600,8 @@ SELECT
           ,rne.[QUIN]
           ,rne.[MDR]
           ,rne.[XDR]
-          ,rne.[DataRefreshedAt]  FROM [dbo].[ReusableNotification_ETS] rne
+          ,rne.[DataRefreshedAt]  
+		  FROM [dbo].[ReusableNotification_ETS] rne
           LEFT OUTER JOIN [dbo].[ReusableNotification] rn ON rn.EtsId = rne.EtsId
 	      WHERE rn.EtsId IS NULL
           --using a LEFT OUTER JOIN because 'NOT IN' doesn't cope with NULL values

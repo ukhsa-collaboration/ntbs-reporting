@@ -15,7 +15,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 
 		UPDATE dbo.ReusableNotification_ETS SET
 			BiologicalTherapy = 'Yes'
-		WHERE NotificationId IN (SELECT n.Id
+		WHERE NotificationId IN (SELECT n.LegacyId
 								 FROM [$(ETS)].dbo.Notification n
 									INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
 									INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
@@ -24,7 +24,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 
 		UPDATE dbo.ReusableNotification_ETS SET
 			Transplantation = 'Yes'
-		WHERE NotificationId IN (SELECT n.Id
+		WHERE NotificationId IN (SELECT n.LegacyId
 								 FROM [$(ETS)].dbo.Notification n
 									INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
 									INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
@@ -33,7 +33,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationImmunosuppression] AS
 
 		UPDATE dbo.ReusableNotification_ETS SET
 			OtherImmunoSuppression = 'Yes'
-		WHERE NotificationId IN (SELECT n.Id
+		WHERE NotificationId IN (SELECT n.LegacyId
 								 FROM [$(ETS)].dbo.Notification n
 									INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
 									INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id

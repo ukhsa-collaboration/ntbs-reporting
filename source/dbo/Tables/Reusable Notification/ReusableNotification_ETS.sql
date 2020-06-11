@@ -3,7 +3,7 @@
 	[ReusableNotificationId] [int] IDENTITY(1,1) NOT NULL,
 
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
-	[NotificationId] [nvarchar](50) NOT NULL,
+	[NotificationId] [int] NOT NULL,
 	--NTBS primary key
 	NtbsId [int] NULL,
 	-- ETS primary key

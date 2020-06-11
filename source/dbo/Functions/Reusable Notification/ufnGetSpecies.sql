@@ -9,7 +9,7 @@ Desc:    This re/calculates the value for the data point ReusableNotification.Sp
 **************************************************************************************************/
 
 CREATE FUNCTION [dbo].[ufnGetSpecies] (
-	@NotificationId NVARCHAR(50)
+	@NotificationId int
 )
 	RETURNS VARCHAR(50)
 AS

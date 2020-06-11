@@ -8,7 +8,7 @@ Desc:    This contains the pre-calculated figures for the "Outcome Summary" repo
 
 CREATE TABLE [dbo].[OutcomeSummary](
 	[OutcomeSummaryId] [int] IDENTITY(1,1) NOT NULL,
-	[NotificationId] NVARCHAR(50) NOT NULL,
+	[NotificationId] [int] NOT NULL,
 	[TreatmentCompletedLastOutcome] [tinyint] NOT NULL DEFAULT(0),
 	[DiedLastOutcome] [tinyint] NOT NULL DEFAULT(0),
 	[LostToFollowUpLastOutcome] [tinyint] NOT NULL DEFAULT(0),
