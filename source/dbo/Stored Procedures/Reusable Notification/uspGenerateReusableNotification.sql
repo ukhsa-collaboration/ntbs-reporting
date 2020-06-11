@@ -219,11 +219,11 @@ BEGIN TRY
 		,ct.AdultsFinishedTreatment + 
 			ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
 		--non-NTBS Diagnosis
-		,dbo.ufnYesNo(pth.PreviouslyHadTB)				AS 'PreviouslyDiagnosed' 
-		,DATEDIFF(YEAR, pth.PreviousTBDiagnosisYear, 
+		,pth.PreviouslyHadTb            				AS 'PreviouslyDiagnosed' 
+		,DATEDIFF(YEAR, pth.PreviousTbDiagnosisYear, 
 			n.NotificationDate)					        AS 'YearsSinceDiagnosis' 
-		,NULL											AS 'PreviouslyTreated' --we aren't capturing this in NTBS, a mistake?
-		,NULL											AS 'TreatmentInUK' --ditto
+		,pth.PreviouslyTreated							AS 'PreviouslyTreated'
+		,ptc.IsoCode = 'GB'             				AS 'TreatmentInUK'
 		,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
 		,cd.BCGVaccinationState							AS 'BcgVaccinated' 
 		--social risk factors
@@ -316,7 +316,8 @@ BEGIN TRY
 			LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] treatphec ON treatphec.Code = tbs.PHECCode
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = n.NotificationId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[ContactTracing] ct ON ct.NotificationId = n.NotificationId
-			LEFT OUTER JOIN [$(NTBS)].[dbo].[PatientTBHistories] pth ON pth.NotificationId = n.NotificationId
+			LEFT OUTER JOIN [$(NTBS)].[dbo].[PreviousTbHistory] pth ON pth.NotificationId = n.NotificationId
+            LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] ptc ON pth.PreviousTreatmentCountryId = ptc.CountryId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[SocialRiskFactors] srf ON srf.NotificationId = n.NotificationId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorDrugs] rfd ON rfd.SocialRiskFactorsNotificationId = n.NotificationId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorHomelessness] rfh ON rfh.SocialRiskFactorsNotificationId = n.NotificationId
