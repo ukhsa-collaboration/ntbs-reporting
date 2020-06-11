@@ -22,7 +22,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 		INSERT INTO dbo.ReusableNotification_ETS
 			SELECT
 				-- Primary key
-				n.Id                                                        AS NotificationId,
+				n.LegacyId                                                  AS NotificationId,
 				NULL														AS NtbsId,
 				-- Demographics
 				n.LegacyId                                                  AS EtsId,
@@ -254,8 +254,8 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				-- Culture & Resistance
 				dbo.ufnYesNo(n.NoSampleTaken)                               AS NoSampleTaken, 
 				NULL                                                        AS CulturePositive,
-				dbo.ufnGetSpecies(n.Id)                                     AS Species,
-				dbo.ufnGetEarliestSpecimenDate(n.Id)                        AS EarliestSpecimenDate,
+				dbo.ufnGetSpecies(n.LegacyId)                               AS Species,
+				dbo.ufnGetEarliestSpecimenDate(n.LegacyId)                  AS EarliestSpecimenDate,
 				NULL                                                        AS DrugResistanceProfile,
 				NULL                                                        AS INH,
 				NULL                                                        AS RIF,

@@ -10,7 +10,7 @@ BEGIN
 			ResidencePhec,
 			ResidencePhecCode
 		FROM dbo.ReusableNotification n WITH (NOLOCK)
-		LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = (CASE WHEN n.NtbsId IS NULL THEN n.EtsId ELSE n.NtbsId END)
+		LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = n.NotificationId
 		WHERE ClusterId = @ClusterId
 	)
 

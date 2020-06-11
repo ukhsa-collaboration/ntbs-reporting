@@ -22,4 +22,4 @@ SELECT	cars.NotificationId
 		,cars.XDR
       
   FROM [dbo].ReusableNotification cars
-  WHERE cars.NotificationId = CONVERT(nvarchar, @NTBSId)
+  WHERE cars.NotificationId = @NTBSId

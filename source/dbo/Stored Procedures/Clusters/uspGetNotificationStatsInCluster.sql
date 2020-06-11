@@ -15,7 +15,7 @@ BEGIN
 			(CASE Prison WHEN 'Yes' THEN 1 ELSE 0 END) AS Prison,
 			(CASE Homeless WHEN 'Yes' THEN 1 ELSE 0 END) AS Homeless
 		FROM dbo.ReusableNotification n WITH (NOLOCK)
-		LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = (CASE WHEN n.NtbsId IS NULL THEN n.EtsId ELSE n.NtbsId END)
+		LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = n.NotificationId
 		WHERE ClusterId = @ClusterId
 	)
 

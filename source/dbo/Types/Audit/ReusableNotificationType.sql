@@ -10,7 +10,7 @@ Desc:    This table type is used as a work-around to audit the notification IDs 
 
 CREATE TYPE [dbo].[ReusableNotificationType] AS TABLE (
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
-    [NotificationId] NVARCHAR(50) NOT NULL PRIMARY KEY CLUSTERED,
+    [NotificationId] [int] NOT NULL PRIMARY KEY CLUSTERED,
 
 	-- ETS primary key
 	[EtsId] [bigint] NULL DEFAULT NULL,

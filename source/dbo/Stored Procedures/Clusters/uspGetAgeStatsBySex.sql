@@ -36,7 +36,7 @@ BEGIN
 					WHEN n.Age >= 65 THEN '65+'
 				END AS AgeRange
 			FROM ReusableNotification n WITH (NOLOCK)
-			LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = (CASE WHEN n.NtbsId IS NULL THEN n.EtsId ELSE n.NtbsId END)
+			LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = n.NotificationId
 			WHERE ClusterId = @ClusterId) notificationsWithAgeRange
 		GROUP BY AgeRange) ageGroupings
 	RIGHT JOIN #AgeRangeTempTable ar ON ar.AgeRange = ageGroupings.AgeRange
