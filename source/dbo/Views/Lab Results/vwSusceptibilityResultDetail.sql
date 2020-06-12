@@ -16,7 +16,7 @@ CREATE VIEW [dbo].[vwSusceptibilityResultDetail]
 			am.IsWGS, 
 			rm.ResultOutputName, 
 			rm.[Rank] 
-		FROM vwSpecimen vs
+		FROM dbo.[LabbaseSpecimen] vs
 			INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = vs.ReferenceLaboratoryNumber
 			INNER JOIN [$(Labbase2)].dbo.Anonymised a on vs.IdentityColumn = a.IdentityColumn
 			INNER JOIN [$(Labbase2)].dbo.Susceptibility su ON su.LabDataID = vs.LabDataID

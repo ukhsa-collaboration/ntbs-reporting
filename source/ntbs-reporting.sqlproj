@@ -168,7 +168,6 @@
     <Build Include="dbo\Tables\Reusable Notification\PostcodeLookup.sql" />
     <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
     <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
-    <Build Include="dbo\Views\Lab Results\CreatevwSpecimen.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationYear.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwSpecies.sql" />
@@ -251,10 +250,8 @@
     <Build Include="dbo\Stored Procedures\Audit\uspSeedReportLookup.sql" />
     <Build Include="dbo\Tables\Audit\MIReportData.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspProcessMIData.sql" />
-    <Build Include="dbo\Views\Lab Results\vwSusceptibilityResult.sql" />
     <Build Include="dbo\Views\Lab Results\vwSusceptibilityResultDetail.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetMatchedSpecimen.sql" />
-    <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticMapping.sql" />
     <Build Include="dbo\Tables\Lab Results\ResultMapping.sql" />
@@ -268,7 +265,6 @@
     <Build Include="dbo\Stored Procedures\Report Lab Results\uspManualLabResultLineList.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspResultMapping.sql" />
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
-    <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimenSecondLineSensitivityResult.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
     <Build Include="dbo\Views\Lab Results\vwConfirmedMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwResultMapping.sql" />
@@ -319,6 +315,11 @@
     <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsRegionStatsInCluster.sql" />
     <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationStatsInCluster.sql" />
     <Build Include="dbo\Stored Procedures\Clusters\uspGetTopBirthCountriesInCluster.sql" />
+    <Build Include="dbo\Tables\Lab Results\LabbaseSpecimen.sql" />
+    <Build Include="dbo\Tables\Lab Results\LabBaseSusceptibilityResult.sql" />
+    <Build Include="dbo\Views\Lab Results\vwFirstLineAntibiotics.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetSpecimenInfo.sql" />
+    <Build Include="dbo\Functions\Lab Results\ufnGetSpecimenSusceptibilityInfo.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
