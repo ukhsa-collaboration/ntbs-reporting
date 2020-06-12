@@ -18,8 +18,9 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] n1
 			ON n1.NotificationId = ncm1.NotificationId
 		WHERE 
-			ncm1.ClusterId <> n1.ClusterId
-			OR n1.ClusterId IS NULL
+			n1.ETSID IS NULL
+			AND n1.LTBRID IS NULL
+			AND (ncm1.ClusterId <> n1.ClusterId OR n1.ClusterId IS NULL)
 
 		UNION ALL
 
@@ -35,6 +36,8 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 		LEFT OUTER JOIN [dbo].[NotificationClusterMatch] ncm2
 			ON n2.NotificationId = ncm2.NotificationId
 		WHERE
-			n2.NotificationStatus <> 'Deleted'
+			n2.ETSID IS NULL
+			AND n2.LTBRID IS NULL
+			AND n2.NotificationStatus <> 'Deleted'
 			AND n2.ClusterId IS NOT NULL
 			AND ncm2.NotificationId IS NULL
