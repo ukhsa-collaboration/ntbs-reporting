@@ -68,24 +68,20 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				-- Clinical Details
 				CONVERT(DATE, te.SymptomOnset)                              AS SymptomOnsetDate,
 				CONVERT(DATE, te.DatePresented)                             AS PresentedDate,
-				CAST((DATEDIFF(DAY,
+				DATEDIFF(DAY,
 					te.SymptomOnset, 
-					te.DatePresented))
-				AS SMALLINT)                                                AS OnsetToPresentationDays,
+					te.DatePresented)                                       AS OnsetToPresentationDays,
 				CONVERT(DATE, te.DateOfDiagnosis)                           AS DiagnosisDate, 
-				CAST((DATEDIFF(DAY,
+				DATEDIFF(DAY,
 					te.DatePresented, 
-					te.DateOfDiagnosis)) 
-				AS SMALLINT)                                                AS PresentationToDiagnosisDays,
+					te.DateOfDiagnosis)                                     AS PresentationToDiagnosisDays,
 				CONVERT(DATE, te.StartOfTreatment)                          AS StartOfTreatmentDate, 
-				CAST((DATEDIFF(DAY,
+				DATEDIFF(DAY,
 					te.DateOfDiagnosis, 
-					te.StartOfTreatment)) 
-				AS SMALLINT)                                                AS DiagnosisToTreatmentDays,
-				CAST((DATEDIFF(DAY,
+					te.StartOfTreatment)                                    AS DiagnosisToTreatmentDays,
+				DATEDIFF(DAY,
 					te.SymptomOnset, 
-					te.StartOfTreatment)) 
-				AS SMALLINT)                                                AS OnsetToTreatmentDays,
+					te.StartOfTreatment)                                    AS OnsetToTreatmentDays,
 				dbo.ufnGetHivTestOffered_ETS (
 					n.Id, 
 					te.HIVTestOffered

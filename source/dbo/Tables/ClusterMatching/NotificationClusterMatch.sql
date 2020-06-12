@@ -13,3 +13,6 @@ CREATE TABLE [dbo].[NotificationClusterMatch](
 	)
 )
 GO
+
+
+CREATE INDEX [IX_NotificationClusterMatch_ClusterId] ON [dbo].[NotificationClusterMatch] ([ClusterId])

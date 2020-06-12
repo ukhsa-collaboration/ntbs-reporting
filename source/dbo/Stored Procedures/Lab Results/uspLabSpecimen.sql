@@ -44,30 +44,7 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 					INNER JOIN [$(Labbase2)].[dbo].[SpecimenResult] sr ON sr.LabDataID = a.LabDataID
 					AND a.IsAtypicalOrganismRecord = 0
 					AND a.MergedRecord = 0
-			--and likewise the temporary table of susceptibility results from LabBase
 
-		INSERT INTO [dbo].[LabBaseSusceptibilityResult]
-			([ReferenceLaboratoryNumber],
-			[AntibioticOutputName],
-			[IsWGS],
-			[ResultOutputName],
-			[Rank])
-
-				SELECT DISTINCT 
-					lbs.ReferenceLaboratoryNumber, 
-					am.AntibioticOutputName, 
-					am.IsWGS, 
-					rm.ResultOutputName, 
-					rm.[Rank] 
-				FROM LabbaseSpecimen lbs
-				--this might need to go back in for performance
-					--INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
-					INNER JOIN [$(Labbase2)].dbo.Susceptibility su ON su.LabDataID = lbs.LabDataID
-					LEFT OUTER JOIN [dbo].[AntibioticMapping] am  ON am.AntibioticCode = su.AntibioticCode
-					LEFT OUTER JOIN [dbo].[ResultMapping] rm  ON rm.Result = su.SusceptibilityResult
-				WHERE ResultOutputName NOT IN ('New', 'Awaiting', 'No result')
-
-		/*End of Reset and reload base data*/
 
 		--Find the specimens to insert into LabSpecimen
 		--First fetch all the matched specimens, regardless of specimen date
@@ -83,6 +60,28 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 				[dbo].[LabbaseSpecimen] s
 			WHERE YEAR(s.SpecimenDate) IN (SELECT NotificationYear FROM vwNotificationYear)
 			AND s.ReferenceLaboratoryNumber NOT IN (SELECT ReferenceLaboratoryNumber FROM LabSpecimen)
+
+		--load basic information about drug sensitivity results from Labase, but only for the specimens in LabSpecimen
+		--impacts performance too much to pull all the data across
+		INSERT INTO [dbo].[LabBaseSusceptibilityResult]
+			([ReferenceLaboratoryNumber],
+			[AntibioticOutputName],
+			[IsWGS],
+			[ResultOutputName],
+			[Rank])
+
+				SELECT DISTINCT 
+					lbs.ReferenceLaboratoryNumber, 
+					am.AntibioticOutputName, 
+					am.IsWGS, 
+					rm.ResultOutputName, 
+					rm.[Rank] 
+				FROM LabbaseSpecimen lbs
+					INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
+					INNER JOIN [$(Labbase2)].dbo.Susceptibility su ON su.LabDataID = lbs.LabDataID
+					LEFT OUTER JOIN [dbo].[AntibioticMapping] am  ON am.AntibioticCode = su.AntibioticCode
+					LEFT OUTER JOIN [dbo].[ResultMapping] rm  ON rm.Result = su.SusceptibilityResult
+				WHERE ResultOutputName NOT IN ('New', 'Awaiting', 'No result')
 
 		--Now populate each row with the relevant summarised information
 
