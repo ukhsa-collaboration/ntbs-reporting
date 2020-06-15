@@ -223,7 +223,11 @@ BEGIN TRY
 		,DATEDIFF(YEAR, pth.PreviousTbDiagnosisYear, 
 			n.NotificationDate)					        AS 'YearsSinceDiagnosis' 
 		,pth.PreviouslyTreated							AS 'PreviouslyTreated'
-		,ptc.IsoCode = 'GB'             				AS 'TreatmentInUK'
+		,(CASE 
+			WHEN ptc.IsoCode = 'GB' THEN 'Yes'
+			WHEN ptc.IsoCode IS NOT NULL THEN 'No'
+			ELSE NULL
+		END)		            						AS 'TreatmentInUK'
 		,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
 		,cd.BCGVaccinationState							AS 'BcgVaccinated' 
 		--social risk factors
