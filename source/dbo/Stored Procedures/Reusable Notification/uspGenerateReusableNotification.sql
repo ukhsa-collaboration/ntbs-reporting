@@ -220,8 +220,8 @@ BEGIN TRY
 			ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
 		--non-NTBS Diagnosis
 		,pth.PreviouslyHadTb            				AS 'PreviouslyDiagnosed' 
-		,DATEDIFF(YEAR, pth.PreviousTbDiagnosisYear, 
-			n.NotificationDate)					        AS 'YearsSinceDiagnosis' 
+		,DATEPART(YEAR, n.NotificationDate)-
+			pth.PreviousTbDiagnosisYear				    AS 'YearsSinceDiagnosis' 
 		,pth.PreviouslyTreated							AS 'PreviouslyTreated'
 		,(CASE 
 			WHEN ptc.IsoCode = 'GB' THEN 'Yes'
