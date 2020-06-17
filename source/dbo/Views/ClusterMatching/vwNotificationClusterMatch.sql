@@ -7,20 +7,15 @@ Desc:    View for purposes of representing changes that need to be made in NTBS 
 CREATE VIEW [dbo].[vwNotificationClusterMatch]
 	AS 
 	
-		/*
-			Include records from the reporting database when they are in parity
-			with NTBS cached version of the cluster matching.
-		*/
+		/*find the records which exist in NTBS and where the value in NotificationSpecimenMatch is different*/
+
 		SELECT 
-			ncm1.NotificationId, 
-			ncm1.ClusterId
+			n1.NotificationId, ncm1.ClusterId
 		FROM [dbo].[NotificationClusterMatch] ncm1
-		LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] n1
+			INNER JOIN [$(NTBS)].[dbo].[Notification] n1
 			ON n1.NotificationId = ncm1.NotificationId
 		WHERE 
-			n1.ETSID IS NULL
-			AND n1.LTBRID IS NULL
-			AND (ncm1.ClusterId <> n1.ClusterId OR n1.ClusterId IS NULL)
+			(ncm1.ClusterId <> n1.ClusterId OR n1.ClusterId IS NULL)
 
 		UNION ALL
 
@@ -36,8 +31,5 @@ CREATE VIEW [dbo].[vwNotificationClusterMatch]
 		LEFT OUTER JOIN [dbo].[NotificationClusterMatch] ncm2
 			ON n2.NotificationId = ncm2.NotificationId
 		WHERE
-			n2.ETSID IS NULL
-			AND n2.LTBRID IS NULL
-			AND n2.NotificationStatus <> 'Deleted'
-			AND n2.ClusterId IS NOT NULL
+			n2.ClusterId IS NOT NULL
 			AND ncm2.NotificationId IS NULL
