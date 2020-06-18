@@ -125,7 +125,7 @@
     <Folder Include="dbo\Stored Procedures\Extracts" />
     <Folder Include="dbo\Tables\Extracts" />
     <Folder Include="dbo\Functions\Extracts" />
-    <Folder Include="dbo\Stored Procedures\Clusters" />
+    <Folder Include="dbo\Stored Procedures\Report Cluster" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -310,12 +310,12 @@
     <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryByRegion.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
     <Build Include="dbo\Tables\Audit\Calendar.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetAgeStatsBySex.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsInClusterWithMask.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsLocalAuthorityStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationsRegionStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetNotificationStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Clusters\uspGetTopBirthCountriesInCluster.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetAgeStatsBySex.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsInClusterWithMask.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsLocalAuthorityStatsInCluster.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsRegionStatsInCluster.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationStatsInCluster.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetTopBirthCountriesInCluster.sql" />
     <Build Include="dbo\Tables\Lab Results\LabbaseSpecimen.sql" />
     <Build Include="dbo\Tables\Lab Results\LabBaseSusceptibilityResult.sql" />
     <Build Include="dbo\Views\Lab Results\vwFirstLineAntibiotics.sql" />
@@ -324,6 +324,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspCallDivZero.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspDivZero.sql" />
     <Build Include="dbo\Tables\Lab Results\tblvwETSLaboratoryResult.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspCountOfClusterNotificationsPerMonth.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

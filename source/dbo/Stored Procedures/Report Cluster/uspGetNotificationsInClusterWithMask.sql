@@ -59,5 +59,6 @@ BEGIN
 	LEFT JOIN NotificationClusterMatch cluster ON cluster.NotificationId = notifications.NotificationId
 	LEFT JOIN unmaskedNotifications un ON un.NotificationId = notifications.NotificationId
 	WHERE ClusterId = @ClusterId
+	ORDER BY notifications.NotificationDate DESC
 
 END
