@@ -15,31 +15,31 @@ BEGIN
 				--get a list of Ids and masked values into @ReusableNotification
 				--so that this can then be audited
 
-				INSERT INTO @ReusableNotification
+				INSERT INTO @ReusableNotification(NotificationId, EtsId, Forename, Surname, NhsNumber, DateOfBirth, Postcode)
 					SELECT
 						notifications.NotificationId,
 						notifications.EtsId,
-						COALESCE(Forename, '') AS Forename,
-						COALESCE(Surname, '') AS Surname,
-						COALESCE(NhsNumber, '') AS NhsNumber,
-						COALESCE(DateOfBirth, '') AS DateOfBirth,
-						COALESCE(Postcode, '') AS Postcode
+						notifications.Forename,
+						notifications.Surname,
+						notifications.NhsNumber,
+						notifications.DateOfBirth,
+						notifications.Postcode
 					FROM dbo.ufnAuthorizedReusableNotification(@LoginGroups) notifications
 						INNER JOIN NotificationClusterMatch cluster ON cluster.NotificationId = notifications.NotificationId
 					WHERE ClusterId = @ClusterId
 				
-				INSERT INTO @ReusableNotification
+				INSERT INTO @ReusableNotification(NotificationId, EtsId, Forename, Surname, NhsNumber, DateOfBirth, Postcode)
 					SELECT
 						rn.NotificationId,
 						rn.EtsId,
 						'Withheld' AS Forename,
 						'Withheld' AS Surname,
 						'Withheld' AS NhsNumber,
-						'Withheld' AS DateOfBirth,
+						 NULL AS DateOfBirth,
 						'Withheld' AS Postcode
 					FROM
 						[dbo].[ReusableNotification] rn 
-						INNER JOIN NotificationClusterMatch cluster ON cluster.NotificationId = rn.NotificationId
+						INNER JOIN NotificationClusterMatch cluster ON cluster.NotificationId = rn.NotificationId AND cluster.ClusterId = @ClusterId
 						AND rn.NotificationId NOT IN (SELECT NotificationId FROM @ReusableNotification)
 
 				--now send data back to the client
@@ -53,7 +53,10 @@ BEGIN
 					notifications.Forename,
 					notifications.Surname,
 					notifications.NhsNumber,
-					FORMAT(notifications.DateOfBirth, 'dd MMM yyyy') AS DateOfBirth,
+					CASE 
+						WHEN notifications.DateOfBirth IS NULL THEN 'Withheld' 
+						ELSE FORMAT(notifications.DateOfBirth, 'dd MMM yyyy') 
+					END AS DateOfBirth,
 					notifications.Postcode,
 					rn.Age,
 					rn.Sex,
@@ -75,7 +78,7 @@ BEGIN
 					rn.AlcoholMisuse,
 					rn.DrugMisuse,
 					rn.LastRecordedTreatmentOutcome,
-					FORMAT(rn.EarliestSpecimenDate, 'dd MMM yyyy') AS EarliestSpecimenDate,
+					FORMAT(rn.EarliestSpecimenDate, 'dd MMM yyyy') AS StartOfTreatmentDate,
 					rn.DrugResistanceProfile
 				FROM @ReusableNotification notifications
 					INNER JOIN [dbo].[ReusableNotification] rn ON rn.NotificationId = notifications.NotificationId
