@@ -5,16 +5,6 @@
 AS
 BEGIN
 
-	DECLARE @MedianAge INT = 0;
-
-	--Calculate median using PERCENTILE_DISC. This will always choose one of the values in the list
-	SELECT DISTINCT @MedianAge = PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Age)
-			OVER (PARTITION BY ClusterId)
-			FROM [dbo].ReusableNotification rn
-				INNER JOIN [dbo].[NotificationClusterMatch] ncm ON ncm.NotificationId = rn.NotificationId
-				WHERE ncm.ClusterId = @ClusterId;
-
-
 	WITH notificationsInCluster AS
 	(
 		SELECT NotificationDate,
@@ -24,10 +14,17 @@ BEGIN
 			(CASE AlcoholMisuse WHEN 'Yes' THEN 1 ELSE 0 END) AS Alcohol,
 			(CASE DrugMisuse WHEN 'Yes' THEN 1 ELSE 0 END) AS Drug,
 			(CASE Prison WHEN 'Yes' THEN 1 ELSE 0 END) AS Prison,
-			(CASE Homeless WHEN 'Yes' THEN 1 ELSE 0 END) AS Homeless
+			(CASE Homeless WHEN 'Yes' THEN 1 ELSE 0 END) AS Homeless,
+			cluster.ClusterId
 		FROM dbo.ReusableNotification n WITH (NOLOCK)
 		INNER JOIN NotificationClusterMatch cluster ON cluster.NotificationId = n.NotificationId
 		WHERE ClusterId = @ClusterId
+	),
+	MedianCalc(MedianAge) AS
+	(
+		SELECT DISTINCT PERCENTILE_DISC(0.5) WITHIN GROUP (ORDER BY Age)
+			OVER (PARTITION BY ClusterId) AS MedianAge
+			FROM notificationsInCluster
 	)
 	
 
@@ -43,6 +40,7 @@ BEGIN
 		COUNT(NotificationDate) AS TotalCount,
 		MIN(Age) AS MinAge,
 		MAX(Age) AS MaxAge,
-		@MedianAge AS MedianAge
-	FROM notificationsInCluster
+		--there is only one value for MedianAge but the select requires all values to be in aggregate form
+		MAX(MedianAge) AS MedianAge
+	FROM notificationsInCluster, MedianCalc
 END
