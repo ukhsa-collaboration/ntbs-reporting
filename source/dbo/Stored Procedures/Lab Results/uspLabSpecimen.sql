@@ -13,11 +13,11 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 
 		-- Reset
 		DELETE FROM [dbo].[LabSpecimen]
-		DELETE FROM [dbo].[LabbaseSpecimen]
-		DELETE FROM [dbo].[LabBaseSusceptibilityResult]
+		DELETE FROM [dbo].[StandardisedLabbaseSpecimen]
+		DELETE FROM [dbo].[StandardisedLabbaseSusceptibilityResult]
 
 		-- first populate the temporary table with basic data from LabBase
-		INSERT INTO [dbo].[LabbaseSpecimen]
+		INSERT INTO [dbo].[StandardisedLabbaseSpecimen]
 			([ReferenceLaboratoryNumber]
 		  ,[SpecimenDate]
 		  ,[LabDataID]
@@ -57,13 +57,13 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 		--Now fetch all the unmatched specimens for the last three years
 		INSERT INTO dbo.LabSpecimen (ReferenceLaboratoryNumber)
 			SELECT DISTINCT s.ReferenceLaboratoryNumber FROM
-				[dbo].[LabbaseSpecimen] s
+				[dbo].[StandardisedLabbaseSpecimen] s
 			WHERE YEAR(s.SpecimenDate) IN (SELECT NotificationYear FROM vwNotificationYear)
 			AND s.ReferenceLaboratoryNumber NOT IN (SELECT ReferenceLaboratoryNumber FROM LabSpecimen)
 
 		--load basic information about drug sensitivity results from Labase, but only for the specimens in LabSpecimen
 		--impacts performance too much to pull all the data across
-		INSERT INTO [dbo].[LabBaseSusceptibilityResult]
+		INSERT INTO [dbo].[StandardisedLabbaseSusceptibilityResult]
 			([ReferenceLaboratoryNumber],
 			[AntibioticOutputName],
 			[IsWGS],
@@ -76,7 +76,7 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 					am.IsWGS, 
 					rm.ResultOutputName, 
 					rm.[Rank] 
-				FROM LabbaseSpecimen lbs
+				FROM StandardisedLabbaseSpecimen lbs
 					INNER JOIN LabSpecimen ls ON ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
 					INNER JOIN [$(Labbase2)].dbo.Susceptibility su ON su.LabDataID = lbs.LabDataID
 					LEFT OUTER JOIN [dbo].[AntibioticMapping] am  ON am.AntibioticCode = su.AntibioticCode

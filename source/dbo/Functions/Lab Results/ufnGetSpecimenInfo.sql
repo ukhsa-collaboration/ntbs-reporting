@@ -24,7 +24,7 @@ BEGIN
 
 	SELECT TOP(1) @SpecimenTypeCode = SampleName 
 	FROM [dbo].[LabSpecimen] ls
-		INNER JOIN [dbo].[LabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
+		INNER JOIN [dbo].[StandardisedLabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
 		LEFT OUTER JOIN [dbo].SampleMapping sm ON lbs.SpecimenTypeCode = sm.SampleName
 	WHERE ls.ReferenceLaboratoryNumber = @RefLabNumber
 	ORDER BY sm.SampleRank 
@@ -32,11 +32,11 @@ BEGIN
 
 	SELECT @IdentityColumn = MAX(lbs.[IdentityColumn]), @SpecimenDate = MIN(lbs.SpecimenDate) 
 	FROM [dbo].[LabSpecimen] ls
-		INNER JOIN [dbo].[LabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
+		INNER JOIN [dbo].[StandardisedLabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
 	WHERE ls.ReferenceLaboratoryNumber = @RefLabNumber
 
 	SELECT TOP(1) @Species = o.OrganismName FROM [dbo].[LabSpecimen] ls
-		INNER JOIN [dbo].[LabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
+		INNER JOIN [dbo].[StandardisedLabbaseSpecimen] lbs on ls.ReferenceLaboratoryNumber = lbs.ReferenceLaboratoryNumber
 		INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a on a.LabDataID = lbs.LabDataID
 		INNER JOIN [dbo].OrganismNameMapping om on om.OrganismName = a.OrganismName
 		INNER JOIN [dbo].Organism o ON o.OrganismId = om.OrganismId

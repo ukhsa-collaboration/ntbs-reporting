@@ -316,8 +316,8 @@
     <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsRegionStatsInCluster.sql" />
     <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationStatsInCluster.sql" />
     <Build Include="dbo\Stored Procedures\Report Cluster\uspGetTopBirthCountriesInCluster.sql" />
-    <Build Include="dbo\Tables\Lab Results\LabbaseSpecimen.sql" />
-    <Build Include="dbo\Tables\Lab Results\LabBaseSusceptibilityResult.sql" />
+    <Build Include="dbo\Tables\Lab Results\StandardisedLabbaseSpecimen.sql" />
+    <Build Include="dbo\Tables\Lab Results\StandardisedLabbaseSusceptibilityResult.sql" />
     <Build Include="dbo\Views\Lab Results\vwFirstLineAntibiotics.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetSpecimenInfo.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetSpecimenSusceptibilityInfo.sql" />

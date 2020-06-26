@@ -30,7 +30,7 @@ RETURN
 		AvailableResults(AntibioticOutputName, [Rank]) AS
 		(
 			SELECT COALESCE(GroupName, lbsr.AntibioticOutputName) AS 'AntibioGroupname', MIN(lbsr.[Rank])
-				FROM [dbo].[LabBaseSusceptibilityResult] lbsr
+				FROM [dbo].[StandardisedLabbaseSusceptibilityResult] lbsr
 					LEFT OUTER JOIN [dbo].[vwSecondLineMapping] slm ON slm.AntibioticOutputName = lbsr.AntibioticOutputName
 				WHERE lbsr.ReferenceLaboratoryNumber = @RefLabNumber
 					AND (lbsr.AntibioticOutputName IN (SELECT [AntibioticOutputName] FROM [dbo].[vwFirstLineAntibiotics]) 

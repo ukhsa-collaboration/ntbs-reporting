@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[LabbaseSpecimen]
+﻿CREATE TABLE [dbo].[StandardisedLabbaseSpecimen]
 (
 	[ReferenceLaboratoryNumber] [nvarchar](50) NULL,
 	[SpecimenDate] [datetime] NULL,
@@ -12,4 +12,4 @@
 
 GO
 
-CREATE INDEX [IX_LabbaseSpecimen_ReferenceLaboratoryNumber] ON [dbo].[LabbaseSpecimen] ([ReferenceLaboratoryNumber])
+CREATE INDEX [IX_LabbaseSpecimen_ReferenceLaboratoryNumber] ON [dbo].[StandardisedLabbaseSpecimen] ([ReferenceLaboratoryNumber])
