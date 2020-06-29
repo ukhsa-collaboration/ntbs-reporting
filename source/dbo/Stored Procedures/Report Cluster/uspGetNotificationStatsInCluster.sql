@@ -41,6 +41,7 @@ BEGIN
 		MIN(Age) AS MinAge,
 		MAX(Age) AS MaxAge,
 		--there is only one value for MedianAge but the select requires all values to be in aggregate form
-		MAX(MedianAge) AS MedianAge
+		MAX(MedianAge) AS MedianAge,
+		SUM(CASE WHEN Age < 15 THEN 1 ELSE 0 END) AS ChildSum
 	FROM notificationsInCluster, MedianCalc
 END

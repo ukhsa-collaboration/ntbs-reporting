@@ -325,13 +325,14 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspDivZero.sql" />
     <Build Include="dbo\Tables\Lab Results\tblvwETSLaboratoryResult.sql" />
     <Build Include="dbo\Stored Procedures\Report Cluster\uspCountOfClusterNotificationsPerMonth.sql" />
+    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetDrugResistanceStatsInCluster.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="ntbs-int-reporting.publish.xml" />
     <None Include="ntbs-test-reporting.publish.xml" />
-    <None Include="ntbs-dev-reporting.publish.xml" />
+    <None Include="phe-ntbs-dev-reporting.publish.xml" />
     <None Include="phe-ntbs-uat-reporting.publish.xml" />
     <None Include="ntbs-uat-reporting.publish.xml" />
     <None Include="phe-ntbs-live-reporting.publish.xml" />

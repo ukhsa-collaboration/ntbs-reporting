@@ -32,8 +32,8 @@ BEGIN
 					SELECT
 						rn.NotificationId,
 						rn.EtsId,
-						'Withheld' AS Forename,
-						'Withheld' AS Surname,
+						LEFT(rn.Forename, 1) AS Forename,
+						LEFT(rn.Surname, 1) AS Surname,
 						'Withheld' AS NhsNumber,
 						 NULL AS DateOfBirth,
 						'Withheld' AS Postcode
@@ -48,6 +48,7 @@ BEGIN
 					notifications.EtsId,
 					rn.LtbrId,
 					FORMAT(rn.NotificationDate, 'dd MMM yyyy') AS NotificationDate,
+					rn.CaseManager,
 					rn.Hospital,
 					rn.[Service],
 					notifications.Forename,
@@ -78,11 +79,11 @@ BEGIN
 					rn.AlcoholMisuse,
 					rn.DrugMisuse,
 					rn.LastRecordedTreatmentOutcome,
-					FORMAT(rn.EarliestSpecimenDate, 'dd MMM yyyy') AS StartOfTreatmentDate,
+					FORMAT(rn.EarliestSpecimenDate, 'dd MMM yyyy') AS EarliestSpecimenDate,
 					rn.DrugResistanceProfile
 				FROM @ReusableNotification notifications
 					INNER JOIN [dbo].[ReusableNotification] rn ON rn.NotificationId = notifications.NotificationId
-				ORDER BY notifications.NotificationDate DESC
+				ORDER BY rn.NotificationDate DESC
 			
 			-- Write data to audit log
 			EXEC dbo.uspAddToAudit 'Cluster Line List', @LoginGroups, @ReusableNotification
