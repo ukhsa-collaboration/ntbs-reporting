@@ -332,13 +332,13 @@
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
-    <None Include="ntbs-int-reporting.publish.xml" />
-    <None Include="ntbs-test-reporting.publish.xml" />
+    <None Include="azure-ntbs-int-reporting.publish.xml" />
+    <None Include="azure-ntbs-test-reporting.publish.xml" />
     <None Include="phe-ntbs-dev-reporting.publish.xml" />
     <None Include="phe-ntbs-uat-reporting.publish.xml" />
-    <None Include="ntbs-uat-reporting.publish.xml" />
+    <None Include="azure-ntbs-uat-reporting.publish.xml" />
     <None Include="phe-ntbs-live-reporting.publish.xml" />
-    <None Include="ntbs-azure-dev-reporting.publish.xml" />
+    <None Include="azure-ntbs-dev-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
