@@ -51,7 +51,7 @@ CREATE PROCEDURE [dbo].[uspPhec] (
 				-- Permission restrictions on logged-in residence region
 				AND CHARINDEX('###' + agr.AdGroupName + '###', @LoginGroups) != 0
 			UNION
-			SELECT distinct 
+			SELECT DISTINCT 
 				PHEC_Code,
 				PhecName,
 				SortOrder

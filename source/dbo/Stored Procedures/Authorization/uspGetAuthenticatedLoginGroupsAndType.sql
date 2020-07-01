@@ -22,7 +22,7 @@ CREATE PROCEDURE dbo.uspGetAuthenticatedLoginGroupsAndType (
 
 		SET @LoginGroups = '###'
 		
-		SELECT @LoginGroups = CONCAT('###',REPLACE(AdGroups, ',', '###'),'###') from [$(NTBS)].[dbo].[User]
+		SELECT @LoginGroups = CONCAT('###',REPLACE(AdGroups, ',', '###'),'###') from [dbo].[User]
 				WHERE Username = SYSTEM_USER
 
 		-- Debugging
