@@ -22,12 +22,6 @@
     <SqlCmdVariable Include="Labbase2">
       <Value>NTBS_Labbase2_Live</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="master">
-      <Value>master</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="msdb">
-      <Value>msdb</Value>
-    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_UAT</Value>
     </SqlCmdVariable>
