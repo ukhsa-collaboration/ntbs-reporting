@@ -24,7 +24,7 @@ AS
 				--This selects the final AD group in the list, which means we exclude the 'ADMIN' group, which is not
 				--useful for this report
 				RIGHT(AdGroups, CHARINDEX(',', REVERSE(AdGroups) + ',') - 1) AS AdGroup
-			FROM [$(NTBS)].[dbo].[User]) AS Q1
+			FROM [dbo].[User]) AS Q1
 	ON els.UserName COLLATE DATABASE_DEFAULT = Q1.Username
 	WHERE els.TimeEnd > (
 	-- the first time this is run, there won't be an existing records in MIReportData, so this CASE
