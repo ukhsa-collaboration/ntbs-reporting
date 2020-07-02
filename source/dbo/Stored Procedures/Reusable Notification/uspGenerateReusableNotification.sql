@@ -247,7 +247,7 @@ BEGIN TRY
 		,dbo.ufnYesNo(rfp.InPastFiveYears)				AS 'InPrisonInLast5Years'
 		,dbo.ufnYesNo(rfp.MoreThanFiveYearsAgo)			AS 'InPrisonMoreThan5YearsAgo'
 		--travel and visitors
-		,dbo.ufnYesNo(td.HasTravel)						AS 'TravelledOutsideUk'
+		,td.HasTravel									AS 'TravelledOutsideUk'
 		,td.TotalNumberOfCountries						AS 'ToHowManyCountries'
 		,dbo.ufnGetCountryName(td.Country1Id)			AS 'TravelCountry1'
 		,td.StayLengthInMonths1							AS 'MonthsTravelled1'
@@ -255,7 +255,7 @@ BEGIN TRY
 		,td.StayLengthInMonths2							AS 'MonthsTravelled2'
 		,dbo.ufnGetCountryName(td.Country3Id)			AS 'TravelCountry3' 
 		,td.StayLengthInMonths3							AS 'MonthsTravelled3'
-		,dbo.ufnYesNo(vd.HasVisitor)					AS 'ReceivedVisitors'
+		,vd.HasVisitor									AS 'ReceivedVisitors'
 		,vd.TotalNumberOfCountries						AS 'FromHowManyCountries'
 		,dbo.ufnGetCountryName(vd.Country1Id)			AS 'VisitorCountry1'
 		,vd.StayLengthInMonths1							AS 'DaysVisitorsStayed1' --NB is this captured in days in ETS? It's captured in months in NTBS
