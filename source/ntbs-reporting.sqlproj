@@ -168,7 +168,6 @@
     <Build Include="dbo\Types\Audit\ReusableNotificationType.sql" />
     <Build Include="dbo\Tables\Audit\AccessAudit.sql" />
     <Build Include="dbo\Tables\Report OutcomeSummary\OutcomeSummary.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\PostcodeLookup.sql" />
     <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
     <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
@@ -225,7 +224,6 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationDrugResistanceProfile.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome_ETS.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationImmunosuppression.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusablePostcodeLookup.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableResidence.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableTreatment.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspReusableNotification.sql" />

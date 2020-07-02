@@ -13,9 +13,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		-- Populate table to remove spaces from postcodes
-		EXEC dbo.uspGenerateReusablePostcodeLookup
-
+		
 		--prep the lab results
 		DELETE FROM [dbo].[StandardisedETSLaboratoryResult]
 
@@ -278,7 +276,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				LEFT OUTER JOIN [$(ETS)].dbo.Hospital h ON h.Id = n.HospitalId
 				LEFT OUTER JOIN [$(ETS)].dbo.SystemUser s ON s.Id = n.OwnerUserId
 				LEFT OUTER JOIN [$(ETS)].dbo.Address a ON a.Id = n.AddressId
-				LEFT OUTER JOIN dbo.PostcodeLookup po ON po.PostcodeLookupId = a.PostcodeId
+				LEFT OUTER JOIN [$(ETS)].dbo.Postcode po ON po.Id = a.PostcodeId
 				LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisEpisode te ON te.Id = n.TuberculosisEpisodeId
 				LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisHistory th ON th.Id = n.TuberculosisHistoryId
 				LEFT OUTER JOIN [$(ETS)].dbo.TreatmentOutcome tr12 ON tr12.Id = n.TreatmentOutcomeId
@@ -294,6 +292,12 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				AND n.AuditDelete IS NULL
 				AND n.DenotificationId IS NULL
 				AND (cluster.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
+
+			--now remove spaces from postcodes in order to perform lookups. The spaces will be added back in for improved readability later on 
+			--in uspUpdateReusableNotificationPostcode
+			UPDATE dbo.ReusableNotification_ETS
+				SET Postcode = REPLACE(Postcode, ' ', '')
+
 
 			-- Populate NULL columns from above
 			EXEC dbo.uspGenerateReusableResidence
