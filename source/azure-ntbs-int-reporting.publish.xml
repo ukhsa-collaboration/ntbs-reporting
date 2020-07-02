@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>uat-reporting</TargetDatabaseName>
+    <TargetDatabaseName>int-reporting</TargetDatabaseName>
     <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=ntbs-ops-dbs.uksouth.cloudapp.azure.com;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
