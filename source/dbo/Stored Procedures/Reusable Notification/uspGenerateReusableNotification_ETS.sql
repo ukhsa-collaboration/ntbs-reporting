@@ -16,6 +16,17 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 		-- Populate table to remove spaces from postcodes
 		EXEC dbo.uspGenerateReusablePostcodeLookup
 
+		--prep the lab results
+		DELETE FROM [dbo].[StandardisedETSLaboratoryResult]
+
+		INSERT INTO [dbo].[StandardisedETSLaboratoryResult](NotificationId, Id, OpieId)
+			SELECT n.LegacyId AS NotificationId
+				,lr.Id
+				,lr.OpieId
+			FROM [$(ETS)].[dbo].[LaboratoryResult] lr
+			LEFT JOIN [$(ETS)].dbo.[Notification] n ON n.Id = lr.NotificationId
+				WHERE lr.AuditDelete IS NULL
+
 		-- Reset
 		DELETE FROM dbo.ReusableNotification_ETS
 

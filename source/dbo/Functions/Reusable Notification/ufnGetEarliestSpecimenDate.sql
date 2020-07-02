@@ -20,7 +20,7 @@ AS
 		SET @ReturnValue = (SELECT TOP 1 CONVERT(DATE, s.SpecimenDate)
 							FROM [$(Labbase2)].dbo.SpecimenResult s
 								INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.LabDataID = s.LabDataID
-								INNER JOIN [dbo].vwETSLaboratoryResult l ON l.OpieId = a.OpieId
+								INNER JOIN [dbo].StandardisedETSLaboratoryResult l ON l.OpieId = a.OpieId
 							WHERE l.NotificationId = @NotificationId
 							ORDER BY s.SpecimenDate) -- Order ascending, so the earliest date appears at the top
 

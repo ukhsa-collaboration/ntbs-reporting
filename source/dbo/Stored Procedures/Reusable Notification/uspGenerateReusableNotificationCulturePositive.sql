@@ -17,14 +17,14 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCulturePositive] AS
 			CulturePositive = 'No'
 		WHERE CulturePositive IS NULL
 			AND NotificationId NOT IN (SELECT DISTINCT NotificationId -- You can have multiple lab result records for the same case
-										FROM [dbo].[vwETSLaboratoryResult])
+										FROM [dbo].[StandardisedETSLaboratoryResult])
 
 		-- 3. Notification has LaboratoryResult records where the OpieID is not null
 		UPDATE dbo.ReusableNotification_ETS SET
 			CulturePositive = 'Yes'
 		WHERE CulturePositive IS NULL
 			AND NotificationId IN (SELECT DISTINCT NotificationId -- You can have multiple lab result records for the same case
-									FROM [dbo].[vwETSLaboratoryResult]
+									FROM [dbo].[StandardisedETSLaboratoryResult]
 									WHERE OpieId IS NOT NULL) -- Ignore manually entered lab results
 
 		-- 2. Notification only has LaboratoryResult records where the OpieID is null
@@ -32,7 +32,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCulturePositive] AS
 			CulturePositive = 'No'
 		WHERE CulturePositive IS NULL
 			AND NotificationId IN (SELECT DISTINCT NotificationId -- You can have multiple lab result records for the same case
-									FROM [dbo].[vwETSLaboratoryResult]
+									FROM [dbo].[StandardisedETSLaboratoryResult]
 									WHERE OpieId IS NULL) -- Ignore manually entered lab results
 
 		-- 3. An error has occurred

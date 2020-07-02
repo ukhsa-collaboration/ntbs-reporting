@@ -282,7 +282,6 @@
     <Build Include="dbo\Views\Lab Results\vwPossibleMatch.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByPhec.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetAllUnmatchedSpecimens.sql" />
-    <Build Include="dbo\Views\Lab Results\vwETSLaboratoryResults.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspLog.sql" />
     <Build Include="dbo\Tables\Audit\ErrorLog.sql" />
     <Build Include="dbo\Tables\ClusterMatching\NotificationClusterMatch.sql" />
@@ -325,7 +324,7 @@
     <Build Include="dbo\Functions\Lab Results\ufnGetSpecimenSusceptibilityInfo.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspCallDivZero.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspDivZero.sql" />
-    <Build Include="dbo\Tables\Lab Results\tblvwETSLaboratoryResult.sql" />
+    <Build Include="dbo\Tables\Lab Results\StandardisedETSLaboratoryResult.sql" />
     <Build Include="dbo\Stored Procedures\Report Cluster\uspCountOfClusterNotificationsPerMonth.sql" />
     <Build Include="dbo\Stored Procedures\Report Cluster\uspGetDrugResistanceStatsInCluster.sql" />
     <Build Include="dbo\Tables\Authorization\User.sql" />

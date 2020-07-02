@@ -27,7 +27,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 						' + @ReportingAntibioticCode + ' = ''No result''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 						AND NotificationId NOT IN (SELECT DISTINCT l.NotificationId
-													FROM [dbo].[vwETSLaboratoryResult] l
+													FROM [dbo].[StandardisedETSLaboratoryResult] l
 														INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 													WHERE a.LabDataID IN (SELECT DISTINCT su.LabDataID
 																			FROM [$(Labbase2)].dbo.Susceptibility su
@@ -41,7 +41,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 						' + @ReportingAntibioticCode + ' = ''Resistant''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 						AND NotificationId IN (SELECT DISTINCT l.NotificationId
-													FROM [dbo].[vwETSLaboratoryResult] l
+													FROM [dbo].[StandardisedETSLaboratoryResult] l
 														INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 													WHERE a.LabDataID IN (SELECT DISTINCT su.LabDataID
 																			FROM [$(Labbase2)].dbo.Susceptibility su
@@ -56,7 +56,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 						' + @ReportingAntibioticCode + ' = ''Sensitive''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 					AND NotificationId IN (SELECT DISTINCT l.NotificationId
-												FROM [dbo].[vwETSLaboratoryResult] l
+												FROM [dbo].[StandardisedETSLaboratoryResult] l
 													INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 												WHERE a.LabDataID IN (SELECT DISTINCT su.LabDataID
 																		FROM [$(Labbase2)].dbo.Susceptibility su
@@ -72,14 +72,14 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationCultureResistance] (
 						' + @ReportingAntibioticCode + ' = ''Unknown''
 					WHERE ' + @ReportingAntibioticCode + ' IS NULL
 					AND NotificationId IN (SELECT DISTINCT l.NotificationId
-											FROM [dbo].[vwETSLaboratoryResult] l
+											FROM [dbo].[StandardisedETSLaboratoryResult] l
 												INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 											WHERE a.LabDataID IN (SELECT DISTINCT su.LabDataID
 																	FROM [$(Labbase2)].dbo.Susceptibility su
 																	WHERE su.AntibioticCode IN (' + @EtsAntibioticCodeList + ') -- Comma-separated list of codes
 																	AND su.SusceptibilityResult IN (''Unknown'', ''U'', ''Failed'', ''F'')))
 					AND NotificationId NOT IN (SELECT DISTINCT l.NotificationId
-												FROM [dbo].[vwETSLaboratoryResult] l
+												FROM [dbo].[StandardisedETSLaboratoryResult] l
 													INNER JOIN [$(Labbase2)].dbo.Anonymised a ON a.OpieId = l.OpieId
 												WHERE a.LabDataID IN (SELECT DISTINCT su.LabDataID
 																		FROM [$(Labbase2)].dbo.Susceptibility su
