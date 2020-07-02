@@ -17,6 +17,8 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 		DELETE FROM [dbo].[StandardisedLabbaseSusceptibilityResult]
 
 		-- first populate the temporary table with basic data from LabBase
+		-- !!! The migration db uses the same way to make up missing reference laboratory numbers - make sure to keep them in sync: 
+		-- https://github.com/PublicHealthEngland/ntbs-data-migration/blob/master/migration/27_aggregate_views/EtsLaboratoryResultsView.sql#L14
 		INSERT INTO [dbo].[StandardisedLabbaseSpecimen]
 			([ReferenceLaboratoryNumber]
 		  ,[SpecimenDate]
