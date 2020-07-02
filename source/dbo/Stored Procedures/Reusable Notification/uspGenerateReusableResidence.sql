@@ -21,8 +21,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 			ResidencePhecCode = p.PHEC_Code
 		-- SELECT n.NotificationId -- Debugging
 		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
-			INNER JOIN dbo.PostcodeLookup pl ON pl.Pcd2 = n.Postcode
-			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = pl.Pcd2NoSpaces
+			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = n.Postcode
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Local_Authority l ON l.LA_Code = r.LA_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.LA_to_PHEC lp ON lp.LA_Code = l.LA_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.PHEC p ON p.PHEC_Code = lp.PHEC_Code
@@ -33,8 +32,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 			ResidencePhec = 'Unknown'
 		-- SELECT n.NotificationId -- Debugging
 		FROM dbo.ReusableNotification_ETS n WITH (NOLOCK)
-			LEFT OUTER JOIN dbo.PostcodeLookup pl ON pl.Pcd2 = n.Postcode
-			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = pl.Pcd2NoSpaces
+			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = n.Postcode
 		WHERE (r.Country IS NULL or (r.Country = 'E92000001' and r.LA_Code is null)) and ResidencePhec is null
 	END TRY
 	BEGIN CATCH
