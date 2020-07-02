@@ -344,6 +344,7 @@
     <None Include="phe-ntbs-live-reporting.publish.xml" />
     <None Include="azure-ntbs-dev-reporting.publish.xml" />
     <None Include="azure-ntbs-int-reporting.publish.xml" />
+    <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />

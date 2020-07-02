@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2015
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "source", "source\ntbs-reporting.sqlproj", "{00903AB8-5BE1-4195-9677-566BAA463341}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "ntbs-reporting", "source\ntbs-reporting.sqlproj", "{00903AB8-5BE1-4195-9677-566BAA463341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
