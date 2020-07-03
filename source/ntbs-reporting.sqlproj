@@ -330,6 +330,7 @@
     <Build Include="dbo\Tables\National Team\LabMappings.sql" />
     <Build Include="dbo\Tables\National Team\SGSS_MTBC_Isolates.sql" />
     <Build Include="dbo\Tables\National Team\SGSS_MTBC_Patients.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\ReportingFeatureFlags.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -342,6 +343,7 @@
     <None Include="azure-ntbs-dev-reporting.publish.xml" />
     <None Include="azure-ntbs-int-reporting.publish.xml" />
     <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
+    <None Include="Scripts\PopulateFeatureFlags.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
