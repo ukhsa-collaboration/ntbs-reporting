@@ -339,7 +339,6 @@
     <None Include="phe-ntbs-uat-reporting.publish.xml" />
     <None Include="azure-ntbs-uat-reporting.publish.xml" />
     <None Include="phe-ntbs-live-reporting.publish.xml" />
-    <None Include="azure-ntbs-dev-reporting.publish.xml" />
     <None Include="azure-ntbs-int-reporting.publish.xml" />
     <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
   </ItemGroup>
