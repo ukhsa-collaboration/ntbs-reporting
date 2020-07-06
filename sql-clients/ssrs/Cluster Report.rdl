@@ -3861,8 +3861,8 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
               <BreakLocation>End</BreakLocation>
             </PageBreak>
             <KeepTogether>true</KeepTogether>
-            <Top>37.51474cm</Top>
-            <Left>1.50495cm</Left>
+            <Top>38.94322cm</Top>
+            <Left>1.39912cm</Left>
             <Height>0.23812cm</Height>
             <Width>24.50042cm</Width>
             <ZIndex>11</ZIndex>
@@ -7555,10 +7555,10 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <RepeatRowHeaders>true</RepeatRowHeaders>
             <DataSetName>LineList</DataSetName>
-            <Top>39.18162cm</Top>
+            <Top>40.14135cm</Top>
             <Left>0.89641cm</Left>
             <Height>3.19291cm</Height>
-            <Width>112.16333cm</Width>
+            <Width>112.16334cm</Width>
             <ZIndex>12</ZIndex>
             <Visibility>
               <Hidden>=IIF(MIN(Fields!IsValidCluster.Value, "IsValidCluster")=0, True, False)</Hidden>
@@ -7599,9 +7599,9 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox5</rd:DefaultName>
-            <Top>38.40523cm</Top>
-            <Left>1.39912cm</Left>
-            <Height>0.6cm</Height>
+            <Top>39.2519cm</Top>
+            <Left>1.42557cm</Left>
+            <Height>0.71307cm</Height>
             <Width>6.6087cm</Width>
             <ZIndex>13</ZIndex>
             <Visibility>
@@ -7663,8 +7663,8 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
           </Textbox>
           <Rectangle Name="Rectangle2">
             <KeepTogether>true</KeepTogether>
-            <Top>37.91162cm</Top>
-            <Left>0.42016cm</Left>
+            <Top>39.11107cm</Top>
+            <Left>0.37441cm</Left>
             <Height>0.74083cm</Height>
             <Width>0.80257cm</Width>
             <ZIndex>15</ZIndex>
@@ -7750,8 +7750,150 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="DataAsAtFooter2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!FooterText.Value, "DataAsAt")</Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>375.33834mm</Top>
+            <Left>13.6395mm</Left>
+            <Height>6.35mm</Height>
+            <Width>508.43889mm</Width>
+            <ZIndex>18</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="ReportExecutionDate2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Report execution date: </Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=CDate(Globals!ExecutionTime).ToString("dd-MMM-yyyy")</Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>38.23939cm</Top>
+            <Left>1.36395cm</Left>
+            <Height>0.6cm</Height>
+            <Width>12.55417cm</Width>
+            <ZIndex>19</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="DataAsAtFooter3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!FooterText.Value, "DataAsAt")</Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <Top>436.07388mm</Top>
+            <Left>14.2557mm</Left>
+            <Height>6.35mm</Height>
+            <Width>508.43889mm</Width>
+            <ZIndex>20</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="ReportExecutionDate3">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Report execution date: </Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=CDate(Globals!ExecutionTime).ToString("dd-MMM-yyyy")</Value>
+                    <Style>
+                      <FontFamily>Arial</FontFamily>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <Top>44.31294cm</Top>
+            <Left>1.42557cm</Left>
+            <Height>0.6cm</Height>
+            <Width>12.55417cm</Width>
+            <ZIndex>21</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>427.70097mm</Height>
+        <Height>450.54055mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -7761,81 +7903,9 @@ FROM [dbo].[ForestClusterBuild]</CommandText>
       <Width>1146.61371mm</Width>
       <Page>
         <PageFooter>
-          <Height>23.07167mm</Height>
+          <Height>5.60917mm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
-          <ReportItems>
-            <Textbox Name="ReportExecutionDate">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>Report execution date: </Value>
-                      <Style>
-                        <FontFamily>Arial</FontFamily>
-                      </Style>
-                    </TextRun>
-                    <TextRun>
-                      <Value>=CDate(Globals!ExecutionTime).ToString("dd-MMM-yyyy")</Value>
-                      <Style>
-                        <FontFamily>Arial</FontFamily>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style />
-                </Paragraph>
-              </Paragraphs>
-              <Top>1.41083cm</Top>
-              <Left>0.89641cm</Left>
-              <Height>0.6cm</Height>
-              <Width>12.55417cm</Width>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-            <Textbox Name="DataAsAtFooter">
-              <CanGrow>true</CanGrow>
-              <KeepTogether>true</KeepTogether>
-              <Paragraphs>
-                <Paragraph>
-                  <TextRuns>
-                    <TextRun>
-                      <Value>=First(Fields!FooterText.Value, "DataAsAt")</Value>
-                      <Style>
-                        <FontFamily>Arial</FontFamily>
-                        <FontWeight>Normal</FontWeight>
-                      </Style>
-                    </TextRun>
-                  </TextRuns>
-                  <Style>
-                    <TextAlign>Left</TextAlign>
-                  </Style>
-                </Paragraph>
-              </Paragraphs>
-              <Top>6.7mm</Top>
-              <Left>8.96412mm</Left>
-              <Height>6.35mm</Height>
-              <Width>508.43889mm</Width>
-              <ZIndex>1</ZIndex>
-              <Style>
-                <Border>
-                  <Style>None</Style>
-                </Border>
-                <PaddingLeft>2pt</PaddingLeft>
-                <PaddingRight>2pt</PaddingRight>
-                <PaddingTop>2pt</PaddingTop>
-                <PaddingBottom>2pt</PaddingBottom>
-              </Style>
-            </Textbox>
-          </ReportItems>
           <Style>
             <Border>
               <Style>None</Style>
