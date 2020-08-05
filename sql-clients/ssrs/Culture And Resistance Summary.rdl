@@ -875,7 +875,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Culture_positive_cases.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Culture_positive_cases.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -915,7 +915,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Culture_positive_cases.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Culture_positive_cases.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -997,7 +997,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Non_culture_positive_cases.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Non_culture_positive_cases.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -1037,7 +1037,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Non_culture_positive_cases.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Non_culture_positive_cases.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1119,7 +1119,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Table_1_total.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -1159,7 +1159,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Table_1_total.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1204,7 +1204,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Culture_positive_cases.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -1244,7 +1244,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Culture_positive_cases.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1322,7 +1322,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -1362,7 +1362,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1440,7 +1440,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Table_1_total.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -1480,7 +1480,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Table_1_total.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3123,7 +3123,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3163,7 +3163,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3245,7 +3245,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!INH_RES.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!INH_RES.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3285,7 +3285,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!INH_RES.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!INH_RES.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3367,7 +3367,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!Other.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Other.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3407,7 +3407,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Other.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Other.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3490,7 +3490,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!MDR_RR_TB.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!MDR_RR_TB.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3530,7 +3530,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Fields!MDR_RR_TB.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!MDR_RR_TB.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3613,7 +3613,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!XDR.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!XDR.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3653,7 +3653,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!XDR.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!XDR.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3736,7 +3736,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3776,7 +3776,7 @@ FROM UserType</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3859,7 +3859,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_2_total.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Table_2_total.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3900,7 +3900,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Table_2_total.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND Fields!Table_2_total.Value &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -3945,7 +3945,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -3986,7 +3986,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4065,7 +4065,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!INH_RES.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!INH_RES.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4106,7 +4106,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!INH_RES.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!INH_RES.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4185,7 +4185,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Other.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Other.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4226,7 +4226,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!Other.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Other.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4305,7 +4305,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!MDR_RR_TB.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!MDR_RR_TB.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4346,7 +4346,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!MDR_RR_TB.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!MDR_RR_TB.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4425,7 +4425,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive,  IIF(Sum(Fields!XDR.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!XDR.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4466,7 +4466,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!XDR.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!XDR.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4545,7 +4545,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4586,7 +4586,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4665,7 +4665,7 @@ FROM UserType</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value + Fields!INH_RES.Value + Fields!Other.Value + Fields!MDR_RR_TB.Value + Fields!XDR.Value + Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Table_2_total.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -4706,7 +4706,7 @@ FROM UserType</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_2_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Table_2_total.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
