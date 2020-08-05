@@ -4,7 +4,7 @@
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="PHE">
-      <DataSourceReference>/DataSources/Staging</DataSourceReference>
+      <DataSourceReference>/Datasources/Staging</DataSourceReference>
       <rd:SecurityType>Integrated</rd:SecurityType>
       <rd:DataSourceID>c4640378-9393-438a-a618-034c268737e7</rd:DataSourceID>
     </DataSource>
@@ -408,6 +408,66 @@ where PhecName = @Region</CommandText>
         </Field>
         <Field Name="TB_Service_Name">
           <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ServiceHiddenShared">
+      <Query>
+        <DataSourceName>PHE</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@Region">
+            <Value>=Parameters!Region.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspService</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="Serviceid">
+          <DataField>Serviceid</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="TB_Service_Name">
+          <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="UserType">
+      <Query>
+        <DataSourceName>PHE</DataSourceName>
+        <CommandText>WITH LoginGroups(AdGroups) AS
+  (
+   SELECT TRIM(VALUE) groupname FROM [dbo].[User]
+   CROSS APPLY STRING_SPLIT(AdGroups, ',')
+   WHERE Username = SYSTEM_USER
+   ),
+
+UserType(UserTypeNumeric) AS
+(
+   SELECT Min(AdGroupRank) AS UserTypeNumeric FROM
+       (SELECT CASE AdGroupType 
+                 WHEN 'N' THEN 1 
+                 WHEN 'R' THEN 2 
+                 WHEN 'S' THEN 3 
+                  ELSE 9 
+          END AS AdGroupRank
+          FROM AdGroup
+          WHERE AdGroupName IN (SELECT AdGroups FROM LoginGroups)) AS Q1
+)
+
+		
+SELECT CASE UserTypeNumeric 
+    WHEN 1 THEN 'N' 
+    WHEN 2 THEN 'R' 
+    WHEN 3 THEN 'S' 
+    ELSE '' END AS UserType
+FROM UserType</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="UserType">
+          <DataField>UserType</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -5927,6 +5987,9 @@ where PhecName = @Region</CommandText>
                 <TablixColumn>
                   <Width>25mm</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>25mm</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -6046,6 +6109,48 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox45</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox17">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>="Colour"</Value>
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox17</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6288,6 +6393,48 @@ where PhecName = @Region</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox26">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox26</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -6307,7 +6454,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Culture_positive_cases.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Culture_positive_cases.Value &lt;&gt; "0") AND (ReportItems!Textbox29.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6347,7 +6494,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Culture_positive_cases.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Culture_positive_cases.Value &lt;&gt; "0" , ReportItems!Textbox29.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6429,7 +6576,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Non_culture_positive_cases.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Non_culture_positive_cases.Value &lt;&gt; "0") AND (ReportItems!Textbox29.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6469,7 +6616,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Non_culture_positive_cases.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Non_culture_positive_cases.Value &lt;&gt; "0" , ReportItems!Textbox29.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6551,7 +6698,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0") AND (ReportItems!Textbox29.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6591,7 +6738,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , ReportItems!Textbox29.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6601,6 +6748,43 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox29">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIf((Globals!RenderFormat.IsInteractive) AND (Array.IndexOf(Parameters!ServiceHidden.Label, Fields!Service.Value ) &lt;&gt; -1), "Blue", "Black")</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox29</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6636,7 +6820,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6677,7 +6861,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Culture_positive_cases.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6755,7 +6939,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6796,7 +6980,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive,IIF(Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Non_culture_positive_cases.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6874,7 +7058,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Non_culture_positive_cases.Value+ Fields!Culture_positive_cases.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -6915,7 +7099,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Table_1_total.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6925,6 +7109,44 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox16</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox42">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_1_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox42</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6952,6 +7174,11 @@ where PhecName = @Region</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember>
+                  <Visibility>
+                    <Hidden>true</Hidden>
+                  </Visibility>
+                </TablixMember>
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -7076,8 +7303,50 @@ where PhecName = @Region</CommandText>
                             <TextRuns>
                               <TextRun>
                                 <Value>=Fields!Service.Value</Value>
+                                <ActionInfo>
+                                  <Actions>
+                                    <Action>
+                                      <Drillthrough>
+                                        <ReportName>=IIF((Sum(Fields!Non_culture_positive_cases.Value + Fields!Culture_positive_cases.Value) &lt;&gt; "0") AND (ReportItems!Textbox29.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
+                                        <Parameters>
+                                          <Parameter Name="FromMonth">
+                                            <Value>=Parameters!FromMonth.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="FromYear">
+                                            <Value>=Parameters!FromYear.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="ToMonth">
+                                            <Value>=Parameters!ToMonth.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="ToYear">
+                                            <Value>=Parameters!ToYear.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="Region">
+                                            <Value>=Parameters!Region.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="SiteOfDisease">
+                                            <Value>=Parameters!SiteOfDisease.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="Service">
+                                            <Value>=iif(IsNothing(Fields!Service.Value),"Blank",Fields!Service.Value )</Value>
+                                          </Parameter>
+                                          <Parameter Name="Bucket">
+                                            <Value>Table 1 total</Value>
+                                          </Parameter>
+                                          <Parameter Name="isFromNational">
+                                            <Value>=Parameters!isFromNational.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="LocalAuthority">
+                                            <Value>=Nothing</Value>
+                                          </Parameter>
+                                        </Parameters>
+                                      </Drillthrough>
+                                    </Action>
+                                  </Actions>
+                                </ActionInfo>
                                 <Style>
                                   <FontWeight>Normal</FontWeight>
+                                  <Color>=IIF(First(Fields!UserType.Value, "UserType")="S" AND Fields!Table_1_total.Value &lt;&gt; "0", ReportItems!Textbox29.Value, "Black")</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -7152,7 +7421,7 @@ where PhecName = @Region</CommandText>
             <Top>144.9813mm</Top>
             <Left>13.49992mm</Left>
             <Height>29.97639mm</Height>
-            <Width>237mm</Width>
+            <Width>262mm</Width>
             <ZIndex>8</ZIndex>
             <Visibility>
               <Hidden>=Parameters!DateValidation.Value</Hidden>
@@ -7202,6 +7471,9 @@ where PhecName = @Region</CommandText>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>17.94444mm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>25mm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>25mm</Width>
@@ -7324,6 +7596,48 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox18</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox109">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox109</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -7525,6 +7839,49 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox19</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>None</Style>
+                            </BottomBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox110">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox110</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -7852,6 +8209,46 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox38</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox112">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox112</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -8444,6 +8841,46 @@ where PhecName = @Region</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox113">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value EvaluationMode="Constant" />
+                                  <Style>
+                                    <FontSize>11pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox113</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <TopBorder>
+                              <Style>None</Style>
+                            </TopBorder>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -8463,7 +8900,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -8503,7 +8940,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Sensitive_to_all_4_first_line_drugs.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8585,7 +9022,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!INH_RES.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!INH_RES.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -8625,7 +9062,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!INH_RES.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!INH_RES.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8707,7 +9144,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Other.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Other.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -8747,7 +9184,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Other.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Other.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8830,7 +9267,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!MDR_RR_TB.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!MDR_RR_TB.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -8870,7 +9307,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!MDR_RR_TB.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!MDR_RR_TB.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8953,7 +9390,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!XDR.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!XDR.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -8993,7 +9430,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!XDR.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!XDR.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9076,7 +9513,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9116,7 +9553,7 @@ where PhecName = @Region</CommandText>
                                   <Style>
                                     <FontWeight>Normal</FontWeight>
                                     <Format>#,0;(#,0)</Format>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Incomplete_drug_resistance_profile.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9199,7 +9636,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_2_total.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIF((Fields!Table_2_total.Value &lt;&gt; "0") AND (ReportItems!Table2Helper.Value = "Blue"),"/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9240,7 +9677,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Fields!Table_2_total.Value &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Fields!Table_2_total.Value &lt;&gt; "0" , ReportItems!Table2Helper.Value, "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9250,6 +9687,43 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox20</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Table2Helper">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=IIf((Globals!RenderFormat.IsInteractive) AND (Array.IndexOf(Parameters!ServiceHidden.Label, Fields!Service.Value ) &lt;&gt; -1), "Blue", "Black")</Value>
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -9285,7 +9759,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9327,7 +9801,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Sensitive_to_all_4_first_line_drugs.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9406,7 +9880,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!INH_RES.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!INH_RES.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9448,7 +9922,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!INH_RES.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!INH_RES.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9527,7 +10001,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Other.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Other.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9569,7 +10043,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Other.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Other.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9648,7 +10122,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!MDR_RR_TB.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!MDR_RR_TB.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9690,7 +10164,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!MDR_RR_TB.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!MDR_RR_TB.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9769,7 +10243,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!XDR.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!XDR.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9811,7 +10285,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!XDR.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!XDR.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -9890,7 +10364,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -9932,7 +10406,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -10011,7 +10485,7 @@ where PhecName = @Region</CommandText>
                                     <Actions>
                                       <Action>
                                         <Drillthrough>
-                                          <ReportName>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Sensitive_to_all_4_first_line_drugs.Value + Fields!INH_RES.Value + Fields!Other.Value + Fields!MDR_RR_TB.Value + Fields!XDR.Value + Fields!Incomplete_drug_resistance_profile.Value) &lt;&gt; "0", "/Subreports/Culture And Resistance Summary Line List", Nothing), Nothing)</ReportName>
+                                          <ReportName>=IIf((Globals!RenderFormat.IsInteractive) AND (Sum(Fields!Table_2_total.Value) &lt;&gt; "0") AND (First(Fields!UserType.Value, "UserType") &lt;&gt; "S") , "/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
                                           <Parameters>
                                             <Parameter Name="FromMonth">
                                               <Value>=Parameters!FromMonth.Value</Value>
@@ -10053,7 +10527,7 @@ where PhecName = @Region</CommandText>
                                     <FontWeight>Bold</FontWeight>
                                     <Format>#,0;(#,0)</Format>
                                     <TextDecoration>None</TextDecoration>
-                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_2_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                    <Color>=IIF(Globals!RenderFormat.IsInteractive AND SUM(Fields!Table_2_total.Value) &lt;&gt; "0" AND First(Fields!UserType.Value, "UserType") &lt;&gt; "S", "Blue", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -10063,6 +10537,45 @@ where PhecName = @Region</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BackgroundColor>#a8aaad</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>5pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox115">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontWeight>Bold</FontWeight>
+                                    <TextDecoration>None</TextDecoration>
+                                    <Color>=IIf(Globals!RenderFormat.IsInteractive, IIF(Sum(Fields!Table_2_total.Value) &lt;&gt; "0" , "Blue", "Black"), "Black")</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox115</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -10098,6 +10611,11 @@ where PhecName = @Region</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember>
+                  <Visibility>
+                    <Hidden>true</Hidden>
+                  </Visibility>
+                </TablixMember>
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -10325,8 +10843,50 @@ where PhecName = @Region</CommandText>
                             <TextRuns>
                               <TextRun>
                                 <Value>=Fields!Service.Value</Value>
+                                <ActionInfo>
+                                  <Actions>
+                                    <Action>
+                                      <Drillthrough>
+                                        <ReportName>=IIF(Fields!Table_2_total.Value &lt;&gt; "0" AND ReportItems!Table2Helper.Value = "Blue","/Subreports/Culture And Resistance Summary Line List", Nothing)</ReportName>
+                                        <Parameters>
+                                          <Parameter Name="FromMonth">
+                                            <Value>=Parameters!FromMonth.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="FromYear">
+                                            <Value>=Parameters!FromYear.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="ToMonth">
+                                            <Value>=Parameters!ToMonth.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="ToYear">
+                                            <Value>=Parameters!ToYear.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="Region">
+                                            <Value>=Parameters!Region.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="SiteOfDisease">
+                                            <Value>=Parameters!SiteOfDisease.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="Bucket">
+                                            <Value>Table 2 total</Value>
+                                          </Parameter>
+                                          <Parameter Name="LocalAuthority">
+                                            <Value>=Nothing</Value>
+                                          </Parameter>
+                                          <Parameter Name="isFromNational">
+                                            <Value>=Parameters!isFromNational.Value</Value>
+                                          </Parameter>
+                                          <Parameter Name="Service">
+                                            <Value>=iif(IsNothing(Fields!Service.Value),"Blank",Fields!Service.Value )</Value>
+                                          </Parameter>
+                                        </Parameters>
+                                      </Drillthrough>
+                                    </Action>
+                                  </Actions>
+                                </ActionInfo>
                                 <Style>
                                   <FontWeight>Normal</FontWeight>
+                                  <Color>=IIF(First(Fields!UserType.Value, "UserType")="S" AND Fields!Table_2_total.Value &lt;&gt; "0", ReportItems!Table2Helper.Value, "Black")</Color>
                                 </Style>
                               </TextRun>
                             </TextRuns>
@@ -10406,7 +10966,7 @@ where PhecName = @Region</CommandText>
             <Top>190.36895mm</Top>
             <Left>13.4999mm</Left>
             <Height>53.91806mm</Height>
-            <Width>343.36641mm</Width>
+            <Width>368.36641mm</Width>
             <ZIndex>9</ZIndex>
             <Visibility>
               <Hidden>=Parameters!DateValidation.Value</Hidden>
@@ -10601,6 +11161,12 @@ where PhecName = @Region</CommandText>
   <ReportParameters>
     <ReportParameter Name="Region">
       <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>RegionShared</DataSetName>
+          <ValueField>PhecName</ValueField>
+        </DataSetReference>
+      </DefaultValue>
       <Prompt>*Region</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -10635,6 +11201,11 @@ where PhecName = @Region</CommandText>
     </ReportParameter>
     <ReportParameter Name="FromMonth">
       <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>1</Value>
+        </Values>
+      </DefaultValue>
       <Prompt>*From: Month</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -10651,6 +11222,11 @@ where PhecName = @Region</CommandText>
     </ReportParameter>
     <ReportParameter Name="ToMonth">
       <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>12</Value>
+        </Values>
+      </DefaultValue>
       <Prompt>*To: Month</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -10667,6 +11243,11 @@ where PhecName = @Region</CommandText>
     </ReportParameter>
     <ReportParameter Name="FromYear">
       <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>-1</Value>
+        </Values>
+      </DefaultValue>
       <Prompt>*Year</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -10683,6 +11264,11 @@ where PhecName = @Region</CommandText>
     </ReportParameter>
     <ReportParameter Name="ToYear">
       <DataType>String</DataType>
+      <DefaultValue>
+        <Values>
+          <Value>0</Value>
+        </Values>
+      </DefaultValue>
       <Prompt>*Year</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -10717,6 +11303,25 @@ where PhecName = @Region</CommandText>
         <cl:SourcePath>/Report Parts/SiteOfDisease</cl:SourcePath>
         <cl:SyncDate>2019-01-03T14:26:05.4670000+00:00</cl:SyncDate>
       </cl:ComponentMetadata>
+    </ReportParameter>
+    <ReportParameter Name="ServiceHidden">
+      <DataType>String</DataType>
+      <DefaultValue>
+        <DataSetReference>
+          <DataSetName>ServiceHiddenShared</DataSetName>
+          <ValueField>TB_Service_Name</ValueField>
+        </DataSetReference>
+      </DefaultValue>
+      <Prompt>ServiceHidden</Prompt>
+      <Hidden>true</Hidden>
+      <ValidValues>
+        <DataSetReference>
+          <DataSetName>ServiceHiddenShared</DataSetName>
+          <ValueField>TB_Service_Name</ValueField>
+          <LabelField>TB_Service_Name</LabelField>
+        </DataSetReference>
+      </ValidValues>
+      <MultiValue>true</MultiValue>
     </ReportParameter>
     <ReportParameter Name="DateValidation">
       <DataType>Boolean</DataType>
@@ -10775,19 +11380,24 @@ where PhecName = @Region</CommandText>
           <ParameterName>SiteOfDisease</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>2</ColumnIndex>
+          <ColumnIndex>1</ColumnIndex>
           <RowIndex>3</RowIndex>
-          <ParameterName>DateValidation</ParameterName>
+          <ParameterName>ServiceHidden</ParameterName>
         </CellDefinition>
         <CellDefinition>
-          <ColumnIndex>3</ColumnIndex>
-          <RowIndex>3</RowIndex>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
           <ParameterName>isFromNational</ParameterName>
         </CellDefinition>
         <CellDefinition>
           <ColumnIndex>1</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>Service</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>DateValidation</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
@@ -10861,6 +11471,6 @@ C1gSsIAlAQtYwJKABSxgScAClgQsYAFLAhawgCUBC1gSsIAFLAlYwAKWBCxgScAC1k/AepbHyuxuwIoD
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://ntbs-reporting.uksouth.cloudapp.azure.com/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://sqlntbsdevcol01/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>708de6d4-c2c2-47de-a983-8a73b757af6b</rd:ReportID>
 </Report>
