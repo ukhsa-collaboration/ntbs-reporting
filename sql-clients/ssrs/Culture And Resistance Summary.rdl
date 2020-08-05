@@ -11243,11 +11243,6 @@ FROM UserType</CommandText>
     </ReportParameter>
     <ReportParameter Name="FromYear">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>-1</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>*Year</Prompt>
       <ValidValues>
         <DataSetReference>
@@ -11264,11 +11259,6 @@ FROM UserType</CommandText>
     </ReportParameter>
     <ReportParameter Name="ToYear">
       <DataType>String</DataType>
-      <DefaultValue>
-        <Values>
-          <Value>0</Value>
-        </Values>
-      </DefaultValue>
       <Prompt>*Year</Prompt>
       <ValidValues>
         <DataSetReference>
