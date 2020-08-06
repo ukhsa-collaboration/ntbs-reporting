@@ -20,5 +20,7 @@ AS
 
 	UPDATE [dbo].ReportLookup SET ReportGroup = 'Outcome' WHERE ReportName like '%Outcome%'
 
+	UPDATE [dbo].ReportLookup SET ReportGroup = 'Cluster' WHERE ReportName like '%Cluster%'
+
 
 RETURN 0

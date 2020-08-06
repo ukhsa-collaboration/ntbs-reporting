@@ -26,12 +26,13 @@ SELECT TOP(1)
 	--(e.g. outcome and restart recorded on the same day)
 	-- that we will have a consistent order, with restart taken in preference to the outcome
 	(CASE
-		WHEN te.TreatmentEventType = 'TreatmentStart' THEN 1
-		WHEN te.TreatmentEventType = 'TransferOut' THEN 2
-		WHEN te.TreatmentEventType = 'TransferIn' THEN 3
-		WHEN te.TreatmentEventType = 'TreatmentRestart' THEN 4
-		WHEN te.TreatmentEventType = 'TreatmentOutcome' THEN 5
-		ELSE 6
+		WHEN te.TreatmentEventType = 'DiagnosisMade' THEN 1
+		WHEN te.TreatmentEventType = 'TreatmentStart' THEN 2
+		WHEN te.TreatmentEventType = 'TransferOut' THEN 3
+		WHEN te.TreatmentEventType = 'TransferIn' THEN 4
+		WHEN te.TreatmentEventType = 'TreatmentRestart' THEN 5
+		WHEN te.TreatmentEventType = 'TreatmentOutcome' THEN 6
+		ELSE 7
 		END) AS EventOrder,
 	--calculate whether the event is an ending one or not
 	(CASE 

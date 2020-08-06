@@ -18,13 +18,13 @@ AS
 
 
 		--now calculate the treatment start date. Where this is populated in NTBS, use this. If not, use the notification date as a proxy
-		--there should be an event in the TreatmentEvent table which has the right value, with type 'TreatmentStart'
+		--there should be a "starting" event in the TreatmentEvent table which has the right value, with type either 'TreatmentStart' or 'DiagnosisMade'
 
 		UPDATE [dbo].[Outcome] SET TreatmentStartDate = Q1.StartDate FROM
 			(SELECT n.NotificationId, COALESCE(te.EventDate, n.NotificationDate) AS 'StartDate'
 				FROM [$(NTBS)].[dbo].[Notification] n
 					LEFT OUTER JOIN [$(NTBS)].[dbo].TreatmentEvent te ON te.NotificationId = n.NotificationId
-					AND te.TreatmentEventType = 'TreatmentStart') AS Q1
+					AND (te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade')) AS Q1
 			WHERE Q1.NotificationId = [dbo].[Outcome].NotificationId
 
 		--Call the stored proc for each outcome period: 1, 2 and 3 (12 month, 24 month, 36 month)

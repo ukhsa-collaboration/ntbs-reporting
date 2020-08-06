@@ -122,6 +122,7 @@ and rl.ReportGroup is not null
 and mr.UserAdGroup = ag.AdGroupName
 and ag.AdGroupId = pa.PhecAdGroupId
 and pa.PhecId = p.PhecId
+and DateDiff(WEEK, mr.ExecutionDateTime, GETUTCDate()) &lt; 11
 GROUP BY mr.WeekNumber, p.PhecName
 UNION
 select mr.WeekNumber, 'National Team' as PhecName, Count(ReportID) AS 'NumberofReports' 
@@ -129,7 +130,14 @@ select mr.WeekNumber, 'National Team' as PhecName, Count(ReportID) AS 'NumberofR
 where mr.ReportID = rl.ItemId
 and rl.ReportGroup is not null
 and mr.UserAdGroup = 'Global.NIS.NTBS.NTS'
+and DateDiff(WEEK, mr.ExecutionDateTime, GETUTCDate()) &lt; 11
 GROUP BY mr.WeekNumber, mr.UserAdGroup
+
+UNION
+SELECT '2020-13', 'None', 0
+UNION
+SELECT '2020-15', 'None', 0
+
 ORDER BY mr.WeekNumber ASC</CommandText>
       </Query>
       <Fields>
@@ -199,10 +207,12 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                         <Style>
                           <FontSize>9pt</FontSize>
                         </Style>
+                        <UseValueAsLabel>true</UseValueAsLabel>
                       </ChartDataLabel>
                       <ToolTip>#VALY</ToolTip>
                       <Style />
                       <ChartMarker>
+                        <Type>Square</Type>
                         <Style />
                       </ChartMarker>
                       <DataElementOutput>Output</DataElementOutput>
@@ -516,7 +526,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
               </Style>
             </ChartNoDataMessage>
             <DataSetName>ReportsByWeekAndRegion</DataSetName>
-            <Top>430.08903mm</Top>
+            <Top>493.32445mm</Top>
             <Left>22.75416mm</Left>
             <Height>3.53125in</Height>
             <Width>8.15625in</Width>
@@ -775,8 +785,8 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
                     <CrossAt>NaN</CrossAt>
-                    <Minimum>NaN</Minimum>
-                    <Maximum>NaN</Maximum>
+                    <Minimum>0</Minimum>
+                    <Maximum>25</Maximum>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -906,7 +916,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>122.73492mm</Top>
+            <Top>185.97034mm</Top>
             <Left>22.75416mm</Left>
             <Height>2.26042in</Height>
             <Width>8.15625in</Width>
@@ -1569,8 +1579,8 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
                     <CrossAt>NaN</CrossAt>
-                    <Minimum>NaN</Minimum>
-                    <Maximum>NaN</Maximum>
+                    <Minimum>0</Minimum>
+                    <Maximum>25</Maximum>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -1700,7 +1710,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>184.11826mm</Top>
+            <Top>247.35368mm</Top>
             <Left>22.75416mm</Left>
             <Height>2.26042in</Height>
             <Width>8.15625in</Width>
@@ -2089,7 +2099,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>245.29517mm</Top>
+            <Top>308.53059mm</Top>
             <Left>22.75416mm</Left>
             <Height>2.26042in</Height>
             <Width>8.15625in</Width>
@@ -2349,8 +2359,8 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
                     <CrossAt>NaN</CrossAt>
-                    <Minimum>NaN</Minimum>
-                    <Maximum>NaN</Maximum>
+                    <Minimum>0</Minimum>
+                    <Maximum>25</Maximum>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -2480,7 +2490,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>306.06122mm</Top>
+            <Top>369.29664mm</Top>
             <Left>22.75416mm</Left>
             <Height>2.26042in</Height>
             <Width>8.15625in</Width>
@@ -2740,8 +2750,8 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                       <Length>0.5</Length>
                     </ChartMinorTickMarks>
                     <CrossAt>NaN</CrossAt>
-                    <Minimum>NaN</Minimum>
-                    <Maximum>NaN</Maximum>
+                    <Minimum>0</Minimum>
+                    <Maximum>25</Maximum>
                     <ChartAxisScaleBreak>
                       <Style />
                     </ChartAxisScaleBreak>
@@ -2871,7 +2881,7 @@ ORDER BY mr.WeekNumber ASC</CommandText>
                 </FilterValues>
               </Filter>
             </Filters>
-            <Top>366.91539mm</Top>
+            <Top>430.15081mm</Top>
             <Left>22.75416mm</Left>
             <Height>2.26042in</Height>
             <Width>8.15625in</Width>
@@ -2886,8 +2896,399 @@ ORDER BY mr.WeekNumber ASC</CommandText>
               <BackgroundGradientType>None</BackgroundGradientType>
             </Style>
           </Chart>
+          <Chart Name="Chart10">
+            <ChartCategoryHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart5_CategoryGroup6">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!WeekNumber.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!WeekNumber.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <Label>=Fields!WeekNumber.Value</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartCategoryHierarchy>
+            <ChartSeriesHierarchy>
+              <ChartMembers>
+                <ChartMember>
+                  <Group Name="Chart5_SeriesGroup6">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!ReportGroup.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!ReportGroup.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <Label>=Fields!ReportGroup.Value</Label>
+                </ChartMember>
+              </ChartMembers>
+            </ChartSeriesHierarchy>
+            <ChartData>
+              <ChartSeriesCollection>
+                <ChartSeries Name="NumberofReports">
+                  <ChartDataPoints>
+                    <ChartDataPoint>
+                      <ChartDataPointValues>
+                        <Y>=Sum(Fields!NumberofReports.Value)</Y>
+                      </ChartDataPointValues>
+                      <ChartDataLabel>
+                        <Style>
+                          <FontSize>9pt</FontSize>
+                        </Style>
+                      </ChartDataLabel>
+                      <ToolTip>#VALY</ToolTip>
+                      <Style>
+                        <Color>Green</Color>
+                      </Style>
+                      <ChartMarker>
+                        <Style />
+                      </ChartMarker>
+                      <DataElementOutput>Output</DataElementOutput>
+                    </ChartDataPoint>
+                  </ChartDataPoints>
+                  <Type>Line</Type>
+                  <Style>
+                    <ShadowOffset>0pt</ShadowOffset>
+                  </Style>
+                  <ChartEmptyPoints>
+                    <Style />
+                    <ChartMarker>
+                      <Style />
+                    </ChartMarker>
+                    <ChartDataLabel>
+                      <Style />
+                    </ChartDataLabel>
+                  </ChartEmptyPoints>
+                  <ValueAxisName>Primary</ValueAxisName>
+                  <CategoryAxisName>Primary</CategoryAxisName>
+                  <ChartSmartLabel>
+                    <CalloutLineColor>Black</CalloutLineColor>
+                    <MinMovingDistance>0pt</MinMovingDistance>
+                  </ChartSmartLabel>
+                </ChartSeries>
+              </ChartSeriesCollection>
+            </ChartData>
+            <ChartAreas>
+              <ChartArea Name="Default">
+                <ChartCategoryAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <Border>
+                        <Color>#5c5c5c</Color>
+                        <Style>None</Style>
+                      </Border>
+                      <FontSize>8pt</FontSize>
+                      <Color>#5c5c5c</Color>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption />
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>#5c5c5c</Color>
+                      </Style>
+                    </ChartAxisTitle>
+                    <Interval>1</Interval>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>None</Style>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
+                    <ChartMinorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                      </Style>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <Border>
+                        <Color>#5c5c5c</Color>
+                        <Style>None</Style>
+                      </Border>
+                      <FontSize>8pt</FontSize>
+                      <Color>#5c5c5c</Color>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption />
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>#5c5c5c</Color>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Enabled>False</Enabled>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>None</Style>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
+                    <ChartMinorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                      </Style>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartCategoryAxes>
+                <ChartValueAxes>
+                  <ChartAxis Name="Primary">
+                    <Style>
+                      <Border>
+                        <Color>#5c5c5c</Color>
+                        <Style>None</Style>
+                      </Border>
+                      <FontSize>8pt</FontSize>
+                      <Color>#5c5c5c</Color>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption />
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>#5c5c5c</Color>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>None</Style>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
+                    <ChartMinorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                      </Style>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Minimum>0</Minimum>
+                    <Maximum>25</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                  <ChartAxis Name="Secondary">
+                    <Style>
+                      <Border>
+                        <Color>#5c5c5c</Color>
+                        <Style>None</Style>
+                      </Border>
+                      <FontSize>8pt</FontSize>
+                      <Color>#5c5c5c</Color>
+                    </Style>
+                    <ChartAxisTitle>
+                      <Caption />
+                      <Style>
+                        <FontSize>9pt</FontSize>
+                        <Color>#5c5c5c</Color>
+                      </Style>
+                    </ChartAxisTitle>
+                    <ChartMajorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                        </Border>
+                      </Style>
+                    </ChartMajorGridLines>
+                    <ChartMinorGridLines>
+                      <Style>
+                        <Border>
+                          <Color>Gainsboro</Color>
+                          <Style>Dotted</Style>
+                        </Border>
+                      </Style>
+                    </ChartMinorGridLines>
+                    <ChartMajorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>None</Style>
+                        </Border>
+                      </Style>
+                    </ChartMajorTickMarks>
+                    <ChartMinorTickMarks>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                        </Border>
+                      </Style>
+                      <Length>0.5</Length>
+                    </ChartMinorTickMarks>
+                    <CrossAt>NaN</CrossAt>
+                    <Location>Opposite</Location>
+                    <Minimum>NaN</Minimum>
+                    <Maximum>NaN</Maximum>
+                    <ChartAxisScaleBreak>
+                      <Style />
+                    </ChartAxisScaleBreak>
+                  </ChartAxis>
+                </ChartValueAxes>
+                <Style>
+                  <BackgroundColor>#00ffffff</BackgroundColor>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                </Style>
+              </ChartArea>
+            </ChartAreas>
+            <ChartLegends>
+              <ChartLegend Name="Default">
+                <Style>
+                  <Border>
+                    <Color>#5c5c5c</Color>
+                  </Border>
+                  <BackgroundGradientType>TopBottom</BackgroundGradientType>
+                  <FontSize>8pt</FontSize>
+                </Style>
+                <Position>TopLeft</Position>
+                <ChartLegendTitle>
+                  <Caption />
+                  <Style>
+                    <FontSize>8pt</FontSize>
+                    <FontWeight>Bold</FontWeight>
+                    <TextAlign>Center</TextAlign>
+                  </Style>
+                </ChartLegendTitle>
+                <HeaderSeparatorColor>Black</HeaderSeparatorColor>
+                <ColumnSeparatorColor>Black</ColumnSeparatorColor>
+              </ChartLegend>
+            </ChartLegends>
+            <ChartTitles>
+              <ChartTitle Name="Default">
+                <Caption>Cluster Reports by week</Caption>
+                <Style>
+                  <BackgroundGradientType>None</BackgroundGradientType>
+                  <FontSize>9pt</FontSize>
+                  <FontWeight>Normal</FontWeight>
+                  <TextAlign>Left</TextAlign>
+                  <VerticalAlign>Top</VerticalAlign>
+                  <Color>#a6a6a6</Color>
+                </Style>
+                <Position>TopLeft</Position>
+              </ChartTitle>
+            </ChartTitles>
+            <Palette>Pacific</Palette>
+            <ChartBorderSkin>
+              <Style>
+                <BackgroundColor>Gray</BackgroundColor>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <Color>White</Color>
+              </Style>
+            </ChartBorderSkin>
+            <ChartNoDataMessage Name="NoDataMessage">
+              <Caption>No Data Available</Caption>
+              <Style>
+                <BackgroundGradientType>None</BackgroundGradientType>
+                <FontWeight>Bold</FontWeight>
+                <TextAlign>General</TextAlign>
+                <VerticalAlign>Top</VerticalAlign>
+              </Style>
+            </ChartNoDataMessage>
+            <DataSetName>ReportsByWeekAndType</DataSetName>
+            <Filters>
+              <Filter>
+                <FilterExpression>=Fields!ReportGroup.Value</FilterExpression>
+                <Operator>Equal</Operator>
+                <FilterValues>
+                  <FilterValue>Cluster</FilterValue>
+                </FilterValues>
+              </Filter>
+            </Filters>
+            <Top>124.11599mm</Top>
+            <Left>22.75416mm</Left>
+            <Height>2.26042in</Height>
+            <Width>8.15625in</Width>
+            <ZIndex>8</ZIndex>
+            <Style>
+              <Border>
+                <Color>#5c5c5c</Color>
+                <Style>None</Style>
+                <Width>2pt</Width>
+              </Border>
+              <BackgroundColor>White</BackgroundColor>
+              <BackgroundGradientType>None</BackgroundGradientType>
+            </Style>
+          </Chart>
         </ReportItems>
-        <Height>520.48834mm</Height>
+        <Height>610.44667mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2943,6 +3344,8 @@ ORDER BY mr.WeekNumber ASC</CommandText>
         </PageFooter>
         <PageHeight>297mm</PageHeight>
         <PageWidth>210mm</PageWidth>
+        <InteractiveHeight>0mm</InteractiveHeight>
+        <InteractiveWidth>210mm</InteractiveWidth>
         <LeftMargin>20mm</LeftMargin>
         <RightMargin>20mm</RightMargin>
         <TopMargin>20mm</TopMargin>

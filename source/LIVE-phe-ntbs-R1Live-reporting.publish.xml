@@ -21,7 +21,7 @@
       <Value>LabBase2</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>test-ntbs</Value>
+      <Value>NTBS_Empty</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <Value>NTBS_R1_Geography_Staging</Value>

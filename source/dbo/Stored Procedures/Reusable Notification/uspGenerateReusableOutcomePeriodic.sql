@@ -32,7 +32,7 @@ AS
 
 	--then add a record with 'No outcome recorded' if an outcome was expected but does not exist
 	 
-	--for period 1, this should not be necessary because every notification should have a 'TreatmentStart' event within the first 12 months (i.e. on day 1)
+	--for period 1, this should not be necessary because every notification should have a 'TreatmentStart' or 'DiagnosisMade' event within the first 12 months (i.e. on day 1)
 	--so should all have been dealt with by the clause above
 	IF @TimePeriod > 1
 		INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, IsFinal)
