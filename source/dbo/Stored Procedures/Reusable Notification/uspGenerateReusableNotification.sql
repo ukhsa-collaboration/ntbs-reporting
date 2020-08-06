@@ -154,9 +154,9 @@ BEGIN TRY
 			,u.DisplayName									AS 'CaseManager'
 			,hd.Consultant									AS 'Consultant'
 			,hd.HospitalId									AS 'HospitalID'
-			,h.[Name]										AS 'Hospital'
+			,h.[HospitalName]								AS 'Hospital'
 			,hd.TBServiceCode								AS 'TBServiceCode'
-			,tbs.[Name]										AS 'Service'
+			,tbs.TB_Service_Name							AS 'Service'
 			,p.NhsNumber									AS 'NhsNumber' 
 			,p.GivenName									AS 'Forename'
 			,p.FamilyName									AS 'Surname'
@@ -169,12 +169,12 @@ BEGIN TRY
 			,p.YearOfUkEntry								AS 'UkEntryYear'
 			,p.Postcode										AS 'Postcode' 
 			,dbo.ufnYesNo(p.NoFixedAbode)					AS 'NoFixedAbode'
-			,la.[Name]										AS 'LocalAuthority'
-			,la.Code										AS 'LocalAuthorityCode'
-			,resphec.Code									AS 'ResidencePhecCode' 
-			,resphec.[Name]									AS 'ResidencePhec'
-			,treatphec.Code									AS 'TreatmentPhecCode'
-			,treatphec.[Name]								AS 'TreatmentPhec'
+			,la.LA_Name										AS 'LocalAuthority'
+			,la.LA_Code										AS 'LocalAuthorityCode'
+			,resphec.PHEC_Code								AS 'ResidencePhecCode' 
+			,COALESCE(resphec.PHEC_Name, 'Unknown')			AS 'ResidencePhec'
+			,treatphec.PHEC_Code							AS 'TreatmentPhecCode'
+			,COALESCE(treatphec.PHEC_Name, 'Unknown')		AS 'TreatmentPhec'
 			--clinical dates are next. We will want to extend these to include the additional dates captured in NTBS
 			,cd.SymptomStartDate							AS 'SymptomOnsetDate'
 			,cd.FirstPresentationDate					    AS 'PresentedDate' 
@@ -310,16 +310,17 @@ BEGIN TRY
 			FROM [$(NTBS)].[dbo].[Notification] n
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Username = hd.CaseManagerUsername
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Hospital] h ON h.HospitalId = hd.HospitalId
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hd.TBServiceCode
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = hd.HospitalId
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = hd.TBServiceCode
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId 
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Sex] s ON s.SexId = p.SexId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PostcodeLookup] pl ON pl.Postcode = p.PostcodeToLookup
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[LocalAuthority] la ON pl.LocalAuthorityCode = la.Code
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[LocalAuthorityToPHEC] la2p ON la2p.LocalAuthorityCode = pl.LocalAuthorityCode
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] resphec ON resphec.Code = la2p.PHECCode
-				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] treatphec ON treatphec.Code = tbs.PHECCode
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(p.Postcode, ' ', '')
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Local_Authority] la ON la.LA_Code = pl.LA_Code
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[LA_to_PHEC] la2p ON la2p.LA_Code = pl.LA_Code
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] resphec ON resphec.PHEC_Code = la2p.PHEC_Code
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbs2p ON tbs2p.TB_Service_Code = hd.TBServiceCode
+				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] treatphec ON treatphec.PHEC_Code = tbs2p.PHEC_Code
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ContactTracing] ct ON ct.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[PreviousTbHistory] pth ON pth.NotificationId = n.NotificationId
