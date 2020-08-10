@@ -27,6 +27,8 @@
 	[Sex] [varchar](30) NULL,
 	[UkBorn] [varchar](30) null,
 	[EthnicGroup] [varchar](255) NULL,
+	[Occupation] [nvarchar](255) NULL,
+	[OccupationCategory] [nvarchar] (255) NULL,
 	[BirthCountry] [varchar](255) NULL,
 	[UkEntryYear] [int] NULL,
 	[Postcode] [nvarchar](20) null,

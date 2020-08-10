@@ -35,6 +35,8 @@ BEGIN TRY
 			  ,[Sex]
 			  ,[UkBorn]
 			  ,[EthnicGroup]
+			  ,[Occupation]
+			  ,[OccupationCategory]
 			  ,[BirthCountry]
 			  ,[UkEntryYear]
 			  ,[Postcode]
@@ -162,9 +164,14 @@ BEGIN TRY
 			,p.FamilyName									AS 'Surname'
 			,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth' 
 			,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)	AS 'Age' 
-			,s.Label										AS 'Sex' 
+			,s.[Label]										AS 'Sex' 
 			,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
-			,e.Label										AS 'EthnicGroup'
+			,e.[Label]										AS 'EthnicGroup'
+			,(CASE 
+				WHEN occ.HasFreeTextField = 1 THEN p.OccupationOther
+				ELSE occ.[Role]	
+			 END)											AS 'Occupation'
+			,occ.[Sector]									AS 'OccupationCategory'
 			,dbo.ufnGetCountryName(p.CountryId)			    AS 'BirthCountry'
 			,p.YearOfUkEntry								AS 'UkEntryYear'
 			,p.Postcode										AS 'Postcode' 
@@ -313,6 +320,7 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = hd.HospitalId
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = hd.TBServiceCode
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId 
+				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].Occupation occ ON occ.OccupationId = p.OccupationId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Sex] s ON s.SexId = p.SexId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(p.Postcode, ' ', '')
@@ -375,6 +383,8 @@ BEGIN TRY
           ,[Sex]
           ,[UkBorn]
           ,[EthnicGroup]
+		  ,[Occupation]
+		  ,[OccupationCategory]
           ,[BirthCountry]
           ,[UkEntryYear]
           ,[Postcode]
@@ -504,6 +514,8 @@ BEGIN TRY
           ,rne.[Sex]
           ,rne.[UkBorn]
           ,rne.[EthnicGroup]
+		  ,rne.[Occupation]
+		  ,rne.[OccupationCategory]
           ,rne.[BirthCountry]
           ,rne.[UkEntryYear]
           ,rne.[Postcode]

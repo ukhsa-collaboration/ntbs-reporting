@@ -41,7 +41,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				s.Forename + ' ' + s.Surname                                AS CaseManager,
 				n.PatientConsultant                                         AS Consultant,
 				CONVERT(VARCHAR(36), h.Id)                                  AS HospitalId,
-				h.Name                                                      AS Hospital,
+				h.[Name]                                                      AS Hospital,
 				NULL														AS [TBServiceCode],
 				NULL                                                        AS [Service],
 				p.NhsNumber                                                 AS NhsNumber,
@@ -51,13 +51,18 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				dbo.ufnGetAgefrom(p.DateOfBirth,n.NotificationDate)			As Age,
 				dbo.ufnSex(p.Sex)                                           AS Sex,
 				dbo.ufnYesNoUnknown(p.UkBorn)                               AS UkBorn,
-				eg.Name                                                     AS EthnicGroup,
+				eg.[Name]                                                   AS EthnicGroup,
+				CASE
+					WHEN n.OccupationId IS NULL THEN n.OccupationOther
+					ELSE occ.[Name]
+				END															AS Occupation,
+				occat.[Name]												AS OccupationCategory,
 				-- RP-859 populate birth country consistently
-				case 
-					when p.UkBorn = 1 
-					then 'UNITED KINGDOM' 
-					else c.Name
-				end 														AS BirthCountry,
+				CASE 
+					WHEN p.UkBorn = 1 
+					THEN 'UNITED KINGDOM' 
+					ELSE c.[Name]
+				END 														AS BirthCountry,
 				p.UkEntryYear                                               AS UkEntryYear,
 				case 
 					when po.Pcd2  is null 
@@ -287,6 +292,8 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				LEFT OUTER JOIN [$(ETS)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
 				LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
 				LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
+				LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
+				LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 				LEFT OUTER JOIN dbo.NotificationClusterMatch cluster ON cluster.NotificationId = n.LegacyId
 			WHERE n.Submitted = 1
 				AND n.AuditDelete IS NULL
