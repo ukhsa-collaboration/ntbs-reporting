@@ -343,7 +343,8 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ComorbidityDetails] cod ON cod.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
-			WHERE n.NotificationStatus IN ('Notified', 'Closed')
+			--NTBS-1535: Include Denotified records temporarily
+			WHERE n.NotificationStatus IN ('Notified', 'Closed', 'Denotified')
 
 			UPDATE ReusableNotification 
 			SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' OR 
@@ -629,6 +630,11 @@ BEGIN TRY
           LEFT OUTER JOIN [dbo].[ReusableNotification] rn ON rn.EtsId = rne.EtsId
 	      WHERE rn.EtsId IS NULL
           --using a LEFT OUTER JOIN because 'NOT IN' doesn't cope with NULL values
+
+
+		  --NTBS-1535: now move the denotified records out to their own table
+		  EXEC [dbo].[uspRemoveDenotifiedRecords]
+
 	END TRY
 	BEGIN CATCH
 		THROW

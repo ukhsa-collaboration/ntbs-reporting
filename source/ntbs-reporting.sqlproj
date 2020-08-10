@@ -128,6 +128,7 @@
     <Folder Include="dbo\Tables\Extracts" />
     <Folder Include="dbo\Functions\Extracts" />
     <Folder Include="dbo\Stored Procedures\Report Cluster" />
+    <Folder Include="dbo\Tables\Report LegacyExtract" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -334,6 +335,9 @@
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCIsolates.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCPatients.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspNTSReportLabMappings.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\DenotifiedRecords.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspRemoveDenotifiedRecords.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\ResultMapping.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

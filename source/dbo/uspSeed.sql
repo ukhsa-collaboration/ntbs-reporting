@@ -209,7 +209,12 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TreatmentStopped', 'Treatment stopped')
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Failed', 'Failed')
 		
-       
+		DELETE FROM [dbo].[DenotificationReasonMapping]
+		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('DuplicateEntry', 'Duplicate entry')
+		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('DuplicateEpisode', 'Duplicate episode (episodes less than 12 months apart)')
+		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('NotTbAtypicalMyco', 'Patient found not to have TB (atypical mycobacteria)')
+		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('NotTbOther', 'Patient found not to have TB (other)')
+		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('Other', 'Other')
 
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
