@@ -297,7 +297,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				LEFT OUTER JOIN dbo.NotificationClusterMatch cluster ON cluster.NotificationId = n.LegacyId
 			WHERE n.Submitted = 1
 				AND n.AuditDelete IS NULL
-				--NTBS-1535 remove clause which excludes Denotified records. They will later be moved out of the ResuableNotification table
+				AND n.DenotificationId IS NULL
 				AND (cluster.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
 
 			--now remove spaces from postcodes in order to perform lookups. The spaces will be added back in for improved readability later on 

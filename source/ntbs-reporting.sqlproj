@@ -129,6 +129,8 @@
     <Folder Include="dbo\Functions\Extracts" />
     <Folder Include="dbo\Stored Procedures\Report Cluster" />
     <Folder Include="dbo\Tables\Report LegacyExtract" />
+    <Folder Include="dbo\Stored Procedures\Report LegacyExtract" />
+    <Folder Include="dbo\Functions\Report LegacyExtract" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -338,6 +340,10 @@
     <Build Include="dbo\Tables\Report LegacyExtract\DenotifiedRecords.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspRemoveDenotifiedRecords.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\ResultMapping.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspGenerateLegacyExtract.sql" />
+    <Build Include="dbo\Functions\Report LegacyExtract\ufnGetLegacyDOTvalue.sql" />
+    <Build Include="dbo\Functions\Report LegacyExtract\ufnGetHIVValue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
