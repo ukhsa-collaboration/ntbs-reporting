@@ -216,6 +216,29 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('NotTbOther', 'Patient found not to have TB (other)')
 		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('Other', 'Other')
 
+		DELETE FROM [dbo].[LegacySiteMapping]
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (1, 'SitePulmonary')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (2, 'SiteBoneSpine')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (3, 'SiteBoneOther')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (4, 'SiteCNSMeningitis')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (5, 'SiteCNSOther')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (6, 'SiteNonPulmonaryOther')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (7, 'SiteCryptic')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (8, 'SiteGI')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (9, 'SiteGU')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (10, 'SiteITLymphNodes')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (11, 'SiteLymphNode')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (12, 'SiteLaryngeal')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (13, 'SiteMiliary')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (14, 'SitePleural')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (15, 'SiteNonPulmonaryOther')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (16, 'SiteNonPulmonaryOther')
+		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (17, 'SiteNonPulmonaryOther')
+
+
+
+
+
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
 		;WITH x AS 
