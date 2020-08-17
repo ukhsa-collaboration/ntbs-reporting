@@ -632,8 +632,8 @@ BEGIN TRY
           --using a LEFT OUTER JOIN because 'NOT IN' doesn't cope with NULL values
 
 
-		  --NTBS-1535: now move the denotified records out to their own table
-		  EXEC [dbo].[uspRemoveDenotifiedRecords]
+		  
+		  EXEC [dbo].[uspMoveRecordsToLegacyExtract]
 
 	END TRY
 	BEGIN CATCH

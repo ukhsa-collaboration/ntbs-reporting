@@ -27,6 +27,7 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC dbo.uspGenerateReusableNotification
 
 		-- Populate report-specific tables
+		EXEC dbo.uspGenerateLegacyExtract
 		EXEC dbo.uspGenerateCultureResistance
 		EXEC dbo.uspGenerateOutcomeSummary
 		EXEC dbo.uspGenerateDataQuality

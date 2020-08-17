@@ -337,8 +337,7 @@
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCIsolates.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCPatients.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspNTSReportLabMappings.sql" />
-    <Build Include="dbo\Tables\Report LegacyExtract\DenotifiedRecords.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Notification\uspRemoveDenotifiedRecords.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspMoveRecordsToLegacyExtract.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\DenotificationReasonMapping.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtract.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspGenerateLegacyExtract.sql" />

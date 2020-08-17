@@ -2,33 +2,23 @@
 	
 AS
 	BEGIN TRY
-		--clear table
-		DELETE FROM [dbo].[LegacyExtract]
-
-		--add a record for every row in ReusableNotification and Denotified Records
-
-		INSERT INTO [dbo].[LegacyExtract] (NotificationId, SourceSystem)
-			SELECT NotificationId, SourceSystem FROM [dbo].[ReusableNotification]
-			WHERE SourceSystem = 'NTBS'
-			UNION
-			SELECT NotificationId, SourceSystem FROM [dbo].[DenotifiedRecords]
-
-		--now populate for NTBS records
-
+		
+		--fields which are already in ReusableNotification have been moved over already
+		--now to update those which only live in the LegacyExtract
 		UPDATE [dbo].[LegacyExtract]
 			SET LocalPatientId = COALESCE(p.LocalPatientId, ''),
 			AddressLine1 = COALESCE(p.[Address], ''),
 			AddressLine2 = '',
 			Town = '',
 			County = '',
-			BcgVaccinationDate = cd.BCGVaccinationYear,
+			BcgVaccinationDate = COALESCE(CONVERT(NVARCHAR(5), cd.BCGVaccinationYear), ''),
 			DOT = [dbo].ufnGetLegacyDOTvalue(cd.DotStatus),
 			InPatient = 'Not known',
 			OtherExtraPulmonarySite = COALESCE(ns.[SiteDescription], ''),
 			Comments = COALESCE(LEFT(cd.Notes, 500), ''),
 			HIVTestOffered =  [dbo].[ufnGetHIVValue](cd.HIVTestState),
 			ProposedDrugRegimen = '',
-			OtherImmunosuppressionComments = COALESCE(id.OtherDescription, ''),
+			ImmunosuppressionComments = COALESCE(id.OtherDescription, ''),
 			PCT = COALESCE(pl.PctCode, ''),
 			HospitalPCT = COALESCE(h.pctName, ''),
 			HospitalLocalAuthority = COALESCE(la.[Name], ''),
