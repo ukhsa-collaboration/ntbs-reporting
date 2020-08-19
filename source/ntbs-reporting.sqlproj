@@ -345,6 +345,8 @@
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetHIVValue.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacySiteMapping.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacySitesOfDisease.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtractHospitalLookupValues.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

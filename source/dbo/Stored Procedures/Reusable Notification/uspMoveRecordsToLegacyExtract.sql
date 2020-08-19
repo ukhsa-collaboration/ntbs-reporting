@@ -58,6 +58,7 @@ BEGIN TRY
       ,[MDRTreatmentDate]
       ,[ShortCourse]
       ,[TreatmentRegion]
+      ,[TreatmentHPU]
       ,[HospitalName]
       ,[ResolvedResidenceRegion]
       ,[ResolvedResidenceLA]
@@ -174,6 +175,7 @@ BEGIN TRY
 	    ,COALESCE(CONVERT(NVARCHAR(10),rn.MdrTreatmentDate), '')			        AS 'MDRTreatmentDate'
 	    ,COALESCE(rn.ShortCourse, '')				                                AS 'ShortCourse'
         ,COALESCE(rn.TreatmentPhec, '')				                                AS 'TreatmentRegion'
+        ,COALESCE(hv.TreatmentHPU, '')
 	    ,COALESCE(rn.Hospital, '')					                                AS 'HospitalName'
         ,COALESCE(rn.ResidencePhec, '')				                                AS 'ResolvedResidenceRegion'
 	    ,COALESCE(rn.LocalAuthority, '')			                                AS 'ResolvedResidenceLA'
@@ -247,6 +249,7 @@ BEGIN TRY
 			AND n.NotificationStatus IN ('Notified', 'Closed', 'Denotified')
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[DenotificationDetails] dn ON dn.NotificationId = rn.NotificationId
 		LEFT OUTER JOIN [dbo].[DenotificationReasonMapping] drm ON drm.Reason = dn.Reason
+        LEFT OUTER JOIN [dbo].[LegacyExtractHospitalLookupValues] hv ON hv.HospitalId = rn.HospitalId
 
         
     --and then remove these records from the ReusableNotification table
