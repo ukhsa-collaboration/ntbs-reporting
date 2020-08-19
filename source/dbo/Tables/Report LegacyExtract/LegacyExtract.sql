@@ -75,7 +75,7 @@
 	[ShortCourse] [nvarchar](10) NULL,
 	[DOT] [nvarchar](10) NULL,
 	[InPatient] [nvarchar](10) NULL,
-	[Comments] [nvarchar](500) NULL,
+	[Comments] [nvarchar](max) NULL,
 	[TOMTreatmentInterruptedReason] [varchar](150) NULL,
 	[TOMTreatmentChangedReason] [varchar](150) NULL,
 	[TOMCompleteCourse] [varchar](255) NULL,

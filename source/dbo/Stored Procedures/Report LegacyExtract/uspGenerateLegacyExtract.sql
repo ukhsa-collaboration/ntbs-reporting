@@ -238,7 +238,8 @@ AS
            ,[TOMComment36mth]
            ,[TOMReported36mth]
            ,[TOMReasonExceeds24mths]
-           ,[WorldRegionName])
+           ,[WorldRegionName]
+		   ,[TbService])
 
            SELECT
             dm.Id
@@ -246,7 +247,7 @@ AS
             ,dm.IDOriginal
             ,dm.LocalPatientId
             ,dm.CaseReportDate
-            ,NULL--ReportYear
+            ,DATEPART(YEAR, dm.CaseReportDate)
             ,dm.Denotified
             ,dm.DenotificationDate
             ,dm.DenotificationComments
@@ -306,7 +307,7 @@ AS
             ,dm.DrugUse
             ,dm.AlcoholUse
             ,dm.Homeless
-            ,NULL--dm.Prison work out which field this is in the ETS table
+            ,dm.PrisonAtDiagnosis
             ,dm.PostMortemDiagnosis
             ,dm.PostMortemDeathDate
             ,dm.DidNotStartTreatment
@@ -429,11 +430,36 @@ AS
             ,dm.TOMReported36mth
             ,dm.TOMReasonExceeds24mths
             ,dm.WorldRegionName
+			,rne.[Service]
 
            FROM [$(ETS)].[dbo].[DataExportMainTable] dm
-            INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = dm.Guid
+            INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = dm.[Guid]
             LEFT OUTER JOIN [$(ETS)].[dbo].[ContactTracing] ct ON ct.Id = n.ContactTracingId
-            WHERE dm.Id IN (SELECT NotificationId FROM [dbo].[ReusableNotification] WHERE SourceSystem = 'ETS')
+			LEFT OUTER JOIN [dbo].[ReusableNotification_ETS] rne ON rne.EtsId = dm.Id
+            WHERE 
+				--this clause brings in notified records which haven't been migrated into NTBS
+				dm.Id IN (SELECT NotificationId FROM [dbo].[ReusableNotification] WHERE SourceSystem = 'ETS')
+				--we also want to bring in records which are:
+				--denotified
+				--not migrated into NTBS
+				--within the date range defined in vwNotificationYear
+				OR dm.Id IN
+					(SELECT Id FROM [$(ETS)].[dbo].[DataExportMainTable] dm2
+						LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] n ON n.ETSID = dm2.Id
+						WHERE dm2.Denotified = 'Yes' AND n.ETSID IS NULL
+						AND DATEPART(YEAR, dm2.CaseReportDate) IN (SELECT NotificationYear FROM [dbo].[vwNotificationYear]))
+
+
+
+		--one final pass to insert the TB Service for denotified ETS records, as they will not be in ResuableNotification_ETS
+
+		UPDATE le SET
+			[TbService] = s.TB_Service_Name
+		FROM [dbo].[LegacyExtract] le
+			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalName = le.HospitalName
+			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_Hospital sh ON sh.HospitalID = h.HospitalId
+			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s ON s.TB_Service_Code = sh.TB_Service_Code
+		WHERE le.TbService IS NULL
 
 	END TRY
 	BEGIN CATCH
