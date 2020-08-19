@@ -18,7 +18,7 @@ AS
 			Comments = COALESCE(LEFT(cd.Notes, 500), ''),
 			HIVTestOffered =  [dbo].[ufnGetHIVValue](cd.HIVTestState),
 			ProposedDrugRegimen = '',
-			ImmunosuppressionComments = COALESCE(id.OtherDescription, ''),
+			ImmunosuppressionComments = COALESCE(LEFT(id.OtherDescription, 50), ''),
 			PCT = COALESCE(pl.PctCode, ''),
 			HospitalPCT = COALESCE(h.pctName, ''),
 			HospitalLocalAuthority = COALESCE(la.[Name], ''),

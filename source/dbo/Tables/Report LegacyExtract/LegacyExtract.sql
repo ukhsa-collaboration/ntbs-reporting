@@ -188,5 +188,6 @@
 	[TOMComment36mth] [nvarchar](500) NULL,
 	[TOMReported36mth] [nvarchar](10) NULL,
 	[TOMReasonExceeds24mths] [nvarchar](50) NULL,
-	[WorldRegionName] [nvarchar](50) NULL,
+	[WorldRegionName] [nvarchar](50) NULL, 
+    [TbService] [nvarchar](150) NULL,
 )  

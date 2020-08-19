@@ -115,7 +115,8 @@ BEGIN TRY
       ,[TotalContactsLTBITreat]
       ,[AdultContactsLTBITreatComplete]
       ,[ChildContactsLTBITreatComplete]
-      ,[TotalContactsLTBITreatComplete])
+      ,[TotalContactsLTBITreatComplete]
+	  ,[TbService])
   
 	SELECT 
         rn.NotificationId                                                           AS 'NotificationId'
@@ -237,6 +238,7 @@ BEGIN TRY
 	    ,COALESCE(CONVERT(NVARCHAR(5), rn.AdultContactsLTBITreatComplete), '')		AS 'AdultContactsLTBITreatComplete'
 	    ,COALESCE(CONVERT(NVARCHAR(5), rn.ChildContactsLTBITreatComplete), '')		AS 'ChildContactsLTBITreatComplete'
 	    ,COALESCE(CONVERT(NVARCHAR(5),rn.TotalContactsLTBITreatComplete), '')		AS 'TotalContactsLTBITreatComplete'
+		,COALESCE(rn.[Service], '')													AS 'TbService'
 
 	FROM
 		[dbo].[ReusableNotification] rn
