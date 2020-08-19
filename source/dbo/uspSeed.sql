@@ -235,7 +235,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (16, 'SiteNonPulmonaryOther')
 		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (17, 'SiteNonPulmonaryOther')
 
-
+		EXEC [dbo].[uspSeedHospitalLookupValues]
 
 
 
