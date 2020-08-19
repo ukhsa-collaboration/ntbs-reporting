@@ -55,7 +55,7 @@ AS
 
 			DECLARE @ReusableNotification ReusableNotificationType
 
-			INSERT INTO @ReusableNotification
+			INSERT INTO @ReusableNotification (NotificationId)
 				SELECT
 					NotificationId
 				FROM [dbo].[LegacyExtract] le
@@ -268,8 +268,10 @@ AS
 			EXEC dbo.uspAddToAudit 'ETS Legacy Case Extract', @LoginGroups, @ReusableNotification
 		END
 	ELSE
-		DECLARE @ErrorText NVARCHAR(50) = 'This user is not authorized to view the data requested ' + @Region
-		RAISERROR (@ErrorText, 16, 1) WITH NOWAIT
+		BEGIN
+			DECLARE @ErrorText NVARCHAR(50) = 'User not authorized to view data ' + @Region
+			RAISERROR (@ErrorText, 16, 1) WITH NOWAIT
+		END
 	END TRY
 	BEGIN CATCH
 		EXEC dbo.uspHandleException

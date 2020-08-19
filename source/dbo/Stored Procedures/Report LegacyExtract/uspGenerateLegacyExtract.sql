@@ -280,21 +280,21 @@ AS
             ,dm.StartOfTreatment
             ,dm.DateOfDiagnosis
             ,dm.DatePresented
-            ,dm.SitePulmonary
-            ,dm.SiteBoneSpine
-            ,dm.SiteBoneOther
-            ,dm.SiteCNSMeningitis
-            ,dm.SiteCNSOther
-            ,dm.SiteCryptic
-            ,dm.SiteGI
-            ,dm.SiteGU
-            ,dm.SiteITLymphNodes
-            ,dm.SiteLymphNode
-            ,dm.SiteLaryngeal
-            ,dm.SiteMiliary
-            ,dm.SitePleural
-            ,dm.SiteNonPulmonaryOther
-            ,dm.SiteNonPulmonaryUnknown
+            ,UPPER(dm.SitePulmonary)
+            ,UPPER(dm.SiteBoneSpine)
+            ,UPPER(dm.SiteBoneOther)
+            ,UPPER(dm.SiteCNSMeningitis)
+            ,UPPER(dm.SiteCNSOther)
+            ,UPPER(dm.SiteCryptic)
+            ,UPPER(dm.SiteGI)
+            ,UPPER(dm.SiteGU)
+            ,UPPER(dm.SiteITLymphNodes)
+            ,UPPER(dm.SiteLymphNode)
+            ,UPPER(dm.SiteLaryngeal)
+            ,UPPER(dm.SiteMiliary)
+            ,UPPER(dm.SitePleural)
+            ,UPPER(dm.SiteNonPulmonaryOther)
+            ,UPPER(dm.SiteNonPulmonaryUnknown)
             ,dm.OtherExtraPulmonarySite
             ,dm.SiteUnknown
             ,dm.PreviouslyDiagnosed
