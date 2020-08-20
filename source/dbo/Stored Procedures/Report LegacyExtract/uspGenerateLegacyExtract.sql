@@ -7,10 +7,12 @@ AS
 		--now to update those which only live in the LegacyExtract
 		UPDATE [dbo].[LegacyExtract]
 			SET LocalPatientId = COALESCE(p.LocalPatientId, ''),
-			AddressLine1 = COALESCE(p.[Address], ''),
+			AddressLine1 = COALESCE(REPLACE(p.[Address], char(10), ' '), ''),
 			AddressLine2 = '',
 			Town = '',
 			County = '',
+			PrisonAbroadLast5Years = '',
+			PrisonAbroadMoreThan5YearsAgo = '',
 			BcgVaccinationDate = COALESCE(CONVERT(NVARCHAR(5), cd.BCGVaccinationYear), ''),
 			DOT = [dbo].ufnGetLegacyDOTvalue(cd.DotStatus),
 			InPatient = 'Not known',
@@ -35,7 +37,7 @@ AS
 				INNER JOIN [$(NTBS)].[ReferenceData].Country c ON c.CountryId = p.CountryId
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Country] c2 ON c2.IsoCode = c.IsoCode
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Continent] continent ON continent.Id = c2.ContinentId
-				INNER JOIN [dbo].[LegacyExtract] le1 ON le1.NotificationId = p.NotificationId AND le1.SourceSystem = 'NTBS'
+				INNER JOIN [dbo].[LegacyExtract] le1 ON le1.NtbsId = p.NotificationId AND le1.SourceSystem = 'NTBS'
 
 	
 		--second pass to derive HPU from PCT
@@ -48,10 +50,12 @@ AS
 
 		EXEC [dbo].[uspUpdateLegacySitesOfDisease]
 
+		EXEC [dbo].[uspUpdateLegacyTOMFields]
+
 		--now move over the records from ETS where the notification hasn't been migrated into NTBS
 
 		INSERT INTO [dbo].[LegacyExtract]
-           ([NotificationId]
+           ([EtsId]
            ,[SourceSystem]
            ,[IDOriginal]
            ,[LocalPatientId]

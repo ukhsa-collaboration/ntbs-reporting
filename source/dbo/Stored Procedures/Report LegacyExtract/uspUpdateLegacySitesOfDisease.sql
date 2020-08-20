@@ -8,7 +8,7 @@ AS
 
 		--get the list of notifications from companion table
 		 cteNotification(NotificationId) AS
-		(SELECT NotificationId
+		(SELECT NtbsId
 			FROM [dbo].[LegacyExtract]),
 
 		--then one row per legacy site for the notification. This will group 
@@ -60,7 +60,7 @@ AS
 			SiteNonPulmonaryUnknown = 'FALSE',
 			SiteUnknown = 'FALSE'
 			FROM ctePivotResults pr
-				INNER JOIN [dbo].[LegacyExtract] le1 ON le1.NotificationId = pr.NotificationId
+				INNER JOIN [dbo].[LegacyExtract] le1 ON le1.NtbsId = pr.NotificationId
 
 	END TRY
 	BEGIN CATCH

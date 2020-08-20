@@ -57,7 +57,7 @@ AS
 
 			INSERT INTO @ReusableNotification (NotificationId)
 				SELECT
-					NotificationId
+					COALESCE(NtbsId, EtsId)
 				FROM [dbo].[LegacyExtract] le
 				WHERE
 					le.CaseReportDate BETWEEN @NotificationDateFrom AND @NotificationDateTo
@@ -67,12 +67,13 @@ AS
 					AND (Region = @Region OR TreatmentRegion = @Region)
 					AND TbService IN 
 						(SELECT TB_Service_Name FROM @allowedServices)
-				--TODO: consider 
+				
 
 
 			-- Return data to client app
 			SELECT
-				le.[NotificationId]											AS 'Id'
+				le.[NtbsId]													AS 'NtbsId'
+				,le.[EtsId]													AS 'Id'
 				,le.[IDOriginal]											AS 'IDOriginal'
 				,le.[LocalPatientId]										AS 'LocalPatientId'
 				,le.[CaseReportDate]										AS 'CaseReportDate'
@@ -175,7 +176,6 @@ AS
 				,le.[TOMConversion24mth]									AS 'TOMConversion24mth'
 				,le.[TOMComment24mth]										AS 'TOMComment24mth'
 				,le.[TOMReported24mth]										AS 'TOMReported24mth'
-				,le.[TOMReported24mth]										AS 'TOMReported24mth'
 				,le.[TreatmentRegion]										AS 'TreatmentRegion'
 				,le.[TreatmentHPU]											AS 'TreatmentHPU'
 				,le.[HospitalName]											AS 'HospitalName'
@@ -262,8 +262,8 @@ AS
 				,le.[WorldRegionName]										AS 'Worldregion'
 
 			FROM [dbo].[LegacyExtract] le
-				INNER JOIN @ReusableNotification n ON n.NotificationId = le.NotificationId
-			
+				INNER JOIN @ReusableNotification n ON n.NotificationId = COALESCE(le.NtbsId, le.EtsId)
+			ORDER BY le.CaseReportDate DESC
 
 			EXEC dbo.uspAddToAudit 'ETS Legacy Case Extract', @LoginGroups, @ReusableNotification
 		END

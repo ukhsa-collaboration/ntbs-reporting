@@ -1,0 +1,22 @@
+﻿CREATE TABLE [dbo].[LegacyPeriodicOutcome]
+(
+	[LegacyOutcomeId] INT IDENTITY(1,1) NOT NULL, 
+    [NotificationId] INT NOT NULL, 
+    [TimePeriod] SMALLINT NULL, 
+	[TOMTreatmentInterruptedReason] [varchar](150) NULL,
+	[TOMTreatmentChangedReason] [varchar](150) NULL,
+	[TOMCompleteCourse] [varchar](255) NULL,
+	[TOMIncompleteReason] [varchar](255) NULL,
+	[TOMSubmittedDate] [nvarchar](10) NULL,
+	[TOMFollowUpResult] [varchar](150) NULL,
+	[TOMDeathDate] [nvarchar](10) NULL,
+	[TOMDeathRelationship] [nvarchar](255) NULL,
+	[TOMEndOfTreatmentDate] [nvarchar](10) NULL,
+	[TOMTreatmentRegimen] [varchar](150) NULL,
+	[TOMNonTuberculousMycobacteria] [varchar](500) NULL,
+	[TOMConversion] [varchar](24) NULL,
+	[TOMComment] [nvarchar](500) NULL,
+	[TOMReasonExceeds] [nvarchar](50) NULL,
+	[TOMReported] [nvarchar](10) NULL, 
+    CONSTRAINT [PK_LegacyPeriodicOutcome] PRIMARY KEY ([LegacyOutcomeId]),
+)

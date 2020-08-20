@@ -12,7 +12,9 @@ BEGIN TRY
 
     --first add the NTBS records
 	INSERT INTO [dbo].[LegacyExtract]
-	([NotificationId]
+	([NtbsId] 
+	  ,[EtsId]
+	  ,[IDOriginal]
       ,[SourceSystem]
       ,[CaseReportDate]
       ,[ReportYear]
@@ -120,7 +122,9 @@ BEGIN TRY
 	  ,[TbService])
   
 	SELECT 
-        rn.NotificationId                                                           AS 'NotificationId'
+        rn.NotificationId                                                           AS 'NtbsId'
+		,rn.EtsId																	AS 'EtsId'
+		,rn.LtbrId																	AS 'IDOriginal'
         ,rn.[SourceSystem]                                                          AS 'SourceSystem'
         ,CONVERT(DATE, rn.NotificationDate)                     	                AS 'CaseReportDate'
         ,DATEPART(YEAR, rn.NotificationDate)		                                AS 'ReportYear'

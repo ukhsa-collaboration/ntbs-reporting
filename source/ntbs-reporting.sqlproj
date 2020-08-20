@@ -348,6 +348,10 @@
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtractHospitalLookupValues.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacyTOMFields.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\LegacyPeriodicOutcome.sql" />
+    <Build Include="dbo\Tables\Report LegacyExtract\DeathLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdatePeriodicLegacyTOMFields.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
