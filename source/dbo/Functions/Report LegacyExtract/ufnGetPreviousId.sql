@@ -25,7 +25,7 @@ BEGIN
 				WHERE n.GroupId = @GroupID
 				AND n.NotificationDate < @NotificationDate
 				AND n.NotificationStatus IN ('Closed', 'Notified')
-				ORDER BY n.NotificationDate
+				ORDER BY n.NotificationDate DESC
 		END
 	
 

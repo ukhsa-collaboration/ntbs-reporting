@@ -24,6 +24,7 @@ AS
 			PCT = COALESCE(pl.PctCode, ''),
 			HospitalPCT = COALESCE(h.pctName, ''),
 			HospitalLocalAuthority = COALESCE(la.[Name], ''),
+            PreviousId = [dbo].[ufnGetPreviousId](p.NotificationId),
 			WorldRegionName = continent.[Name]
 			FROM 
 				[$(NTBS)].[dbo].[Patients] p
