@@ -348,6 +348,7 @@
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtractHospitalLookupValues.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyExtract.sql" />
+    <Build Include="dbo\Functions\Report LegacyExtract\ufnGetPreviousId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
