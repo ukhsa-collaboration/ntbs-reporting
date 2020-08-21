@@ -40,7 +40,10 @@ SELECT TOP(1)
 		WHEN tro.TreatmentOutcomeType = 'NotEvaluated' AND tro.TreatmentOutcomeSubType = 'TransferredAbroad' THEN 1
 		ELSE 0
 		END) AS EndingEvent,
-	 COALESCE(ol.OutcomeDescription, 'No outcome recorded') AS 'OutcomeValue'
+	 COALESCE(ol.OutcomeDescription, 'No outcome recorded') AS 'OutcomeValue',
+	 tro.TreatmentOutcomeSubType,
+	 te.EventDate,
+	 te.Note
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
 	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
 	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType 

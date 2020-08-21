@@ -235,6 +235,13 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (16, 'SiteNonPulmonaryOther')
 		INSERT [dbo].[LegacySiteMapping] (SiteId, SiteOutputName) VALUES (17, 'SiteNonPulmonaryOther')
 
+		DELETE FROM [dbo].[DeathLookup]
+		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbCausedDeath', 'TB caused death')
+		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbContributedToDeath', 'TB contributed to death')
+		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbIncidentalToDeath', 'TB incidental to death')
+		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('Unknown', 'Unknown')
+
+
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 
 

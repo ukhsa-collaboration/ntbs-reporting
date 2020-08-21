@@ -1,13 +1,14 @@
 ﻿CREATE TABLE [dbo].[LegacyExtract]
 (
 	[LegacyExtractId] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[NotificationId] [int] NOT NULL,
+	[NtbsId] [int] NULL,
+	[EtsId] [int] NULL,
 	[SourceSystem] [nvarchar](50) NOT NULL,
 	[IDOriginal] [nvarchar](50) NULL,
 	[LocalPatientId] [nvarchar](255) NULL,
 	[CaseReportDate] [datetime] NULL,
 	[ReportYear] [nvarchar](4) NULL,
-	[Denotified] [varchar](3) NOT NULL,
+	[Denotified] [varchar](3) NULL,
 	[DenotificationDate] [datetime] NULL,
 	[DenotificationComments] [nvarchar](255) NULL,
 	[CaseManager] [nvarchar](255) NULL,
