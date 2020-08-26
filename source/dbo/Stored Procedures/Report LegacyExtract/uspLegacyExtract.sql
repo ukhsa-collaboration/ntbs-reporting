@@ -57,7 +57,7 @@ AS
 
 			INSERT INTO @ReusableNotification (NotificationId)
 				SELECT
-					COALESCE(NtbsId, EtsId)
+					NotificationId
 				FROM [dbo].[LegacyExtract] le
 				WHERE
 					le.CaseReportDate BETWEEN @NotificationDateFrom AND @NotificationDateTo
@@ -262,7 +262,7 @@ AS
 				,le.[WorldRegionName]										AS 'Worldregion'
 
 			FROM [dbo].[LegacyExtract] le
-				INNER JOIN @ReusableNotification n ON n.NotificationId = COALESCE(le.NtbsId, le.EtsId)
+				INNER JOIN @ReusableNotification n ON n.NotificationId = le.NotificationId
 			ORDER BY le.CaseReportDate DESC
 
 			EXEC dbo.uspAddToAudit 'ETS Legacy Case Extract', @LoginGroups, @ReusableNotification

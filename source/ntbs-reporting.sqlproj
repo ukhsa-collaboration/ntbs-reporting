@@ -355,6 +355,7 @@
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetPreviousId.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyLabExtract.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspGenerateLegacyLabDataExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyLabExtract.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

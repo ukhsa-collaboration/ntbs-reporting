@@ -1,6 +1,8 @@
 ﻿CREATE TABLE [dbo].[LegacyExtract]
 (
 	[LegacyExtractId] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	-- Global NotificationId
+	[NotificationId] [int] NOT NULL,
 	[NtbsId] [int] NULL,
 	[EtsId] [int] NULL,
 	[SourceSystem] [nvarchar](50) NOT NULL,

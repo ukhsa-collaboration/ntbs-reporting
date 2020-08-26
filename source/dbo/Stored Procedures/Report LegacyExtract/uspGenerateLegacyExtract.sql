@@ -56,7 +56,8 @@ AS
 		--now move over the records from ETS where the notification hasn't been migrated into NTBS
 
 		INSERT INTO [dbo].[LegacyExtract]
-           ([EtsId]
+           ([NotificationId]
+		   ,[EtsId]
            ,[SourceSystem]
            ,[IDOriginal]
            ,[LocalPatientId]
@@ -247,7 +248,8 @@ AS
 		   ,[TbService])
 
            SELECT
-            dm.Id
+		    dm.Id AS 'NotificationId'
+            ,dm.Id
             ,'ETS'
             ,dm.IDOriginal
             ,dm.LocalPatientId

@@ -12,7 +12,8 @@ BEGIN TRY
 
     --first add the NTBS records
 	INSERT INTO [dbo].[LegacyExtract]
-	([NtbsId] 
+	(  [NotificationId]
+	  ,[NtbsId] 
 	  ,[EtsId]
 	  ,[IDOriginal]
       ,[SourceSystem]
@@ -121,8 +122,9 @@ BEGIN TRY
       ,[TotalContactsLTBITreatComplete]
 	  ,[TbService])
   
-	SELECT 
-        rn.NotificationId                                                           AS 'NtbsId'
+	SELECT
+		rn.NotificationId															AS 'NotificationId'
+        ,rn.NtbsId																	AS 'NtbsId'
 		,rn.EtsId																	AS 'EtsId'
 		,rn.LtbrId																	AS 'IDOriginal'
         ,rn.[SourceSystem]                                                          AS 'SourceSystem'
@@ -257,7 +259,7 @@ BEGIN TRY
 
         
     --and then remove these records from the ReusableNotification table
-    DELETE FROM [dbo].[ReusableNotification] WHERE NotificationId IN 
+    DELETE FROM [dbo].[ReusableNotification] WHERE NtbsId IN 
         (SELECT NtbsId FROM [dbo].[LegacyExtract] WHERE Denotified = 'Yes' AND NtbsId IS NOT NULL)
 END TRY
 BEGIN CATCH
