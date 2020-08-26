@@ -258,7 +258,7 @@ BEGIN TRY
         
     --and then remove these records from the ReusableNotification table
     DELETE FROM [dbo].[ReusableNotification] WHERE NotificationId IN 
-        (SELECT NotificationID FROM [dbo].[LegacyExtract] WHERE Denotified = 'Yes')
+        (SELECT NtbsId FROM [dbo].[LegacyExtract] WHERE Denotified = 'Yes' AND NtbsId IS NOT NULL)
 END TRY
 BEGIN CATCH
 	THROW

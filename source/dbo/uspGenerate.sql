@@ -28,6 +28,7 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 
 		-- Populate report-specific tables
 		EXEC dbo.uspGenerateLegacyExtract
+		EXEC dbo.uspGenerateLegacyLabDataExtract
 		EXEC dbo.uspGenerateCultureResistance
 		EXEC dbo.uspGenerateOutcomeSummary
 		EXEC dbo.uspGenerateDataQuality
