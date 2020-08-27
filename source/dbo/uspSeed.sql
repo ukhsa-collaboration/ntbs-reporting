@@ -241,6 +241,30 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbIncidentalToDeath', 'TB incidental to death')
 		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('Unknown', 'Unknown')
 
+		DELETE FROM [dbo].[AntibioticLookup]
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AK','Amikacin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AMINO','Aminoglycoside')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AZI','Azithromycin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CAP','Capreomycin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CIP','Ciprofloxacin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CLA','Clarithromycin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CLO','Clofazimine')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CYC','Cycloserine')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('EMB','Ethambutol')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('ETI','Ethionamide')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('INH','Isoniazid')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('KAN','Kanamycin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('LZD','Linezolid')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('MFX','Moxifloxacin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('OFX','Ofloxacin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PAS','Para Aminosalicylic Acid')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PRO','Prothionamide')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PZA','Pyrazinamide')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('QUIN','Quinolone')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('RIF','Rifampicin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('RB','Rifabutin')
+		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('STR','Streptomycin')
+
 
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 

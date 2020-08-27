@@ -33,7 +33,14 @@ AS
 		INSERT @allowedRegions
 			EXEC [dbo].[uspPhec] ''
 
-		IF @Region IN (SELECT PhecName FROM @allowedRegions)
+		--this check ensures that the list of regions passed into the query does not contain any values which aren't found in the list of regions
+		--the user is a member of. If it returns empty, that means all values are present within the authorised list of regions (they do not need to
+		--be the same, so if the user is a member of South East and London, but selects on London, the query will return empty)
+		IF NOT EXISTS(
+			SELECT VALUE FROM STRING_SPLIT(@Region, ',')
+			EXCEPT
+			SELECT PhecName FROM @allowedRegions)
+
 
 		BEGIN
 			DECLARE @NotificationYearTypeFrom	VARCHAR(4)	= YEAR(DATEADD(YEAR, @NotificationYearFrom, GETDATE()))
@@ -64,7 +71,7 @@ AS
 					AND (@AgeFrom IS NULL OR le.Age IS NULL OR le.Age >= @AgeFrom)
 					AND (@AgeTo IS NULL OR le.Age IS NULL OR le.Age <= @AgeTo)
 					AND (@BornInUK IS NULL OR le.UkBorn = @BornInUK)
-					AND (Region = @Region OR TreatmentRegion = @Region)
+					AND (Region IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')) OR TreatmentRegion IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
 					AND TbService IN 
 						(SELECT TB_Service_Name FROM @allowedServices)
 				

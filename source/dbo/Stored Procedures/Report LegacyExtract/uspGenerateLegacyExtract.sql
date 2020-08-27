@@ -16,9 +16,9 @@ AS
 			BcgVaccinationDate = COALESCE(CONVERT(NVARCHAR(5), cd.BCGVaccinationYear), ''),
 			DOT = [dbo].ufnGetLegacyDOTvalue(cd.DotStatus),
 			InPatient = 'Not known',
-			OtherExtraPulmonarySite = COALESCE(ns.[SiteDescription], ''),
+			OtherExtraPulmonarySite = COALESCE(ns.[SiteDescription], ocularsite.[Description], skinsite.[Description], ''),
 			Comments = COALESCE(LEFT(cd.Notes, 500), ''),
-			HIVTestOffered =  [dbo].[ufnGetHIVValue](cd.HIVTestState),
+			HIVTestOffered =  cd.HIVTestState,
 			ProposedDrugRegimen = '',
 			ImmunosuppressionComments = COALESCE(LEFT(id.OtherDescription, 50), ''),
 			PCT = COALESCE(pl.PctCode, ''),
@@ -33,6 +33,10 @@ AS
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(p.Postcode, ' ', '')
 				INNER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = p.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[NotificationSite] ns ON ns.NotificationId = p.NotificationId AND ns.SiteId = 17
+				LEFT OUTER JOIN [$(NTBS)].[dbo].[NotificationSite] ns1 ON ns1.NotificationId = p.NotificationId AND ns1.SiteId = 6
+				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Site] ocularsite ON ocularsite.SiteId = ns1.SiteId
+				LEFT OUTER JOIN [$(NTBS)].[dbo].[NotificationSite] ns2 ON ns2.NotificationId = p.NotificationId AND ns2.SiteId = 16
+				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Site] skinsite ON skinsite.SiteId = ns2.SiteId
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Hospital] h ON h.Id = hd.HospitalId
 				LEFT OUTER JOIN [$(ETS)].[dbo].[LocalAuthority] la ON la.Code = h.LocalAuthorityCode
 				INNER JOIN [$(NTBS)].[ReferenceData].Country c ON c.CountryId = p.CountryId
@@ -48,6 +52,15 @@ AS
             ResolvedResidenceHPU = COALESCE(nacs.HPU, '')
 			FROM [$(ETS)].[dbo].[NACS_pctlookup] nacs
 			RIGHT OUTER JOIN [dbo].[LegacyExtract] le1 ON le1.PCT = nacs.PCT_code
+
+		--and then a third one to replace the PCT code with the PCT name
+
+		UPDATE [dbo].[LegacyExtract]
+			SET PCT = nacs.PCT_name
+			FROM [$(ETS)].[dbo].[NACS_pctlookup] nacs
+			RIGHT OUTER JOIN [dbo].[LegacyExtract] le1 ON le1.PCT = nacs.PCT_code
+			WHERE le1.SourceSystem = 'NTBS'
+
 
 		EXEC [dbo].[uspUpdateLegacySitesOfDisease]
 
