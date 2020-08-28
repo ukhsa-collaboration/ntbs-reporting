@@ -345,6 +345,7 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
 			--NTBS-1535: Include Denotified records temporarily
 			WHERE n.NotificationStatus IN ('Notified', 'Closed', 'Denotified')
+			AND (n.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
 
 			UPDATE ReusableNotification 
 			SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' OR 
