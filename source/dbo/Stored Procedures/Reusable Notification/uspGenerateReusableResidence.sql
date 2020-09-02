@@ -13,7 +13,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		-- 1. Only include english post codes
+		
 		UPDATE n SET
 			LocalAuthority = l.LA_Name,
 			LocalAuthorityCode = l.LA_Code,
@@ -25,7 +25,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableResidence] AS
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Local_Authority l ON l.LA_Code = r.LA_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.LA_to_PHEC lp ON lp.LA_Code = l.LA_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.PHEC p ON p.PHEC_Code = lp.PHEC_Code
-		WHERE r.Country = 'E92000001'
+		
 
 		-- 2. Unknown when no matching postcode
 		UPDATE n SET

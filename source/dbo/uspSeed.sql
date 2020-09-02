@@ -38,6 +38,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (8, N'E45000009', N'North East', 4)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (9, N'E45000018', N'North West', 5)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (10, N'Unknown', N'Unknown', 10)
+		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (11, N'PHECWAL', N'Wales', 11)
 		SET IDENTITY_INSERT [dbo].[Phec] OFF
 
 		DELETE FROM dbo.AdGroup
@@ -54,6 +55,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (10, N'Global.NIS.NTBS.NTS', 1,'N')
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (11, N'Global.NIS.NTBS.TestGroup1', 0,'S')
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (12, N'Global.NIS.NTBS.TestGroup2', 0,'S')
+		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (13, N'Global.NIS.NTBS.WALES', 0, 'R')
 		SET IDENTITY_INSERT [dbo].[AdGroup] OFF
 
 		DELETE FROM dbo.PhecAdGroup
@@ -77,6 +79,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (17, 8, 10)
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (18, 9, 10)
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (19, 10, 10)
+		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (20, 11, 13)
 		SET IDENTITY_INSERT [dbo].[PhecAdGroup] OFF
 
 		-- Other inserts
