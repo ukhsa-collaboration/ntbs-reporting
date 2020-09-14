@@ -358,6 +358,7 @@
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyLabExtract.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetIsolateSusceptibilityInfo.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticLookup.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnCalcContactTracingTotals.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

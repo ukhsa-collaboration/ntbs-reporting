@@ -209,24 +209,28 @@ BEGIN TRY
 			--Contact Tracing
 			,ct.AdultsIdentified							AS 'AdultContactsIdentified'
 			,ct.ChildrenIdentified							AS 'ChildContactsIdentified'
-			,ct.AdultsIdentified + ct.ChildrenIdentified	AS 'TotalContactsIdentified'
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsIdentified, ct.ChildrenIdentified)	
+															AS 'TotalContactsIdentified'
 			,ct.AdultsScreened								AS 'AdultContactsAssessed'
 			,ct.ChildrenScreened							AS 'ChildContactsAssessed'
-			,ct.AdultsScreened + ct.ChildrenScreened		AS 'TotalContactsAssessed'
+			,[dbo].[ufnCalcContactTracingTotals]
+				(ct.AdultsScreened, ct.ChildrenScreened)	AS 'TotalContactsAssessed'
 			,ct.AdultsActiveTB								AS 'AdultContactsActiveTB'
 			,ct.ChildrenActiveTB							AS 'ChildContactsActiveTB'
-			,ct.AdultsActiveTB + ct.ChildrenActiveTB		AS 'TotalContactsActiveTB'
+			,[dbo].[ufnCalcContactTracingTotals]
+				(ct.AdultsActiveTB, ct.ChildrenActiveTB)	AS 'TotalContactsActiveTB'
 			,ct.AdultsLatentTB								AS 'AdultContactsLTBI'
 			,ct.ChildrenLatentTB							AS 'ChildContactsLTBI'
-			,ct.AdultsLatentTB + ct.ChildrenLatentTB		AS 'TotalContactsLTBI'
+			,[dbo].[ufnCalcContactTracingTotals]
+				(ct.AdultsLatentTB, ct.ChildrenLatentTB)	AS 'TotalContactsLTBI'
 			,ct.AdultsStartedTreatment						AS 'AdultContactsLTBITreat'
 			,ct.ChildrenStartedTreatment					AS 'ChildContactsLTBITreat'
-			,ct.AdultsStartedTreatment + 
-				ct.ChildrenStartedTreatment					AS 'TotalContactsLTBITreat'
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsStartedTreatment, ct.ChildrenStartedTreatment)				
+															AS 'TotalContactsLTBITreat'
 			,ct.AdultsFinishedTreatment						AS 'AdultContactsLTBITreatComplete'
 			,ct.ChildrenFinishedTreatment					AS 'ChildContactsLTBITreatComplete'
-			,ct.AdultsFinishedTreatment + 
-				ct.ChildrenFinishedTreatment				AS 'TotalContactsLTBITreatComplete'
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsFinishedTreatment,ct.ChildrenFinishedTreatment)			
+															AS 'TotalContactsLTBITreatComplete'
 			--non-NTBS Diagnosis
 			,pth.PreviouslyHadTb            				AS 'PreviouslyDiagnosed' 
 			,DATEPART(YEAR, n.NotificationDate)-
