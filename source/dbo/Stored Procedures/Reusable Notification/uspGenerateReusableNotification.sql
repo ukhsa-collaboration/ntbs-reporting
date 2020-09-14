@@ -303,7 +303,14 @@ BEGIN TRY
 			--date of death fetched from the Treatment Event table
 			,dbo.ufnGetDateOfDeath(n.NotificationId)		AS 'DateOfDeath'
 			,dbo.ufnGetTreatmentEndDate(n.NotificationId)	AS 'TreatmentEndDate'
-			,dbo.ufnYesNo (ted.HasTestCarriedOut)			AS 'NoSampleTaken'
+			--need to reverse the value stored in NTBS as the question is phrased as 'Has Test Carried Out'
+			--so 1 means yes, a test was carried out, and should be stored in the reporting service as No
+			--in answer to the question 'No Sample Taken'
+			,(CASE 
+				WHEN ted.HasTestCarriedOut = 1 THEN 'No'
+				WHEN ted.HasTestCarriedOut = 0 THEN 'Yes'
+				ELSE ''
+			  END)											AS 'NoSampleTaken'
 			,NULL               							AS 'CulturePositive'
 			,NULL									        AS 'Species'
 			,NULL						                    AS 'EarliestSpecimenDate'
