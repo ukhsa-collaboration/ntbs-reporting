@@ -18,7 +18,7 @@ AS
 			InPatient = 'Not known',
 			OtherExtraPulmonarySite = COALESCE(ns.[SiteDescription], ocularsite.[Description], skinsite.[Description], ''),
 			Comments = COALESCE(LEFT(cd.Notes, 500), ''),
-			HIVTestOffered =  cd.HIVTestState,
+			HIVTestOffered =  [dbo].[ufnGetHIVValue](cd.HIVTestState),
 			ProposedDrugRegimen = '',
 			ImmunosuppressionComments = COALESCE(LEFT(id.OtherDescription, 50), ''),
 			PCT = COALESCE(pl.PctCode, ''),
