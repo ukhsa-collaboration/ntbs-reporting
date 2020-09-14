@@ -12,7 +12,7 @@ BEGIN
 		CASE 
 			WHEN @NTBSHIVValue = 'HIVStatusKnown' THEN 'HIV status already known'
 			WHEN @NTBSHIVValue = 'NotOffered' THEN 'Not offered'
-			WHEN @NTBSHIVValue = 'Offered' THEN 'Offered'
+			WHEN @NTBSHIVValue = 'Offered' THEN 'Offered and done'
 			WHEN @NTBSHIVValue = 'OfferedButNotDone' THEN 'Offered but not done'
 			WHEN @NTBSHIVValue = 'OfferedButRefused' THEN 'Offered but refused'
 			ELSE ''
