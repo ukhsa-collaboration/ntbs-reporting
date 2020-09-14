@@ -1561,6 +1561,7 @@ FROM
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1743,7 +1744,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>CaseReport Date</Value>
+                                  <Value>CaseReportDate</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1914,7 +1915,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Denotification Date</Value>
+                                  <Value>DenotificationDate</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1971,7 +1972,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Denotification Comments</Value>
+                                  <Value>DenotificationComments</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -9723,7 +9724,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Hep B</Value>
+                                  <Value>HepB</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -9780,7 +9781,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Hep C</Value>
+                                  <Value>HepC</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -10920,7 +10921,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total ContactsLTBI</Value>
+                                  <Value>TotalContactsLTBI</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -11376,7 +11377,7 @@ FROM
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>TOMTreatment ChangedReason36mth</Value>
+                                  <Value>TOMTreatmentChangedReason36mth</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -12619,6 +12620,7 @@ FROM
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <FontWeight>Normal</FontWeight>
+                                    <Format>dd/MM/yyyy</Format>
                                     <Color>#333333</Color>
                                   </Style>
                                 </TextRun>
@@ -22593,6 +22595,7 @@ FROM
                 <TablixMember>
                   <FixedData>true</FixedData>
                   <KeepWithGroup>After</KeepWithGroup>
+                  <RepeatOnNewPage>true</RepeatOnNewPage>
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details" />
@@ -22880,6 +22883,6 @@ gbhjVxw9dpTH0TnZWVgRYjSUY4BJBgb7m0X/W/7wRKguubWdn/g8UbiuKFcENywlxNfKEgEWG16+fNnF
     </EmbeddedImage>
   </EmbeddedImages>
   <rd:ReportUnitType>Cm</rd:ReportUnitType>
-  <rd:ReportServerUrl>http://ssrsntbscol01.caduceus.local/ReportServer</rd:ReportServerUrl>
+  <rd:ReportServerUrl>http://sqlntbsdevcol01/ReportServer</rd:ReportServerUrl>
   <rd:ReportID>5ec0ade2-74cf-4e12-921b-dd386d08c0fc</rd:ReportID>
 </Report>
