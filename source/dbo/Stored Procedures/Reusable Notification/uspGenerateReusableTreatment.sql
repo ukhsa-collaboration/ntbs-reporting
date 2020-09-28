@@ -13,7 +13,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		-- 1. Only include english hospitals
+		
 		UPDATE n SET
 			[Service] = s.TB_Service_Name,
 			[TBServiceCode] = s.TB_Service_Code,
@@ -26,7 +26,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s ON s.TB_Service_Code = sh.TB_Service_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC sp ON sp.TB_Service_Code = sh.TB_Service_Code
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.PHEC p ON p.PHEC_Code = sp.PHEC_Code
-		WHERE h.CountryCode = 'E92000001'
+
 
 		-- 2. Unknown when no matching hospital or service records
 		UPDATE n SET
@@ -40,8 +40,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableTreatment] AS
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.PHEC p ON p.PHEC_Code = sp.PHEC_Code
 		WHERE h.CountryCode IS NULL -- No matching hospital record
 
-		-- 3. Remaining notifications stay NULL, cos they are assumed to be welsh/scottish/northern-irish hospitals
-		-- Nothing to do here!
+		
 	END TRY
 	BEGIN CATCH
 		THROW
