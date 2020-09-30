@@ -20,6 +20,12 @@
     <SqlCmdVariable Include="Labbase2">
       <Value>LabBase2</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="LTBR">
+      <Value>LondonTBR</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="migration">
+      <Value>migration</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_Live</Value>
     </SqlCmdVariable>

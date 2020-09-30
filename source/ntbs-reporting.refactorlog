@@ -112,4 +112,11 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspGetAuthenticatedLoginGroupsAndType]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="2778c597-e9e4-4311-a7ff-ae5d08a908b2" ChangeDateTime="09/30/2020 05:58:43">
+    <Property Name="ElementName" Value="[dbo].[MigrationMasterList].[IsDenotified]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MigrationMasterList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Denotified" />
+  </Operation>
 </Operations>

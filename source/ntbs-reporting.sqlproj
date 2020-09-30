@@ -131,6 +131,9 @@
     <Folder Include="dbo\Tables\Report LegacyExtract" />
     <Folder Include="dbo\Stored Procedures\Report LegacyExtract" />
     <Folder Include="dbo\Functions\Report LegacyExtract" />
+    <Folder Include="dbo\Stored Procedures\Data Migration" />
+    <Folder Include="dbo\Tables\Data Migration" />
+    <Folder Include="dbo\Functions\Data Migration" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -359,6 +362,19 @@
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetIsolateSusceptibilityInfo.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticLookup.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnCalcContactTracingTotals.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspConfirmationLineList.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspGenerateMigrationMasterList.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationMasterList.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSelectedNotificationsByYear.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAdditionalNotificationsByRegionAndYear.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspConfirmDatabaseVersions.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationLineList.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationRun.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationRunRegion.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationRawData.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspGenerateMigrationResultsData.sql" />
+    <Build Include="dbo\Functions\Data Migration\ufnGetMigrationNotificationId.sql" />
+    <Build Include="dbo\Functions\Data Migration\ufnGetMigrationDataLossReason.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -418,6 +434,16 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS</DatabaseSqlCmdVariable>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\migration.dacpac">
+      <HintPath>..\data\DACPAC\migration.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\LTBR.dacpac">
+      <HintPath>..\data\DACPAC\LTBR.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>LTBR</DatabaseSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
@@ -439,6 +465,14 @@
     <SqlCmdVariable Include="$(NTBS_R1_Geography_Staging)">
       <DefaultValue>$(NTBS_R1_Geography_Staging)</DefaultValue>
       <Value>$(SqlCmdVar__10)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="LTBR">
+      <DefaultValue>LTBR</DefaultValue>
+      <Value>$(SqlCmdVar__19)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="migration">
+      <DefaultValue>migration</DefaultValue>
+      <Value>$(SqlCmdVar__18)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <DefaultValue>test-ntbs</DefaultValue>
