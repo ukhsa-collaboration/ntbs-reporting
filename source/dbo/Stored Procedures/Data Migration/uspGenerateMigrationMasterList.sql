@@ -1,4 +1,15 @@
-﻿CREATE PROCEDURE [dbo].[uspGenerateMigrationMasterList]
+﻿/*This creates a record per Notification which the migration database has in scope.
+It calculates the region so that we can later use this to create a migration file for that region
+
+
+TODO: it needs to contain the ID that NTBS is going to use in order to migrate the record, as this is how any migration
+errors are reported by Hangfire.  So I think taking from EtsRecordsWithIsPrimary is not the right view in the migration database
+
+
+*/
+
+
+CREATE PROCEDURE [dbo].[uspGenerateMigrationMasterList]
 	
 AS
 	TRUNCATE TABLE [dbo].[MigrationMasterList]
