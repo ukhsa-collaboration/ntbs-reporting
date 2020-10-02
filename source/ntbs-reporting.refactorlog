@@ -119,4 +119,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="Denotified" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="379a7e43-3fef-4eeb-9432-e474709026fe" ChangeDateTime="10/02/2020 18:25:10">
+    <Property Name="ElementName" Value="[dbo].[MigrationRunResults].[NTBSID-temp]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[MigrationRunResults]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NTBSNotificationId" />
+  </Operation>
 </Operations>

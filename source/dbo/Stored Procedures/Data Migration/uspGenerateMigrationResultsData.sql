@@ -1,45 +1,39 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateMigrationResultsData]
 	
 AS
-	--this will need to work for every migration run which doesn't have an imported date, and use the date to set the migration run
+	--fetch all the data from Hangfire.Set with a job code later than the last job code already processed
 
-	--get the Hangfire data
+	--this will be assumed to all relate to the first record in MigrationRun where the ImportedDate is NULL
 
-	DECLARE @EarliestImportDate DATE = NULL
-
-	--we want to import data where the 'Expire at' is 14 days later than the migration run 
-	SELECT @EarliestImportDate = DATEADD(DAY, 14, MIN(MigrationRunDate)) FROM [dbo].[MigrationRun] WHERE ImportedDate IS NULL
 
 	TRUNCATE TABLE [dbo].[MigrationRawData];
 
-	WITH HangfireData AS
-	(SELECT LEFT(h.[Value], 30) AS 'JobNumber', Q1.JobCode, Q1.Score, Q1.ExpireAt, Q1.[Value] as 'RowDetails' 
-	FROM [$(NTBS)].[HangFire].[Hash] h 
-	INNER JOIN
-		(SELECT RIGHT(s.[Key], LEN(s.[Key])-8) AS [JobCode], *
-		FROM [$(NTBS)].[HangFire].[Set] s
-		WHERE s.[Value]  LIKE '%NOTIFICATION IMPORT%' and ExpireAt > @EarliestImportDate) AS Q1 on CONCAT('console:refs:', Q1.JobCode) = h.[Key]),
-	MigrationDates AS
-	(SELECT MigrationRunId, DATEADD(DAY, 14, MigrationRunDate) AS ExpiryDate
-	 FROM [dbo].[MigrationRun] WHERE ImportedDate IS NULL)
+	DECLARE @MigrationRunID INT = NULL
+	SET @MigrationRunID = (SELECT TOP(1) MigrationRunId from MigrationRun WHERE ImportedDate IS NULL)
 
 	INSERT INTO [dbo].[MigrationRawData](MigrationRunId, JobNumber, JobCode, Score, ExpireAt, RowDetails)
-	SELECT MigrationRunId, JobNumber, JobCode, Score, ExpireAt, RowDetails
-	FROM HangfireData h
-		LEFT OUTER JOIN MigrationDates m ON m.ExpiryDate = CONVERT(DATE, h.ExpireAt)
-	WHERE MigrationRunId IS NOT NULL
+	SELECT @MigrationRunID, Q1.JobNumber, Q1.JobCode, Q1.Score, Q1.ExpireAt, Q1.RowDetails
+	FROM
+	(SELECT CONVERT(INT, SUBSTRING([Key], 20, 6)) AS JobNumber
+		  , [Key] AS JobCode
+		  ,[Score]
+		  ,[Value] AS RowDetails
+		  ,[ExpireAt]
+	  FROM [$(NTBS)].[HangFire].[Set]) AS Q1
+	--TODO: replace with proper logic
+	WHERE Q1.JobNumber BETWEEN 805 AND 1253
+
 
 	--now remove the rows we don't care about
-    DELETE FROM [dbo].[MigrationRawData] WHERE
-	[RowDetails]  like '%Fetching data for legacy notifications%'
+    DELETE FROM [dbo].[MigrationRawData] 
+	WHERE
+	[RowDetailS] LIKE '%Validating notification with Id=%'
 	OR [RowDetails]  LIKE '%Request to import by Id%'
 	OR [RowDetails] LIKE '%valid notifications%'
 	OR [RowDetails] LIKE '%No validation errors found%'
 	OR [RowDetails] LIKE '%Finished importing%'
 	OR [RowDetails] LIKE '%Imported notifications have following Ids:%'
 	OR [RowDetails] LIKE '%notifications found to import for%'
-	OR [RowDetails] LIKE '%Validating notification with Id%'
-
 
 
 	--and remove the content that we don't want.
@@ -50,6 +44,25 @@ AS
 	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#ffff00', '')
 	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#ff0000', '')
 
+	--now we need to parse out the rows that say 'Fetching data for legacy notifications' as this will give us the list of notification Ids
+	--and insert these rows into [MigrationRunResults]
+
+	
+	INSERT INTO [dbo].[MigrationRunResults](MigrationRunId, MigrationNotificationId)
+	(
+	SELECT DISTINCT @MigrationRunID, TRIM(value) NotificationId
+	FROM 
+		(SELECT SUBSTRING(RowDetails, 40, 40) AS NotificationIds FROM MigrationRawData
+		WHERE RowDetails like 'Fetching data for legacy notifications%' ) AS Q1
+    CROSS APPLY STRING_SPLIT(NotificationIds, ',')
+	)
+
+
+
+	
+	--and then delete those rows from MigrationRawData
+	DELETE FROM [dbo].[MigrationRawData] 
+	WHERE [RowDetails] LIKE 'Fetching data for legacy notifications%'
 
 	--now we can try to parse the Notification Id out on the rows that have them
 	--the substrings here need to be update to cater for shorter IDs and LTBR Ids which could be longer
@@ -121,121 +134,114 @@ AS
 		END
 	 WHERE Reason IS NULL
 
-	 --now we need to add one row for each notification which should have migrated during this run, along with the NTBS ID, hospital and service, plus any errors
+	 --now we can populate data for each notification which the application attempted to migrate
 
-	 --this is very similar to uspConfirmationLinelist so may warrant refactoring
+	 --we can use MergedNotifications as the source of info about the legacy Notification, as we have used the primary notification ID to create each row in MigrationRunResults
+	 --unfortunately, not all the error data will be quite so straight forward.
 
-	INSERT INTO [dbo].[MigrationRunResults](MigrationRunId, LegacyETSId, SelectedRegion, LegacyLtbrNo, NotificationDate, GroupId, SourceSystem, LegacyHospitalId, LegacyHospitalName,
-	OriginalRegion, [NTBSID-temp], NTBSHospitalName, TBServiceName, NTBSRegion, MigrationResult, MigrationNotes)
-
-	SELECT mr.MigrationRunId, mml.EtsID AS 'LegacyETSId', mml.Region AS 'SelectedRegion', mml.LtbrId AS 'LegacyLtbrNo', mml.NotificationDate AS 'NotificationDate', mml.GroupId, 
-	mml.SourceSystem, mml.OldHospitalId AS 'LegacyHospitalId', mml.OldHospitalName AS 'LegacyHospitalName', mml.Region AS 'OriginalRegion', ntbs.NotificationId AS 'NTBSID-temp', 
-	hos.[Name] AS 'NTBSHospitalName', tbs.[Name] AS 'TBServiceName', p.[Name] AS 'NTBSRegion', 
-	
-	COALESCE(ErrorRecords.Category, LossRecords.Category) AS 'MigrationResult',
-	
-	Notes.Reason AS 'MigrationNotes'
-
-	FROM [dbo].[MigrationRun] mr
-	INNER JOIN [dbo].[MigrationRunRegion] mrr ON mrr.MigrationRunId = mr.MigrationRunId
-	--find the records which were in the region and time period, or connected to the region and time period
-	--TODO: this needs to be simplified
-	INNER JOIN [dbo].[MigrationMasterList] mml ON (mml.Region = mrr.MigrationRunRegionName AND mml.NotificationYear >= '2017')
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mml.EtsID
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] h ON h.NotificationId = ntbs.NotificationId
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] p ON p.Code = tbs.PHECCode
-	--slightly convoluted way to find out if a notification has both 'error' and 'data loss' results - we want to report error in preference to data loss
-	LEFT OUTER JOIN 
-		(SELECT DISTINCT MigrationRunId, NotificationId, Category FROM [dbo].[MigrationRawData] WHERE Category = 'Error') AS ErrorRecords 
-		ON ErrorRecords.MigrationRunId = mr.MigrationRunId AND ErrorRecords.NotificationId = mml.EtsID
-	LEFT OUTER JOIN 
-		(SELECT DISTINCT MigrationRunId, NotificationId, Category FROM [dbo].[MigrationRawData] WHERE Category = 'Data loss') AS LossRecords 
-		ON LossRecords.MigrationRunId = mr.MigrationRunId AND LossRecords.NotificationId = mml.EtsID
-	--group all warning messages together
-	LEFT OUTER JOIN
-		(SELECT MigrationRunId, NotificationId, STRING_AGG(Reason, ', ') AS Reason FROM
-			(SELECT DISTINCT  [MigrationRunId]
-			  ,[NotificationId]
-			  ,Category
-			  ,Reason
-			FROM [MigrationRawData]
-			) AS Q1
-		GROUP BY MigrationRunId, NotificationId) AS Notes ON Notes.MigrationRunId = mr.MigrationRunId AND Notes.NotificationId = mml.EtsID
-
-	WHERE mr.ImportedDate IS NULL;
-
-	--now add the records linked to the ones above. Need to refactor this
-
-	
-	WITH MigrationGroups AS
-	(SELECT DISTINCT mrr.MigrationRunId, mrr.GroupId FROM [dbo].[MigrationRunResults] mrr
-	INNER JOIN [dbo].[MigrationRun] mr ON mr.MigrationRunId = mrr.MigrationRunId
-	AND mr.ImportedDate IS NULL
-	AND mrr.GroupId IS NOT NULL)
+	 UPDATE mrr
+		SET LegacyETSId = mn.EtsId,
+		LegacyRegion = p.PHEC_Name,
+		LegacyLtbrNo = mn.LtbrId,
+		LegacyHospitalId = mn.OldHospitalId,
+		LegacyHospitalName = mn.OldHospitalName,
+		NotificationDate = mn.NotificationDate,
+		SourceSystem = mn.PrimarySource,
+		GroupId = mn.GroupId,
+		NTBSNotificationId = ntbs.NotificationId,
+		NTBSHospitalName = hos.[Name],
+		TBServiceName = tbs.[Name],
+		NTBSRegion = region.[Name]
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.OldHospitalId
+	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
+	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+	LEFT OUTER JOIN  [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mn.EtsId
+	LEFT OUTER JOIN  [$(NTBS)].[dbo].[HospitalDetails] h ON h.NotificationId = ntbs.NotificationId
+	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
+	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
+	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[PHEC] region ON region.Code = tbs.PHECCode
+	WHERE mrr.MigrationRunId = @MigrationRunID
 
 
-	INSERT INTO [dbo].[MigrationRunResults](MigrationRunId, LegacyETSId, LegacyLtbrNo, NotificationDate, GroupId, SourceSystem, LegacyHospitalId, LegacyHospitalName,
-	OriginalRegion, [NTBSID-temp], NTBSHospitalName, TBServiceName, NTBSRegion, MigrationResult, MigrationNotes)
-
-	SELECT mr.MigrationRunId, mml.EtsID AS 'LegacyETSId', mml.LtbrId AS 'LegacyLtbrNo', mml.NotificationDate AS 'NotificationDate', mml.GroupId, 
-	mml.SourceSystem, mml.OldHospitalId AS 'LegacyHospitalId', mml.OldHospitalName AS 'LegacyHospitalName', mml.Region AS 'OriginalRegion', ntbs.NotificationId AS 'NTBSID-temp', 
-	hos.[Name] AS 'NTBSHospitalName', tbs.[Name] AS 'TBServiceName', p.[Name] AS 'NTBSRegion', 
-	
-	COALESCE(ErrorRecords.Category, LossRecords.Category) AS 'MigrationResult',
-	
-	Notes.Reason AS 'MigrationNotes'
-
-	FROM [dbo].[MigrationRun] mr
-	INNER JOIN MigrationGroups mg ON mg.MigrationRunId = mr.MigrationRunId
-	
-	INNER JOIN [dbo].[MigrationMasterList] mml ON mml.GroupId = mg.GroupId
-	--join to the run results table to exclude the records in groups already present
-	LEFT OUTER JOIN [dbo].[MigrationRunResults] migrun ON migrun.LegacyETSId = mml.EtsID AND migrun.MigrationRunId = mr.MigrationRunId
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mml.EtsID
-	LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] h ON h.NotificationId = ntbs.NotificationId
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
-	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] p ON p.Code = tbs.PHECCode
-	--slightly convoluted way to find out if a notification has both 'error' and 'data loss' results - we want to report error in preference to data loss
-	LEFT OUTER JOIN 
-		(SELECT DISTINCT MigrationRunId, NotificationId, Category FROM [dbo].[MigrationRawData] WHERE Category = 'Error') AS ErrorRecords 
-		ON ErrorRecords.MigrationRunId = mr.MigrationRunId AND ErrorRecords.NotificationId = mml.EtsID
-	LEFT OUTER JOIN 
-		(SELECT DISTINCT MigrationRunId, NotificationId, Category FROM [dbo].[MigrationRawData] WHERE Category = 'Data loss') AS LossRecords 
-		ON LossRecords.MigrationRunId = mr.MigrationRunId AND LossRecords.NotificationId = mml.EtsID
-	--group all warning messages together
-	LEFT OUTER JOIN
-		(SELECT MigrationRunId, NotificationId, STRING_AGG(Reason, ', ') AS Reason FROM
-			(SELECT DISTINCT  [MigrationRunId]
-			  ,[NotificationId]
-			  ,Category
-			  ,Reason
-			FROM [MigrationRawData]
-			) AS Q1
-		GROUP BY MigrationRunId, NotificationId) AS Notes ON Notes.MigrationRunId = mr.MigrationRunId AND Notes.NotificationId = mml.EtsID
-
-	WHERE mr.ImportedDate IS NULL
-	AND migrun.LegacyETSId IS NULL
+	--now match to errors logged in MigrationRawData.  There may be multiple rows per notification so these are grouped together
+	--unfortunately some are logged using the LTBR ID even if ETS is primary
 
 
-	
+	UPDATE mrr
+		SET mrr.MigrationResult = Q2.Result,
+		mrr.MigrationNotes = Q2.Reason
+	FROM  [dbo].[MigrationRunResults] mrr
+		INNER JOIN 
+			(SELECT 
+			NotificationId, 
+			CASE 
+				WHEN MIN(Score) = 1 THEN 'Error'
+				ELSE 'Data Loss'
+			END AS Result,  
+			STRING_AGG(Reason, ', ') AS Reason FROM
+					(SELECT DISTINCT 
+						NotificationId, 
+						CASE 
+							WHEN Category = 'Error' THEN 1 
+							ELSE 2 
+						END AS Score, 
+						--Category, 
+						Reason FROM MigrationRawData) AS Q1 
+			GROUP BY NotificationId) AS Q2
+		ON Q2.NotificationId = mrr.LegacyETSId
+	WHERE mrr.MigrationRunId = @MigrationRunID
+		--repeat this but matching on LTBR Id
 
-	--now add the cases linked to the ones just inserted above
+	UPDATE mrr
+		SET mrr.MigrationResult = Q2.Result,
+		mrr.MigrationNotes = Q2.Reason
+	FROM  [dbo].[MigrationRunResults] mrr
+		INNER JOIN 
+			(SELECT 
+			NotificationId, 
+			CASE 
+				WHEN MIN(Score) = 1 THEN 'Error'
+				ELSE 'Data Loss'
+			END AS Result,  
+			STRING_AGG(Reason, ', ') AS Reason FROM
+					(SELECT DISTINCT 
+						NotificationId, 
+						CASE 
+							WHEN Category = 'Error' THEN 1 
+							ELSE 2 
+						END AS Score, 
+						--Category, 
+						Reason FROM MigrationRawData) AS Q1 
+			GROUP BY NotificationId) AS Q2
+		ON Q2.NotificationId = mrr.LegacyLtbrNo
+	WHERE mrr.MigrationRunId = @MigrationRunID
 
 	--then do an update for success cases
 
 	UPDATE [dbo].[MigrationRunResults] SET MigrationResult = 'Success'
 		WHERE MigrationResult IS NULL
-		AND [NTBSID-temp] IS NOT NULL
-		AND MigrationRunId IN
-		--make sure we only update the records we'vej ust added
-			(SELECT MigrationRunId FROM [dbo].[MigrationRun] WHERE ImportedDate IS NULL)
+		AND NTBSNotificationId IS NOT NULL
+		AND MigrationRunId = @MigrationRunID
+		
 
 	--now we can mark the migration runs as imported
 	UPDATE [dbo].[MigrationRun]
 		SET ImportedDate = GETUTCDATE()
-		WHERE ImportedDate IS NULL
+		WHERE MigrationRunId = @MigrationRunID
+
+	--TODO: record the highest job number currently in Hangfire, so the next migration can start from the job after
+
+	--refactor the MigrationRun table and remove the MigrationRunRegion table. The Run table can have a column for Region (added by user) and needs a start and end job number.
+	--need a new SP to allow the user to create a run record. This will set the start job number to the first one after the previous run's end job number 
+	--that includes the text 'NOTIFICATION IMPORT'
+
+	--after that the previous two reports need to be refactored, mainly to be based around MergedMigrations.
+	--the one that creates a migration file must:
+		--only include one record for each group, otherwise the application will attempt to import the group twice
+		--use the LTBR ID, in the 'xxx-1' format if LTBR is primary, to avoid importing the very old ETS one with the overlapping ID
+		--exclude any record in the requested region already in NTBS
+	--the confirmation one needs to be based entirely from MergedMigrations. I don't think Migration Master List needs to exist.
 
 RETURN 0
