@@ -9,7 +9,34 @@ AS
 	TRUNCATE TABLE [dbo].[MigrationRawData];
 
 	DECLARE @MigrationRunID INT = NULL
-	SET @MigrationRunID = (SELECT TOP(1) MigrationRunId from MigrationRun WHERE ImportedDate IS NULL)
+	SET @MigrationRunID = (SELECT TOP(1) MigrationRunId FROM MigrationRun WHERE ImportedDate IS NULL)
+
+	DECLARE @StartJobNumber INT = NULL
+	DECLARE @PreviousJobNumber INT = NULL
+	--the first job in Hangfire with text like NOTIFICATION IMPORT, after the last job of the previous migration run
+	SET @PreviousJobNumber = (SELECT TOP (1) HangfireEndJob FROM MigrationRun WHERE ImportedDate IS NOT NULL ORDER BY MigrationRunId DESC)
+	SET @StartJobNumber = 
+		(
+		SELECT MIN(CONVERT(INT, SUBSTRING([Key], 20, 6)))
+		FROM [$(NTBS)].[HangFire].[Set]
+		WHERE [Value] LIKE '%NOTIFICATION IMPORT%'
+		AND CONVERT(INT, SUBSTRING([Key], 20, 6)) > @PreviousJobNumber
+		)
+
+	DECLARE @EndJobNumber INT = NULL
+	SET @EndJobNumber = 
+		(
+		SELECT MAX(CONVERT(INT, SUBSTRING([Key], 20, 6)))
+		FROM [$(NTBS)].[HangFire].[Set]
+		WHERE [Value] LIKE '%NOTIFICATION IMPORT%'
+		)
+
+	UPDATE [dbo].[MigrationRun] SET	
+		HangfireStartJob = @StartJobNumber,
+		HangfireEndJob = @EndJobNumber
+	WHERE
+		MigrationRunId = @MigrationRunID
+
 
 	INSERT INTO [dbo].[MigrationRawData](MigrationRunId, JobNumber, JobCode, Score, ExpireAt, RowDetails)
 	SELECT @MigrationRunID, Q1.JobNumber, Q1.JobCode, Q1.Score, Q1.ExpireAt, Q1.RowDetails
@@ -20,8 +47,7 @@ AS
 		  ,[Value] AS RowDetails
 		  ,[ExpireAt]
 	  FROM [$(NTBS)].[HangFire].[Set]) AS Q1
-	--TODO: replace with proper logic
-	WHERE Q1.JobNumber BETWEEN 805 AND 1253
+	WHERE Q1.JobNumber BETWEEN @StartJobNumber AND @EndJobNumber
 
 
 	--now remove the rows we don't care about
@@ -223,25 +249,39 @@ AS
 	UPDATE [dbo].[MigrationRunResults] SET MigrationResult = 'Success'
 		WHERE MigrationResult IS NULL
 		AND NTBSNotificationId IS NOT NULL
-		AND MigrationRunId = @MigrationRunID
+		AND MigrationRunId = @MigrationRunID;
 		
+	--and finally there may be a few rows where the record did not migrate because of an error on another record in its group
+	--so it has no error records itself
+
+	WITH GroupErrors AS
+	(SELECT DISTINCT mrd.NotificationId, mn.GroupId, CONCAT('Error on linked notification ', mrd.NotificationId) AS Reason
+	FROM [dbo].[MigrationRawData] mrd
+		INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrd.NotificationId
+	WHERE mrd.Category = 'Error' AND mn.GroupId IS NOT NULL),
+	GroupReason AS
+	(--now we need to get just one record per group
+	SELECT GroupId, MIN(Reason) AS 'Reason'
+	FROM GroupErrors
+	GROUP BY GroupId)
+	
+	UPDATE mrr
+		SET mrr.MigrationResult = 'Error',
+		mrr.MigrationNotes = gr.Reason
+	FROM  [dbo].[MigrationRunResults] mrr
+		INNER JOIN 
+			GroupReason gr ON gr.GroupId = mrr.GroupId
+		WHERE mrr.MigrationResult IS NULL
+		AND mrr.MigrationRunId = @MigrationRunID
+
 
 	--now we can mark the migration runs as imported
 	UPDATE [dbo].[MigrationRun]
-		SET ImportedDate = GETUTCDATE()
+		SET ImportedDate = GETUTCDATE(),
+		EtsDate = (SELECT CONVERT(DATE, MAX(NotificationDate)) AS EtsDate FROM [$(ETS)].[dbo].[Notification]),
+		LtbrDate = (SELECT CONVERT(DATE, MAX(dp_NotifiedDate)) AS LtbrDate FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod]),
+		LabbaseDate = (SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised])
 		WHERE MigrationRunId = @MigrationRunID
 
-	--TODO: record the highest job number currently in Hangfire, so the next migration can start from the job after
-
-	--refactor the MigrationRun table and remove the MigrationRunRegion table. The Run table can have a column for Region (added by user) and needs a start and end job number.
-	--need a new SP to allow the user to create a run record. This will set the start job number to the first one after the previous run's end job number 
-	--that includes the text 'NOTIFICATION IMPORT'
-
-	--after that the previous two reports need to be refactored, mainly to be based around MergedMigrations.
-	--the one that creates a migration file must:
-		--only include one record for each group, otherwise the application will attempt to import the group twice
-		--use the LTBR ID, in the 'xxx-1' format if LTBR is primary, to avoid importing the very old ETS one with the overlapping ID
-		--exclude any record in the requested region already in NTBS
-	--the confirmation one needs to be based entirely from MergedMigrations. I don't think Migration Master List needs to exist.
 
 RETURN 0
