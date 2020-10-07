@@ -9,8 +9,10 @@ AS
 	LtbrDate AS
 	(SELECT CONVERT(DATE, MAX(dp_NotifiedDate)) AS LtbrDate FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod]),
 	LabbaseDate AS
-	(SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised])
+	(SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised]),
+	MigrationDate AS
+	(SELECT LastRunDate FROM [$(migration)].[dbo].[MigrationInfo])
 
-	SELECT EtsDate, LtbrDate, LabbaseDate, GETUTCDATE() AS 'MigrationDate'
-		FROM EtsDate, LtbrDate, LabbaseDate
+	SELECT EtsDate, LtbrDate, LabbaseDate, LastRunDate AS 'MigrationDate'
+		FROM EtsDate, LtbrDate, LabbaseDate, MigrationDate
 RETURN 0
