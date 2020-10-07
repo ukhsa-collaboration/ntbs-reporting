@@ -1,10 +1,15 @@
-﻿CREATE PROCEDURE [dbo].[uspGenerateMigrationResultsData]
+﻿/*this will parse and populate the MigrationResults table with information about a migration into NTBS which is assumed to 
+have just completed */
+
+CREATE PROCEDURE [dbo].[uspGenerateMigrationResultsData]
 	
 AS
 	--fetch all the data from Hangfire.Set with a job code later than the last job code already processed
 
 	--this will be assumed to all relate to the first record in MigrationRun where the ImportedDate is NULL
-
+BEGIN TRY
+		
+	BEGIN TRANSACTION
 
 	TRUNCATE TABLE [dbo].[MigrationRawData];
 
@@ -283,5 +288,16 @@ AS
 		LabbaseDate = (SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised])
 		WHERE MigrationRunId = @MigrationRunID
 
+	COMMIT
+END TRY
+	
+BEGIN CATCH
+		-- A "Generate" proc has errored
+		IF @@TRANCOUNT > 0  
+			ROLLBACK TRANSACTION;  
+
+		-- Show error on screen
+		EXEC dbo.uspHandleException
+END CATCH
 
 RETURN 0
