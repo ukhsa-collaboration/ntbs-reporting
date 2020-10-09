@@ -185,7 +185,7 @@ BEGIN TRY
 		NTBSRegion = region.[Name]
 	FROM  [dbo].[MigrationRunResults] mrr
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
-	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.OldHospitalId
+	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 	LEFT OUTER JOIN  [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mn.EtsId
