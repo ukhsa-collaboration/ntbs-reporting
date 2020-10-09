@@ -11,7 +11,7 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 		SET NOCOUNT ON
 
 				-- Reset
-		DELETE FROM dbo.DataQuality
+		TRUNCATE TABLE dbo.DataQuality
 
 		-- Seed table with all (valid) notifications to consider
 		INSERT INTO dbo.DataQuality (NotificationId,TreatmentEndDate)

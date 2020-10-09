@@ -8,8 +8,8 @@ AS
 
 	--SET UP STEPS
 		--clear down the companion tables
-		DELETE FROM [dbo].[Outcome]
-		DELETE FROM [dbo].[PeriodicOutcome]
+		TRUNCATE TABLE [dbo].[Outcome]
+		TRUNCATE TABLE [dbo].[PeriodicOutcome]
 
 		--populate with base records from ReusableNotification where source system is NTBS
 		--this will only contain Notified and Closed records, so Draft, Deleted and Denotified are excluded by default

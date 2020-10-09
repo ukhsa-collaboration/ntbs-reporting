@@ -4,7 +4,7 @@
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		DELETE FROM ResultMapping
+		TRUNCATE TABLE ResultMapping
 
 		INSERT INTO ResultMapping VALUES ('R', 'Resistant', 1)
 		INSERT INTO ResultMapping VALUES ('Resistant', 'Resistant', 1)

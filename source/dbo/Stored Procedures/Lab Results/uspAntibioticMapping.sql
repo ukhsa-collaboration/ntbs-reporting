@@ -6,7 +6,7 @@ AS
 
 	BEGIN TRY
 		--RESET
-		DELETE FROM [dbo].[AntibioticMapping]
+		TRUNCATE TABLE [dbo].[AntibioticMapping]
 		--REPOPULATE
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETA_W', 1, N'EMB')
 		INSERT [dbo].[AntibioticMapping] ([AntibioticCode], [IsWGS], [AntibioticOutputName]) VALUES (N'ETHAM', 0, N'EMB')

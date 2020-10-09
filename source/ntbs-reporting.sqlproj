@@ -376,6 +376,7 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationRunsForRegion.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationResultsNotifications.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspConfirmCurrentDatabaseVersions.sql" />
+    <Build Include="dbo\Tables\ClusterMatching\ForestEtsCluster.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

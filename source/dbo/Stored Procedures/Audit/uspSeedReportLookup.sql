@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[uspSeedReportLookup]
 	
 AS
-	DELETE FROM [dbo].ReportLookup
+	TRUNCATE TABLE [dbo].ReportLookup
 
 	INSERT INTO [dbo].ReportLookup (ItemId, ReportName)
 		

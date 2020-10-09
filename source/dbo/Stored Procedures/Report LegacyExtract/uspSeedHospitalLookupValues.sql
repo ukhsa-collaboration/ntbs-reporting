@@ -5,7 +5,7 @@ AS
 
 	BEGIN TRY
 		--RESET
-		DELETE FROM [dbo].[LegacyExtractHospitalLookupValues]
+		TRUNCATE TABLE [dbo].[LegacyExtractHospitalLookupValues]
 
 		INSERT [dbo].[LegacyExtractHospitalLookupValues] (HospitalId, HospitalName, TreatmentHPU) VALUES ('884E400B-1B68-4234-96F4-7E1A2029B15D', 'ABERGELE HOSPITAL', 'North Wales Health Protection Team')
 		INSERT [dbo].[LegacyExtractHospitalLookupValues] (HospitalId, HospitalName, TreatmentHPU) VALUES ('93FA0A6C-474D-4AE8-AF23-952076F96336', 'ABINGDON COMMUNITY HOSPITAL', 'Thames Valley HPU')

@@ -2,7 +2,7 @@
 	
 AS
 	
-	DELETE FROM [dbo].[LegacyPeriodicOutcome]
+	TRUNCATE TABLE [dbo].[LegacyPeriodicOutcome]
 
 	EXEC [dbo].[uspUpdatePeriodicLegacyTOMFields] 1
 	EXEC [dbo].[uspUpdatePeriodicLegacyTOMFields] 2

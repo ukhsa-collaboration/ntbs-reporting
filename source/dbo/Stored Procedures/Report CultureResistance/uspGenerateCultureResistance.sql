@@ -11,7 +11,7 @@ CREATE PROCEDURE [dbo].[uspGenerateCultureResistance] AS
 		SET NOCOUNT ON
 
 		-- Reset
-		DELETE FROM dbo.CultureResistance
+		TRUNCATE TABLE dbo.CultureResistance
 
 		-- Seed table with all (valid) notifications to consider
 		INSERT INTO dbo.CultureResistance (NotificationId)

@@ -15,7 +15,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 	BEGIN TRY
 		
 		--prep the lab results
-		DELETE FROM [dbo].[StandardisedETSLaboratoryResult]
+		TRUNCATE TABLE [dbo].[StandardisedETSLaboratoryResult]
 
 		INSERT INTO [dbo].[StandardisedETSLaboratoryResult](NotificationId, Id, OpieId)
 			SELECT n.LegacyId AS NotificationId
@@ -26,7 +26,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				WHERE lr.AuditDelete IS NULL
 
 		-- Reset
-		DELETE FROM dbo.ReusableNotification_ETS
+		TRUNCATE TABLE dbo.ReusableNotification_ETS
 
 		INSERT INTO dbo.ReusableNotification_ETS
 			SELECT

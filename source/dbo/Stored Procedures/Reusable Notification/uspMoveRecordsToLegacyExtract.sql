@@ -8,7 +8,7 @@ CREATE PROCEDURE [dbo].[uspMoveRecordsToLegacyExtract]
 AS
 BEGIN TRY
 
-    DELETE FROM [dbo].[LegacyExtract]
+    TRUNCATE TABLE [dbo].[LegacyExtract]
 
     --first add the NTBS records
 	INSERT INTO [dbo].[LegacyExtract]

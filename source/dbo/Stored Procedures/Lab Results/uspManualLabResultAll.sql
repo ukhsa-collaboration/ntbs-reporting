@@ -6,7 +6,7 @@ AS
 	BEGIN TRY
 		
 		-- Reset
-		DELETE FROM dbo.ManualLabResultAll
+		TRUNCATE TABLE dbo.ManualLabResultAll
 
 		INSERT INTO [dbo].ManualLabResultAll (EtsId, TestType, Result)
 		--OUTER QUERY converts the minrank back to a result

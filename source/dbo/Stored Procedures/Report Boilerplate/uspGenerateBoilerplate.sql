@@ -11,7 +11,7 @@ CREATE PROCEDURE [dbo].[uspGenerateBoilerplate] AS
 		SET NOCOUNT ON
 
 		-- Reset
-		DELETE FROM dbo.Boilerplate
+		TRUNCATE TABLE dbo.Boilerplate
 
 		-- Seed table with all (valid) notifications to consider
 		INSERT INTO dbo.Boilerplate (NotificationId)

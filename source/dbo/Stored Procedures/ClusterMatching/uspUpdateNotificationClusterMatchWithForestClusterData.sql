@@ -5,7 +5,7 @@
 AS
 	BEGIN TRY
 		-- Delete Entries from Notification Cluster Match table
-		DELETE FROM [dbo].NotificationClusterMatch
+		TRUNCATE TABLE [dbo].NotificationClusterMatch
 
 		-- Populate Notification Cluster Match table with data from 
 		INSERT INTO NotificationClusterMatch (NotificationId, ClusterId) 

@@ -12,9 +12,9 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 		/*Reset and reload base data*/
 
 		-- Reset
-		DELETE FROM [dbo].[LabSpecimen]
-		DELETE FROM [dbo].[StandardisedLabbaseSpecimen]
-		DELETE FROM [dbo].[StandardisedLabbaseSusceptibilityResult]
+		TRUNCATE TABLE [dbo].[LabSpecimen]
+		TRUNCATE TABLE [dbo].[StandardisedLabbaseSpecimen]
+		TRUNCATE TABLE [dbo].[StandardisedLabbaseSusceptibilityResult]
 
 		-- first populate the temporary table with basic data from LabBase
 		-- !!! The migration db uses the same way to make up missing reference laboratory numbers - make sure to keep them in sync: 

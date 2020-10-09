@@ -6,7 +6,7 @@ BEGIN
 		
 		IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'ForestExtract')
 			BEGIN
-				DELETE FROM [dbo].ForestExtract
+				TRUNCATE TABLE [dbo].ForestExtract
 			END
 
 		DECLARE @TempDiseaseSites TABLE

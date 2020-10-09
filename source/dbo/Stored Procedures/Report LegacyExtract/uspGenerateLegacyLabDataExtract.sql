@@ -4,7 +4,7 @@ AS
 
 BEGIN TRY
 	--reset
-	DELETE FROM [dbo].[LegacyLabExtract]
+	TRUNCATE TABLE [dbo].[LegacyLabExtract]
 
 	--populate for NTBS manual
 

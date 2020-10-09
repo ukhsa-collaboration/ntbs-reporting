@@ -6,7 +6,7 @@ AS
 	BEGIN TRY
 		
 		-- Reset
-		DELETE FROM dbo.ManualLabResult
+		TRUNCATE TABLE dbo.ManualLabResult
 
 		EXEC dbo.uspManualLabResultAll
 
@@ -119,8 +119,8 @@ AS
 		WHERE Amplification IS NULL
 
 		--finally clear out the look-up tables ManualLabResultAll and ManualLabResultMicroscopy
-		DELETE FROM [dbo].ManualLabResultAll
-		DELETE FROM [dbo].ManualLabResultMicroscopy
+		TRUNCATE TABLE [dbo].ManualLabResultAll
+		TRUNCATE TABLE [dbo].ManualLabResultMicroscopy
 
 	END TRY
 	BEGIN CATCH

@@ -4,7 +4,7 @@
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		DELETE FROM SampleMapping
+		TRUNCATE TABLE SampleMapping
 
 		INSERT INTO SampleMapping VALUES ('Aspirate', 1)
 		INSERT INTO SampleMapping VALUES ('Biopsy', 2)
