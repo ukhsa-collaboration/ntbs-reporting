@@ -65,6 +65,8 @@ BEGIN TRY
 	OR [RowDetails] LIKE '%Finished importing%'
 	OR [RowDetails] LIKE '%Imported notifications have following Ids:%'
 	OR [RowDetails] LIKE '%notifications found to import for%'
+	OR [RowDetails] LIKE '%"r":true%'
+	OR [RowDetails] LIKE '%This might cause the notifications to keep showing up as legacy in search results until corrected%'
 
 
 	--and remove the content that we don't want.
