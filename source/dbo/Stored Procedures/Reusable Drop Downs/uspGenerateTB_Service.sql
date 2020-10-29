@@ -19,12 +19,13 @@ create table #Service (
 						PhecId tinyint not null, 
 						SortOrder tinyint not null,
 						PHEC_Code [nvarchar](50) NOT NULL, 
-						PhecName [nvarchar](50) NOT NULL)
+						PhecName [nvarchar](50) NOT NULL,
+						IsLegacy bit NULL)
 
-insert into #Service (PhecId, SortOrder,PHEC_Code, PhecName,TB_Service_Code,TB_Service_Name)
+insert into #Service (PhecId, SortOrder,PHEC_Code, PhecName,TB_Service_Code,TB_Service_Name, IsLegacy)
 
 
- SELECT distinct PhecId, SortOrder,PHEC_Code, PhecName,s.TB_Service_Code,s.TB_Service_Name
+ SELECT distinct PhecId, SortOrder,PHEC_Code, PhecName,s.TB_Service_Code,s.TB_Service_Name, S.IsLegacy
   FROM [dbo].[Phec] p inner join 
 
   [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC l on l.PHEC_Code = p.PhecCode
@@ -41,13 +42,15 @@ insert into dbo.TB_Service ([Serviceid]
       ,[phecid]
       ,[SortOrder]
       ,[PHEC_Code]
-      ,[PhecName]) select [Serviceid]
+      ,[PhecName]
+	  ,[IsLegacy]) select [Serviceid]
       ,[TB_Service_Code]
       ,[TB_Service_Name]
       ,[PhecId]
       ,[SortOrder]
       ,[PHEC_Code]
-      ,[PhecName] from #Service order by Serviceid   
+      ,[PhecName]
+	  ,[IsLegacy] from #Service order by Serviceid   
 SET IDENTITY_INSERT [dbo].[TB_Service] OFF
 GO
 

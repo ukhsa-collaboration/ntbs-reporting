@@ -22,6 +22,12 @@
     <SqlCmdVariable Include="Labbase2">
       <Value>NTBS_Labbase2_Live</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="LTBR">
+      <Value>NTBS_LondonTBR_Live</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="migration">
+      <Value>NTBS_Migration_Live</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_Live</Value>
     </SqlCmdVariable>
