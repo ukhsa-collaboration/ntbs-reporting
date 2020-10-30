@@ -2,7 +2,7 @@
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
-  <InitialPageName>=First(Fields!TB_Service_Code.Value, "ServicesInRegion")</InitialPageName>
+  <InitialPageName>=First(Fields!Short_Name.Value, "ServicesInRegion")</InitialPageName>
   <DataSources>
     <DataSource Name="PHE">
       <DataSourceReference>/Datasources/Staging</DataSourceReference>
@@ -14,20 +14,24 @@
     <DataSet Name="ServicesInRegion">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <CommandText>SELECT tbs.[TB_Service_Code]
-      ,[TB_Service_Name]
-  FROM [ntbs-reference-data].[dbo].[TB_Service] tbs
-  INNER JOIN [ntbs-reference-data].[dbo].TB_Service_to_PHEC tsp ON tsp.TB_Service_Code = tbs.TB_Service_Code
-  INNER JOIN [ntbs-reference-data].[dbo].PHEC p ON p.PHEC_Code = tsp.PHEC_Code
-  WHERE p.PHEC_Name = 'South East'</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@TBServiceCode">
+            <Value>=Parameters!TBServiceCode.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT 
+[TB_Service_Name], short.Short_Name
+FROM [TB_Service] tbs
+LEFT OUTER JOIN [TBServiceShortNames] short ON short.TB_Service_Code = tbs.TB_Service_Code
+WHERE tbs.TB_Service_Code = @TBServiceCode</CommandText>
       </Query>
       <Fields>
-        <Field Name="TB_Service_Code">
-          <DataField>TB_Service_Code</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="TB_Service_Name">
           <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Short_Name">
+          <DataField>Short_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -101,39 +105,17 @@ ORDER BY y.NotificationYear</CommandText>
             <Value>=Parameters!TBServiceCode.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT
-CASE WHEN Email_address_1 LIKE '%phe.gov.uk' THEN Email_address_1
-	WHEN Email_address_2 LIKE '%phe.gov.uk' THEN Email_address_2
-	WHEN Email_address_1 LIKE '%nhs.net' THEN Email_address_1
-	WHEN Email_address_2 LIKE '%nhs.net' THEN Email_address_2
-	WHEN p.Email LIKE '%phe.gov.uk' THEN p.Email
-	WHEN p.Email LIKE '%nhs.net'THEN p.Email
-	ELSE NULL
-	END AS username,
-
-COALESCE(c.Forename, p.Forename) AS givenname,
-
-
-COALESCE(c.Surname, p.Surname) AS familyname,
-COALESCE(c.Email_address_1, p.Email) AS email,
-c.Email_address_2 AS secondaryemail,
-c.Telephone_1 AS telephone1,
-c.Telephone_2 AS telephone2,
-c.Position,
-c.HPT_Note AS Notes,
-COALESCE(Q1.EtsAccounts, p.username) AS EtsAccounts
-
-FROM 
-
-[dbo].[vwEtsUserPermissionMembership] p
-LEFT OUTER JOIN [dbo].[vwServiceDirUserToEtsUser] e on e.ETS_username = p.Username
-
-LEFT OUTER JOIN [dbo].[vwServiceDirContactDetails] c ON c.UniqueId = e.UniqueId
-
-LEFT OUTER JOIN 
-(SELECT UniqueId, STRING_AGG([ETS_username], ', ') AS EtsAccounts FROM 
-[dbo].[vwServiceDirUserToEtsUser] GROUP BY UniqueId) AS Q1 ON Q1.UniqueId = c.UniqueId
-WHERE p.UserType = 'Service' AND p.MembershipCode = @TBServiceCode
+        <CommandText>SELECT [username]
+      ,[givenname]
+      ,[familyname]
+      ,[email]
+      ,[secondaryemail]
+      ,[telephone1]
+      ,[telephone2]
+      ,[Position]
+      ,[Notes]
+      ,[EtsAccounts]
+  FROM [vwUsersInService] WHERE TB_Service_Code = @TBServiceCode
 ORDER BY familyname</CommandText>
       </Query>
       <Fields>
@@ -1898,7 +1880,7 @@ ORDER BY familyname</CommandText>
             <Width>59.28243cm</Width>
             <ZIndex>2</ZIndex>
             <Visibility>
-              <Hidden>=IIF(COUNT(Fields!username.Value, "ServiceUsers")=0, True, False)</Hidden>
+              <Hidden>=IIF(COUNT(Fields!givenname.Value, "ServiceUsers")=0, True, False)</Hidden>
             </Visibility>
             <Style>
               <Border>
@@ -1935,7 +1917,7 @@ ORDER BY familyname</CommandText>
             <Width>24.20937cm</Width>
             <ZIndex>3</ZIndex>
             <Visibility>
-              <Hidden>=IIF(COUNT(Fields!username.Value, "ServiceUsers")=0, False, True)</Hidden>
+              <Hidden>=IIF(COUNT(Fields!givenname.Value, "ServiceUsers")=0, False, True)</Hidden>
             </Visibility>
             <Style>
               <Border>

@@ -383,6 +383,7 @@
     <Build Include="dbo\Views\Data Migration\vwServiceDirUserToEtsUser.sql" />
     <Build Include="dbo\Tables\Data Migration\ServiceDirectoryRawData.sql" />
     <Build Include="dbo\Views\Data Migration\vwServiceDirContactDetails.sql" />
+    <Build Include="dbo\Views\Data Migration\vwUsersInService.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

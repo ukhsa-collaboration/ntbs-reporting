@@ -2,6 +2,7 @@
 <Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
+  <InitialPageName>=Parameters!Region.Value</InitialPageName>
   <DataSources>
     <DataSource Name="PHE">
       <DataSourceReference>/Datasources/Staging</DataSourceReference>
@@ -10,7 +11,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="ServicesInRegion">
+    <DataSet Name="ActiveServicesInRegion">
       <Query>
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
@@ -19,8 +20,9 @@
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT TB_Service_Code, TB_Service_Name
-FROM [dbo].[TB_Service]
+        <CommandText>SELECT tbs.TB_Service_Code, tbs.TB_Service_Name, short.Short_Name
+FROM [dbo].[TB_Service] tbs
+LEFT OUTER JOIN [TBServiceShortNames] short ON short.TB_Service_Code = tbs.TB_Service_Code
 WHERE PhecName = @Region
 AND IsLegacy = 0</CommandText>
       </Query>
@@ -31,6 +33,10 @@ AND IsLegacy = 0</CommandText>
         </Field>
         <Field Name="TB_Service_Name">
           <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Short_Name">
+          <DataField>Short_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -44,6 +50,7 @@ AND IsLegacy = 0</CommandText>
           </QueryParameter>
         </QueryParameters>
         <CommandText>SELECT
+DISTINCT
 CASE WHEN Email_address_1 LIKE '%phe.gov.uk' THEN Email_address_1
 	WHEN Email_address_2 LIKE '%phe.gov.uk' THEN Email_address_2
 	WHEN Email_address_1 LIKE '%nhs.net' THEN Email_address_1
@@ -116,7 +123,7 @@ ORDER BY COALESCE(c.Surname, p.Surname)</CommandText>
         </Field>
       </Fields>
     </DataSet>
-    <DataSet Name="LegacyServices">
+    <DataSet Name="AllServicesInRegion">
       <Query>
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
@@ -124,10 +131,10 @@ ORDER BY COALESCE(c.Surname, p.Surname)</CommandText>
             <Value>=Parameters!Region.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT TB_Service_Code, TB_Service_Name
+        <CommandText>SELECT TB_Service_Code, TB_Service_Name, LEN(TB_Service_Name) AS NameLength, CASE WHEN IsLegacy = 1 THEN 'Yes' ELSE 'No' END AS Legacy
 FROM [dbo].[TB_Service]
 WHERE PhecName = @Region
-AND IsLegacy = 1</CommandText>
+ORDER BY IsLegacy, TB_Service_Name</CommandText>
       </Query>
       <Fields>
         <Field Name="TB_Service_Code">
@@ -136,6 +143,14 @@ AND IsLegacy = 1</CommandText>
         </Field>
         <Field Name="TB_Service_Name">
           <DataField>TB_Service_Name</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NameLength">
+          <DataField>NameLength</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="Legacy">
+          <DataField>Legacy</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -365,7 +380,7 @@ AND ETS_username IS NULL</CommandText>
                     <PageBreak>
                       <BreakLocation>Between</BreakLocation>
                     </PageBreak>
-                    <PageName>=Fields!TB_Service_Code.Value</PageName>
+                    <PageName>=Fields!Short_Name.Value</PageName>
                   </Group>
                   <TablixMembers>
                     <TablixMember />
@@ -374,7 +389,7 @@ AND ETS_username IS NULL</CommandText>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>ServicesInRegion</DataSetName>
+            <DataSetName>ActiveServicesInRegion</DataSetName>
             <Top>22.3807cm</Top>
             <Left>1.44824cm</Left>
             <Height>1.33229cm</Height>
@@ -1894,18 +1909,6 @@ AND ETS_username IS NULL</CommandText>
               </Border>
             </Style>
           </Line>
-          <Line Name="Line4">
-            <Top>24.5941cm</Top>
-            <Left>1.44824cm</Left>
-            <Height>0cm</Height>
-            <Width>32.5702cm</Width>
-            <ZIndex>7</ZIndex>
-            <Style>
-              <Border>
-                <Style>Solid</Style>
-              </Border>
-            </Style>
-          </Line>
           <Textbox Name="Textbox42">
             <CanGrow>true</CanGrow>
             <KeepTogether>true</KeepTogether>
@@ -1913,7 +1916,7 @@ AND ETS_username IS NULL</CommandText>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Legacy data</Value>
+                    <Value>TB Services in Region</Value>
                     <Style>
                       <FontFamily>Arial</FontFamily>
                       <FontSize>18pt</FontSize>
@@ -1924,43 +1927,11 @@ AND ETS_username IS NULL</CommandText>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox37</rd:DefaultName>
-            <Top>25.06194cm</Top>
-            <Left>1.39912cm</Left>
+            <Top>19.45277cm</Top>
+            <Left>1.35cm</Left>
             <Height>0.84667cm</Height>
             <Width>9.60438cm</Width>
-            <ZIndex>8</ZIndex>
-            <Style>
-              <Border>
-                <Style>None</Style>
-              </Border>
-              <PaddingLeft>2pt</PaddingLeft>
-              <PaddingRight>2pt</PaddingRight>
-              <PaddingTop>2pt</PaddingTop>
-              <PaddingBottom>2pt</PaddingBottom>
-            </Style>
-          </Textbox>
-          <Textbox Name="Textbox2">
-            <CanGrow>true</CanGrow>
-            <KeepTogether>true</KeepTogether>
-            <Paragraphs>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>The following TB Services/Hospitals have no recent notifications or users.</Value>
-                    <Style>
-                      <FontFamily>Arial</FontFamily>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style />
-              </Paragraph>
-            </Paragraphs>
-            <rd:DefaultName>Textbox2</rd:DefaultName>
-            <Top>26.10223cm</Top>
-            <Left>1.44824cm</Left>
-            <Height>0.58208cm</Height>
-            <Width>32.5702cm</Width>
-            <ZIndex>9</ZIndex>
+            <ZIndex>7</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1977,6 +1948,12 @@ AND ETS_username IS NULL</CommandText>
                 <TablixColumn>
                   <Width>11.44764cm</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -1991,7 +1968,7 @@ AND ETS_username IS NULL</CommandText>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Hospital Name</Value>
+                                  <Value>TB Service Name</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
                                     <Color>White</Color>
@@ -2002,6 +1979,74 @@ AND ETS_username IS NULL</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox7</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#98a4ae</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox1">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Name Length</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox1</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#98a4ae</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox3">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Legacy</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox3</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -2054,12 +2099,80 @@ AND ETS_username IS NULL</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="NameLength">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!NameLength.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>NameLength</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RunningValue (Fields!TB_Service_Name.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Legacy">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Legacy.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Legacy</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RunningValue (Fields!TB_Service_Name.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
+                <TablixMember />
                 <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
@@ -2073,12 +2186,12 @@ AND ETS_username IS NULL</CommandText>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>LegacyServices</DataSetName>
-            <Top>27.04631cm</Top>
-            <Left>1.39912cm</Left>
+            <DataSetName>AllServicesInRegion</DataSetName>
+            <Top>20.47583cm</Top>
+            <Left>1.32856cm</Left>
             <Height>1.27cm</Height>
-            <Width>11.44764cm</Width>
-            <ZIndex>10</ZIndex>
+            <Width>16.44764cm</Width>
+            <ZIndex>8</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2094,7 +2207,7 @@ AND ETS_username IS NULL</CommandText>
             <Left>0.53101cm</Left>
             <Height>0.39688cm</Height>
             <Width>0.69172cm</Width>
-            <ZIndex>11</ZIndex>
+            <ZIndex>9</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2122,7 +2235,7 @@ AND ETS_username IS NULL</CommandText>
             <Left>1.45203cm</Left>
             <Height>6.27063cm</Height>
             <Width>33.75536cm</Width>
-            <ZIndex>12</ZIndex>
+            <ZIndex>10</ZIndex>
             <Style>
               <Border>
                 <Style>Solid</Style>
