@@ -18,7 +18,7 @@ SELECT 'QUEEN ELIZABETH II HOSPITAL','QUEEN ELIZABETH HOSPITAL [KING''S LYNN]'),
 
 --get the permissions, map HPU up to Region and remove the first and last characters as these are (except for HPA) always square brackets
 ETSPermissions AS
-(SELECT LOWER(s.Username) AS Username, LOWER(s.Email) AS Email, s.Surname, s.Forename, 
+(SELECT LOWER(s.Username) AS Username, LOWER(s.Email) AS Email, [dbo].[ufnStripNonAlphaChars](s.Surname) AS Surname, s.Forename, 
 	CASE WHEN eth.Tier = 3 THEN  SUBSTRING(eth2.[Name], 2, LEN(eth2.[Name])-2) 
 	ELSE SUBSTRING(eth.[NAME], 2, LEN(eth.[NAME])-2) END AS PermissionName,  
  CASE 

@@ -390,7 +390,7 @@ AND ETS_username IS NULL</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ActiveServicesInRegion</DataSetName>
-            <Top>22.3807cm</Top>
+            <Top>23.28028cm</Top>
             <Left>1.44824cm</Left>
             <Height>1.33229cm</Height>
             <Width>15.42458cm</Width>
@@ -1214,6 +1214,8 @@ AND ETS_username IS NULL</CommandText>
                                   <Value>=Fields!email.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <TextDecoration>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "LineThrough", "Default")</TextDecoration>
+                                    <Color>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "Red", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1236,6 +1238,7 @@ AND ETS_username IS NULL</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1394,6 +1397,7 @@ AND ETS_username IS NULL</CommandText>
                                   <Value>=Fields!Notes.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "Red", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1954,6 +1958,9 @@ AND ETS_username IS NULL</CommandText>
                 <TablixColumn>
                   <Width>2.5cm</Width>
                 </TablixColumn>
+                <TablixColumn>
+                  <Width>9.29979cm</Width>
+                </TablixColumn>
               </TablixColumns>
               <TablixRows>
                 <TablixRow>
@@ -2047,6 +2054,40 @@ AND ETS_username IS NULL</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox3</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>#98a4ae</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox2">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>New service name (if applicable)</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -2165,12 +2206,46 @@ AND ETS_username IS NULL</CommandText>
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox4">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox4</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RunningValue (Fields!TB_Service_Name.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -2187,10 +2262,10 @@ AND ETS_username IS NULL</CommandText>
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>AllServicesInRegion</DataSetName>
-            <Top>20.47583cm</Top>
+            <Top>21.13729cm</Top>
             <Left>1.32856cm</Left>
             <Height>1.27cm</Height>
-            <Width>16.44764cm</Width>
+            <Width>25.74743cm</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -2203,9 +2278,9 @@ AND ETS_username IS NULL</CommandText>
               <BreakLocation>Start</BreakLocation>
             </PageBreak>
             <KeepTogether>true</KeepTogether>
-            <Top>21.97528cm</Top>
+            <Top>22.76903cm</Top>
             <Left>0.53101cm</Left>
-            <Height>0.39688cm</Height>
+            <Height>0.34396cm</Height>
             <Width>0.69172cm</Width>
             <ZIndex>9</ZIndex>
             <Style>
@@ -2261,6 +2336,39 @@ AND ETS_username IS NULL</CommandText>
                 <Width>1pt</Width>
               </RightBorder>
               <BackgroundColor>LightGrey</BackgroundColor>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox5">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Ideal service name length is 30 characters or fewer.</Value>
+                    <Style>
+                      <FontStyle>Italic</FontStyle>
+                      <FontFamily>Arial</FontFamily>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox5</rd:DefaultName>
+            <Top>20.33472cm</Top>
+            <Left>1.32856cm</Left>
+            <Height>0.59985cm</Height>
+            <Width>15.05479cm</Width>
+            <ZIndex>11</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
               <PaddingTop>2pt</PaddingTop>

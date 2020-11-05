@@ -161,6 +161,27 @@ ORDER BY familyname</CommandText>
         </Field>
       </Fields>
     </DataSet>
+    <DataSet Name="LegacyHospitalCount">
+      <Query>
+        <DataSourceName>PHE</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@TBServiceCode">
+            <Value>=Parameters!TBServiceCode.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT COUNT( h.HospitalId) AS LegacyHospitalsCount
+FROM [NTBS_R1_Geography_Staging].[dbo].[Hospital] h
+INNER JOIN [NTBS_R1_Geography_Staging].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = h.HospitalId
+  AND tbh.TB_Service_Code = @TBServiceCode
+WHERE h.IsLegacy = 1</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="LegacyHospitalsCount">
+          <DataField>LegacyHospitalsCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
   </DataSets>
   <ReportSections>
     <ReportSection>
@@ -1252,6 +1273,8 @@ ORDER BY familyname</CommandText>
                                   <Value>=Fields!email.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <TextDecoration>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "LineThrough", "Default")</TextDecoration>
+                                    <Color>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "Red", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -1274,6 +1297,7 @@ ORDER BY familyname</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -1432,6 +1456,7 @@ ORDER BY familyname</CommandText>
                                   <Value>=Fields!Notes.Value</Value>
                                   <Style>
                                     <FontFamily>Arial</FontFamily>
+                                    <Color>=IIf(InStr(Fields!Notes.Value, "Email rejected")&gt;0, "Red", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2079,6 +2104,9 @@ ORDER BY familyname</CommandText>
             <Height>1.27cm</Height>
             <Width>20.6816cm</Width>
             <ZIndex>5</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(Sum(Fields!LegacyHospitalsCount.Value, "LegacyHospitalCount")=0, True, False)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -2107,6 +2135,9 @@ ORDER BY familyname</CommandText>
             <Height>0.61322cm</Height>
             <Width>6.24417cm</Width>
             <ZIndex>6</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(Sum(Fields!LegacyHospitalsCount.Value, "LegacyHospitalCount")=0, True, False)</Hidden>
+            </Visibility>
             <Style>
               <Border>
                 <Style>None</Style>

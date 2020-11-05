@@ -9,5 +9,5 @@
 	[Telephone_2] [nvarchar](50) NULL,
 	[ETS_username] [nvarchar](50) NULL,
 	[SheetName] [nvarchar](50) NOT NULL,
-	[HPT_Note] [nvarchar](50) NULL
+	[HPT_Note] [nvarchar](150) NULL
 ) ON [PRIMARY]
