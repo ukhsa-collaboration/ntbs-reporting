@@ -134,6 +134,7 @@
     <Folder Include="dbo\Stored Procedures\Data Migration" />
     <Folder Include="dbo\Tables\Data Migration" />
     <Folder Include="dbo\Functions\Data Migration" />
+    <Folder Include="dbo\Views\Data Migration" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -377,6 +378,12 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationResultsNotifications.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspConfirmCurrentDatabaseVersions.sql" />
     <Build Include="dbo\Tables\ClusterMatching\ForestEtsCluster.sql" />
+    <Build Include="dbo\Functions\Data Migration\ufnStripNonAlphaChars.sql" />
+    <Build Include="dbo\Views\Data Migration\vwEtsUserPermissionMembership.sql" />
+    <Build Include="dbo\Views\Data Migration\vwServiceDirUserToEtsUser.sql" />
+    <Build Include="dbo\Tables\Data Migration\ServiceDirectoryRawData.sql" />
+    <Build Include="dbo\Views\Data Migration\vwServiceDirContactDetails.sql" />
+    <Build Include="dbo\Views\Data Migration\vwUsersInService.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

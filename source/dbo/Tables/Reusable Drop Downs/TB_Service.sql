@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[TB_Service] (
     [SortOrder]       TINYINT       NOT NULL,
     [PHEC_Code]       NVARCHAR (50) NOT NULL,
     [PhecName]        NVARCHAR (50) NOT NULL,
+    [IsLegacy] BIT NULL, 
     CONSTRAINT [PK_Service] PRIMARY KEY CLUSTERED ([Serviceid] ASC)
 );
 GO
