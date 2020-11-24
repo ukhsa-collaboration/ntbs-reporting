@@ -184,7 +184,9 @@ BEGIN TRY
 		NTBSNotificationId = ntbs.NotificationId,
 		NTBSHospitalName = hos.[Name],
 		TBServiceName = tbs.[Name],
-		NTBSRegion = region.[Name]
+		NTBSRegion = region.[Name],
+		NTBSTreatmentOutcome = COALESCE(po3.OutcomeValue, po2.OutcomeValue, po1.OutcomeValue),
+		EtsTreatmentOutcome = COALESCE(rne.LastRecordedTreatmentOutcome, 'ETS outcome has not been calculated')
 	FROM  [dbo].[MigrationRunResults] mrr
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
@@ -195,6 +197,11 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[PHEC] region ON region.Code = tbs.PHECCode
+	LEFT OUTER JOIN [dbo].[ReusableNotification_ETS] rne ON rne.EtsId = mrr.MigrationNotificationId
+	CROSS APPLY [dbo].[ufnGetPeriodicOutcome](1, mrr.NtbsNotificationId) po1
+	OUTER APPLY [dbo].[ufnGetPeriodicOutcome](2, mrr.NtbsNotificationId) po2
+	OUTER APPLY [dbo].[ufnGetPeriodicOutcome](3, mrr.NtbsNotificationId) po3
+
 	WHERE mrr.MigrationRunId = @MigrationRunID
 
 
