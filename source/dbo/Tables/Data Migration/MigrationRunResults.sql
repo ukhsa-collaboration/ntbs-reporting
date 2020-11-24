@@ -11,6 +11,7 @@
 	[SourceSystem] [nvarchar](10)  NULL,
 	[LegacyHospitalId] [varchar](50)  NULL,
 	[LegacyHospitalName] [nvarchar](255)  NULL,
+	[ProxyTestDateUsed] [varchar](3) NULL,
 	[NTBSNotificationId] [int] NULL,
 	[NTBSHospitalName] [nvarchar](200)  NULL,
 	[TBServiceName] [nvarchar](200)  NULL,

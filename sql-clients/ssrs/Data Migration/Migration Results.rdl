@@ -332,7 +332,7 @@ ORDER BY CountOfRecords DESC</CommandText>
         </QueryParameters>
         <CommandText>--by region migrated to
 SELECT DATEPART(YEAR, NotificationDate) AS NotificationYear,  NtbsRegion, Count(MigrationNotificationId) AS CountOfRecords
-FROM [NTBS_Reporting_Staging].[dbo].[MigrationRunResults]
+FROM [dbo].[MigrationRunResults]
 WHERE MigrationRunId = @MigrationRun
 AND NTBSNotificationId IS NOT NULL
 GROUP BY DATEPART(YEAR, NotificationDate), NTBSRegion
@@ -393,6 +393,10 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
           <DataField>Legacy Hospital name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Proxy_test_date_used">
+          <DataField>Proxy test date used</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="NTBS_Id">
           <DataField>NTBS Id</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -420,6 +424,26 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
         <Field Name="Linked_notifications">
           <DataField>Linked notifications</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="ProxyTestDateUsed">
+      <Query>
+        <DataSourceName>PHE</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@MigrationRun">
+            <Value>=Parameters!MigrationRun.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>SELECT COUNT(MigrationRunId) AS RecordCount 
+FROM [dbo].[MigrationRunResults]
+WHERE ProxyTestDateUsed = 'Yes'
+AND MigrationRunId = @MigrationRun</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="RecordCount">
+          <DataField>RecordCount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -3153,7 +3177,7 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
             <Top>7.0539cm</Top>
             <Left>21.97181cm</Left>
             <Height>2.39916cm</Height>
-            <Width>9.2846cm</Width>
+            <Width>9.28459cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -4354,6 +4378,9 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
                   <Width>2.5cm</Width>
                 </TablixColumn>
                 <TablixColumn>
+                  <Width>2.5cm</Width>
+                </TablixColumn>
+                <TablixColumn>
                   <Width>10.19938cm</Width>
                 </TablixColumn>
                 <TablixColumn>
@@ -4786,6 +4813,46 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
                               <Style>Solid</Style>
                               <Width>0.5pt</Width>
                             </RightBorder>
+                            <BackgroundColor>#98002e</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox31">
+                          <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Proxy_test_date_used.Value</SortExpression>
+                          </UserSort>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Proxy test date used</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox31</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
                             <BackgroundColor>#98002e</BackgroundColor>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -5476,6 +5543,42 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Proxy_test_date_used">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Proxy_test_date_used.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Proxy_test_date_used</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RunningValue (Fields!NotificationYear.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="NTBS_Id">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -5999,6 +6102,43 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox33">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox33</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>DimGray</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox132">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -6278,6 +6418,7 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -6301,7 +6442,7 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
             <Top>25.22755cm</Top>
             <Left>1.34171cm</Left>
             <Height>2.39916cm</Height>
-            <Width>64.22355cm</Width>
+            <Width>66.72355cm</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -6352,15 +6493,89 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
               <PaddingBottom>2pt</PaddingBottom>
             </Style>
           </Textbox>
+          <Textbox Name="Textbox54">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Proxy test date used:</Value>
+                    <Style>
+                      <FontFamily>Arial Black</FontFamily>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox46</rd:DefaultName>
+            <Top>15.08663cm</Top>
+            <Left>21.97181cm</Left>
+            <Height>0.6cm</Height>
+            <Width>4.36334cm</Width>
+            <ZIndex>18</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(Sum(Fields!RecordCount.Value, "ProxyTestDateUsed")=0, True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="Textbox8">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>=First(Fields!RecordCount.Value, "ProxyTestDateUsed")</Value>
+                    <Style>
+                      <FontFamily>Arial Black</FontFamily>
+                      <Format>0;(0)</Format>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>Textbox8</rd:DefaultName>
+            <Top>15.08663cm</Top>
+            <Left>26.44099cm</Left>
+            <Height>0.6cm</Height>
+            <Width>1.5676cm</Width>
+            <ZIndex>19</ZIndex>
+            <Visibility>
+              <Hidden>=IIf(Sum(Fields!RecordCount.Value, "ProxyTestDateUsed")=0, True, False)</Hidden>
+            </Visibility>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
         </ReportItems>
-        <Height>288.82999mm</Height>
+        <Height>288.83mm</Height>
         <Style>
           <Border>
             <Style>None</Style>
           </Border>
         </Style>
       </Body>
-      <Width>655.65253mm</Width>
+      <Width>680.6526mm</Width>
       <Page>
         <PageFooter>
           <Height>5.34459mm</Height>

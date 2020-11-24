@@ -198,6 +198,21 @@ BEGIN TRY
 	WHERE mrr.MigrationRunId = @MigrationRunID
 
 
+	--perform an update to determine whether or not proxy dates were used for test results
+
+	UPDATE mrr
+		SET ProxyTestDateUsed = Q1.ProxyDateUsed
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN 
+	(SELECT MigrationNotificationId, CASE WHEN cd.[Notes] LIKE '%Proxy date used for one or more manually-entered test results%' THEN 'Yes' ELSE 'No' END AS ProxyDateUsed
+		FROM  [dbo].[MigrationRunResults] mrr
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mrr.MigrationNotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = ntbs.NotificationId
+		WHERE mrr.MigrationRunId = @MigrationRunID) AS Q1 ON Q1.MigrationNotificationId = mrr.MigrationNotificationId
+
+
+
+
 	--now match to errors logged in MigrationRawData.  There may be multiple rows per notification so these are grouped together
 	--unfortunately some are logged using the LTBR ID even if ETS is primary
 

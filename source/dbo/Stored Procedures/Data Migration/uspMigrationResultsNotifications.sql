@@ -16,6 +16,7 @@ AS
 		,[LegacyLtbrNo]						AS 'LtbrNo'
 		,[SourceSystem]						AS 'Record sourced from'
 		,[LegacyHospitalName]				AS 'Legacy Hospital name'
+		,[ProxyTestDateUsed]				AS 'Proxy test date used'
 		,[NTBSNotificationId]				AS 'NTBS Id'
 		,[TBServiceName]					AS 'TB Service'
 		,[NTBSHospitalName]					AS 'NTBS Hospital name'
