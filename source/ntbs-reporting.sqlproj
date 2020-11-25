@@ -384,6 +384,7 @@
     <Build Include="dbo\Tables\Data Migration\ServiceDirectoryRawData.sql" />
     <Build Include="dbo\Views\Data Migration\vwServiceDirContactDetails.sql" />
     <Build Include="dbo\Views\Data Migration\vwUsersInService.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationMisMatchedOutcomes.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
