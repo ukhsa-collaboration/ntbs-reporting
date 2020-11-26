@@ -15,12 +15,12 @@ AS
 		JOIN (
 			SELECT smallest_clusterLabel
 			FROM [dbo].[ForestEtsCluster] 
-			WHERE smallest_clusterLabel IS NOT NULL AND ETSCaseId_max IS NOT NULL
+			WHERE COALESCE(smallest_clusterLabel,'') <> '' AND COALESCE(ETSCaseId_max,'') <> ''
 			GROUP BY smallest_clusterLabel
 			HAVING COUNT(*) > 1
 		) clusters 
 		ON clusters.smallest_clusterLabel = forestCluster.smallest_clusterLabel
-		WHERE forestCluster.smallest_clusterLabel IS NOT NULL AND forestCluster.ETSCaseId_max IS NOT NULL
+		WHERE COALESCE(forestCluster.smallest_clusterLabel,'') <>''  AND COALESCE(forestCluster.ETSCaseId_max,'') <> ''
 
 		-- Update build number
 		IF EXISTS (SELECT * FROM ForestClusterBuild)
