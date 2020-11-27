@@ -184,7 +184,39 @@ BEGIN TRY
 		NTBSNotificationId = ntbs.NotificationId,
 		NTBSHospitalName = hos.[Name],
 		TBServiceName = tbs.[Name],
-		NTBSRegion = region.[Name]
+		NTBSRegion = region.[Name],
+		NTBSTreatmentOutcome = COALESCE(po3.OutcomeValue, po2.OutcomeValue, po1.OutcomeValue),
+		EtsTreatmentOutcome = 
+		--calculate the ETS Treatment outcome from scratch as the reusable notification table may not contain the 
+		--ETS record
+			COALESCE(
+				CASE
+					WHEN tr36.Id IS NULL THEN NULL
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'36',
+							tr36.AnswerToCompleteQuestion,
+							tr36.AnswerToIncompleteReason1,
+							tr36.AnswerToIncompleteReason2
+						 )
+				END,
+				CASE
+					WHEN tr24.Id IS NULL THEN NULL
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'24',
+							tr24.AnswerToCompleteQuestion,
+							tr24.AnswerToIncompleteReason1,
+							tr24.AnswerToIncompleteReason2
+						 )
+				END,
+				CASE
+					WHEN te.PostMortemDiagnosis = 1 THEN 'Died'
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'12',
+							tr12.AnswerToCompleteQuestion,
+							tr12.AnswerToIncompleteReason1,
+							tr12.AnswerToIncompleteReason2
+						 )
+				END)
 	FROM  [dbo].[MigrationRunResults] mrr
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
@@ -195,7 +227,31 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[PHEC] region ON region.Code = tbs.PHECCode
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].TreatmentOutcomeTwentyFourMonth tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].TreatmentOutcome36Month tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
+	CROSS APPLY [dbo].[ufnGetPeriodicOutcome](1, mrr.NtbsNotificationId) po1
+	OUTER APPLY [dbo].[ufnGetPeriodicOutcome](2, mrr.NtbsNotificationId) po2
+	OUTER APPLY [dbo].[ufnGetPeriodicOutcome](3, mrr.NtbsNotificationId) po3
+
 	WHERE mrr.MigrationRunId = @MigrationRunID
+
+
+	--perform an update to determine whether or not proxy dates were used for test results
+
+	UPDATE mrr
+		SET ProxyTestDateUsed = Q1.ProxyDateUsed
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN 
+	(SELECT MigrationNotificationId, CASE WHEN cd.[Notes] LIKE '%Proxy date used for one or more manually-entered test results%' THEN 'Yes' ELSE 'No' END AS ProxyDateUsed
+		FROM  [dbo].[MigrationRunResults] mrr
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mrr.MigrationNotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = ntbs.NotificationId
+		WHERE mrr.MigrationRunId = @MigrationRunID) AS Q1 ON Q1.MigrationNotificationId = mrr.MigrationNotificationId
+
+
 
 
 	--now match to errors logged in MigrationRawData.  There may be multiple rows per notification so these are grouped together

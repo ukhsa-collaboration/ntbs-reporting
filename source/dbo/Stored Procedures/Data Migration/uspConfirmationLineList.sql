@@ -23,7 +23,7 @@ AS
 		AND p.PHEC_Name = @Region
 		AND mn.NotificationDate >= '2017-01-01'),
 	LinkedNotifications AS
-	(SELECT ng.GroupId, STRING_AGG(mn.PrimaryNotificationId, ', ') AS LinkedNotifications
+	(SELECT ng.GroupId, STRING_AGG(CAST(mn.PrimaryNotificationId AS NVARCHAR(MAX)), ', ') AS LinkedNotifications
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
 	INNER JOIN NotificationGroups ng ON ng.GroupId = mn.GroupId
 	GROUP BY ng.GroupId)
