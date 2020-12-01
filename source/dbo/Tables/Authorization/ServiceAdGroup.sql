@@ -8,8 +8,8 @@ Author:  Public Health England
 
 CREATE TABLE [dbo].[ServiceAdGroup] (
     [ServiceAdGroupId] TINYINT IDENTITY (1, 1) NOT NULL,
-    [ServiceId]        TINYINT NOT NULL,
-    [AdGroupId]        TINYINT NOT NULL,
+    [ServiceId]        SMALLINT NOT NULL,
+    [AdGroupId]        SMALLINT NOT NULL,
     CONSTRAINT [PK_ServiceAdGroup] PRIMARY KEY CLUSTERED ([ServiceAdGroupId] ASC)
 );
 GO
