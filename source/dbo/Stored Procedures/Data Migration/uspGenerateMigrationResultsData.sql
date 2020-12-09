@@ -185,6 +185,7 @@ BEGIN TRY
 		NTBSHospitalName = hos.[Name],
 		TBServiceName = tbs.[Name],
 		NTBSRegion = region.[Name]
+		
 	FROM  [dbo].[MigrationRunResults] mrr
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
@@ -195,7 +196,101 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[PHEC] region ON region.Code = tbs.PHECCode
+	WHERE mrr.MigrationRunId = @MigrationRunID;
+
+	--update the ETS outcome - this is easier to do once the ETS ID is in the results table
+	 UPDATE mrr
+		SET EtsTreatmentOutcome = 
+		--calculate the ETS Treatment outcome from scratch as the reusable notification table may not contain the 
+		--ETS record
+			COALESCE(
+				CASE
+					WHEN tr36.Id IS NULL THEN NULL
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'36',
+							tr36.AnswerToCompleteQuestion,
+							tr36.AnswerToIncompleteReason1,
+							tr36.AnswerToIncompleteReason2
+						 )
+				END,
+				CASE
+					WHEN tr24.Id IS NULL THEN NULL
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'24',
+							tr24.AnswerToCompleteQuestion,
+							tr24.AnswerToIncompleteReason1,
+							tr24.AnswerToIncompleteReason2
+						 )
+				END,
+				CASE
+					WHEN te.PostMortemDiagnosis = 1 THEN 'Died'
+					ELSE dbo.ufnGetTreatmentOutcome(
+							'12',
+							tr12.AnswerToCompleteQuestion,
+							tr12.AnswerToIncompleteReason1,
+							tr12.AnswerToIncompleteReason2
+						 )
+				END)
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
+	WHERE mrr.MigrationRunId = @MigrationRunID;
+
+	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
+
+	WITH EventOrder AS
+	(SELECT 'DiagnosisMade' AS EventName, 1 AS 'OrderBy'
+		   UNION
+		   SELECT 'TreatmentStart' AS EventName, 2 AS 'OrderBy'
+		   UNION
+		   SELECT 'TransferOut' AS EventName, 3 AS 'OrderBy'
+		   UNION
+		   SELECT 'TransferIn' AS EventName, 4 AS 'OrderBy'
+		   UNION
+		   SELECT 'TransferRestart' AS Eventname, 5 AS 'OrderBy'
+		   UNION
+		   SELECT 'TreatmentOutcome' AS EventName, 6 AS 'OrderBy'),
+	AllEvents AS
+	(SELECT DISTINCT 
+		NotificationId,
+		--get the most recent event for each notification
+		COALESCE
+		(FIRST_VALUE(ol.OutcomeDescription) 
+			OVER (PARTITION BY NotificationId 
+			ORDER BY EventDate DESC, OrderBy), 
+		'No outcome recorded') AS 'OutcomeValue'
+	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
+		INNER JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = te.NotificationId AND mrr.MigrationRunId = @MigrationRunID
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
+		LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType
+		LEFT OUTER JOIN EventOrder ev ON ev.EventName = tro.TreatmentOutcomeType)
+
+	UPDATE mrr
+		SET mrr.NTBSTreatmentOutcome = a.OutcomeValue
+		FROM  [dbo].[MigrationRunResults] mrr
+			INNER JOIN AllEvents a ON a.NotificationId = mrr.NTBSNotificationId
+		WHERE mrr.MigrationRunId = @MigrationRunID
+
+
+
+	--perform an update to determine whether or not proxy dates were used for test results
+
+	UPDATE mrr
+		SET ProxyTestDateUsed = Q1.ProxyDateUsed
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN 
+	(SELECT MigrationNotificationId, CASE WHEN cd.[Notes] LIKE '%Proxy date used for one or more manually-entered test results%' THEN 'Yes' ELSE 'No' END AS ProxyDateUsed
+		FROM  [dbo].[MigrationRunResults] mrr
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mrr.MigrationNotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = ntbs.NotificationId
+		WHERE mrr.MigrationRunId = @MigrationRunID) AS Q1 ON Q1.MigrationNotificationId = mrr.MigrationNotificationId
 	WHERE mrr.MigrationRunId = @MigrationRunID
+
+
 
 
 	--now match to errors logged in MigrationRawData.  There may be multiple rows per notification so these are grouped together

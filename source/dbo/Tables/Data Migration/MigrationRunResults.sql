@@ -11,10 +11,13 @@
 	[SourceSystem] [nvarchar](10)  NULL,
 	[LegacyHospitalId] [varchar](50)  NULL,
 	[LegacyHospitalName] [nvarchar](255)  NULL,
+	[EtsTreatmentOutcome] [varchar] (30) NULL,
+	[ProxyTestDateUsed] [varchar](3) NULL,
 	[NTBSNotificationId] [int] NULL,
 	[NTBSHospitalName] [nvarchar](200)  NULL,
 	[TBServiceName] [nvarchar](200)  NULL,
 	[NTBSRegion] [nvarchar](50)  NULL,
+	[NTBSTreatmentOutcome] [varchar](30) NULL,
 	[MigrationResult] [nvarchar](20)  NULL,
 	[MigrationNotes] [nvarchar](4000)  NULL
 ) ON [PRIMARY]
