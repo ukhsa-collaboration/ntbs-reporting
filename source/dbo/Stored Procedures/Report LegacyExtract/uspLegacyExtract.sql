@@ -24,7 +24,10 @@ AS
 	BEGIN TRY
 		--don't think I need this bit
 		DECLARE	@LoginGroups VARCHAR(500)
-		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT
+		DECLARE @LoginType VARCHAR(1)
+		EXEC dbo.uspGetAuthenticatedLoginGroupsAndType @LoginGroups OUTPUT, @LoginType OUTPUT
+
+
 		--as this check is done in uspPhec/uspService
 		-- Debugging
 		-- EXEC master..xp_logevent 60000, @LoginGroups
@@ -71,9 +74,14 @@ AS
 					AND (@AgeFrom IS NULL OR le.Age IS NULL OR le.Age >= @AgeFrom)
 					AND (@AgeTo IS NULL OR le.Age IS NULL OR le.Age <= @AgeTo)
 					AND (@BornInUK IS NULL OR le.UkBorn = @BornInUK)
-					AND (Region IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')) OR TreatmentRegion IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')))
-					AND TbService IN 
-						(SELECT TB_Service_Name FROM @allowedServices)
+					AND (Region IN (SELECT VALUE FROM STRING_SPLIT(@Region, ',')) 
+						OR TreatmentRegion IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
+						OR ResolvedResidenceRegion IN (SELECT VALUE FROM STRING_SPLIT(@Region, ','))
+						)
+					--limit the returned results to the list of allowed services for TB service users, but ignore this for
+					--regional users, and just constrain them by the region values above
+					AND (TbService IN (SELECT TB_Service_Name FROM @allowedServices) 
+						OR @LoginType != 'S')
 				
 
 
