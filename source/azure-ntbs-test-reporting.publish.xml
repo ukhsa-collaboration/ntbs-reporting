@@ -15,7 +15,7 @@
       <Value>ets</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Geographies">
-      <Value>geography</Value>
+      <Value>test-geography</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>labbase2</Value>
@@ -30,7 +30,7 @@
       <Value>test-ntbs</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>geography</Value>
+      <Value>test-geography</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>test-specimen-matching</Value>
