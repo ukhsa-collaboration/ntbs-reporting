@@ -183,6 +183,7 @@ BEGIN TRY
 		GroupId = mn.GroupId,
 		NTBSNotificationId = ntbs.NotificationId,
 		NTBSHospitalName = hos.[Name],
+		NTBSCaseManagerUsername = h.CaseManagerUsername,
 		TBServiceName = tbs.[Name],
 		NTBSRegion = region.[Name]
 		

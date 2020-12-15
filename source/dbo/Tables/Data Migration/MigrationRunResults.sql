@@ -15,6 +15,7 @@
 	[ProxyTestDateUsed] [varchar](3) NULL,
 	[NTBSNotificationId] [int] NULL,
 	[NTBSHospitalName] [nvarchar](200)  NULL,
+	[NTBSCaseManagerUsername] [nvarchar](150) NULL,
 	[TBServiceName] [nvarchar](200)  NULL,
 	[NTBSRegion] [nvarchar](50)  NULL,
 	[NTBSTreatmentOutcome] [varchar](30) NULL,
