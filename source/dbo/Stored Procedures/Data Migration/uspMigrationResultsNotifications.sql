@@ -23,6 +23,7 @@ AS
 		,[NTBSHospitalName]					AS 'NTBS Hospital name'
 		,[NTBSRegion]						AS 'NTBS Region'
 		,[NTBSTreatmentOutcome]				AS 'NTBS Treatment outcome'
+		,[NTBSCaseManagerUsername]			AS 'NTBS Case manager username'
 		,[MigrationResult]					AS 'Migration Result'
 		,[MigrationNotes]					AS 'Comments'
 		,g.[Linked notifications]			AS 'Linked notifications'
