@@ -497,6 +497,7 @@ AND MigrationRunId = @MigrationRun</CommandText>
 SELECT NtbsCaseManagerUsername, Count(MigrationNotificationId) AS CountOfRecords
 FROM [dbo].[MigrationRunResults]
 WHERE MigrationRunId = @MigrationRun
+AND MigrationResult != 'Error'
 GROUP BY NtbsCaseManagerUsername
 ORDER BY CountOfRecords DESC</CommandText>
       </Query>
@@ -7781,7 +7782,7 @@ ORDER BY CountOfRecords DESC</CommandText>
           </Border>
         </Style>
       </Body>
-      <Width>842.22877mm</Width>
+      <Width>842.2288mm</Width>
       <Page>
         <PageFooter>
           <Height>5.34459mm</Height>
