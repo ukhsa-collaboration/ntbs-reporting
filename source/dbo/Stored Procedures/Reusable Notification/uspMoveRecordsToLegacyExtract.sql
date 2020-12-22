@@ -184,7 +184,7 @@ BEGIN TRY
         ,COALESCE(hv.TreatmentHPU, '')
 	    ,COALESCE(rn.Hospital, '')					                                AS 'HospitalName'
         ,COALESCE(rn.ResidencePhec, '')				                                AS 'ResolvedResidenceRegion'
-	    ,COALESCE(rn.LocalAuthority, '')			                                AS 'ResolvedResidenceLA'
+	    ,COALESCE(ll.LTLAName, '')			                                AS 'ResolvedResidenceLA'
 	    ,(CASE
 		    WHEN rn.NoFixedAbode = 'Yes' THEN 1
 		    ELSE 0
@@ -256,6 +256,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[DenotificationDetails] dn ON dn.NotificationId = rn.NotificationId
 		LEFT OUTER JOIN [dbo].[DenotificationReasonMapping] drm ON drm.Reason = dn.Reason
         LEFT OUTER JOIN [dbo].[LegacyExtractHospitalLookupValues] hv ON hv.HospitalId = rn.HospitalId
+        LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].LTLALookup ll ON ll.Postcode = Replace(rn.Postcode,' ','')
 
         
     --and then remove these records from the ReusableNotification table
