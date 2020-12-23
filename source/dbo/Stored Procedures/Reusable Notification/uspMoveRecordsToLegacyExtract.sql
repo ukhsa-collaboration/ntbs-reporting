@@ -64,7 +64,6 @@ BEGIN TRY
       ,[TreatmentHPU]
       ,[HospitalName]
       ,[ResolvedResidenceRegion]
-      ,[ResolvedResidenceLA]
       ,[NoFixedAbode]
       ,[NoSampleTaken]
       ,[CurrentDrugUse]
@@ -181,7 +180,7 @@ BEGIN TRY
 	    ,COALESCE(CONVERT(NVARCHAR(10),rn.MdrTreatmentDate), '')			        AS 'MDRTreatmentDate'
 	    ,COALESCE(rn.ShortCourse, '')				                                AS 'ShortCourse'
         ,COALESCE(rn.TreatmentPhec, '')				                                AS 'TreatmentRegion'
-        ,COALESCE(hv.TreatmentHPU, '')
+        ,COALESCE(hv.TreatmentHPU, '')                                              AS 'TreatmentHPU'
 	    ,COALESCE(rn.Hospital, '')					                                AS 'HospitalName'
         ,COALESCE(rn.ResidencePhec, '')				                                AS 'ResolvedResidenceRegion'
 	    ,(CASE
