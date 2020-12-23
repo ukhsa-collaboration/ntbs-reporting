@@ -24,6 +24,7 @@ AS
 			PCT = COALESCE(pl.PctCode, ''),
 			HospitalPCT = COALESCE(h.pctName, ''),
 			HospitalLocalAuthority = COALESCE(la.[Name], ''),
+            ResolvedResidenceLA = COALESCE(ll.LTLAName, ''),
             PreviousId = [dbo].[ufnGetPreviousId](p.NotificationId),
 			WorldRegionName = continent.[Name]
 			FROM 
@@ -31,6 +32,7 @@ AS
 				INNER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = p.NotificationId
 				INNER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = p.NotificationId
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(p.Postcode, ' ', '')
+                LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].LTLALookup ll ON ll.Postcode = REPLACE(p.Postcode,' ','')
 				INNER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = p.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[NotificationSite] ns ON ns.NotificationId = p.NotificationId AND ns.SiteId = 17
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[NotificationSite] ns1 ON ns1.NotificationId = p.NotificationId AND ns1.SiteId = 6
