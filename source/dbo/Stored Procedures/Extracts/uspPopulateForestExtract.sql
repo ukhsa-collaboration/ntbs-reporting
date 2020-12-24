@@ -53,6 +53,7 @@ BEGIN
 			,HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
 			,Prison 
 			,PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonOrWhenFirstSeen
+			,TreatmentRegion
 			,AlcoholUse
 			,SmearSample
 			,SmearSampleResult
@@ -61,7 +62,7 @@ BEGIN
 			,ExtractDate
 			,Localpatientid
 			,Age
-			,OwnerUserId
+			--,OwnerUserId
 			,CaseManager 
 			,PatientsConsultant
 			,DiseaseSites
@@ -72,11 +73,11 @@ BEGIN
 			CONVERT(varchar(10), NotificationDate, 103)														AS CaseReportDate,
 			Forename																						AS Forename,
 			Surname																							AS Surname,
-			reusableNotification.NhsNumber																	AS NhsNumber,
+			rn.NhsNumber																					AS NhsNumber,
 			DateOfBirth																						AS DateOfBirth,
 			patient.[Address]																				AS AddressLine,
-			reusableNotification.NoFixedAbode																AS NoFixedAbode,
-			reusableNotification.Postcode																	AS Postcode,
+			rn.NoFixedAbode																					AS NoFixedAbode,
+			rn.Postcode																						AS Postcode,
 			CASE Sex 
 				WHEN 'Female' THEN 'F' 
 				WHEN 'Male' THEN 'M' 
@@ -89,26 +90,27 @@ BEGIN
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			EthnicGroup																						AS EthnicGroup,
-			reusableNotification.UkBorn																		AS UKBorn,
+			rn.UkBorn																						AS UKBorn,
 			UPPER(BirthCountry)																				AS BirthCountry,
 			UkEntryYear																						AS UkEntryYear,
 			CONVERT(varchar, SymptomOnsetDate, 103)															AS SymptomOnset,
 			CONVERT(varchar, PresentedDate, 103)															AS DatePresented,
 			CONVERT(varchar, DiagnosisDate, 103)															AS DateOfDiagnosis,
 			CONVERT(varchar, StartOfTreatmentDate, 103)														AS StartOfTreatment,
-			reusableNotification.DrugMisuse																	AS DrugUse,
+			rn.DrugMisuse																					AS DrugUse,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(DrugMisuseInLast5Years)					AS DrugMisuseLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(DrugMisuseMoreThan5YearsAgo)				AS DrugUseMoreThan5YearsAgo,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(CurrentDrugMisuse)						AS CurrentDrugUse,
-			reusableNotification.Homeless																	AS Homeless,
+			rn.Homeless																						AS Homeless,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(HomelessInLast5Years)						AS HomelessLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(HomelessMoreThan5YearsAgo)				AS HomelessMoreThan5YearsAgo,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(CurrentlyHomeless)						AS CurrentlyHomeless,
-			reusableNotification.Prison																		AS Prison,
+			rn.Prison																						AS Prison,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(InPrisonInLast5Years)						AS InPrisonInLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(InPrisonMoreThan5YearsAgo)				AS PrisonMoreThan5YearsAgo,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(CurrentlyInPrisonOrInPrisonWhenFirstSeen) AS CurrentlyInPrisonOrWhenFirstSeen,
-			reusableNotification.AlcoholMisuse																AS AlcoholUse,
+			rn.TreatmentPhec																				AS TreatmentRegion,
+			rn.AlcoholMisuse																				AS AlcoholUse,
 			lab.[SpecimenTypeCode]																			AS SmearSample,
 			'Positive'																						AS SmearSampleResult,
 			lab.SpecimenDate																				AS SpecimenDate,
@@ -116,9 +118,9 @@ BEGIN
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
 			Age																								AS Age,
-			hospital.CaseManagerUsername																	AS OwnerUserId,
+			--hospital.CaseManagerUsername																	AS OwnerUserId,
 			CaseManager																						AS CaseManager,
-			reusableNotification.Consultant																	AS PatientsConsultant,
+			rn.Consultant																					AS PatientsConsultant,
 			 --ClusterNumber																				AS ClusterNumber,
 			diseaseSites.[Description]																		AS DiseaseSites
 		FROM ([dbo].[ReusableNotification] rn
@@ -131,7 +133,8 @@ BEGIN
 		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
 		WHERE nsm.MatchType = 'Confirmed' 
-			AND (rn.residencePhecCode NOT IN ('PHECNI', 'PHECSCOT', 'PHECWAL') OR rn.ResidencePhecCode IS NULL); -- Exclude Wales, Scotland and Northern Ireland
+			AND (rn.TreatmentPhec IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands', 
+										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
 
 		WITH VNTR AS
 		(SELECT DISTINCT
