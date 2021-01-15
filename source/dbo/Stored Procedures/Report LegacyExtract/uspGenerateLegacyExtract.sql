@@ -260,7 +260,10 @@ AS
            ,[TOMReported36mth]
            ,[TOMReasonExceeds24mths]
            ,[WorldRegionName]
-		   ,[TbService])
+		   ,[TbService]
+           ,[TbServiceCode]
+           ,[TreatmentPhecCode]
+           ,[ResidencePhecCode])
 
            SELECT
 		    dm.Id AS 'NotificationId'
@@ -453,6 +456,9 @@ AS
             ,dm.TOMReasonExceeds24mths
             ,dm.WorldRegionName
 			,rne.[Service]
+            ,rne.TBServiceCode
+            ,rne.TreatmentPhecCode
+            ,rne.ResidencePhecCode
 
            FROM [$(ETS)].[dbo].[DataExportMainTable] dm
             INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = dm.[Guid]
@@ -473,15 +479,25 @@ AS
 
 
 
-		--one final pass to insert the TB Service for denotified ETS records, as they will not be in ResuableNotification_ETS
+		--one final pass to insert the TB Service and PHEC codes for denotified ETS records, as they will not be in ResuableNotification_ETS
 
 		UPDATE le SET
-			[TbService] = s.TB_Service_Name
+			 [TbService]             = s.TB_Service_Name
+            ,[TbServiceCode]        = s.TB_Service_Code
+            ,[TreatmentPhecCode]    = treatmentPhec.PHEC_Code
+            ,[ResidencePhecCode]    = residencePhec.PHEC_Code
 		FROM [dbo].[LegacyExtract] le
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalName = le.HospitalName
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_Hospital sh ON sh.HospitalID = h.HospitalId
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service s ON s.TB_Service_Code = sh.TB_Service_Code
-		WHERE le.TbService IS NULL
+            INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC t2p ON t2p.TB_Service_Code = s.TB_Service_Code
+            INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.PHEC treatmentPhec ON treatmentPhec.PHEC_Code = t2p.PHEC_Code
+            LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].Reduced_Postcode_file post ON post.Pcode = REPLACE(le.Postcode, ' ', '')
+            LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[LA_to_PHEC] l2p ON l2p.LA_Code = post.LA_Code
+            LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] residencePhec ON residencePhec.PHEC_Code = l2p.PHEC_Code
+		WHERE 
+            le.SourceSystem = 'ETS' AND
+            le.Denotified = 'Yes'
 
 	END TRY
 	BEGIN CATCH

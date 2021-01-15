@@ -135,6 +135,7 @@
     <Folder Include="dbo\Tables\Data Migration" />
     <Folder Include="dbo\Functions\Data Migration" />
     <Folder Include="dbo\Views\Data Migration" />
+    <Folder Include="dbo\Views\Notification Summary" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -389,6 +390,8 @@
     <Build Include="dbo\Views\ClusterMatching\vwForestBuild.sql" />
     <Build Include="dbo\Views\Lab Results\vwEtsDuplicateMatches.sql" />
     <Build Include="dbo\Views\Lab Results\vwEtsSpecimenMatch.sql" />
+    <Build Include="dbo\Views\Notification Summary\vwNotificationsByLocalAuthority.sql" />
+    <Build Include="dbo\Views\Notification Summary\vwNotificationsByTBService.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

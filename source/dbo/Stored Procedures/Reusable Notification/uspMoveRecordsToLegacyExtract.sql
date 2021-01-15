@@ -119,7 +119,10 @@ BEGIN TRY
       ,[AdultContactsLTBITreatComplete]
       ,[ChildContactsLTBITreatComplete]
       ,[TotalContactsLTBITreatComplete]
-	  ,[TbService])
+	  ,[TbService]
+      ,[TbServiceCode]
+      ,[ResidencePhecCode]
+      ,[TreatmentPhecCode])
   
 	SELECT
 		rn.NotificationId															AS 'NotificationId'
@@ -245,7 +248,9 @@ BEGIN TRY
 	    ,COALESCE(CONVERT(NVARCHAR(5), rn.ChildContactsLTBITreatComplete), '')		AS 'ChildContactsLTBITreatComplete'
 	    ,COALESCE(CONVERT(NVARCHAR(5),rn.TotalContactsLTBITreatComplete), '')		AS 'TotalContactsLTBITreatComplete'
 		,COALESCE(rn.[Service], '')													AS 'TbService'
-
+        ,COALESCE(rn.TBServiceCode, '')                                             AS 'TbServiceCode'
+        ,COALESCE(rn.ResidencePhecCode, '')                                         AS 'ResidencePhecCode'
+        ,COALESCE(rn.TreatmentPhecCode, '')                                         AS 'TreatmentPhecCode'
 	FROM
 		[dbo].[ReusableNotification] rn
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rn.NotificationId

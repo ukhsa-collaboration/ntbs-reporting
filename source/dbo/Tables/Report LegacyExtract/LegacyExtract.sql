@@ -193,4 +193,7 @@
 	[TOMReasonExceeds24mths] [nvarchar](50) NULL,
 	[WorldRegionName] [nvarchar](50) NULL, 
     [TbService] [nvarchar](150) NULL,
+	[TbServiceCode] [nvarchar](30) NULL,
+	[ResidencePhecCode] [nvarchar](30) NULL,
+	[TreatmentPhecCode] [nvarchar](30) NULL
 )  
