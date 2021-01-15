@@ -136,19 +136,24 @@ BEGIN
 			AND (rn.TreatmentPhec IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands', 
 										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
 
-		WITH VNTR AS
-		(SELECT DISTINCT
-			nsm.ReferenceLaboratoryNumber, v.VntrProfile
-		FROM [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch] nsm
-			INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON a.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
-			INNER JOIN [$(Labbase2)].[dbo].[VntrProfile] v ON v.LabDataId = a.LabDataID
-		WHERE nsm.MatchType = 'Confirmed')
+		
+		--VNTR and ClusterNumber are now fixed values, but are expressed at the level of OpieId, which we are not currently supporting
+		--in the equivalent extract
+		--see if there is a value populated on any record for the Case Id and Reference Laboratory Number and populate the columns with this
 
-		--set VNTR
+
+		
+		WITH LegacyVntrCluster AS
+		(SELECT DISTINCT CaseId, ReferenceLaboratoryNumber, VntrProfile, ClusterNumber 
+		 FROM [$(ETS)].[dbo].[ETSOxfordExtract]
+		 WHERE VntrProfile IS NOT NULL AND ReferenceLaboratoryNumber IS NOT NULL)
+
+		--set VNTR and Cluster
 		UPDATE dbo.ForestExtract
-			SET VntrProfile = v.VntrProfile
+			SET VntrProfile = v.VntrProfile,
+			ClusterNumber = v.ClusterNumber
 			FROM dbo.ForestExtract e
-				INNER JOIN VNTR v ON v.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
+				INNER JOIN LegacyVntrCluster v ON v.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
 
 		--convert Yorkshire and Humber to Yorkshire and The Humber
 		UPDATE dbo.ForestExtract
