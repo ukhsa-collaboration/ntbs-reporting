@@ -464,6 +464,11 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>LTBR</DatabaseSqlCmdVariable>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\NTBS_AUDIT.dacpac">
+      <HintPath>..\data\DACPAC\NTBS_AUDIT.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_AUDIT</DatabaseSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
@@ -497,6 +502,10 @@
     <SqlCmdVariable Include="NTBS">
       <DefaultValue>test-ntbs</DefaultValue>
       <Value>$(SqlCmdVar__17)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_AUDIT">
+      <DefaultValue>NTBS_AUDIT</DefaultValue>
+      <Value>$(SqlCmdVar__20)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>

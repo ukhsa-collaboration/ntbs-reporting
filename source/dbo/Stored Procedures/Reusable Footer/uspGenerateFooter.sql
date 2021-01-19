@@ -13,10 +13,17 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		DECLARE @FooterText AS VARCHAR(1000)
 		DECLARE @ReportingLastRefreshed AS DATETIME
 		DECLARE @EtsLastRefreshed AS DATETIME
+		DECLARE @NtbsLastRefreshed AS DATETIME
 		
 		-- Get footer template text
 		SET @FooterText = (SELECT Text
 							FROM TemplateText)
+
+		SET @NtbsLastRefreshed = (SELECT MAX([AuditDateTime])
+			FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
+			WHERE AuditDateTime > DATEADD(DAY, -7, GETUTCDATE())
+				AND EntityType = 'Notification'
+				AND EventType != 'Read')
 		
 		-- When were the generated reusable tables last refreshed ?
 		Set @ReportingLastRefreshed = (select top 1 DataRefreshedAt from ReusableNotification n order by DataRefreshedAt desc)
@@ -35,6 +42,11 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 			SET @FooterText = REPLACE(@FooterText, '{ETS_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@EtsLastRefreshed) + ' ' + FORMAT(@EtsLastRefreshed, 'HH:mm'))
 		ELSE 
 			SET @FooterText = REPLACE(@FooterText, '{ETS_LAST_REFRESHED}', '"UNKNOWN"')
+
+		IF (@NtbsLastRefreshed IS NOT NULL)
+			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@NtbsLastRefreshed) + ' ' + FORMAT(@NtbsLastRefreshed, 'HH:mm'))
+		ELSE
+			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', '"UNKNOWN"')
 
 		DELETE FROM [dbo].[FooterText]
 

@@ -124,8 +124,13 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (454, N'TUBERCULOSIS COMPLEX', 5)
 		SET IDENTITY_INSERT [dbo].[OrganismNameMapping] OFF
 
-		DELETE FROM dbo.TemplateText
-		INSERT INTO TemplateText VALUES('Footer text to be displayed in each SSRS report', '1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}. 2. The data presented are provisional and are subject to change. 3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS). Use of data is covered by ETS Data Access and Provision Policy');
+		TRUNCATE TABLE [dbo].[TemplateText]
+		INSERT INTO [dbo].[TemplateText]([Desc],[Text])
+		VALUES
+			('Footer text to be displayed in each report',
+			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}. 
+			2. The data presented are provisional and are subject to change. 
+			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies')
 
 		DELETE FROM dbo.TreatmentOutcomeTimePeriod
 		SET IDENTITY_INSERT [dbo].[TreatmentOutcomeTimePeriod] ON 
