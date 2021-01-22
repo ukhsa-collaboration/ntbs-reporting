@@ -2,6 +2,7 @@
 	[LabSpecimenId] [int] IDENTITY(1,1) NOT NULL,
 	[ReferenceLaboratoryNumber] [nvarchar](50) NOT NULL,
 	[SpecimenDate] [datetime] NULL,
+	[EarliestRecordDate] [datetime] NULL,
 	[SpecimenTypeCode] [nvarchar](255) NULL,
 	[LaboratoryName] [nvarchar](65) NULL,
 	[ReferenceLaboratory] [nvarchar](65) NULL,

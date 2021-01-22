@@ -63,6 +63,16 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 			WHERE YEAR(s.SpecimenDate) IN (SELECT NotificationYear FROM vwNotificationYear)
 			AND s.ReferenceLaboratoryNumber NOT IN (SELECT ReferenceLaboratoryNumber FROM LabSpecimen)
 
+		--populate the EarliestRecordDate so we can find newly arrived specimens
+		UPDATE ls SET
+			EarliestRecordDate = Q1.EarliestRecordDate
+			FROM LabSpecimen ls
+				INNER JOIN 
+				(SELECT ReferenceLaboratoryNumber, MIN(AuditCreate) AS EarliestRecordDate 
+				FROM StandardisedLabbaseSpecimen GROUP BY ReferenceLaboratoryNumber) AS Q1 ON Q1.ReferenceLaboratoryNumber = ls.ReferenceLaboratoryNumber
+	
+
+
 		--load basic information about drug sensitivity results from Labase, but only for the specimens in LabSpecimen
 		--impacts performance too much to pull all the data across
 		INSERT INTO [dbo].[StandardisedLabbaseSusceptibilityResult]

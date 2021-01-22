@@ -161,7 +161,7 @@
     <Build Include="dbo\Functions\Reusable Notification\ufnGetCountryName.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetAnySocialRiskFactor.sql" />
     <Build Include="dbo\Tables\Lab Results\CreateSampleMapping.sql" />
-    <Build Include="dbo\Tables\Lab Results\CreateSpecimenTable.sql" />
+    <Build Include="dbo\Tables\Lab Results\LabSpecimen.sql" />
     <Build Include="dbo\Tables\Reusable Footer\FooterText.sql" />
     <Build Include="dbo\Tables\Reusable Footer\TemplateText.sql" />
     <Build Include="dbo\Tables\Authorization\PhecAdGroup.sql" />
