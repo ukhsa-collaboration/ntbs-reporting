@@ -53,7 +53,7 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 			SELECT DISTINCT 
 				n.LegacyId 
 				,s.ReferenceLaboratoryNumber 
-				,MIN(lr.auditcreate) OVER (PARTITION BY n.LegacyID) AS EarliestMatchDate
+				,MIN(lr.auditcreate) OVER (PARTITION BY s.ReferenceLaboratoryNumber) AS EarliestMatchDate
 				,MIN(s.SpecimenDate) OVER (PARTITION BY s.ReferenceLaboratoryNumber) AS SpecimenDate 
 				,CASE WHEN n.DenotificationId IS NOT NULL THEN 1 ELSE 0 END AS Denotified
 				,CASE WHEN n.Submitted = 0 THEN 1 ELSE 0 END AS Draft
