@@ -398,6 +398,7 @@
     <Build Include="dbo\Views\Lab Results\vwComparisonOfLabMatches.sql" />
     <Build Include="dbo\Views\Lab Results\vwComparisonOfLabMatchScenarios.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspSummarisedLabMatchComparison.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspSummarisedNTBSMatches.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -410,6 +411,7 @@
     <None Include="azure-ntbs-int-reporting.publish.xml" />
     <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
     <None Include="Scripts\PopulateFeatureFlags.sql" />
+    <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
