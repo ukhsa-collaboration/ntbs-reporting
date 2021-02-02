@@ -263,7 +263,8 @@ AS
 		   ,[TbService]
            ,[TbServiceCode]
            ,[TreatmentPhecCode]
-           ,[ResidencePhecCode])
+           ,[ResidencePhecCode]
+           ,[HospitalId])
 
            SELECT
 		    dm.Id AS 'NotificationId'
@@ -459,7 +460,7 @@ AS
             ,rne.TBServiceCode
             ,rne.TreatmentPhecCode
             ,rne.ResidencePhecCode
-
+            ,rne.HospitalId
            FROM [$(ETS)].[dbo].[DataExportMainTable] dm
             INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = dm.[Guid]
             LEFT OUTER JOIN [$(ETS)].[dbo].[ContactTracing] ct ON ct.Id = n.ContactTracingId
@@ -486,6 +487,7 @@ AS
             ,[TbServiceCode]        = s.TB_Service_Code
             ,[TreatmentPhecCode]    = treatmentPhec.PHEC_Code
             ,[ResidencePhecCode]    = residencePhec.PHEC_Code
+            ,[HospitalId]           = h.HospitalId
 		FROM [dbo].[LegacyExtract] le
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Hospital h ON h.HospitalName = le.HospitalName
 			INNER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_Hospital sh ON sh.HospitalID = h.HospitalId

@@ -137,6 +137,7 @@
     <Folder Include="dbo\Views\Data Migration" />
     <Folder Include="dbo\Views\Notification Summary" />
     <Folder Include="dbo\Views\Authorization" />
+    <Folder Include="dbo\Views\Reference Data" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -395,6 +396,7 @@
     <Build Include="dbo\Views\Authorization\vwUser.sql" />
     <Build Include="dbo\Views\Authorization\vwUserPermissions.sql" />
     <Build Include="dbo\Tables\Lab Results\EtsSpecimenMatch.sql" />
+    <Build Include="dbo\Views\Reference Data\vwHospital.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

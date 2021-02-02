@@ -122,7 +122,8 @@ BEGIN TRY
 	  ,[TbService]
       ,[TbServiceCode]
       ,[ResidencePhecCode]
-      ,[TreatmentPhecCode])
+      ,[TreatmentPhecCode]
+      ,[HospitalId])
   
 	SELECT
 		rn.NotificationId															AS 'NotificationId'
@@ -251,6 +252,7 @@ BEGIN TRY
         ,COALESCE(rn.TBServiceCode, '')                                             AS 'TbServiceCode'
         ,COALESCE(rn.ResidencePhecCode, '')                                         AS 'ResidencePhecCode'
         ,COALESCE(rn.TreatmentPhecCode, '')                                         AS 'TreatmentPhecCode'
+        ,COALESCE(rn.HospitalId, '')                                                AS 'HospitalId'
 	FROM
 		[dbo].[ReusableNotification] rn
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rn.NotificationId

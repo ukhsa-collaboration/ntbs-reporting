@@ -195,5 +195,6 @@
     [TbService] [nvarchar](150) NULL,
 	[TbServiceCode] [nvarchar](30) NULL,
 	[ResidencePhecCode] [nvarchar](30) NULL,
-	[TreatmentPhecCode] [nvarchar](30) NULL
+	[TreatmentPhecCode] [nvarchar](30) NULL,
+	[HospitalId] [nvarchar](36) NULL
 )  
