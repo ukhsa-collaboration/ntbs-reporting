@@ -13,10 +13,11 @@ AS
 		 els.TimeEnd
 		,els.UserName
 		,Q1.AdGroup
-		,CONCAT(DATEPART(year, els.TimeEnd), '-', DATEPART(ISO_WEEK, els.TimeEnd)) As WeekNum
+		,c.ISOYearWeek AS WeekNum
 		,els.ReportID
-		,getUTCDate() as DateRetrieved 
+		,getUTCDate() AS DateRetrieved 
 	FROM [$(ReportServer)].[dbo].[ExecutionLogStorage] els
+		INNER JOIN [dbo].[Calendar] c ON c.DateValue = CONVERT(DATE, els.TimeEnd)
 	LEFT OUTER JOIN 
 		
 		(SELECT 
