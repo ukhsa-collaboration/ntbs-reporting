@@ -29,6 +29,9 @@
     <SqlCmdVariable Include="NTBS">
       <Value>int-ntbs</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_AUDIT">
+      <Value>int-ntbs-audit</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <Value>int-geography</Value>
     </SqlCmdVariable>
