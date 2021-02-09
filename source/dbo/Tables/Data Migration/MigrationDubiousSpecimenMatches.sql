@@ -6,5 +6,6 @@
 	NHSNumberDifferentFlag bit null, 
 	SpecimenMultipleNotificationMatchFlag bit null,
 	DenotifiedMatchFlag bit null,
-	DeletedDraftFlag bit null
+	DeletedDraftFlag bit null,
+	MigrationNotes varchar (1000) NULL
 )

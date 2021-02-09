@@ -1,6 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[uspMigrationDubiousSpecimenMatches]
 
 AS
+
+TRUNCATE TABLE MigrationDubiousSpecimenMatches
 ------------------------------------------------------------------------------------------------------------
 --where one specimen has been matched to two different notifications.
 select distinct e.* into #SpecimenMultipleNotificationMatchFlag from EtsSpecimenMatch e
@@ -18,7 +20,7 @@ SELECT ReferenceLaboratoryNumber,COUNT(*) as Total
  order by e.ReferenceLaboratoryNumber
 
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, SpecimenMultipleNotificationMatchFlag)
-SELECT LegacyId,ReferenceLaboratoryNumber,1 FROM #SpecimenMultipleNotificationMatchFlag
+SELECT DISTINCT LegacyId,ReferenceLaboratoryNumber,1 FROM #SpecimenMultipleNotificationMatchFlag
 ------------------------------------------------------------------------------------------------------------
 /*specimen date is more than a year before the notification date
 
@@ -38,7 +40,7 @@ FROM MigrationDubiousSpecimenMatches M
 INNER JOIN #SpecimenMultipleNotificationMatchFlag S ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, SpecimenDateRangeFlag)
-SELECT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #SpecimenDateRangeFlag S
+SELECT DISTINCT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #SpecimenDateRangeFlag S
 LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 WHERE M.EtsId IS NULL
  
@@ -59,7 +61,7 @@ FROM MigrationDubiousSpecimenMatches M
 INNER JOIN #DifferentNHS S ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, NHSNumberDifferentFlag)
-SELECT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #DifferentNHS S
+SELECT DISTINCT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #DifferentNHS S
 LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 WHERE M.EtsId IS NULL
    ------------------------------------------------------------------------------------------------------------
@@ -74,13 +76,13 @@ FROM MigrationDubiousSpecimenMatches M
 INNER JOIN #DenotifiedMatchFlag S ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, DenotifiedMatchFlag)
-SELECT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #DenotifiedMatchFlag S
+SELECT DISTINCT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #DenotifiedMatchFlag S
 LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 WHERE M.EtsId IS NULL
   ------------------------------------------------------------------------------------------------------------
  --matched to a deleted draft  
 select n.LegacyId as ets_id,a.ReferenceLaboratoryNumber,n.AuditDelete,n.NotificationDate, SpecimenDate,n.Submitted,lr.OpieId,lr.AuditCreate,lr.AutoMatched,
-p.Forename,p.Surname,p.DateOfBirth,p.NhsNumber,a.PatientForename,a.PatientSurname,a.PatientBirthDate,a.PatientNhsNumber,su.Email as CaseOwnerEmail 
+p.Forename, p.Surname, p.DateOfBirth, p.NhsNumber, a.PatientForename, a.PatientSurname, a.PatientBirthDate, a.PatientNhsNumber, su.Email as CaseOwnerEmail 
 INTO #DeletedDraftFlag
 FROM [$(ETS)].dbo.Notification  n
 inner join [$(ETS)].dbo.LaboratoryResult lr on lr.NotificationId = n.id
@@ -96,10 +98,29 @@ and (year(lr.AuditCreate) > (year(GETDATE())-3)
 UPDATE M
 SET DeletedDraftFlag = 1
 FROM MigrationDubiousSpecimenMatches M
-INNER JOIN #DeletedDraftFlag S ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
+INNER JOIN #DeletedDraftFlag S ON M.EtsId = S.ets_id AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, DeletedDraftFlag)
-SELECT S.LegacyId, S.ReferenceLaboratoryNumber, 1 FROM #DeletedDraftFlag S
-LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
+SELECT DISTINCT S.ets_id, S.ReferenceLaboratoryNumber, 1 FROM #DeletedDraftFlag S
+LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.ets_id AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
 WHERE M.EtsId IS NULL
+
+
+Drop table #DeletedDraftFlag
+Drop table #DenotifiedMatchFlag
+Drop table #DifferentNHS
+Drop table #SpecimenDateRangeFlag
+Drop table #SpecimenMultipleNotificationMatchFlag
  ------------------------------------------------------------------------------------------------------------
+
+ UPDATE MigrationDubiousSpecimenMatches
+ Set MigrationNotes = ReferenceLaboratoryNumber + ' (' +
+CONCAT_WS(', ',REPLACE(cast([SpecimenDateRangeFlag] as varchar),'1','Specimen Date Range')
+,REPLACE(cast([NHSNumberDifferentFlag] as varchar),'1','[NHS Number Difference')
+,REPLACE(cast([SpecimenMultipleNotificationMatchFlag] as varchar),'1','Specimen Multiple Notification Match')
+,REPLACE(cast(DenotifiedMatchFlag as varchar),'1','Denotified Match')
+,REPLACE(cast(DeletedDraftFlag as varchar),'1','Deleted Draft Match')) + ')'
+  
+
+ --Update Comments in MigrationRunResults field MigrationNotes
+ --Review specimen match(es) to Isolate(s) [ReferenceLaboratoryNumber] (),[ReferenceLaboratoryNumber2]() 
