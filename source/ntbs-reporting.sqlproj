@@ -404,6 +404,7 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationDubiousSpecimenMatches.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMirgationSpecimensMatchesToReview.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
