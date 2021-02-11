@@ -116,7 +116,7 @@ Drop table #SpecimenMultipleNotificationMatchFlag
  UPDATE MigrationDubiousSpecimenMatches
  Set MigrationNotes = ReferenceLaboratoryNumber + ' (' +
 CONCAT_WS(', ',REPLACE(cast([SpecimenDateRangeFlag] as varchar),'1','Specimen Date Range')
-,REPLACE(cast([NHSNumberDifferentFlag] as varchar),'1','[NHS Number Difference')
+,REPLACE(cast([NHSNumberDifferentFlag] as varchar),'1','NHS Number Difference')
 ,REPLACE(cast([SpecimenMultipleNotificationMatchFlag] as varchar),'1','Specimen Multiple Notification Match')
 ,REPLACE(cast(DenotifiedMatchFlag as varchar),'1','Denotified Match')
 ,REPLACE(cast(DeletedDraftFlag as varchar),'1','Deleted Draft Match')) + ')'
