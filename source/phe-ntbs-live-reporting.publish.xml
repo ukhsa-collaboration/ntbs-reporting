@@ -31,6 +31,9 @@
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_Live</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_AUDIT">
+      <Value>NTBS_AuditDB_Live</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <Value>NTBS_R1_Geography_Staging_Live</Value>
     </SqlCmdVariable>

@@ -22,8 +22,17 @@
     <SqlCmdVariable Include="Labbase2">
       <Value>NTBS_Labbase2_Live</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="LTBR">
+      <Value>NTBS_LondonTBR_Live</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="migration">
+      <Value>NTBS_Migration_Live</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_UAT</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_AUDIT">
+      <Value>NTBS_AuditDB_UAT</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <Value>NTBS_R1_Geography_Staging_UAT</Value>
