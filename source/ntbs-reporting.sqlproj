@@ -406,6 +406,9 @@
     <Build Include="dbo\Views\Data Migration\vwMigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMirgationSpecimensMatchesToReview.sql" />
     <Build Include="dbo\Tables\ClusterMatching\ForestEtsClusterBackup.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationAlert.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
+    <Build Include="dbo\Views\Data Migration\vwMigrationAlert.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

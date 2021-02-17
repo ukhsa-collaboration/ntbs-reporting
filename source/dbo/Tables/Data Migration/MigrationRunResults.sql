@@ -20,6 +20,7 @@
 	[NTBSRegion] [nvarchar](50)  NULL,
 	[NTBSTreatmentOutcome] [varchar](30) NULL,
 	[MigrationResult] [nvarchar](20)  NULL,
+	[MigrationAlerts] [nvarchar](1000)  NULL,
 	[MigrationNotes] [nvarchar](4000)  NULL
 ) ON [PRIMARY]
 
