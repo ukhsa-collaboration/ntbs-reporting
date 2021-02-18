@@ -26,6 +26,7 @@ AS
 		,[NTBSCaseManagerUsername]			AS 'NTBS Case manager username'
 		,[MigrationResult]					AS 'Migration Result'
 		,[MigrationNotes]					AS 'Comments'
+		,[MigrationAlerts]					AS 'Migration Alerts'
 		,g.[Linked notifications]			AS 'Linked notifications'
 
 		FROM [dbo].[MigrationRunResults] mrr

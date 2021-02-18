@@ -409,6 +409,7 @@
     <Build Include="dbo\Tables\Data Migration\MigrationAlert.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationAlert.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlertSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
