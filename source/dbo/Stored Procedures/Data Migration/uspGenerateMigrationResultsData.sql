@@ -353,16 +353,7 @@ BEGIN TRY
 		WHERE MigrationResult IS NULL
 		AND NTBSNotificationId IS NOT NULL
 		AND MigrationRunId = @MigrationRunID;
------------------------------------------------------------------------------------------------------------------------------
-   --Insert migration Alerts into table Migration Alert then 
-   EXEC uspMigrationAlert @MigrationRunID
-
-   UPDATE mrr
-   SET MigrationAlerts = ma.AlertTypes
-   FROM [dbo].[MigrationRunResults] mrr 
-   INNER JOIN vwMigrationAlert ma on ma.MigrationRunId = mrr.MigrationRunId and ma.NTBSNotificationId = mrr.MigrationNotificationId
-
------------------------------------------------------------------------------------------------------------------------------		
+		
 	--and finally there may be a few rows where the record did not migrate because of an error on another record in its group
 	--so it has no error records itself
 
@@ -394,6 +385,19 @@ BEGIN TRY
 		LtbrDate = (SELECT CONVERT(DATE, MAX(dp_NotifiedDate)) AS LtbrDate FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod]),
 		LabbaseDate = (SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised])
 		WHERE MigrationRunId = @MigrationRunID
+
+		-----------------------------------------------------------------------------------------------------------------------------
+   --Insert migration Alerts into table Migration Alert then 
+
+   
+   EXEC uspMigrationAlert @MigrationRunID
+
+   UPDATE mrr
+   SET MigrationAlerts = ma.AlertTypes
+   FROM [dbo].[MigrationRunResults] mrr 
+   INNER JOIN vwMigrationAlert ma on ma.MigrationRunId = mrr.MigrationRunId and ma.MigrationNotificationId = mrr.MigrationNotificationId
+   
+-----------------------------------------------------------------------------------------------------------------------------
 
 	COMMIT
 END TRY
