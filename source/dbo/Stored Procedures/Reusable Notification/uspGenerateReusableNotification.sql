@@ -307,8 +307,8 @@ BEGIN TRY
 			--so 1 means yes, a test was carried out, and should be stored in the reporting service as No
 			--in answer to the question 'No Sample Taken'
 			,(CASE 
-				WHEN ted.HasTestCarriedOut = 1 THEN 'No'
-				WHEN ted.HasTestCarriedOut = 0 THEN 'Yes'
+				WHEN ted.HasTestCarriedOut = 1 THEN 'Yes'
+				WHEN ted.HasTestCarriedOut = 0 THEN 'No'
 				ELSE ''
 			  END)											AS 'NoSampleTaken'
 			,NULL               							AS 'CulturePositive'
