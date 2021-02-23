@@ -67,6 +67,8 @@ BEGIN TRY
 	OR [RowDetails] LIKE '%notifications found to import for%'
 	OR [RowDetails] LIKE '%"r":true%'
 	OR [RowDetails] LIKE '%This might cause the notifications to keep showing up as legacy in search results until corrected%'
+	OR [RowDetails] LIKE '%Importing notifications in range%'
+	OR [RowDetails] LIKE '%Request to import by Date%'
 
 
 	--and remove the content that we don't want.
@@ -76,6 +78,9 @@ BEGIN TRY
 	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#00ff00', '')
 	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#ffff00', '')
 	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#ff0000', '')
+	UPDATE [dbo].[MigrationRawData] SET [RowDetails] = REPLACE([RowDetails], '","c":"#800000', '')
+
+	
 
 	--now we need to parse out the rows that say 'Fetching data for legacy notifications' as this will give us the list of notification Ids
 	--and insert these rows into [MigrationRunResults]
@@ -162,7 +167,7 @@ BEGIN TRY
 
 	 UPDATE [dbo].[MigrationRawData] SET Reason =
 		CASE
-			WHEN CHARINDEX([NotificationId], RowDetails) = 0 THEN RowDetails
+			WHEN CHARINDEX([NotificationId], RowDetails) = 0 THEN SUBSTRING(RowDetails, 1, 120)
 			ELSE [dbo].[ufnGetMigrationDataLossReason] (SUBSTRING(RowDetails, CHARINDEX([NotificationId], RowDetails)+LEN([NotificationId])+1, 40))
 		END
 	 WHERE Reason IS NULL
