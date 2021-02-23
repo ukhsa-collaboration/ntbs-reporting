@@ -410,6 +410,7 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationAlert.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlertSummary.sql" />
+    <Build Include="dbo\Stored Procedures\ClusterMatching\uspUpdateNotificationClusterMatchWithNtbsId.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
