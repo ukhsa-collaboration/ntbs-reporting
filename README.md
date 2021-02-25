@@ -35,7 +35,7 @@ To make a change to the project you should then:
 	- Indent size: 4
 2. Object naming conventions
 	- uspStoredProcName
-	- udfFunctionName
+	- ufnFunctionName
 	- vwViewName
 	- TableName (no prefix)
 	- Keys
