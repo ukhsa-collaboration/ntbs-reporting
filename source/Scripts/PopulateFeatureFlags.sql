@@ -3,7 +3,6 @@
 
 IF (SELECT COUNT(1) FROM [dbo].[ReportingFeatureFlags]) = 0
 BEGIN
-	INSERT INTO [dbo].[ReportingFeatureFlags](IncludeNTBS, SourceUsersFromNTBS, Comment)
-	VALUES(0, 0, 'The first flag ensures records are not sourced from NTBS if it is not active. The second flag allows users to be sourced via
-	the NTBS user sync process once that is active, even if the application itself is not yet in use')
+	INSERT INTO [dbo].[ReportingFeatureFlags](IncludeNTBS, IncludeETS, IncludeLabBase, Comment)
+	VALUES(0, 0, 0, 'Include or exclude records from various datasources in the reporting database')
 END

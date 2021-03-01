@@ -160,12 +160,16 @@ BEGIN
 			SET HPAResidenceRegion = 'Yorkshire and The Humber'
 			WHERE HPAResidenceRegion = 'Yorkshire and Humber'
 
-		INSERT INTO [dbo].ForestExtract 
-		SELECT etsForest.*
-		FROM [$(ETS)].dbo.ETSOxfordExtract etsForest
-		LEFT JOIN [dbo].[ReusableNotification] reusableNotification ON reusableNotification.EtsId = etsForest.CaseId
-		WHERE reusableNotification.NtbsId IS NULL
 
+		DECLARE @IncludeETS BIT = (SELECT TOP(1) IncludeETS FROM [dbo].[ReportingFeatureFlags])
+		IF @IncludeETS = 1
+		BEGIN
+			INSERT INTO [dbo].ForestExtract 
+			SELECT etsForest.*
+			FROM [$(ETS)].dbo.ETSOxfordExtract etsForest
+			LEFT JOIN [dbo].[ReusableNotification] reusableNotification ON reusableNotification.EtsId = etsForest.CaseId
+			WHERE reusableNotification.NtbsId IS NULL
+		END
 		COMMIT
 	END TRY
 	BEGIN CATCH
