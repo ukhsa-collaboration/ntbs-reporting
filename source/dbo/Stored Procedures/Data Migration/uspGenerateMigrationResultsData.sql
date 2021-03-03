@@ -401,6 +401,7 @@ BEGIN TRY
    SET MigrationAlerts = ma.AlertTypes
    FROM [dbo].[MigrationRunResults] mrr 
    INNER JOIN vwMigrationAlert ma on ma.MigrationRunId = mrr.MigrationRunId and ma.MigrationNotificationId = mrr.MigrationNotificationId
+   WHERE ma.MigrationRunId = @MigrationRunID
    
 -----------------------------------------------------------------------------------------------------------------------------
 
