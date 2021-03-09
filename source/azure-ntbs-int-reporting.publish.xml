@@ -11,9 +11,6 @@
     <SqlCmdVariable Include="ETS">
       <Value>ets</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="ETSLabbase">
-      <Value>ETSLabbase</Value>
-    </SqlCmdVariable>
     <SqlCmdVariable Include="Geographies">
       <Value>int-geography</Value>
     </SqlCmdVariable>

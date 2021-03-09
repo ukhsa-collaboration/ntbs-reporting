@@ -492,10 +492,6 @@
       <DefaultValue>ETS</DefaultValue>
       <Value>$(SqlCmdVar__16)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="ETSLabbase">
-      <DefaultValue>ETSLabbase</DefaultValue>
-      <Value>$(SqlCmdVar__4)</Value>
-    </SqlCmdVariable>
     <SqlCmdVariable Include="Geographies">
       <DefaultValue>Geographies</DefaultValue>
       <Value>$(SqlCmdVar__3)</Value>
