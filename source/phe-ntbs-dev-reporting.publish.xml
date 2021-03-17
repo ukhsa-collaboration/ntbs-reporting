@@ -14,9 +14,6 @@
     <SqlCmdVariable Include="ETSLabbase">
       <Value>LabBase2</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="Geographies">
-      <Value>NTBS_R1_Geography_Staging</Value>
-    </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>LabBase2</Value>
     </SqlCmdVariable>

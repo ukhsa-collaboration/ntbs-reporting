@@ -14,7 +14,7 @@
     </RootPath>
     <RootNamespace>Reporting_New</RootNamespace>
     <AssemblyName>Reporting_New</AssemblyName>
-    <ModelCollation>1033, CI</ModelCollation>
+    <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -25,6 +25,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
     <Recovery>SIMPLE</Recovery>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -491,10 +492,6 @@
     <SqlCmdVariable Include="ETS">
       <DefaultValue>ETS</DefaultValue>
       <Value>$(SqlCmdVar__16)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="Geographies">
-      <DefaultValue>Geographies</DefaultValue>
-      <Value>$(SqlCmdVar__3)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <DefaultValue>Labbase2</DefaultValue>

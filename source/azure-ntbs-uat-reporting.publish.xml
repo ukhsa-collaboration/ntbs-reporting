@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>uat-reporting</TargetDatabaseName>
     <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=ntbs-ops-dbs.uksouth.cloudapp.azure.com;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=ntbs-ops-dbs.uksouth.cloudapp.azure.com\NTBS;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
   <ItemGroup>
@@ -13,9 +13,6 @@
     </SqlCmdVariable>
     <SqlCmdVariable Include="ETSLabbase">
       <Value>ETSLabbase</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="Geographies">
-      <Value>uat-geography</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>labbase2</Value>
