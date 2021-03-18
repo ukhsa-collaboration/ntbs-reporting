@@ -1,19 +1,19 @@
 ﻿/***************************************************************************************************
-Desc:    This pre-calculates apprx 90 reusable notification data points over-night that each report 
-         can report from. Please DO NOT report from ETS directly, if the data can also be found here!
+Desc:    This pre-calculates apprx 90 reusable notification data points over-night that each report
+		 can report from. Please DO NOT report from ETS directly, if the data can also be found here!
 		 If you write an aggregate proc, you can query join up on this Reusablenotification table directly.
 		 If you write a list list proc, please query ufnAuthorizedReusableNotification() instead, which
 		 will apply permission restrictions to the notification records you report on.
 
 
-         
+
 **************************************************************************************************/
 
 Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
-		
+
 		--prep the lab results
 		TRUNCATE TABLE [dbo].[StandardisedETSLaboratoryResult]
 
@@ -32,7 +32,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				LEFT JOIN [$(ETS)].dbo.[Notification] n ON n.Id = lr.NotificationId
 					WHERE lr.AuditDelete IS NULL
 
-		
+
 
 			INSERT INTO dbo.ReusableNotification_ETS
 				SELECT
@@ -64,15 +64,15 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					END															AS Occupation,
 					occat.[Name]												AS OccupationCategory,
 					-- RP-859 populate birth country consistently
-					CASE 
-						WHEN p.UkBorn = 1 
-						THEN 'UNITED KINGDOM' 
+					CASE
+						WHEN p.UkBorn = 1
+						THEN 'UNITED KINGDOM'
 						ELSE c.[Name]
 					END 														AS BirthCountry,
 					p.UkEntryYear                                               AS UkEntryYear,
-					case 
-						when po.Pcd2  is null 
-						then '' 
+					case
+						when po.Pcd2  is null
+						then ''
 						else po.Pcd2
 					end                                                         AS Postcode,
 					dbo.ufnYesNo(a.NoFixedAbode)                                AS NoFixedAbode,
@@ -89,53 +89,53 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					CONVERT(DATE, te.SymptomOnset)                              AS SymptomOnsetDate,
 					CONVERT(DATE, te.DatePresented)                             AS PresentedDate,
 					DATEDIFF(DAY,
-						te.SymptomOnset, 
+						te.SymptomOnset,
 						te.DatePresented)                                       AS OnsetToPresentationDays,
-					CONVERT(DATE, te.DateOfDiagnosis)                           AS DiagnosisDate, 
+					CONVERT(DATE, te.DateOfDiagnosis)                           AS DiagnosisDate,
 					DATEDIFF(DAY,
-						te.DatePresented, 
+						te.DatePresented,
 						te.DateOfDiagnosis)                                     AS PresentationToDiagnosisDays,
-					CONVERT(DATE, te.StartOfTreatment)                          AS StartOfTreatmentDate, 
+					CONVERT(DATE, te.StartOfTreatment)                          AS StartOfTreatmentDate,
 					DATEDIFF(DAY,
-						te.DateOfDiagnosis, 
+						te.DateOfDiagnosis,
 						te.StartOfTreatment)                                    AS DiagnosisToTreatmentDays,
 					DATEDIFF(DAY,
-						te.SymptomOnset, 
+						te.SymptomOnset,
 						te.StartOfTreatment)                                    AS OnsetToTreatmentDays,
 					dbo.ufnGetHivTestOffered_ETS (
-						n.Id, 
+						n.Id,
 						te.HIVTestOffered
 					)															AS HivTestOffered,
 					dbo.ufnGetETSSiteOfDisease(n.TuberculosisEpisodeId)            AS SiteOfDisease,
 					ct.AdultContactsIdentified									AS AdultContactsIdentified,
 					ct.ChildContactsIdentified									AS ChildContactsIdentified,
-					ct.TotalContactsIdentified									AS TotalContactsIdentified,	
-					ct.AdultContactsAssessed									AS AdultContactsAssessed,	
-					ct.ChildContactsAssessed									AS ChildContactsAssessed,	
-					ct.TotalContactsAssessed									AS TotalContactsAssessed,	
-					ct.AdultContactsActiveTB									AS AdultContactsActiveTB,	
-					ct.ChildContactsActiveTB									AS ChildContactsActiveTB,	
-					ct.TotalContactsActiveTB									AS TotalContactsActiveTB,	
-					ct.AdultContactsLTBI										AS AdultContactsLTBI,	
+					ct.TotalContactsIdentified									AS TotalContactsIdentified,
+					ct.AdultContactsAssessed									AS AdultContactsAssessed,
+					ct.ChildContactsAssessed									AS ChildContactsAssessed,
+					ct.TotalContactsAssessed									AS TotalContactsAssessed,
+					ct.AdultContactsActiveTB									AS AdultContactsActiveTB,
+					ct.ChildContactsActiveTB									AS ChildContactsActiveTB,
+					ct.TotalContactsActiveTB									AS TotalContactsActiveTB,
+					ct.AdultContactsLTBI										AS AdultContactsLTBI,
 					ct.ChildContactsLTBI										AS ChildContactsLTBI,
-					ct.TotalContactsLTBI										AS TotalContactsLTBI,	
-					ct.AdultContactsLTBITreat									AS AdultContactsLTBITreat,	
-					ct.ChildContactsLTBITreat									AS ChildContactsLTBITreat,	
-					ct.TotalContactsLTBITreat									AS TotalContactsLTBITreat,	
-					ct.AdultContactsLTBITreatComplete							AS AdultContactsLTBITreatComplete,	
-					ct.ChildContactsLTBITreatComplete							AS ChildContactsLTBITreatComplete,	
+					ct.TotalContactsLTBI										AS TotalContactsLTBI,
+					ct.AdultContactsLTBITreat									AS AdultContactsLTBITreat,
+					ct.ChildContactsLTBITreat									AS ChildContactsLTBITreat,
+					ct.TotalContactsLTBITreat									AS TotalContactsLTBITreat,
+					ct.AdultContactsLTBITreatComplete							AS AdultContactsLTBITreatComplete,
+					ct.ChildContactsLTBITreatComplete							AS ChildContactsLTBITreatComplete,
 					ct.TotalContactsLTBITreatComplete							AS TotalContactsLTBITreatComplete,
-					dbo.ufnYesNoUnknown(th.PreviouslyDiagnosed)                 AS PreviouslyDiagnosed, 
+					dbo.ufnYesNoUnknown(th.PreviouslyDiagnosed)                 AS PreviouslyDiagnosed,
 					dbo.ufnEmptyOrIntValue(th.YearsSinceDiagnosis)              AS YearsSinceDiagnosis,
 					(CASE th.PreviouslyDiagnosed
 						WHEN 1 THEN dbo.ufnYesNo(th.DrugTherapyTreated)
 						ELSE NULL
-					END)                                                        AS PreviouslyTreated, 
+					END)                                                        AS PreviouslyTreated,
 					(CASE th.DrugTherapyTreated
 						WHEN 1 THEN dbo.ufnYesNo(th.TreatmentInUK)
 						ELSE NULL
-					END)                                                        AS TreatmentInUk, 
-					th.PreviousId                                               AS PreviousId, 
+					END)                                                        AS TreatmentInUk,
+					th.PreviousId                                               AS PreviousId,
 					dbo.ufnYesNoUnknown(th.BcgVaccinated)                       AS BcgVaccinated,
 
 					-- Risk Factors
@@ -145,87 +145,86 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 						th.Homeless,
 						th.PrisonAtDiagnosis
 					)                                                           AS AnySocialRiskFactor,
-					dbo.ufnYesNoUnknown(th.MisUse)                              AS AlcoholMisuse, 
+					dbo.ufnYesNoUnknown(th.MisUse)                              AS AlcoholMisuse,
 					dbo.ufnYesNoUnknown(th.ProblemUse)                          AS DrugMisuse,
 					dbo.ufnGetDrugUseStatus(
 						1,
-						th.ProblemUse, 
+						th.ProblemUse,
 						n.TuberculosisHistoryId
 					)														    AS CurrentDrugMisuse,
 					dbo.ufnGetDrugUseStatus(
 						2,
-						th.ProblemUse, 
+						th.ProblemUse,
 						n.TuberculosisHistoryId
 					)                                                           AS DrugMisuseInLast5Years,
 					dbo.ufnGetDrugUseStatus(
 						3,
-						th.ProblemUse, 
+						th.ProblemUse,
 						n.TuberculosisHistoryId
 					)                                                           AS DrugMisuseMoreThan5YearsAgo,
 					dbo.ufnYesNoUnknown(th.Homeless)			                AS Homeless,
 					dbo.ufnGetHomelessStatus(
 						1,
-						th.Homeless, 
+						th.Homeless,
 						n.TuberculosisHistoryId
 					)                                                           AS CurrentlyHomeless,
 					dbo.ufnGetHomelessStatus(
 						2,
-						th.Homeless, 
+						th.Homeless,
 						n.TuberculosisHistoryId
 					)                                                           AS HomelessInLast5Years,
 					dbo.ufnGetHomelessStatus(
 						3,
-						th.Homeless, 
+						th.Homeless,
 						n.TuberculosisHistoryId
 					)                                                           AS HomelessMoreThan5YearsAgo,
 					dbo.ufnYesNoUnknown(th.PrisonAtDiagnosis)	                AS Prison,
 					dbo.ufnGetPrisonStatus(
 						1,
-						th.PrisonAtDiagnosis, 
+						th.PrisonAtDiagnosis,
 						n.TuberculosisHistoryId
 					)                                                           AS CurrentlyInPrisonOrInPrisonWhenFirstSeen,
 					dbo.ufnGetPrisonStatus(
 						2,
-						th.PrisonAtDiagnosis, 
+						th.PrisonAtDiagnosis,
 						n.TuberculosisHistoryId
 					)                                                           AS InPrisonInLast5Years,
 					dbo.ufnGetPrisonStatus(
 						3,
-						th.PrisonAtDiagnosis, 
+						th.PrisonAtDiagnosis,
 						n.TuberculosisHistoryId
 					)                                                           AS InPrisonMoreThan5YearsAgo,
-					dbo.ufnYesNoUnknown(th.Haspatienttravelledpriordiagonosis)  AS TravelledOutsideUk, 
-					th.Countriestravelled                                       AS ToHowManyCountries, 
-					dbo.ufnGetETSCountryName(th.TravelledCountryId1)               AS TravelCountry1, 
+					dbo.ufnYesNoUnknown(th.Haspatienttravelledpriordiagonosis)  AS TravelledOutsideUk,
+					th.Countriestravelled                                       AS ToHowManyCountries,
+					dbo.ufnGetETSCountryName(th.TravelledCountryId1)               AS TravelCountry1,
 					dbo.ufnEmptyOrIntValue(th.Travelduration1)                  AS MonthsTravelled1,
-					dbo.ufnGetETSCountryName(th.TravelledCountryId2)               AS TravelCountry2, 
+					dbo.ufnGetETSCountryName(th.TravelledCountryId2)               AS TravelCountry2,
 					dbo.ufnEmptyOrIntValue(th.Travelduration2)                  AS MonthsTravelled2,
-					dbo.ufnGetETSCountryName(th.TravelledCountryId3)               AS TravelCountry3, 
+					dbo.ufnGetETSCountryName(th.TravelledCountryId3)               AS TravelCountry3,
 					dbo.ufnEmptyOrIntValue(th.Travelduration3)                  AS MonthsTravelled3,
-					dbo.ufnYesNoUnknown(th.Haspatientreceivevisitors)           AS ReceivedVisitors, 
-					th.Visitorcountrycount                                      AS FromHowManyCountries, 
-					dbo.ufnGetETSCountryName(th.VisitorCountryId1)                 AS VisitorCountry1, 
+					dbo.ufnYesNoUnknown(th.Haspatientreceivevisitors)           AS ReceivedVisitors,
+					th.Visitorcountrycount                                      AS FromHowManyCountries,
+					dbo.ufnGetETSCountryName(th.VisitorCountryId1)                 AS VisitorCountry1,
 					th.Visitduration1                                           AS DaysVisitorsStayed1,
-					dbo.ufnGetETSCountryName(th.VisitorCountryId2)                 AS VisitorCountry2, 
+					dbo.ufnGetETSCountryName(th.VisitorCountryId2)                 AS VisitorCountry2,
 					th.Visitduration1                                           AS DaysVisitorsStayed2,
-					dbo.ufnGetETSCountryName(th.VisitorCountryId3)                 AS VisitorCountry3, 
+					dbo.ufnGetETSCountryName(th.VisitorCountryId3)                 AS VisitorCountry3,
 					th.Visitduration3                                           AS DaysVisitorsStayed3,
-					dbo.ufnYesNoUnknown(co.Diabetes)                            AS Diabetes, 
-					dbo.ufnYesNoUnknown(co.HepatitisB)                          AS HepatitisB, 
-					dbo.ufnYesNoUnknown(co.HepatitisC)                          AS HepatitisC, 
-					dbo.ufnYesNoUnknown(co.ChronicLiverdisease)                 AS ChronicLiverDisease,		
-					dbo.ufnYesNoUnknown(co.ChronicRenaldisease)                 AS ChronicRenalDisease, 
-					dbo.ufnYesNoUnknown(co.Immunosuppression)                   AS ImmunoSuppression, 
-					NULL                                                        AS BiologicalTherapy, 
-					NULL                                                        AS Transplantation, 
+					dbo.ufnYesNoUnknown(co.Diabetes)                            AS Diabetes,
+					dbo.ufnYesNoUnknown(co.HepatitisB)                          AS HepatitisB,
+					dbo.ufnYesNoUnknown(co.HepatitisC)                          AS HepatitisC,
+					dbo.ufnYesNoUnknown(co.ChronicLiverdisease)                 AS ChronicLiverDisease,
+					dbo.ufnYesNoUnknown(co.ChronicRenaldisease)                 AS ChronicRenalDisease,
+					dbo.ufnYesNoUnknown(co.Immunosuppression)                   AS ImmunoSuppression,
+					NULL                                                        AS BiologicalTherapy,
+					NULL                                                        AS Transplantation,
 					NULL                                                        AS OtherImmunoSuppression,
-					dbo.ufnYesNoUnknown(co.Smoker)                              AS CurrentSmoker, 
+					dbo.ufnYesNoUnknown(co.Smoker)                              AS CurrentSmoker,
 
 					-- Treatment
-					dbo.ufnYesNo(te.PostMortemDiagnosis)                        AS PostMortemDiagnosis, 
-					dbo.ufnYesNo(te.DidNotStartTreatment)                       AS DidNotStartTreatment, 
-					dbo.ufnYesNoNotknown(tp.ShortCourseTreatment)               AS ShortCourse, 
-					dbo.ufnYesNoUnknown(tp.MDRTreatment)                        AS MdrTreatment, 
+					dbo.ufnYesNo(te.PostMortemDiagnosis)                        AS PostMortemDiagnosis,
+					dbo.ufnYesNo(te.DidNotStartTreatment)                       AS DidNotStartTreatment,
+					NULL                                                        AS TreatmentRegimen,
 					CONVERT(DATE, tp.MDRTreatmentDate)                          AS MdrTreatmentDate,
 					(CASE
 						WHEN te.PostMortemDiagnosis = 1 THEN 'Died' -- Step no 1
@@ -266,9 +265,9 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 						tr24.EndOfTreatmentDate,
 						tr36.EndOfTreatmentDate
 					)                                                           AS TreatmentEndDate,
-				
+
 					-- Culture & Resistance
-					dbo.ufnYesNo(n.NoSampleTaken)                               AS NoSampleTaken, 
+					dbo.ufnYesNo(n.NoSampleTaken)                               AS NoSampleTaken,
 					NULL                                                        AS CulturePositive,
 					dbo.ufnGetSpecies(n.LegacyId)                               AS Species,
 					dbo.ufnGetEarliestSpecimenDate(n.LegacyId)                  AS EarliestSpecimenDate,
@@ -306,7 +305,7 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 					AND n.DenotificationId IS NULL
 					AND (cluster.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
 
-				--now remove spaces from postcodes in order to perform lookups. The spaces will be added back in for improved readability later on 
+				--now remove spaces from postcodes in order to perform lookups. The spaces will be added back in for improved readability later on
 				--in uspUpdateReusableNotificationPostcode
 				UPDATE dbo.ReusableNotification_ETS
 					SET Postcode = REPLACE(Postcode, ' ', '')
@@ -318,8 +317,8 @@ Create PROCEDURE [dbo].[uspGenerateReusableNotification_ETS] AS
 				EXEC dbo.uspGenerateReusableNotificationImmunosuppression
 				EXEC dbo.uspGenerateReusableNotificationLastRecordedTreatmentOutcome_ETS
 				EXEC dbo.uspGenerateReusableNotificationCulturePositive
+				EXEC dbo.uspGenerateReusableNotificationTreatmentRegimen_ETS
 
-			
 				-- WARNING: The following 2nd argument will be used as an IN WHERE clause inside a dynamic SQL string that we pass together with single-quotes and commas
 				EXEC dbo.uspGenerateReusableNotificationCultureResistance 'INH', '''ISO'', ''ISO_W'''
 				EXEC dbo.uspGenerateReusableNotificationCultureResistance 'RIF', '''RIF'', ''RIF_W'''

@@ -1,8 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateLegacyExtract]
-	
+
 AS
 	BEGIN TRY
-		
+
 		--fields which are already in ReusableNotification have been moved over already
 		--now to update those which only live in the LegacyExtract
 		UPDATE [dbo].[LegacyExtract]
@@ -27,7 +27,7 @@ AS
             ResolvedResidenceLA = COALESCE(ll.LTLAName, ''),
             PreviousId = [dbo].[ufnGetPreviousId](p.NotificationId),
 			WorldRegionName = continent.[Name]
-			FROM 
+			FROM
 				[$(NTBS)].[dbo].[Patients] p
 				INNER JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = p.NotificationId
 				INNER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = p.NotificationId
@@ -46,9 +46,9 @@ AS
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Continent] continent ON continent.Id = c2.ContinentId
 				INNER JOIN [dbo].[LegacyExtract] le1 ON le1.NtbsId = p.NotificationId AND le1.SourceSystem = 'NTBS'
 
-	
+
 		--second pass to derive HPU from PCT
-	
+
 		UPDATE [dbo].[LegacyExtract]
 			SET HPU = COALESCE(nacs.HPU, ''),
             ResolvedResidenceHPU = COALESCE(nacs.HPU, '')
@@ -67,6 +67,8 @@ AS
 		EXEC [dbo].[uspUpdateLegacySitesOfDisease]
 
 		EXEC [dbo].[uspUpdateLegacyTOMFields]
+
+		EXEC [dbo].[uspUpdateLegacyTreatmentRegimen]
 
 		--now move over the records from ETS where the notification hasn't been migrated into NTBS
 
@@ -470,7 +472,7 @@ AS
                 INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = dm.[Guid]
                 LEFT OUTER JOIN [$(ETS)].[dbo].[ContactTracing] ct ON ct.Id = n.ContactTracingId
 			    LEFT OUTER JOIN [dbo].[ReusableNotification_ETS] rne ON rne.EtsId = dm.Id
-                WHERE 
+                WHERE
 				    --this clause brings in notified records which haven't been migrated into NTBS
 				    dm.Id IN (SELECT NotificationId FROM [dbo].[ReusableNotification] WHERE SourceSystem = 'ETS')
 				    --we also want to bring in records which are:
@@ -502,7 +504,7 @@ AS
                 LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].Reduced_Postcode_file post ON post.Pcode = REPLACE(le.Postcode, ' ', '')
                 LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[LA_to_PHEC] l2p ON l2p.LA_Code = post.LA_Code
                 LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] residencePhec ON residencePhec.PHEC_Code = l2p.PHEC_Code
-		    WHERE 
+		    WHERE
                 le.SourceSystem = 'ETS' AND
                 le.Denotified = 'Yes'
         END

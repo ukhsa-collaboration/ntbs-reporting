@@ -1,10 +1,10 @@
 ﻿/***************************************************************************************************
-Desc:	We have added denotified records into the ReusableNotification tables so that they can go through 
+Desc:	We have added denotified records into the ReusableNotification tables so that they can go through
 		the same transformation logic as the notified records. However, they are only needed for the
 		LegacyExtract report and should not remain in the main table after processing
 **************************************************************************************************/
 CREATE PROCEDURE [dbo].[uspMoveRecordsToLegacyExtract]
-	
+
 AS
 BEGIN TRY
 
@@ -13,7 +13,7 @@ BEGIN TRY
     --first add the NTBS records
 	INSERT INTO [dbo].[LegacyExtract]
 	(  [NotificationId]
-	  ,[NtbsId] 
+	  ,[NtbsId]
 	  ,[EtsId]
 	  ,[IDOriginal]
       ,[SourceSystem]
@@ -124,7 +124,7 @@ BEGIN TRY
       ,[ResidencePhecCode]
       ,[TreatmentPhecCode]
       ,[HospitalId])
-  
+
 	SELECT
 		rn.NotificationId															AS 'NotificationId'
         ,rn.NtbsId																	AS 'NtbsId'
@@ -136,10 +136,10 @@ BEGIN TRY
         ,(CASE
             WHEN dn.DateOfDenotification IS NOT NULL THEN 'Yes'
             ELSE 'No'
-         END)                                                                       AS 'Denotified' 
+         END)                                                                       AS 'Denotified'
         ,CONVERT(DATE, dn.DateOfDenotification)                                     AS 'DenotificationDate'
         ,COALESCE(drm.ReasonOutputName, '')                                         AS 'DenotificationReason'
-        ,COALESCE(rn.CaseManager, '')				                                AS 'CaseManager' 
+        ,COALESCE(rn.CaseManager, '')				                                AS 'CaseManager'
 	    ,COALESCE(rn.Hospital, '')					                                AS 'Hospital'
 	    ,COALESCE(rn.Consultant, '')				                                AS 'PatientsConsultant'
         ,''                                                                         AS 'Title'
@@ -171,19 +171,19 @@ BEGIN TRY
 	    ,COALESCE(rn.AlcoholMisuse, '')				                                AS 'AlcoholUse'
 	    ,COALESCE(rn.Homeless, '')					                                AS 'Homeless'
 	    ,COALESCE(rn.Prison, '')					                                AS 'Prison'
-	     ,(CASE 
+	     ,(CASE
 			WHEN rn.PostMortemDiagnosis = 'Yes' THEN 'Yes'
 			ELSE 'No'
 			END)              			                                            AS 'PostMortemDiagnosis'
-	    ,(CASE 
-		    WHEN rn.PostMortemDiagnosis = 'Yes' THEN FORMAT(rn.DateOfDeath, 'dd/MM/yyyy')								
+	    ,(CASE
+		    WHEN rn.PostMortemDiagnosis = 'Yes' THEN FORMAT(rn.DateOfDeath, 'dd/MM/yyyy')
 		    ELSE ''
 		    END)									                                AS 'PostMortemDeathDate'
 	    ,COALESCE(rn.DidNotStartTreatment, '')		                                AS 'DidNotStartTreatment'
-	    ,COALESCE(rn.MdrTreatment,'')				                                AS 'MDRTreatment' 
+	    ,''                           				                                AS 'MDRTreatment'
 	    ,COALESCE(CONVERT(NVARCHAR(10),rn.MdrTreatmentDate), '')			        AS 'MDRTreatmentDate'
-	    ,COALESCE(rn.ShortCourse, '')				                                AS 'ShortCourse'
-        ,COALESCE(rn.TreatmentPhec, '')				                                AS 'TreatmentRegion'
+	    ,''			                             	                                AS 'ShortCourse'
+	    ,COALESCE(rn.TreatmentPhec, '')				                                AS 'TreatmentRegion'
         ,COALESCE(hv.TreatmentHPU, '')                                              AS 'TreatmentHPU'
 	    ,COALESCE(rn.Hospital, '')					                                AS 'HospitalName'
         ,COALESCE(rn.ResidencePhec, '')				                                AS 'ResolvedResidenceRegion'
@@ -261,11 +261,11 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[DenotificationDetails] dn ON dn.NotificationId = rn.NotificationId
 		LEFT OUTER JOIN [dbo].[DenotificationReasonMapping] drm ON drm.Reason = dn.Reason
         LEFT OUTER JOIN [dbo].[LegacyExtractHospitalLookupValues] hv ON hv.HospitalId = rn.HospitalId
-        
 
-        
+
+
     --and then remove these records from the ReusableNotification table
-    DELETE FROM [dbo].[ReusableNotification] WHERE NtbsId IN 
+    DELETE FROM [dbo].[ReusableNotification] WHERE NtbsId IN
         (SELECT NtbsId FROM [dbo].[LegacyExtract] WHERE Denotified = 'Yes' AND NtbsId IS NOT NULL)
 END TRY
 BEGIN CATCH
