@@ -19,7 +19,10 @@ To make a new copy of the reporting database, do the following:
     1. In the pop-up window, next to the `Target database connection` select `Edit...`, and enter the password for the `sqlAdmin` user - this can be found in the `ntbs-ops-dbs-credentials` secret in Azure. (If you also check `Remember password` then you do not need to repeat this step in future).
     2. Click `Generate Script`. Review the SQL script that is generated, and confirm that it is reflective of your changes. In this case, it should be creating all of the tables, and adding all of the functions and stored procedures.
     3. When you are happy with this script, double click on the xml file again and then click `Publish` in the dialog box that pops up. This will generate the same script again, and then run it on the SQL server, creating your new database in the process.
-4. To populate the database, first run `uspPopulateCalendarTable`, and then run `uspGenerate`. This database is now ready for use.
+4. To populate the database:
+    1. Run the stored procedure `uspPopulateCalendarTable`
+    2. Run the a SQL command based on the script in `source/Scripts/PopulateFeatureFlags.sql`. To make a dev database, you will want to set the three numbers being inserted to `1, 1, 1` instead of the default `0, 0, 0`.
+    3. Run the stored procedure `uspGenerate`
 
 To make a change to the project you should then:
 
