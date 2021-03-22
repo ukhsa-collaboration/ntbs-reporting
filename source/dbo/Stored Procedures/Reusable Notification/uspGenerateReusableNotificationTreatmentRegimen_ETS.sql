@@ -17,7 +17,7 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationTreatmentRegimen_ETS]
 AS
 
 	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = 'StandardTherapy'
+		SET TreatmentRegimen = 'Standard therapy'
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
@@ -25,7 +25,7 @@ AS
 
 
 	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = 'MdrTreatment'
+		SET TreatmentRegimen = 'RR/MDR/XDR treatment'
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
