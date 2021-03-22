@@ -425,6 +425,7 @@
     <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
     <None Include="Scripts\PopulateFeatureFlags.sql" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
+    <None Include="azure-ntbs-USER-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
