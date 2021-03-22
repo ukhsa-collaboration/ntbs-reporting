@@ -16,8 +16,22 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationTreatmentRegimen_ETS]
 
 AS
 
+	DECLARE @StandardTreatment NVARCHAR(30), @MdrTreatment NVARCHAR(30), @OtherTreatment NVARCHAR(30)
+
+	SELECT @StandardTreatment = TreatmentRegimenDescription
+	FROM TreatmentRegimenLookup
+	WHERE TreatmentRegimenCode = 'StandardTherapy'
+
+	SELECT @MdrTreatment = TreatmentRegimenDescription
+	FROM TreatmentRegimenLookup
+	WHERE TreatmentRegimenCode = 'MdrTreatment'
+
+	SELECT @OtherTreatment = TreatmentRegimenDescription
+	FROM TreatmentRegimenLookup
+	WHERE TreatmentRegimenCode = 'Other'
+
 	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = 'Standard therapy'
+		SET TreatmentRegimen = @StandardTreatment
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
@@ -25,7 +39,7 @@ AS
 
 
 	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = 'RR/MDR/XDR treatment'
+		SET TreatmentRegimen = @MdrTreatment
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
@@ -33,7 +47,7 @@ AS
 
 
 	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = 'Other'
+		SET TreatmentRegimen = @OtherTreatment
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
