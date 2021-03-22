@@ -1,6 +1,6 @@
 ﻿/***************************************************************************************************
-Desc:	This populates ReusableNotification with every record in ReusableNotification_ETS whose 
-		ETS ID is not already in ReusableNotification along with every record in NTBS         
+Desc:	This populates ReusableNotification with every record in ReusableNotification_ETS whose
+		ETS ID is not already in ReusableNotification along with every record in NTBS
 **************************************************************************************************/
 
 CREATE PROCEDURE [dbo].[uspGenerateReusableNotification]
@@ -13,7 +13,7 @@ BEGIN TRY
 
 	DECLARE @IncludeNTBS BIT = (SELECT TOP(1) IncludeNTBS FROM [dbo].[ReportingFeatureFlags])
 	IF @IncludeNTBS = 1
-	--only include NTBS records if NTBS is live.  
+	--only include NTBS records if NTBS is live.
 	BEGIN
 		INSERT INTO ReusableNotification ([NotificationId]
 			  ,[NtbsId]
@@ -123,8 +123,7 @@ BEGIN TRY
 			  ,[CurrentSmoker]
 			  ,[PostMortemDiagnosis]
 			  ,[DidNotStartTreatment]
-			  ,[ShortCourse]
-			  ,[MdrTreatment]
+			  ,[TreatmentRegimen]
 			  ,[MdrTreatmentDate]
 			  ,[TreatmentOutcome12months]
 			  ,[TreatmentOutcome24months]
@@ -145,71 +144,71 @@ BEGIN TRY
 			  ,[QUIN]
 			  ,[MDR]
 			  ,[XDR]
-			  ,[DataRefreshedAt]) 
-		SELECT 
+			  ,[DataRefreshedAt])
+		SELECT
 			n.NotificationId								AS 'NotificationId'
 			,n.NotificationId								AS 'NTBS_ID'
 			,n.ETSID										AS 'EtsId'
 			,'NTBS'											AS 'SourceSystem'
 			,n.LTBRID										AS 'LtbrId'
-			,CONVERT(DATE, n.NotificationDate)				AS 'NotificationDate' 
+			,CONVERT(DATE, n.NotificationDate)				AS 'NotificationDate'
 			,u.DisplayName									AS 'CaseManager'
 			,hd.Consultant									AS 'Consultant'
 			,hd.HospitalId									AS 'HospitalID'
 			,h.[HospitalName]								AS 'Hospital'
 			,hd.TBServiceCode								AS 'TBServiceCode'
 			,tbs.TB_Service_Name							AS 'Service'
-			,p.NhsNumber									AS 'NhsNumber' 
+			,p.NhsNumber									AS 'NhsNumber'
 			,p.GivenName									AS 'Forename'
 			,p.FamilyName									AS 'Surname'
-			,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth' 
-			,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)	AS 'Age' 
-			,s.[Label]										AS 'Sex' 
+			,CONVERT(DATE, p.Dob) 							AS 'DateOfBirth'
+			,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)	AS 'Age'
+			,s.[Label]										AS 'Sex'
 			,dbo.ufnYesNo(p.UkBorn)							AS 'UKBorn'
 			,e.[Label]										AS 'EthnicGroup'
-			,(CASE 
+			,(CASE
 				WHEN occ.HasFreeTextField = 1 THEN p.OccupationOther
-				ELSE occ.[Role]	
+				ELSE occ.[Role]
 			 END)											AS 'Occupation'
 			,occ.[Sector]									AS 'OccupationCategory'
 			,dbo.ufnGetCountryName(p.CountryId)			    AS 'BirthCountry'
 			,p.YearOfUkEntry								AS 'UkEntryYear'
-			,p.Postcode										AS 'Postcode' 
+			,p.Postcode										AS 'Postcode'
 			,dbo.ufnYesNo(p.NoFixedAbode)					AS 'NoFixedAbode'
 			,la.LA_Name										AS 'LocalAuthority'
 			,la.LA_Code										AS 'LocalAuthorityCode'
-			,resphec.PHEC_Code								AS 'ResidencePhecCode' 
+			,resphec.PHEC_Code								AS 'ResidencePhecCode'
 			,COALESCE(resphec.PHEC_Name, 'Unknown')			AS 'ResidencePhec'
 			,treatphec.PHEC_Code							AS 'TreatmentPhecCode'
 			,COALESCE(treatphec.PHEC_Name, 'Unknown')		AS 'TreatmentPhec'
 			--clinical dates are next. We will want to extend these to include the additional dates captured in NTBS
 			,cd.SymptomStartDate							AS 'SymptomOnsetDate'
-			,cd.FirstPresentationDate					    AS 'PresentedDate' 
+			,cd.FirstPresentationDate					    AS 'PresentedDate'
 			,CAST((DATEDIFF(DAY,
-							cd.SymptomStartDate, 
+							cd.SymptomStartDate,
 							cd.TBServicePresentationDate))
-						AS SMALLINT)						AS 'OnsetToPresentationDays' 
+						AS SMALLINT)						AS 'OnsetToPresentationDays'
 			,cd.DiagnosisDate								AS 'DiagnosisDate'
 			,CAST((DATEDIFF(DAY,
-							cd.TBServicePresentationDate, 
+							cd.TBServicePresentationDate,
 							cd.DiagnosisDate))
-						AS SMALLINT)						AS 'PresentationToDiagnosisDays' 
+						AS SMALLINT)						AS 'PresentationToDiagnosisDays'
 			,cd.TreatmentStartDate							AS 'StartOfTreatmentDate'
 			,CAST((DATEDIFF(DAY,
-							cd.DiagnosisDate, 
+							cd.DiagnosisDate,
 							cd.TreatmentStartDate))
-						AS SMALLINT)						AS 'DiagnosisToTreatmentDays' 
+						AS SMALLINT)						AS 'DiagnosisToTreatmentDays'
 			,CAST((DATEDIFF(DAY,
-							cd.SymptomStartDate, 
+							cd.SymptomStartDate,
 							cd.TreatmentStartDate))
-						AS SMALLINT)						AS 'OnsetToTreatmentDays' 
-			,dbo.ufnGetHivTestOffered (cd.HIVTestState)		AS 'HivTestOffered' 
+						AS SMALLINT)						AS 'OnsetToTreatmentDays'
+			,dbo.ufnGetHivTestOffered (cd.HIVTestState)		AS 'HivTestOffered'
 			--NEXT: need to join to NotificationSite and Site tables to summarise site of disease
 			,dbo.ufnGetSiteOfDisease(n.NotificationId)		AS 'SiteOfDisease' -- New function created for this. To be checked.
 			--Contact Tracing
 			,ct.AdultsIdentified							AS 'AdultContactsIdentified'
 			,ct.ChildrenIdentified							AS 'ChildContactsIdentified'
-			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsIdentified, ct.ChildrenIdentified)	
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsIdentified, ct.ChildrenIdentified)
 															AS 'TotalContactsIdentified'
 			,ct.AdultsScreened								AS 'AdultContactsAssessed'
 			,ct.ChildrenScreened							AS 'ChildContactsAssessed'
@@ -225,29 +224,29 @@ BEGIN TRY
 				(ct.AdultsLatentTB, ct.ChildrenLatentTB)	AS 'TotalContactsLTBI'
 			,ct.AdultsStartedTreatment						AS 'AdultContactsLTBITreat'
 			,ct.ChildrenStartedTreatment					AS 'ChildContactsLTBITreat'
-			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsStartedTreatment, ct.ChildrenStartedTreatment)				
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsStartedTreatment, ct.ChildrenStartedTreatment)
 															AS 'TotalContactsLTBITreat'
 			,ct.AdultsFinishedTreatment						AS 'AdultContactsLTBITreatComplete'
 			,ct.ChildrenFinishedTreatment					AS 'ChildContactsLTBITreatComplete'
-			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsFinishedTreatment,ct.ChildrenFinishedTreatment)			
+			,[dbo].[ufnCalcContactTracingTotals](ct.AdultsFinishedTreatment,ct.ChildrenFinishedTreatment)
 															AS 'TotalContactsLTBITreatComplete'
 			--non-NTBS Diagnosis
-			,pth.PreviouslyHadTb            				AS 'PreviouslyDiagnosed' 
+			,pth.PreviouslyHadTb            				AS 'PreviouslyDiagnosed'
 			,DATEPART(YEAR, n.NotificationDate)-
-				pth.PreviousTbDiagnosisYear				    AS 'YearsSinceDiagnosis' 
+				pth.PreviousTbDiagnosisYear				    AS 'YearsSinceDiagnosis'
 			,pth.PreviouslyTreated							AS 'PreviouslyTreated'
-			,(CASE 
+			,(CASE
 				WHEN ptc.IsoCode = 'GB' THEN 'Yes'
 				WHEN ptc.IsoCode IS NOT NULL THEN 'No'
 				ELSE NULL
 			END)		            						AS 'TreatmentInUK'
 			,NULL											AS 'PreviousId' --not relevant to NTBS as this dataset is for non-NTBS cases
-			,cd.BCGVaccinationState							AS 'BcgVaccinated' 
+			,cd.BCGVaccinationState							AS 'BcgVaccinated'
 			--social risk factors
 			-- we have additional ones in NTBS for asylym seeker and immigration detainee, smoker (currently in co-morbid) and mental health
 			,NULL											AS 'AnySocialRiskFactor' -- updated at end
-			,srf.AlcoholMisuseStatus						AS 'AlcoholMisuse' 
-			,rfd.[Status]									AS 'DrugMisuse' 
+			,srf.AlcoholMisuseStatus						AS 'AlcoholMisuse'
+			,rfd.[Status]									AS 'DrugMisuse'
 			,dbo.ufnYesNo(rfd.IsCurrent)					AS 'CurrentDrugMisuse'
 			,dbo.ufnYesNo(rfd.InPastFiveYears)				AS 'DrugMisuseInLast5Years'
 			,dbo.ufnYesNo(rfd.MoreThanFiveYearsAgo)			AS 'DrugMisuseMoreThan5YearsAgo'
@@ -266,7 +265,7 @@ BEGIN TRY
 			,td.StayLengthInMonths1							AS 'MonthsTravelled1'
 			,dbo.ufnGetCountryName(td.Country2Id)			AS 'TravelCountry2'
 			,td.StayLengthInMonths2							AS 'MonthsTravelled2'
-			,dbo.ufnGetCountryName(td.Country3Id)			AS 'TravelCountry3' 
+			,dbo.ufnGetCountryName(td.Country3Id)			AS 'TravelCountry3'
 			,td.StayLengthInMonths3							AS 'MonthsTravelled3'
 			,vd.HasVisitor									AS 'ReceivedVisitors'
 			,vd.TotalNumberOfCountries						AS 'FromHowManyCountries'
@@ -274,26 +273,25 @@ BEGIN TRY
 			,vd.StayLengthInMonths1							AS 'DaysVisitorsStayed1' --NB is this captured in days in ETS? It's captured in months in NTBS
 			,dbo.ufnGetCountryName(vd.Country2Id)			AS 'VisitorCountry2'
 			,vd.StayLengthInMonths2							AS 'DaysVisitorsStayed2'
-			,dbo.ufnGetCountryName(vd.Country3Id)			AS 'VisitorCountry3' 
+			,dbo.ufnGetCountryName(vd.Country3Id)			AS 'VisitorCountry3'
 			,vd.StayLengthInMonths3							AS 'DaysVisitorsStayed3'
 			--comorbidities
-			,cod.DiabetesStatus								AS 'Diabetes' 
+			,cod.DiabetesStatus								AS 'Diabetes'
 			,cod.HepatitisBStatus							AS 'HepatitisB'
-			,cod.HepatitisCStatus							AS 'HepatitisC' 
+			,cod.HepatitisCStatus							AS 'HepatitisC'
 			,cod.LiverDiseaseStatus							AS 'ChronicLiverDisease'
 			,cod.RenalDiseaseStatus							AS 'ChronicRenalDisease'
 			,id.[Status]									AS 'ImmunoSuppression'
 			,dbo.ufnYesNo(id.HasBioTherapy)					AS 'BiologicalTherapy'
-			,dbo.ufnYesNo(id.HasTransplantation)			AS 'Transplantation' 
+			,dbo.ufnYesNo(id.HasTransplantation)			AS 'Transplantation'
 			,dbo.ufnYesNo(id.HasOther)						AS 'OtherImmunoSuppression'
 			,rfs.[Status]                                   AS 'CurrentSmoker'
 			--treatment details
-			,dbo.ufnYesNo(cd.IsPostMortem)					AS 'PostMortemDiagnosis' 
-			,dbo.ufnYesNo(cd.DidNotStartTreatment)			AS 'DidNotStartTreatment' 
+			,dbo.ufnYesNo(cd.IsPostMortem)					AS 'PostMortemDiagnosis'
+			,dbo.ufnYesNo(cd.DidNotStartTreatment)			AS 'DidNotStartTreatment'
 			--next two fields set in separate function later on
-			,NULL						                    AS 'ShortCourse' 
-			,NULL							                AS 'MdrTreatment' 
-			,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate' 
+			,cd.TreatmentRegimen							AS 'TreatmentRegimen'
+			,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate'
 			--Outcomes are done in a separate function later on
 			,NULL											AS 'TreatmentOutcome12months'
 			,NULL											AS 'TreatmentOutcome24months'
@@ -306,7 +304,7 @@ BEGIN TRY
 			--need to reverse the value stored in NTBS as the question is phrased as 'Has Test Carried Out'
 			--so 1 means yes, a test was carried out, and should be stored in the reporting service as No
 			--in answer to the question 'No Sample Taken'
-			,(CASE 
+			,(CASE
 				WHEN ted.HasTestCarriedOut = 1 THEN 'No'
 				WHEN ted.HasTestCarriedOut = 0 THEN 'Yes'
 				ELSE ''
@@ -324,13 +322,13 @@ BEGIN TRY
 			,NULL										    AS 'MDR'
 			,NULL										    AS 'XDR'
 			,GETUTCDATE()									AS 'DataRefreshedAt'
-	
+
 			FROM [$(NTBS)].[dbo].[Notification] n
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Username = hd.CaseManagerUsername
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = hd.HospitalId
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = hd.TBServiceCode
-				LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId 
+				LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].Occupation occ ON occ.OccupationId = p.OccupationId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Sex] s ON s.SexId = p.SexId
 				LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Ethnicity] e ON e.EthnicityId = p.EthnicityId
@@ -358,14 +356,12 @@ BEGIN TRY
 			WHERE n.NotificationStatus IN ('Notified', 'Closed', 'Denotified')
 			--AND (n.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
 
-			UPDATE ReusableNotification 
-			SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' OR 
-												DrugMisuse = 'Yes' OR 
+			UPDATE ReusableNotification
+			SET AnySocialRiskFactor = CASE WHEN AlcoholMisuse = 'Yes' OR
+												DrugMisuse = 'Yes' OR
 												Homeless = 'Yes' OR
-												Prison = 'Yes' 
+												Prison = 'Yes'
 												THEN 'Yes' ELSE 'No' END  --TODO: do we want/are there any other scenarios?
-
-			EXEC [dbo].uspGenerateReusableNotificationTreatmentRegimen                                  
 
 			EXEC [dbo].uspGenerateReusableOutcome
 
@@ -373,7 +369,7 @@ BEGIN TRY
 
 			EXEC [dbo].uspNotificationCultureResistanceSummary
 		END
-    
+
     --now add the records from the ReusableNotification_ETS table which aren't already in the ReusableNotification table
     --these will be ETS records within the reporting time period (currently 2016 onwards) which haven't been migrated into NTBS
     INSERT INTO ReusableNotification ([NotificationId]
@@ -484,8 +480,7 @@ BEGIN TRY
           ,[CurrentSmoker]
           ,[PostMortemDiagnosis]
           ,[DidNotStartTreatment]
-          ,[ShortCourse]
-          ,[MdrTreatment]
+          ,[TreatmentRegimen]
           ,[MdrTreatmentDate]
           ,[TreatmentOutcome12months]
           ,[TreatmentOutcome24months]
@@ -506,7 +501,7 @@ BEGIN TRY
           ,[QUIN]
           ,[MDR]
           ,[XDR]
-          ,[DataRefreshedAt]) 
+          ,[DataRefreshedAt])
     SELECT	rne.[NotificationId]
           ,rne.[NtbsId]
           ,rne.[EtsId]
@@ -615,8 +610,7 @@ BEGIN TRY
           ,rne.[CurrentSmoker]
           ,rne.[PostMortemDiagnosis]
           ,rne.[DidNotStartTreatment]
-          ,rne.[ShortCourse]
-          ,rne.[MdrTreatment]
+          ,rne.[TreatmentRegimen]
           ,rne.[MdrTreatmentDate]
           ,rne.[TreatmentOutcome12months]
           ,rne.[TreatmentOutcome24months]
@@ -637,14 +631,14 @@ BEGIN TRY
           ,rne.[QUIN]
           ,rne.[MDR]
           ,rne.[XDR]
-          ,rne.[DataRefreshedAt]  
+          ,rne.[DataRefreshedAt]
 		  FROM [dbo].[ReusableNotification_ETS] rne
           LEFT OUTER JOIN [dbo].[ReusableNotification] rn ON rn.EtsId = rne.EtsId
 	      WHERE rn.EtsId IS NULL
           --using a LEFT OUTER JOIN because 'NOT IN' doesn't cope with NULL values
 
 
-		  
+
 		  EXEC [dbo].[uspMoveRecordsToLegacyExtract]
 
 	END TRY

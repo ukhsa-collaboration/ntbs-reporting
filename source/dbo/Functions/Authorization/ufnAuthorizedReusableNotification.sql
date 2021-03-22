@@ -132,8 +132,6 @@ RETURN
 		-- Treatment
 		n.PostMortemDiagnosis,
 		n.DidNotStartTreatment,
-		n.ShortCourse,
-		n.MdrTreatment,
 		n.MdrTreatmentDate,
 		n.TreatmentOutcome12months,
 		n.TreatmentOutcome24months,
