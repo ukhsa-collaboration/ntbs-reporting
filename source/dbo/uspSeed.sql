@@ -1,11 +1,11 @@
 ﻿
 /***************************************************************************************************
 Desc:    This seeds or re-seeds the look-up-data. It gets called from uspGenerate(),
-         so is run straight after every code deployment. If in doubt, you can also 
+         so is run straight after every code deployment. If in doubt, you can also
 		 run this proc stand-alone at any time, and it will re-seed the look-up data.
 
 
-         
+
 **************************************************************************************************/
 
 CREATE PROCEDURE [dbo].[uspSeed] AS
@@ -15,11 +15,11 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		-- Disable all foreign keys to make the inserts below succeedC:\Users\ntbsadmin\Desktop\phe-ntbs-summaries\visual-studio\dbo\uspDeploy.sql
 		DECLARE @SqlNocheck NVARCHAR(MAX) = ''
-		;WITH x AS 
+		;WITH x AS
 		(
-			SELECT DISTINCT obj = 
+			SELECT DISTINCT obj =
 				QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id)) + '.' +
-				QUOTENAME(OBJECT_NAME(parent_object_id)) 
+				QUOTENAME(OBJECT_NAME(parent_object_id))
 			FROM sys.foreign_keys
 		)
 		SELECT @SqlNocheck += N'ALTER TABLE ' + obj + ' NOCHECK CONSTRAINT ALL;' FROM x;
@@ -27,7 +27,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		-- Permission inserts
 		DELETE FROM dbo.Phec
-		SET IDENTITY_INSERT [dbo].[Phec] ON 
+		SET IDENTITY_INSERT [dbo].[Phec] ON
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (1, N'E45000001', N'London', 3)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (2, N'E45000010', N'Yorkshire and Humber', 9)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (3, N'E45000016', N'East Midlands', 1)
@@ -43,7 +43,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[Phec] OFF
 
 		DELETE FROM dbo.AdGroup
-		SET IDENTITY_INSERT [dbo].[AdGroup] ON 
+		SET IDENTITY_INSERT [dbo].[AdGroup] ON
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (1, N'Global.NIS.NTBS.LON', 0,'R')
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (2, N'Global.NIS.NTBS.YHR', 0,'R')
 		INSERT [dbo].[AdGroup] ([AdGroupId], [AdGroupName], [IsNationalTeam],[ADGroupType]) VALUES (3, N'Global.NIS.NTBS.EMS', 0,'R')
@@ -61,7 +61,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[AdGroup] OFF
 
 		DELETE FROM dbo.PhecAdGroup
-		SET IDENTITY_INSERT [dbo].[PhecAdGroup] ON 
+		SET IDENTITY_INSERT [dbo].[PhecAdGroup] ON
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (1, 1, 1)
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (2, 2, 2)
 		INSERT [dbo].[PhecAdGroup] ([PhecAdGroupId], [PhecId], [AdGroupId]) VALUES (3, 3, 3)
@@ -128,12 +128,12 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT INTO [dbo].[TemplateText]([Desc],[Text])
 		VALUES
 			('Footer text to be displayed in each report',
-			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}. 
-			2. The data presented are provisional and are subject to change. 
+			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}.
+			2. The data presented are provisional and are subject to change.
 			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies')
 
 		DELETE FROM dbo.TreatmentOutcomeTimePeriod
-		SET IDENTITY_INSERT [dbo].[TreatmentOutcomeTimePeriod] ON 
+		SET IDENTITY_INSERT [dbo].[TreatmentOutcomeTimePeriod] ON
 		INSERT [dbo].[TreatmentOutcomeTimePeriod] ([TreatmentOutcomeTimePeriodId], [TreatmentOutcomeTimePeriod]) VALUES (1, 'Last recorded')
 		INSERT [dbo].[TreatmentOutcomeTimePeriod] ([TreatmentOutcomeTimePeriodId], [TreatmentOutcomeTimePeriod]) VALUES (2, '12 months')
 		INSERT [dbo].[TreatmentOutcomeTimePeriod] ([TreatmentOutcomeTimePeriodId], [TreatmentOutcomeTimePeriod]) VALUES (3, '24 months')
@@ -142,12 +142,12 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		DELETE FROM dbo.DrugResistanceProfile
 		DELETE FROM dbo.Resistant
-		SET IDENTITY_INSERT [dbo].[Resistant] ON 
+		SET IDENTITY_INSERT [dbo].[Resistant] ON
 		INSERT [dbo].[Resistant] ([ResistantId], [ResistantDesc]) VALUES (1, 'All')
 		INSERT [dbo].[Resistant] ([ResistantId], [ResistantDesc]) VALUES (2, 'Not resistant')
 		INSERT [dbo].[Resistant] ([ResistantId], [ResistantDesc]) VALUES (3, 'Resistant')
 		SET IDENTITY_INSERT [dbo].[Resistant] OFF
-		SET IDENTITY_INSERT [dbo].[DrugResistanceProfile] ON 
+		SET IDENTITY_INSERT [dbo].[DrugResistanceProfile] ON
 		INSERT [dbo].[DrugResistanceProfile] ([DrugResistanceProfileId], [ResistantId], [DrugResistanceProfile]) VALUES (1, 1, 'All')
 		INSERT [dbo].[DrugResistanceProfile] ([DrugResistanceProfileId], [ResistantId], [DrugResistanceProfile]) VALUES (2, 2, 'Sensitive to first line')
 		INSERT [dbo].[DrugResistanceProfile] ([DrugResistanceProfileId], [ResistantId], [DrugResistanceProfile]) VALUES (3, 2, 'INH+RIF sensitive')
@@ -157,7 +157,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[DrugResistanceProfile] OFF
 
 		DELETE FROM dbo.ClinicalRiskFactors
-		SET IDENTITY_INSERT [dbo].[ClinicalRiskFactors] ON 
+		SET IDENTITY_INSERT [dbo].[ClinicalRiskFactors] ON
 		INSERT [dbo].[ClinicalRiskFactors] ([ClinicalRiskFactorId], [ClinicalRiskFactor]) VALUES (1, N'All cases')
 		INSERT [dbo].[ClinicalRiskFactors] ([ClinicalRiskFactorId], [ClinicalRiskFactor]) VALUES (2, N'No co-morbidities')
 		INSERT [dbo].[ClinicalRiskFactors] ([ClinicalRiskFactorId], [ClinicalRiskFactor]) VALUES (3, N'Chronic liver disease')
@@ -170,7 +170,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[ClinicalRiskFactors] OFF
 
 		DELETE FROM dbo.SocialRiskFactors
-		SET IDENTITY_INSERT [dbo].[SocialRiskFactors] ON 
+		SET IDENTITY_INSERT [dbo].[SocialRiskFactors] ON
 		INSERT [dbo].[SocialRiskFactors] ([SocialRiskFactorId], [SocialRiskFactor]) VALUES (1, N'All cases')
 		INSERT [dbo].[SocialRiskFactors] ([SocialRiskFactorId], [SocialRiskFactor]) VALUES (2, N'No social risk factors')
 		INSERT [dbo].[SocialRiskFactors] ([SocialRiskFactorId], [SocialRiskFactor]) VALUES (3, N'At least one social risk factor')
@@ -181,21 +181,21 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[SocialRiskFactors] OFF
 
 		DELETE FROM dbo.SiteOfDisease
-		SET IDENTITY_INSERT [dbo].[SiteOfDisease] ON 
+		SET IDENTITY_INSERT [dbo].[SiteOfDisease] ON
 		INSERT [dbo].[SiteOfDisease] ([SiteOfDiseaseId], [SiteOfDisease]) VALUES (1, 'All')
 		INSERT [dbo].[SiteOfDisease] ([SiteOfDiseaseId], [SiteOfDisease]) VALUES (2, 'Pulmonary')
 		INSERT [dbo].[SiteOfDisease] ([SiteOfDiseaseId], [SiteOfDisease]) VALUES (3, 'Extra-pulmonary')
 		SET IDENTITY_INSERT [dbo].[SiteOfDisease] OFF
 
 		DELETE FROM dbo.TreatmentOrResidence
-		SET IDENTITY_INSERT [dbo].[TreatmentOrResidence] ON 
+		SET IDENTITY_INSERT [dbo].[TreatmentOrResidence] ON
 		INSERT [dbo].[TreatmentOrResidence] ([TreatmentOrResidenceId], [TreatmentOrResidence]) VALUES (1, 'Either residence or treatment')
 		INSERT [dbo].[TreatmentOrResidence] ([TreatmentOrResidenceId], [TreatmentOrResidence]) VALUES (2, 'Treatment')
 		INSERT [dbo].[TreatmentOrResidence] ([TreatmentOrResidenceId], [TreatmentOrResidence]) VALUES (3, 'Residence')
 		SET IDENTITY_INSERT [dbo].[TreatmentOrResidence] OFF
 
 		DELETE FROM dbo.UkBorn
-		SET IDENTITY_INSERT [dbo].[UkBorn] ON 
+		SET IDENTITY_INSERT [dbo].[UkBorn] ON
 		INSERT [dbo].[UkBorn] ([UkBornId], [UkBorn]) VALUES (1, 'All')
 		INSERT [dbo].[UkBorn] ([UkBornId], [UkBorn]) VALUES (2, 'Yes')
 		INSERT [dbo].[UkBorn] ([UkBornId], [UkBorn]) VALUES (3, 'No')
@@ -219,7 +219,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('NotEvaluated', 'Not evaluated')
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TreatmentStopped', 'Treatment stopped')
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Failed', 'Failed')
-		
+
 		DELETE FROM [dbo].[DenotificationReasonMapping]
 		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('DuplicateEntry', 'Duplicate entry')
 		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('DuplicateEpisode', 'Duplicate episode (episodes less than 12 months apart)')
@@ -276,6 +276,10 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('RB','Rifabutin')
 		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('STR','Streptomycin')
 
+		DELETE FROM [dbo].[TreatmentRegimenLookup]
+		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('StandardTherapy', 'Standard therapy')
+		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('MdrTreatment', 'RR/MDR/XDR treatment')
+		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('Other', 'Other')
 
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 
@@ -283,11 +287,11 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
-		;WITH x AS 
+		;WITH x AS
 		(
-			SELECT DISTINCT obj = 
+			SELECT DISTINCT obj =
 				QUOTENAME(OBJECT_SCHEMA_NAME(parent_object_id)) + '.' +
-				QUOTENAME(OBJECT_NAME(parent_object_id)) 
+				QUOTENAME(OBJECT_NAME(parent_object_id))
 			FROM sys.foreign_keys
 		)
 		SELECT @SqlCheck += N'ALTER TABLE ' + obj + ' WITH CHECK CHECK CONSTRAINT ALL;' FROM x;
@@ -297,7 +301,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 	END TRY
 	BEGIN CATCH
 		-- A "Generate" proc has errored
-		ROLLBACK		
+		ROLLBACK
 
 		-- Show error on screen
 		EXEC dbo.uspHandleException

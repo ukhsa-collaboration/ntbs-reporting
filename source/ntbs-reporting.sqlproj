@@ -412,6 +412,7 @@
     <Build Include="dbo\Stored Procedures\ClusterMatching\uspUpdateNotificationClusterMatchWithNtbsId.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacyTreatmentRegimen.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\TreatmentRegimenLookup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

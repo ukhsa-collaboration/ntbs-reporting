@@ -290,7 +290,7 @@ BEGIN TRY
 			,dbo.ufnYesNo(cd.IsPostMortem)					AS 'PostMortemDiagnosis'
 			,dbo.ufnYesNo(cd.DidNotStartTreatment)			AS 'DidNotStartTreatment'
 			--next two fields set in separate function later on
-			,cd.TreatmentRegimen							AS 'TreatmentRegimen'
+			,trl.TreatmentRegimenDescription				AS 'TreatmentRegimen'
 			,cd.MDRTreatmentStartDate						AS 'MdrTreatmentDate'
 			--Outcomes are done in a separate function later on
 			,NULL											AS 'TreatmentOutcome12months'
@@ -352,6 +352,7 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ComorbidityDetails] cod ON cod.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
+				LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 			--NTBS-1535: Include Denotified records temporarily
 			WHERE n.NotificationStatus IN ('Notified', 'Closed', 'Denotified')
 			--AND (n.ClusterId IS NOT NULL OR YEAR(n.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
