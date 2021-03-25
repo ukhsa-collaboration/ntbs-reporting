@@ -35,7 +35,7 @@ AS
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
-							 WHERE tp.ShortCourseTreatment = 1 AND tp.MDRTreatment <> 1)
+							 WHERE tp.ShortCourseTreatment = 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
 
 
 	UPDATE dbo.ReusableNotification_ETS
@@ -43,7 +43,7 @@ AS
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
-							 WHERE tp.ShortCourseTreatment <> 1 AND tp.MDRTreatment = 1)
+							 WHERE COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND tp.MDRTreatment = 1)
 
 
 	UPDATE dbo.ReusableNotification_ETS
@@ -51,7 +51,7 @@ AS
 	WHERE NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
-							 WHERE (tp.ShortCourseTreatment <> 1 AND tp.MDRTreatment <> 1)
+							 WHERE (COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
 								OR (tp.ShortCourseTreatment  = 1 AND tp.MDRTreatment  = 1))
 
 RETURN 0
