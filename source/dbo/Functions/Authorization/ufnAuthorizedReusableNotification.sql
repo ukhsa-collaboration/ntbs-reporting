@@ -133,6 +133,7 @@ RETURN
 		n.PostMortemDiagnosis,
 		n.DidNotStartTreatment,
 		n.MdrTreatmentDate,
+		n.TreatmentRegimen,
 		n.TreatmentOutcome12months,
 		n.TreatmentOutcome24months,
 		n.TreatmentOutcome36months,
