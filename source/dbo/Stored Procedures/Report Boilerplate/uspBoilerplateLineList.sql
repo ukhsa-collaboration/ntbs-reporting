@@ -116,8 +116,7 @@ AS
 			-- Treatment
 			n.PostMortemDiagnosis                                  AS 'Post-mortem diagnosis',
 			n.DidNotStartTreatment                                 AS 'Did not start treatment',
-			n.ShortCourse                                          AS 'Short course',
-			n.MdrTreatment                                         AS 'MDR treatment',
+			n.TreatmentRegimen                                     AS 'Treatment regimen',
 			dbo.ufnFormatDateConsistently(n.MdrTreatmentDate)      AS 'MDR treatment date',
 			n.TreatmentOutcome12months                             AS 'Treatment outcome 12 months',
 			n.TreatmentOutcome24months                             AS 'Treatment outcome 24 months',
