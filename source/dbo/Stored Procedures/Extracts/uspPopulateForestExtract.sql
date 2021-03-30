@@ -52,7 +52,7 @@ BEGIN
 			,Homeless 
 			,HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
 			,Prison 
-			,PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonOrWhenFirstSeen
+			,PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonorWhenFirstSeen
 			,TreatmentRegion
 			,AlcoholUse
 			,SmearSample

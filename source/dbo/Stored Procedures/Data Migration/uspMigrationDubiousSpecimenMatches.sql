@@ -84,12 +84,12 @@ WHERE M.EtsId IS NULL
 select n.LegacyId as ets_id,a.ReferenceLaboratoryNumber,n.AuditDelete,n.NotificationDate, SpecimenDate,n.Submitted,lr.OpieId,lr.AuditCreate,lr.AutoMatched,
 p.Forename, p.Surname, p.DateOfBirth, p.NhsNumber, a.PatientForename, a.PatientSurname, a.PatientBirthDate, a.PatientNhsNumber, su.Email as CaseOwnerEmail 
 INTO #DeletedDraftFlag
-FROM [$(ETS)].dbo.Notification  n
-inner join [$(ETS)].dbo.LaboratoryResult lr on lr.NotificationId = n.id
+FROM [$(ETS)].dbo.[Notification]  n
+inner join [$(ETS)].dbo.LaboratoryResult lr on lr.NotificationId = n.Id
 inner join [$(Labbase2)].dbo.Anonymised a on a.OpieId = lr.OpieId
 inner join [$(Labbase2)].dbo.SpecimenResult sr on sr.LabDataID = a.LabDataID
-left join [$(ETS)].dbo.patient p on p.Id = n.PatientId
-left join [$(ETS)].dbo.systemUser su on su.Id = n.OwnerUserId
+left join [$(ETS)].dbo.Patient p on p.Id = n.PatientId
+left join [$(ETS)].dbo.SystemUser su on su.Id = n.OwnerUserId
 
 where (n.AuditDelete is not null ) and lr.AuditDelete is null and lr.OpieId is not null
 and (year(lr.AuditCreate) > (year(GETDATE())-3)

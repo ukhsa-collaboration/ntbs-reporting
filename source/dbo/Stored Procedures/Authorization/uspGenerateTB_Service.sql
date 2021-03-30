@@ -52,7 +52,7 @@ insert into dbo.TB_Service ([Serviceid]
       ,[PhecName]
 	  ,[IsLegacy] from #Service 
 	  --bring through all non-legacy services plus any services used within the time frame of the reporting service
-	  WHERE IsLegacy = 0 OR TB_Service_Code IN (SELECT DISTINCT TbServiceCode FROM [dbo].[ReusableNotification])
+	  WHERE IsLegacy = 0 OR TB_Service_Code IN (SELECT DISTINCT TBServiceCode FROM [dbo].[ReusableNotification])
 	  order by Serviceid   
 SET IDENTITY_INSERT [dbo].[TB_Service] OFF
 GO
