@@ -422,11 +422,12 @@
     <None Include="phe-ntbs-uat-reporting.publish.xml" />
     <None Include="azure-ntbs-uat-reporting.publish.xml" />
     <None Include="phe-ntbs-live-reporting.publish.xml" />
-    <None Include="azure-ntbs-int-reporting.publish.xml" />
+    <None Include="DEV-USER-reporting.publish.xml" />
     <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
     <None Include="Scripts\PopulateFeatureFlags.sql" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
-    <None Include="azure-ntbs-USER-reporting.publish.xml" />
+    <None Include="azure-ntbs-int-reporting.publish.xml" />
+    <None Include="DEV-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
