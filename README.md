@@ -14,14 +14,14 @@ Pre-requisites:
 
 Steps:
 
-1. Follow the instructions for setting up the NTBS app in the [ntbs_Beta repository](https://github.com/publichealthengland/ntbs_Beta/blob/master/ntbs-service/README.md).
+1. Follow the instructions for setting up the NTBS application in the [ntbs_Beta repository](https://github.com/publichealthengland/ntbs_Beta/blob/master/ntbs-service/README.md).
 1. Follow the instructions for setting up the NTBS migration database in the [ntbs-data-migration repository](https://github.com/publichealthengland/ntbs-data-migration/blob/master/README.md).
 1. Restore a backup of the geography database by carrying out the following steps:
     i. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com\NTBS` database server in SSMS.
     i. In the `Object Explorer` panel, right-click on the `int-geography` database and select `Tasks` -> `Back Up...`.
     i. Click `OK`.
     i. After some time, you should see a message informing you that the back up has been successful.
-    i. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com` VM via Remote Desktop and locate the back up file you just created.
+    i. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com` VM via Remote Desktop (the username and password can be found in the `ntbs-ops-dbs-credentials` secret in Azure) and locate the back up file you just created.
     i. Zip the file.
     i. Copy the file to a temporary location on your development machine.
     i. Unzip the file.
@@ -41,10 +41,13 @@ Steps:
 1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
 1. Double-click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
 1. To populate the database, do the following:
+    i. Run the stored procedure `uspSeed` in the specmen matching database.
     i. Run the stored procedure `uspPopulateCalendarTable`.
     i. Run the a SQL command based on the script in `source/Scripts/PopulateFeatureFlags.sql`. To make a dev database, you will want to set the three numbers being inserted to `1, 1, 1` instead of the default `0, 0, 0`.
     i. Run the stored procedure `uspLabSpecimen`.
     i. Run the stored procedure `uspGenerate` in the specimen matching database.
+        - If this fails, then try updating the `ProcessBatchConfig` table by setting the `EstimateNumOfMatches` in the first row to `5`.
+        - If this still fails, then try importing a dozen or so legacy notfications in the NTBS application.
     i. Run the stored procedure `uspGenerate` in the reporting database.
 
 To make a change to the project you should then:
