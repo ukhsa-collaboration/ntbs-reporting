@@ -205,7 +205,6 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticMapping.sql" />
     <Build Include="dbo\Tables\Lab Results\ResultMapping.sql" />
-    <Build Include="dbo\Views\Audit\vwMIReportSummary.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspResultMapping.sql" />
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
@@ -313,7 +312,6 @@
     <Build Include="dbo\Views\Lab Results\vwEtsDuplicateMatches.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByLocalAuthority.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByTBService.sql" />
-    <Build Include="dbo\Views\Authorization\vwUser.sql" />
     <Build Include="dbo\Views\Authorization\vwUserPermissions.sql" />
     <Build Include="dbo\Tables\Lab Results\EtsSpecimenMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwComparisonOfLabMatches.sql" />
