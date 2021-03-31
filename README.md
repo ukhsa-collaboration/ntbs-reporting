@@ -1,28 +1,54 @@
 ## Developer guide
 
-This database project is dependent upon multiple other databases to work correctly. At the time of writing, there is no easy way to restore a local copy of each of these dependencies. Moreover, the project requires the databases to all run on the same instance of SQL Server, meaning that we do not currently have a way to set up a local development environment for this project.
-However, it is possible to set up a new reporting database in this environment, to do your development against in a feature branch. In most cases, the dependencies of the reporting databases should be the `int` versions of the relevant databases (`int-geography`, `int-ntbs`, etc.)
+## Getting started
 
-Make sure that you have the following tools installed locally:
+This database project is dependent upon multiple other databases to work correctly. Follow these instructions to set up a version of the database on your local machine for development purposes.
 
-- Visual Studio 2017 (or later) - this can be downloaded from https://visualstudio.microsoft.com/downloads/
-	- During installation, select "Data storage and processing"
+Pre-requisites:
 
-- Git - this can be downloaded from https://git-scm.com/downloads
+- Install a SQL Server instance (any version from 2016 onwards should be fine).
+- Install SQL Server Management Studio (SSMS).
+- Install Visual Studio 2017 (or later) - this can be downloaded from https://visualstudio.microsoft.com/downloads/
+    - During installation, select "Data storage and processing"
+- Install Git - this can be downloaded from https://git-scm.com/downloads
 
-You can then begin working on the project by cloning the repository and opening `VisualStudio_ntbs-reporting.sln` in Visual Studio.
+Steps:
 
-To make a new copy of the reporting database, do the following:
-1. Make a copy of `azure-ntbs-int-reporting.publish.xml` and name it `azure-ntbs-USER-reporting.publish.xml`. This file will be ignored by Git.
-2. Edit this file, replacing the `TargetDatabaseName` value with the name of the new reporting database you would like to create. This database should not exist on the Azure SQL Server yet.
-3. Publish this database, by double clicking on the xml file in the VS Solution explorer:
-    1. In the pop-up window, next to the `Target database connection` select `Edit...`, and enter the password for the `sqlAdmin` user - this can be found in the `ntbs-ops-dbs-credentials` secret in Azure. (If you also check `Remember password` then you do not need to repeat this step in future).
-    2. Click `Generate Script`. Review the SQL script that is generated, and confirm that it is reflective of your changes. In this case, it should be creating all of the tables, and adding all of the functions and stored procedures.
-    3. When you are happy with this script, double click on the xml file again and then click `Publish` in the dialog box that pops up. This will generate the same script again, and then run it on the SQL server, creating your new database in the process.
-4. To populate the database:
-    1. Run the stored procedure `uspPopulateCalendarTable`
-    2. Run the a SQL command based on the script in `source/Scripts/PopulateFeatureFlags.sql`. To make a dev database, you will want to set the three numbers being inserted to `1, 1, 1` instead of the default `0, 0, 0`.
-    3. Run the stored procedure `uspGenerate`
+1. Follow the instructions for setting up the NTBS application in the [ntbs_Beta repository](https://github.com/publichealthengland/ntbs_Beta/blob/master/ntbs-service/README.md).
+1. Follow the instructions for setting up the NTBS migration database in the [ntbs-data-migration repository](https://github.com/publichealthengland/ntbs-data-migration/blob/master/README.md).
+1. Restore a backup of the geography database by carrying out the following steps:
+    1. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com\NTBS` database server in SSMS.
+    1. In the `Object Explorer` panel, right-click on the `int-geography` database and select `Tasks` -> `Back Up...`.
+    1. Click `OK`.
+    1. After some time, you should see a message informing you that the back up has been successful.
+    1. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com` VM via Remote Desktop (the username and password can be found in the `ntbs-ops-dbs-credentials` secret in Azure) and locate the back up file you just created.
+    1. Zip the file.
+    1. Copy the file to a temporary location on your development machine.
+    1. Unzip the file.
+    1. In SSMS, connect to your SQL Server instance.
+    1. In the `Object Explorer` panel, right-click on `Databases` and select `Restore Database...`.
+    1. Select the `Device` radio button, and add the relevant back up file via the `...` button.
+    1. Change the name of the database from `int-geography` to `geography`.
+    1. Click `OK`.
+    1. You should see a message saying that the database has restored successfully.
+1. Set up specimen matching database:
+    1. Clone the [specimen-matching repository](https://github.com/publichealthengland/ntbs-specimen-matching).
+    1. Make a copy of the `DEV-specimen-matching.publish.xml` file, named `DEV-USER-specimen-matching.publish.xml`. This file will be ignored by git.
+    1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
+    1. Double click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
+1. Clone this repository and open `VisualStudio_ntbs-reporting.sln` in Visual Studio.
+1. Make a copy of `DEV-reporting.publish.xml` and name it `DEV-USER-reporting.publish.xml`. This file will be ignored by Git.
+1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
+1. Double-click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
+1. To populate the database, do the following:
+    1. Run the stored procedure `uspSeed` in the specimen matching database.
+    1. Run the stored procedure `uspPopulateCalendarTable` in the reporting database.
+    1. Run the a SQL command based on the script in `source/Scripts/PopulateFeatureFlags.sql`. To make a dev database, you will want to set the three numbers being inserted to `1, 1, 1` instead of the default `0, 0, 0`.
+    1. Run the stored procedure `uspLabSpecimen` in the reporting database.
+    1. Run the stored procedure `uspGenerate` in the specimen matching database.
+        - If this fails, then try updating the `ProcessBatchConfig` table by setting the `EstimateNumOfMatches` in the first row to `5`.
+        - If this still fails, then try importing a dozen or so legacy notfications in the NTBS application.
+    1. Run the stored procedure `uspGenerate` in the reporting database.
 
 To make a change to the project you should then:
 
