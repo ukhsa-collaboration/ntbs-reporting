@@ -41,6 +41,8 @@
 	[ResidencePhec] [nvarchar](50) NULL,
 	[TreatmentPhecCode] [nvarchar] (50) NULL,
 	[TreatmentPhec] [nvarchar](50) NULL,
+	[Lat] [nvarchar](50) NULL,
+	[Long] [nvarchar](50) NULL,
 
 	-- Clinical Details
 	[SymptomOnsetDate] date NULL,
@@ -77,6 +79,7 @@
 	[TreatmentInUk] [varchar](30) NULL,
 	[PreviousId] [nvarchar](50) NULL,
 	[BcgVaccinated] [varchar](30) NULL,
+	[ClusterId] [nvarchar](20) NULL,
 
 	-- Risk Factors
 	[AnySocialRiskFactor] [varchar](40) NULL,
