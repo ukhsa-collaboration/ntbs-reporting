@@ -32,10 +32,10 @@ Steps:
     1. Click `OK`.
     1. You should see a message saying that the database has restored successfully.
 1. Set up specimen matching database:
-    i. Clone the [specimen-matching repository](https://github.com/publichealthengland/ntbs-specimen-matching).
-    i. Make a copy of the `DEV-specimen-matching.publish.xml` file, named `DEV-USER-specimen-matching.publish.xml`. This file will be ignored by git.
-    i. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
-    i. Double click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
+    1. Clone the [specimen-matching repository](https://github.com/publichealthengland/ntbs-specimen-matching).
+    1. Make a copy of the `DEV-specimen-matching.publish.xml` file, named `DEV-USER-specimen-matching.publish.xml`. This file will be ignored by git.
+    1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
+    1. Double click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
 1. Clone this repository and open `VisualStudio_ntbs-reporting.sln` in Visual Studio.
 1. Make a copy of `DEV-reporting.publish.xml` and name it `DEV-USER-reporting.publish.xml`. This file will be ignored by Git.
 1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
