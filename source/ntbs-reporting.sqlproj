@@ -86,38 +86,26 @@
     <Folder Include="dbo\Tables\Reusable Footer" />
     <Folder Include="dbo\Tables\Authorization" />
     <Folder Include="dbo\Tables\Reusable Notification" />
-    <Folder Include="dbo\Functions\Authorization" />
     <Folder Include="dbo\Functions\View Model" />
     <Folder Include="dbo\Tables\Report CultureResistance\" />
-    <Folder Include="dbo\Types" />
-    <Folder Include="dbo\Types\Audit" />
     <Folder Include="dbo\Tables\Audit" />
     <Folder Include="dbo\Tables\Report OutcomeSummary" />
-    <Folder Include="dbo\Types\Authentication And Authorization" />
     <Folder Include="dbo\Tables\Lab Results" />
-    <Folder Include="dbo\Tables\Report Boilerplate" />
     <Folder Include="dbo\Tables\Reusable Drop Downs" />
     <Folder Include="dbo\Views\Reusable Drop Downs" />
     <Folder Include="dbo\Views\Lab Results" />
     <Folder Include="dbo\Tables\Report DataQuality" />
-    <Folder Include="dbo\Functions\Report DataQuality" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="dbo\Stored Procedures\Audit" />
     <Folder Include="dbo\Stored Procedures\Authorization" />
     <Folder Include="dbo\Stored Procedures\Error Handling" />
     <Folder Include="dbo\Stored Procedures\Lab Results" />
-    <Folder Include="dbo\Stored Procedures\Report Boilerplate" />
     <Folder Include="dbo\Stored Procedures\Report CultureResistance" />
     <Folder Include="dbo\Stored Procedures\Report DataQuality" />
-    <Folder Include="dbo\Stored Procedures\Report EnhancedLineList" />
-    <Folder Include="dbo\Stored Procedures\Report NotificationSummary" />
     <Folder Include="dbo\Stored Procedures\Report OutcomeSummary" />
-    <Folder Include="dbo\Stored Procedures\Reusable Drop Downs" />
     <Folder Include="dbo\Stored Procedures\Reusable Footer" />
     <Folder Include="dbo\Stored Procedures\Reusable Notification" />
-    <Folder Include="dbo\Functions\Report OutcomeSummary" />
     <Folder Include="dbo\Views\Audit" />
-    <Folder Include="dbo\Stored Procedures\Report Lab Results" />
     <Folder Include="dbo\Views\KPI" />
     <Folder Include="dbo\Functions\KPI" />
     <Folder Include="dbo\Tables\ClusterMatching" />
@@ -128,7 +116,6 @@
     <Folder Include="dbo\Stored Procedures\Extracts" />
     <Folder Include="dbo\Tables\Extracts" />
     <Folder Include="dbo\Functions\Extracts" />
-    <Folder Include="dbo\Stored Procedures\Report Cluster" />
     <Folder Include="dbo\Tables\Report LegacyExtract" />
     <Folder Include="dbo\Stored Procedures\Report LegacyExtract" />
     <Folder Include="dbo\Functions\Report LegacyExtract" />
@@ -171,62 +158,25 @@
     <Build Include="dbo\Tables\Report CultureResistance\CultureResistance.sql" />
     <Build Include="dbo\Tables\Reusable Notification\OrganismNameMapping.sql" />
     <Build Include="dbo\Tables\Reusable Notification\Organism.sql" />
-    <Build Include="dbo\Functions\Authorization\ufnAuthorizedReusableNotification.sql" />
-    <Build Include="dbo\Functions\Authorization\ufnMaskField.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetUnmatchedSpecimensByService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered_ETS.sql" />
     <Build Include="dbo\Functions\View Model\ufnFormatDateConsistently.sql" />
-    <Build Include="dbo\Types\Audit\ReusableNotificationType.sql" />
     <Build Include="dbo\Tables\Audit\AccessAudit.sql" />
     <Build Include="dbo\Tables\Report OutcomeSummary\OutcomeSummary.sql" />
-    <Build Include="dbo\Types\Authentication And Authorization\LoginInfoType.sql" />
-    <Build Include="dbo\Tables\Report Boilerplate\Boilerplate.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationMonth.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwNotificationYear.sql" />
     <Build Include="dbo\Views\Reusable Drop Downs\vwSpecies.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\ClinicalRiskFactors.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\DrugResistanceProfile.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\SiteOfDisease.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\SocialRiskFactors.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\TreatmentOrResidence.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\UkBorn.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\Species.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\Resistant.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\TreatmentOutcomeTimePeriod.sql" />
-    <Build Include="dbo\Tables\Reusable Drop Downs\MonthYear.sql" />
     <Build Include="dbo\Tables\Report DataQuality\DataQuality.sql" />
-    <Build Include="dbo\Functions\Report DataQuality\ufnGetDataQualityMsg.sql" />
-    <Build Include="dbo\Functions\Authorization\ufnIsNationalTeam.sql" />
     <Build Include="dbo\Tables\Authorization\AdGroup.sql" />
     <Build Include="dbo\uspSeed.sql" />
     <Build Include="dbo\uspGenerate.sql" />
-    <Build Include="dbo\Stored Procedures\Audit\uspAddToAudit.sql" />
-    <Build Include="dbo\Stored Procedures\Audit\uspAuditLineList.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspLabSpecimen.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspSampleMapping.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspDisplayException.sql" />
     <Build Include="dbo\Stored Procedures\Error Handling\uspHandleException.sql" />
-    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateLineList.sql" />
-    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateResidence.sql" />
-    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspBoilerplateTreatment.sql" />
-    <Build Include="dbo\Stored Procedures\Report Boilerplate\uspGenerateBoilerplate.sql" />
-    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceLineList.sql" />
-    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceNational.sql" />
     <Build Include="dbo\Stored Procedures\Report CultureResistance\uspGenerateCultureResistance.sql" />
-    <Build Include="dbo\Stored Procedures\Report DataQuality\uspDataQuality.sql" />
-    <Build Include="dbo\Stored Procedures\Report DataQuality\uspDataQualityLineList.sql" />
     <Build Include="dbo\Stored Procedures\Report DataQuality\uspGenerateDataQuality.sql" />
-    <Build Include="dbo\Stored Procedures\Report EnhancedLineList\uspEnhancedLineList.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryResidence.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryResidenceGeography.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryTreatment.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryTreatmentGeography.sql" />
     <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspGenerateOutcomeSummary.sql" />
-    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryLineList.sql" />
-    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryResidence.sql" />
-    <Build Include="dbo\Stored Procedures\Report OutcomeSummary\uspOutcomeSummaryTreatment.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspDrugResistanceProfileByResistantId.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspPhec.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspFooter.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspGenerateFooter.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotification_ETS.sql" />
@@ -237,43 +187,24 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationImmunosuppression.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableResidence.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableTreatment.sql" />
-    <Build Include="dbo\Stored Procedures\Authorization\uspGetAuthenticatedLoginGroupsAndType.sql" />
     <Build Include="dbo\Tables\Reusable Notification\ReusableNotification.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnNormalizeLtbrId.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationMdr.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationXdr.sql" />
-    <Build Include="dbo\Functions\Report OutcomeSummary\ufnOutcomeSummaryResidence1.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetLAsByRegion.sql" />
     <Build Include="dbo\Functions\View Model\ufnCalculatePercentage.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspUpdateReusableNotificationPostcode.sql" />
-    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceResidence.sql" />
-    <Build Include="dbo\Stored Procedures\Report CultureResistance\uspCultureResistanceTreatment.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryLineList.sql" />
     <Build Include="dbo\Tables\Reusable Drop Downs\TB_Service.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspGenerateTB_Service.sql" />
     <Build Include="dbo\Tables\Authorization\ServiceAdGroup.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspServicePhec.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Drop Downs\uspService.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetAgefrom.sql" />
     <Build Include="dbo\Tables\Audit\CreateUserLookup.sql" />
-    <Build Include="dbo\Stored Procedures\Audit\uspPopulateUserLookup.sql" />
     <Build Include="dbo\Tables\Audit\ReportLookup.sql" />
-    <Build Include="dbo\Stored Procedures\Audit\uspSeedReportLookup.sql" />
     <Build Include="dbo\Tables\Audit\MIReportData.sql" />
-    <Build Include="dbo\Stored Procedures\Audit\uspProcessMIData.sql" />
     <Build Include="dbo\Views\Lab Results\vwSusceptibilityResultDetail.sql" />
     <Build Include="dbo\Functions\Lab Results\ufnGetMatchedSpecimen.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspSpecimenMDRXDR.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticMapping.sql" />
     <Build Include="dbo\Tables\Lab Results\ResultMapping.sql" />
-    <Build Include="dbo\Tables\Lab Results\ManualLabResult.sql" />
-    <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResult.sql" />
-    <Build Include="dbo\Tables\Lab Results\ManualLabResultAll.sql" />
-    <Build Include="dbo\Tables\Lab Results\ManualLabResultMicroscopy.sql" />
-    <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultAll.sql" />
-    <Build Include="dbo\Stored Procedures\Lab Results\uspManualLabResultMicroscopy.sql" />
-    <Build Include="dbo\Views\Audit\vwMIReportSummary.sql" />
-    <Build Include="dbo\Stored Procedures\Report Lab Results\uspManualLabResultLineList.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspResultMapping.sql" />
     <Build Include="dbo\Views\Lab Results\vwSecondLineMapping.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNotificationCultureResistanceSummary.sql" />
@@ -315,15 +246,8 @@
     <Build Include="dbo\Stored Procedures\Extracts\uspPopulateForestExtract.sql" />
     <Build Include="dbo\Tables\Extracts\CreateForestExtractTable.sql" />
     <Build Include="dbo\Functions\Extracts\ufnGetFormattedSiteDiseaseDurationStatusForForest.sql" />
-    <Build Include="dbo\Stored Procedures\Report NotificationSummary\uspNotificationSummaryByRegion.sql" />
     <Build Include="dbo\Stored Procedures\Audit\uspPopulateCalendarTable.sql" />
     <Build Include="dbo\Tables\Audit\Calendar.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetAgeStatsBySex.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsInClusterWithMask.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsLocalAuthorityStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationsRegionStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetNotificationStatsInCluster.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetTopBirthCountriesInCluster.sql" />
     <Build Include="dbo\Tables\Lab Results\StandardisedLabbaseSpecimen.sql" />
     <Build Include="dbo\Tables\Lab Results\StandardisedLabbaseSusceptibilityResult.sql" />
     <Build Include="dbo\Views\Lab Results\vwFirstLineAntibiotics.sql" />
@@ -332,8 +256,6 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspCallDivZero.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspDivZero.sql" />
     <Build Include="dbo\Tables\Lab Results\StandardisedETSLaboratoryResult.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspCountOfClusterNotificationsPerMonth.sql" />
-    <Build Include="dbo\Stored Procedures\Report Cluster\uspGetDrugResistanceStatsInCluster.sql" />
     <Build Include="dbo\Tables\Authorization\User.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateLabMappings.sql" />
     <Build Include="dbo\Tables\National Team\LabMappings.sql" />
@@ -353,7 +275,6 @@
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacySitesOfDisease.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtractHospitalLookupValues.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
-    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyExtract.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacyTOMFields.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyPeriodicOutcome.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\DeathLookup.sql" />
@@ -361,7 +282,6 @@
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetPreviousId.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyLabExtract.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspGenerateLegacyLabDataExtract.sql" />
-    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspLegacyLabExtract.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetIsolateSusceptibilityInfo.sql" />
     <Build Include="dbo\Tables\Lab Results\AntibioticLookup.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnCalcContactTracingTotals.sql" />
@@ -392,7 +312,6 @@
     <Build Include="dbo\Views\Lab Results\vwEtsDuplicateMatches.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByLocalAuthority.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByTBService.sql" />
-    <Build Include="dbo\Views\Authorization\vwUser.sql" />
     <Build Include="dbo\Views\Authorization\vwUserPermissions.sql" />
     <Build Include="dbo\Tables\Lab Results\EtsSpecimenMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwComparisonOfLabMatches.sql" />
@@ -403,7 +322,7 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationDubiousSpecimenMatches.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMirgationSpecimensMatchesToReview.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimensMatchesToReview.sql" />
     <Build Include="dbo\Tables\ClusterMatching\ForestEtsClusterBackup.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationAlert.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
@@ -413,6 +332,7 @@
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacyTreatmentRegimen.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TreatmentRegimenLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Authorization\uspGenerateTB_Service.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -453,11 +373,6 @@
       <HintPath>..\data\DACPAC\NTBS_Specimen_Matching.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\ReportServer.dacpac">
-      <HintPath>..\data\DACPAC\ReportServer.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>ReportServer</DatabaseSqlCmdVariable>
     </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
       <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>

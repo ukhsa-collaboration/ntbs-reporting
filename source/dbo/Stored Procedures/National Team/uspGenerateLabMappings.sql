@@ -20,7 +20,7 @@ end
 	  INNER JOIN [$(ETS)].dbo.STM_LabCode AS LC on LC.LabCodeID = LCM.LabCodeID 
 	  INNER JOIN [$(ETS)].dbo.STM_ETSCode AS EC on EC.ETSCodeID = LCM.ETSCodeID
 	  INNER JOIN [$(ETS)].dbo.STM_LabField LF on LF.LabFieldID = LCM.FieldID
-	  inner join [$(ETS)].dbo.[Laboratory] l on l.id= lcm.[LabID]
+	  inner join [$(ETS)].dbo.[Laboratory] l on l.Id= lcm.[LabID]
 	  order by labname, ETSDisplayCode
 
 select [FieldName]

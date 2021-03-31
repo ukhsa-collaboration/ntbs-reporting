@@ -13,7 +13,7 @@
 	FROM [dbo].[Calendar]
 	WHERE YearValue IN (SELECT NotificationYear FROM [dbo].[vwNotificationYear])),
 	Notifications AS
-	(SELECT NotificationId, COALESCE(TbServiceCode, 'UNKNOWN') AS TbServiceCode, COALESCE([Service], 'UNKNOWN') AS TbService,  DATEADD(DAY, 1, EOMONTH(NotificationDate, -1)) AS FirstOfMonth
+	(SELECT NotificationId, COALESCE(TBServiceCode, 'UNKNOWN') AS TbServiceCode, COALESCE([Service], 'UNKNOWN') AS TbService,  DATEADD(DAY, 1, EOMONTH(NotificationDate, -1)) AS FirstOfMonth
 	FROM [dbo].ReusableNotification rn),
 	CountedNotifications AS
 	(SELECT TbServiceCode, TbService, FirstOfMonth, COUNT(NotificationId) AS NotificationCount

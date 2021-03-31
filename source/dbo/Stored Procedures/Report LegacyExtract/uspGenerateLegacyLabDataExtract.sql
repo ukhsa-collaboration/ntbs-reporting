@@ -148,7 +148,7 @@ BEGIN TRY
                ,[MatchType])
           SELECT DISTINCT
 			    nsm.NotificationID				AS 'NotificationId'
-                ,nsm.[NotificationId]			AS 'NTBSId'
+                ,nsm.[NotificationID]			AS 'NTBSId'
                 ,le.EtsId						AS 'Id'
                 ,'NTBS'							AS 'SourceSystem'
                 ,le.IDOriginal					AS 'IdOriginal'
@@ -191,7 +191,7 @@ BEGIN TRY
 				    ELSE 'Manual'
 			    END)							AS 'MatchType'
 	      FROM [$(NTBS_Specimen_Matching)].[dbo].[NotificationSpecimenMatch] nsm
-            INNER JOIN [dbo].[LegacyExtract] le ON le.NtbsId = nsm.NotificationId AND le.SourceSystem = 'NTBS'
+            INNER JOIN [dbo].[LegacyExtract] le ON le.NtbsId = nsm.NotificationID AND le.SourceSystem = 'NTBS'
 		    INNER JOIN [dbo].[LabSpecimen] ls ON ls.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
 		    INNER JOIN [dbo].[StandardisedLabbaseSpecimen] lbs ON lbs.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
 		    INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON a.OpieId = lbs.OpieId
@@ -285,7 +285,7 @@ BEGIN TRY
               ,et.[Comments]
               ,[MatchType]
       FROM [$(ETS)].[dbo].[DataExportLaboratoryTable] et
-        INNER JOIN [dbo].[LegacyExtract] le ON le.EtsId = et.[Id] AND le.SourceSystem = 'ETS'
+        INNER JOIN [dbo].[LegacyExtract] le ON le.EtsId = et.[ID] AND le.SourceSystem = 'ETS'
     END
 END TRY
 BEGIN CATCH

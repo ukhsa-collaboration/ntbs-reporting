@@ -1,6 +1,6 @@
 ﻿--Downloaded from https://github.com/readyroll/generate-sql-merge
 
-CREATE PROC [dbo].[sp_generate_merge]
+/*CREATE PROC [dbo].[sp_generate_merge]
 (
  @table_name varchar(776), -- The table/view for which the MERGE statement will be generated using the existing data
  @target_table varchar(776) = NULL, -- Use this parameter to specify a different table name into which the data will be inserted/updated/deleted
@@ -633,4 +633,4 @@ END
 
 SET NOCOUNT OFF
 RETURN 0 --Success. We are done!
-END
+END*/

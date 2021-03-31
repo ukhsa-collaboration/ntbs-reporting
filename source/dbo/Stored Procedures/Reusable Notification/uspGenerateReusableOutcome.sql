@@ -14,7 +14,7 @@ AS
 		--populate with base records from ReusableNotification where source system is NTBS
 		--this will only contain Notified and Closed records, so Draft, Deleted and Denotified are excluded by default
 		INSERT INTO [dbo].[Outcome] (NotificationId)
-			SELECT NotificationID FROM ReusableNotification WHERE SourceSystem = 'NTBS'
+			SELECT NotificationId FROM ReusableNotification WHERE SourceSystem = 'NTBS'
 
 
 		--now calculate the treatment start date. Where this is populated in NTBS, use this. If not, use the notification date as a proxy
