@@ -144,7 +144,10 @@ BEGIN TRY
 			  ,[QUIN]
 			  ,[MDR]
 			  ,[XDR]
-			  ,[DataRefreshedAt])
+			  ,[DataRefreshedAt]
+			  ,[Lat]
+			  ,[Long]
+			  ,[ClusterId])
 		SELECT
 			n.NotificationId								AS 'NotificationId'
 			,n.NotificationId								AS 'NTBS_ID'
@@ -322,7 +325,9 @@ BEGIN TRY
 			,NULL										    AS 'MDR'
 			,NULL										    AS 'XDR'
 			,GETUTCDATE()									AS 'DataRefreshedAt'
-
+			,NULL                                           AS 'Lat'
+			,NULL                                           AS 'Long'
+			,NULL                                           AS 'ClusterId'
 			FROM [$(NTBS)].[dbo].[Notification] n
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Username = hd.CaseManagerUsername
@@ -641,6 +646,16 @@ BEGIN TRY
 
 
 		  EXEC [dbo].[uspMoveRecordsToLegacyExtract]
+
+
+		  UPDATE ReusableNotification
+		  SET
+			Lat = po.lat,
+			Long = po.long,
+			ClusterId = ncm.ClusterId
+		  FROM ReusableNotification rn
+		  LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].Reduced_Postcode_file po ON rn.Postcode = po.Pcode
+		  LEFT JOIN NotificationClusterMatch ncm ON rn.NotificationId = ncm.NotificationId
 
 	END TRY
 	BEGIN CATCH
