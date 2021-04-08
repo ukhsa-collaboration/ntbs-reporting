@@ -263,3 +263,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Data (E) - Shortcut.lnk
+/source/azure-ntbs-USER-reporting.publish.xml

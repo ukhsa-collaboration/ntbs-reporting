@@ -4,17 +4,17 @@
 
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
 	[NotificationId] [int] NOT NULL,
-	[NhsNumber] [nvarchar](50) NULL,
-	[Forename] [nvarchar](50) NULL,
-	[Surname] [nvarchar](50) NULL,
+	[NhsNumber] [nvarchar](20) NULL,
+	[GivenName] [nvarchar](50) NULL,
+	[FamilyName] [nvarchar](50) NULL,
 	[DateOfBirth] [date] NULL,
 	[Postcode] [nvarchar](20) null,
 	
 
-	 CONSTRAINT [PK_Record_PersonalDetails] PRIMARY KEY CLUSTERED (
+	 [PostcodeToLookup] NVARCHAR(20) NULL, 
+    CONSTRAINT [PK_Record_PersonalDetails] PRIMARY KEY CLUSTERED (
 		[PersonalDetailsId] ASC
-	), 
-    CONSTRAINT [FK_Record_PersonalDetails_ToRecordRegister] FOREIGN KEY ([NotificationId]) REFERENCES [RecordRegister]([NotificationId])
+	) 
 ) ON [PRIMARY]
 GO
 

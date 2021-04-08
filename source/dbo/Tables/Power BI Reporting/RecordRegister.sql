@@ -4,12 +4,12 @@
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
 	[NotificationId] [int] NOT NULL,
 	--Source of record
-	[SourceSystem] [nvarchar](50) NOT NULL,
+	[SourceSystem] [varchar](10) NOT NULL,
 	[NotificationDate] [date] NOT NULL,
-	[TBServiceCode] [nvarchar] (50) NULL,
-	[ResidencePhecCode] [nvarchar] (50) NULL,
-	[TreatmentPhecCode] [nvarchar] (50) NULL,
-	[ClusterId] [nvarchar](20) NULL,
+	[TBServiceCode] [varchar] (10) NULL,
+	[ResidencePhecCode] [varchar] (15) NULL,
+	[TreatmentPhecCode] [varchar] (15) NULL,
+	[ClusterId] [varchar](20) NULL,
 	[Denotified] BIT NULL, 
     CONSTRAINT [PK_RecordRegister] PRIMARY KEY CLUSTERED (
 		[RegisterId] ASC

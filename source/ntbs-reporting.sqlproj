@@ -126,6 +126,8 @@
     <Folder Include="dbo\Views\Notification Summary" />
     <Folder Include="dbo\Views\Authorization" />
     <Folder Include="dbo\Views\Reference Data" />
+    <Folder Include="dbo\Tables\Power BI Reporting" />
+    <Folder Include="dbo\Stored Procedures\Power BI Reporting" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -185,6 +187,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationDrugResistanceProfile.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationLastRecordedTreatmentOutcome_ETS.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationImmunosuppression.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsImmunosuppression.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableResidence.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableTreatment.sql" />
     <Build Include="dbo\Tables\Reusable Notification\ReusableNotification.sql" />
@@ -330,12 +333,20 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlertSummary.sql" />
     <Build Include="dbo\Stored Procedures\ClusterMatching\uspUpdateNotificationClusterMatchWithNtbsId.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspUpdateLegacyTreatmentRegimen.sql" />
-    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsTreatmentRegimen.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TreatmentRegimenLookup.sql" />
     <Build Include="dbo\Stored Procedures\Authorization\uspGenerateTB_Service.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\RecordRegister.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\Record_PersonalDetails.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\Record_CaseData.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_CaseData.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_LegacyExtract.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_PersonalDetails.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\RecordRegister.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateRecordOutcome.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingCaseData.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingRecords.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordPostcode.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateNtbsCaseRecord.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsCaseRecord.sql" />
+    <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
