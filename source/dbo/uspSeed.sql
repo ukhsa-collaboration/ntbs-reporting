@@ -124,6 +124,10 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (454, N'TUBERCULOSIS COMPLEX', 5)
 		SET IDENTITY_INSERT [dbo].[OrganismNameMapping] OFF
 
+		TRUNCATE TABLE [dbo].[ReleaseVersion]
+		INSERT INTO [dbo].[ReleaseVersion]([Version],[Date])
+		VALUES ('pre-release', GETDATE())
+
 		TRUNCATE TABLE [dbo].[TemplateText]
 		INSERT INTO [dbo].[TemplateText]([Desc],[Text])
 		VALUES
