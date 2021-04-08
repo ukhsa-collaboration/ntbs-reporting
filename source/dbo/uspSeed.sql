@@ -1,7 +1,7 @@
 ﻿
 /***************************************************************************************************
 Desc:    This seeds or re-seeds the look-up-data. It gets called from uspGenerate(),
-         so is run straight after every code deployment. If in doubt, you can also
+		 so is run straight after every code deployment. If in doubt, you can also
 		 run this proc stand-alone at any time, and it will re-seed the look-up data.
 
 
@@ -12,6 +12,20 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 	BEGIN TRY
 		-- If any errors, then roll back
 		BEGIN TRANSACTION
+
+		-- If the calendar has not been populated, do so
+		IF NOT EXISTS (SELECT 1 FROM [dbo].[Calendar])
+		BEGIN
+			EXEC uspPopulateCalendarTable
+		END
+
+		-- If the feature flags have not been set, set them
+		-- These include or exclude records from various datasources in the reporting database
+		IF NOT EXISTS (SELECT 1 FROM [dbo].[ReportingFeatureFlags])
+		BEGIN
+			INSERT INTO [dbo].[ReportingFeatureFlags](IncludeNTBS, IncludeETS, IncludeLabBase, Comment)
+			VALUES(1, 1, 1, 'Include or exclude records from various datasources in the reporting database')
+		END
 
 		-- Disable all foreign keys to make the inserts below succeedC:\Users\ntbsadmin\Desktop\phe-ntbs-summaries\visual-studio\dbo\uspDeploy.sql
 		DECLARE @SqlNocheck NVARCHAR(MAX) = ''

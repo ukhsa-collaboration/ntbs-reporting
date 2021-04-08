@@ -41,13 +41,11 @@ Steps:
 1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
 1. Double-click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
 1. To populate the database, do the following:
-    1. Run the stored procedure `uspSeed` in the specimen matching database.
     1. Run the stored procedure `uspPopulateCalendarTable` in the reporting database.
     1. Run the a SQL command based on the script in `source/Scripts/PopulateFeatureFlags.sql`. To make a dev database, you will want to set the three numbers being inserted to `1, 1, 1` instead of the default `0, 0, 0`.
     1. Run the stored procedure `uspLabSpecimen` in the reporting database.
     1. Run the stored procedure `uspGenerate` in the specimen matching database.
-        - If this fails, then try updating the `ProcessBatchConfig` table by setting the `EstimateNumOfMatches` in the first row to `5`.
-        - If this still fails, then try importing a dozen or so legacy notfications in the NTBS application.
+        - If this fails, then try creating at least three notfications in the NTBS application. At this point the NTBS application should run, but some Hangfire jobs and legacy notification importing will not work properly with unpopulated specimen matching and reporting databases.
     1. Run the stored procedure `uspGenerate` in the reporting database.
 
 To make a change to the project you should then:
