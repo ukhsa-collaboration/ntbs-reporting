@@ -141,7 +141,7 @@ BEGIN TRY
 		--otherwise leave it empty
 		,CASE 
 			WHEN te.SymptomOnset IS NOT NULL THEN 'Yes'
-		END																AS 'Symptomatic'
+		END																AS Symptomatic
 
 		-- Clinical Details
 		,CONVERT(DATE, te.SymptomOnset)									AS SymptomOnsetDate
@@ -212,7 +212,7 @@ BEGIN TRY
 			te.DateOfDeath,
 			tr12.DeathDate,
 			tr24.DeathDate,
-				tr36.DeathDate
+			tr36.DeathDate
 			)                                                           AS DateOfDeath
 		,dbo.ufnGetTreatmentEndDate_ETS(
 			tr12.EndOfTreatmentDate,
@@ -351,7 +351,6 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
-		
 	WHERE rr.SourceSystem = 'ETS'
 
 	EXEC [dbo].[uspGenerateEtsImmunosuppression]

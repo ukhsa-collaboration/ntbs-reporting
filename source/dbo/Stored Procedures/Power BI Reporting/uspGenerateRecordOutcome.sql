@@ -11,8 +11,7 @@ BEGIN TRY
 	TRUNCATE TABLE [dbo].[Outcome]
 	TRUNCATE TABLE [dbo].[PeriodicOutcome]
 
-	--populate with base records from ReusableNotification where source system is NTBS
-	--this will only contain Notified and Closed records, so Draft, Deleted and Denotified are excluded by default
+	--populate with base records where source system is NTBS
 	INSERT INTO [dbo].[Outcome] (NotificationId)
 		SELECT NotificationId FROM RecordRegister WHERE SourceSystem = 'NTBS'
 
@@ -23,7 +22,6 @@ BEGIN TRY
 	UPDATE o
 	SET 
 		TreatmentStartDate = COALESCE(te.EventDate, n.NotificationDate)
-		
 	FROM
 		[dbo].[Outcome] o
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = o.NotificationId
