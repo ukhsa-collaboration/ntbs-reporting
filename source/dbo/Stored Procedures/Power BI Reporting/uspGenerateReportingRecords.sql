@@ -13,6 +13,8 @@ BEGIN TRY
 	TRUNCATE TABLE [dbo].[Record_CaseData]
 	TRUNCATE TABLE [dbo].[Record_LegacyExtract]
 
+	EXEC [dbo].[uspPopulateLookupTables]
+
 	DECLARE @IncludeNTBS BIT = (SELECT TOP(1) IncludeNTBS FROM [dbo].[ReportingFeatureFlags]);
 	DECLARE @IncludeETS BIT = (SELECT TOP(1) IncludeETS FROM [dbo].[ReportingFeatureFlags]);
 	

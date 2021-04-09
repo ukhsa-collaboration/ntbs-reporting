@@ -35,8 +35,8 @@ BEGIN TRY
 		,[DidNotStartTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
-	--	,[DOTOffered] TODO: work out what to map ETS dot value to (check migration). We are also migrating a value for ECM.
-	--	,[DOTReceived]
+		,[DOTOffered] 
+		,[DOTReceived]
 		,[TestPerformed]
 		,[TreatmentOutcome12months]
 		,[TreatmentOutcome24months]
@@ -174,6 +174,8 @@ BEGIN TRY
 		,dbo.ufnYesNo(te.DidNotStartTreatment)							AS DidNotStartTreatment
 		,NULL															AS TreatmentRegimen
 		,CONVERT(DATE, tp.MDRTreatmentDate)								AS MdrTreatmentDate
+		,dl.DOTOffered													AS DOTOffered
+		,dl.DOTReceived													AS DOTReceived
 		--we need to reverse ETS' no sample taken. So if no sample taken = yes, no test was performed
 		--if it = no, it means a test was performed
 		,CASE 
@@ -351,6 +353,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
+		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
 	WHERE rr.SourceSystem = 'ETS'
 
 	EXEC [dbo].[uspGenerateEtsImmunosuppression]

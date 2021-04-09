@@ -175,7 +175,7 @@ BEGIN TRY
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
 		,cd.IsDotOffered										AS DOTOffered
-		,NULL													AS DOTReceived --TODO
+		,dl.DOTReceived											AS DOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
 		,NULL													AS ChestXRayResult --TODO
 		--Outcomes are done in a separate function later on
@@ -296,6 +296,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
+		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 	WHERE rr.SourceSystem = 'NTBS'
 
 	EXEC [dbo].uspGenerateRecordOutcome

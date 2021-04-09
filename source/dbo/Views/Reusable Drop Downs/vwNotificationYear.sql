@@ -15,10 +15,10 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 		NotificationYear
 	FROM (
 			/*Temp workaround to limit size of branch database on dev*/
-			/*SELECT
+			SELECT
 				0 AS Id,
 				YEAR(GETDATE()) AS NotificationYear
-			UNION*/
+			UNION
 			SELECT
 				-1 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -1, 0)) AS NotificationYear
