@@ -10,6 +10,7 @@ BEGIN TRY
 
 
 	--finally do stuff that makes sense just to do for all records, like the last recorded treatment outcome 
+	--TODO: linked notifications
 
 	UPDATE cd 
 	SET AnySocialRiskFactor = CASE 
@@ -28,6 +29,7 @@ BEGIN TRY
 		,ResidencePhec = reside.PHEC_Name
 		,TreatmentPhec = treat.PHEC_Name
 		,TbService = tbs.TB_Service_Name
+		,Hospital = h.HospitalName
 		,LastRecordedTreatmentOutcome =
 			CASE
 				WHEN TreatmentOutcome36months IS NOT NULL AND TreatmentOutcome36months != '' AND TreatmentOutcome36months != 'Error: invalid value' THEN TreatmentOutcome36months
@@ -42,6 +44,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] reside ON reside.PHEC_Code = rr.ResidencePhecCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] treat ON treat.PHEC_Code = rr.TreatmentPhecCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
+		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
 
 			
 

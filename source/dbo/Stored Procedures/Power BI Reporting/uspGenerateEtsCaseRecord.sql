@@ -35,7 +35,7 @@ BEGIN TRY
 		,[DidNotStartTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
-	--	,[DOTOffered] TODO: work out what to map ETS dot value to (check migration)
+	--	,[DOTOffered] TODO: work out what to map ETS dot value to (check migration). We are also migrating a value for ECM.
 	--	,[DOTReceived]
 		,[TestPerformed]
 		,[TreatmentOutcome12months]
@@ -94,11 +94,11 @@ BEGIN TRY
 		,[ReceivedVisitors]
 		,[FromHowManyCountries]
 		,[VisitorCountry1]
-		,[MonthsVisitorsStayed1]
+		--,[MonthsVisitorsStayed1] TODO: resolve type mismatch between NTBS and ETS
 		,[VisitorCountry2]
-		,[MonthsVisitorsStayed2]
+		--,[MonthsVisitorsStayed2]
 		,[VisitorCountry3]
-		,[MonthsVisitorsStayed3]
+		--,[MonthsVisitorsStayed3]
 		,[Diabetes]
 		,[HepatitisB]
 		,[HepatitisC]
@@ -319,11 +319,11 @@ BEGIN TRY
 		,dbo.ufnYesNoUnknown(th.Haspatientreceivevisitors)				AS ReceivedVisitors
 		,th.Visitorcountrycount											AS FromHowManyCountries
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId1)                 AS VisitorCountry1
-		,th.Visitduration1												AS DaysVisitorsStayed1
+		--,th.Visitduration1												AS MonthsVisitorsStayed1
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId2)                 AS VisitorCountry2
-		,th.Visitduration1												AS DaysVisitorsStayed2
+		--,th.Visitduration2												AS MonthsVisitorsStayed2
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId3)                 AS VisitorCountry3
-		,th.Visitduration3												AS DaysVisitorsStayed3
+		--,th.Visitduration3												AS MonthsVisitorsStayed3
 		,dbo.ufnYesNoUnknown(co.Diabetes)								AS Diabetes
 		,dbo.ufnYesNoUnknown(co.HepatitisB)								AS HepatitisB
 		,dbo.ufnYesNoUnknown(co.HepatitisC)								AS HepatitisC
