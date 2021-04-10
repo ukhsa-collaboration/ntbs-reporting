@@ -3,7 +3,7 @@
 	[LegacyExtractId] [int] IDENTITY(1,1) NOT NULL ,
 	-- Global NotificationId
 	[NotificationId] [int] NOT NULL,
-	[IDOriginal] [nvarchar](50) NULL,
+	--[IDOriginal] [nvarchar](50) NULL,
 	[LocalPatientId] [nvarchar](255) NULL,
 	--[CaseReportDate] [date] NULL,
 	[ReportYear] [nvarchar](4) NULL,
@@ -45,7 +45,6 @@
 	[MDRTreatment] [nvarchar](10) NULL,
 	[BcgVaccinationDate] [varchar](20) NULL,
 	[ShortCourse] [nvarchar](10) NULL,
-	[DOT] [nvarchar](10) NULL,
 	[InPatient] [nvarchar](10) NULL,
 	[Comments] [nvarchar](max) NULL,
 	[PrisonAbroadLast5Years] [nvarchar](10) NULL,
@@ -91,8 +90,6 @@
 	--[HIVTestOffered] [nvarchar](255) NULL,
 	[NoSampleTaken] [bit] NULL,
 	
-	
-	[CurrentSmoker] [nvarchar](10) NULL,
 	
 	[TOMTreatmentInterruptedReason36mth] [nvarchar](150) NULL,
 	[TOMTreatmentChangedReason36mth] [nvarchar](150) NULL,

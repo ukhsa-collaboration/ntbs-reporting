@@ -349,6 +349,12 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\DOTLookup.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspPopulateLookupTables.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateLinkedNotifications.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacySitesOfDisease.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTOMFields.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

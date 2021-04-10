@@ -132,6 +132,9 @@ BEGIN TRY
 	--now populate case data
 	EXEC [dbo].[uspGenerateReportingCaseData]
 
+	--and legacy data
+	EXEC [dbo].[uspGenerateReportingLegacyExtract]
+
 
 		
 END TRY

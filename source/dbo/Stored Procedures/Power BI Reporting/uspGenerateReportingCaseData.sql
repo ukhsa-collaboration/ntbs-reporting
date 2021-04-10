@@ -1,5 +1,4 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateReportingCaseData]
-	
 AS
 BEGIN TRY	
 
@@ -7,10 +6,7 @@ BEGIN TRY
 	
 	EXEC [dbo].[uspGenerateEtsCaseRecord]
 	
-
-
 	--finally do stuff that makes sense just to do for all records, like the last recorded treatment outcome 
-	--TODO: linked notifications
 
 	UPDATE cd 
 	SET AnySocialRiskFactor = CASE 
@@ -46,8 +42,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
 
-			
-
+	--now add the list of linked notifications
+	EXEC [dbo].[uspGenerateLinkedNotifications]
 END TRY
 BEGIN CATCH
 	THROW
