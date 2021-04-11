@@ -20,7 +20,6 @@ BEGIN TRY
 		THEN 'Yes' ELSE 'No' END
 		,Lat = rp.lat
 		,Long = rp.long
-		,LocalAuthorityCode = rp.LA_Code
 		,LocalAuthority = la.LA_Name
 		,ResidencePhec = reside.PHEC_Name
 		,TreatmentPhec = treat.PHEC_Name

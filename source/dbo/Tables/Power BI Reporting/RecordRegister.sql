@@ -7,6 +7,7 @@
 	[SourceSystem] [varchar](10) NOT NULL,
 	[NotificationDate] [date] NOT NULL,
 	[TBServiceCode] [varchar] (10) NULL,
+	[LocalAuthorityCode] [varchar](15) NULL,
 	[ResidencePhecCode] [varchar] (15) NULL,
 	[TreatmentPhecCode] [varchar] (15) NULL,
 	[ClusterId] [varchar](20) NULL,

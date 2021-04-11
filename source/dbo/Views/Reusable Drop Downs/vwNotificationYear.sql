@@ -14,7 +14,6 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 		Id,
 		NotificationYear
 	FROM (
-			/*Temp workaround to limit size of branch database on dev*/
 			SELECT
 				0 AS Id,
 				YEAR(GETDATE()) AS NotificationYear
@@ -26,13 +25,13 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 			SELECT
 				-2 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -2, 0)) AS NotificationYear
-			/*UNION
+			UNION
 			SELECT
 				-3 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -3, 0)) AS NotificationYear
 			UNION
 			SELECT
 				-4 AS Id,
-				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -4, 0)) AS NotificationYear*/
+				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -4, 0)) AS NotificationYear
 		) NotificationYear
 	ORDER BY NotificationYear DESC

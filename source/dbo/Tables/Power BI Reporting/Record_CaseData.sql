@@ -24,7 +24,6 @@
 	[NoFixedAbode] [varchar](10) NULL,
 
 	-- Geographies
-	[LocalAuthorityCode] [varchar](20) NULL,
 	[LocalAuthority] [varchar](50) NULL,
 	[ResidencePhec] [varchar](50) NULL,
 	[TreatmentPhec] [varchar](50) NULL,

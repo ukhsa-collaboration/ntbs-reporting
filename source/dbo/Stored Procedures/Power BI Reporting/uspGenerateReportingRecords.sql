@@ -62,6 +62,7 @@ BEGIN TRY
 			,[NotificationDate]
 			,[Denotified]
 			,[TBServiceCode]
+			,[LocalAuthorityCode]
 			,[TreatmentPhecCode]
 			,[ResidencePhecCode]
 			,[ClusterId])
@@ -70,7 +71,8 @@ BEGIN TRY
 			ntl.SourceSystem, 
 			ntl.NotificationDate, 
 			ntl.Denotified, 
-			ntl.TBServiceCode, 
+			ntl.TBServiceCode,
+			reside.LA_Code,
 			treat.PHEC_Code AS TreatmentPhec,
 			reside.PHEC_Code AS ResidencePhec, 
 			cluster.ClusterId

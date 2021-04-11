@@ -1,5 +1,6 @@
 ﻿CREATE VIEW [dbo].[vwNotificationsByLocalAuthority]
-	AS 
+	AS
+	--get the local authorities
 	WITH LocalAuthority AS
 	(SELECT la.[LA_Code]
       ,la.[LA_Name]
@@ -7,22 +8,30 @@
 	UNION
 	SELECT 'UNKNOWN', 'UNKNOWN'),
 
-	-- Get the list of months
+	-- Get the list of months. The first of month value will allow it to be associated to a specific row
+	-- in the Power BI calendar table
 	Months AS
-	(SELECT DISTINCT [YearMonthValue], FirstOfMonthValue
+	(SELECT DISTINCT [YearMonthValue], [FirstOfMonthValue]
 	FROM [dbo].[Calendar]
 	WHERE YearValue IN (SELECT NotificationYear FROM [dbo].[vwNotificationYear])),
-	Notifications AS
-	(SELECT NotificationId, COALESCE(LocalAuthorityCode, 'UNKNOWN') AS LocalAuthorityCode, COALESCE([LocalAuthority], 'UNKNOWN') AS LocalAuthority,  DATEADD(DAY, 1, EOMONTH(NotificationDate, -1)) AS FirstOfMonth
-	FROM [dbo].ReusableNotification rn),
+
+	--count the notifications
 	CountedNotifications AS
-	(SELECT LocalAuthorityCode, LocalAuthority, FirstOfMonth, COUNT(NotificationId) AS NotificationCount
-	FROM Notifications
-	GROUP BY LocalAuthorityCode, LocalAuthority, FirstOfMonth)
+	(SELECT 
+		COALESCE(LocalAuthorityCode, 'UNKNOWN') AS LocalAuthorityCode, 
+		c.YearMonthValue AS YearMonth,
+		COUNT(NotificationId) AS NotificationCount
+	FROM [dbo].vwNotifiedRecords nr
+		LEFT OUTER JOIN [dbo].[Calendar] c ON c.DateValue = nr.NotificationDate
+	GROUP BY COALESCE(LocalAuthorityCode, 'UNKNOWN'), c.YearMonthValue)
 
-	--SELECT * FROM CountedNotifications
-
-	SELECT m.YearMonthValue, m.FirstOfMonthValue, FORMAT(m.FirstOfMonthValue, 'MMM yyyy') AS NotificationPeriod, la.LA_Code, la.LA_Name, COALESCE(c.NotificationCount, 0) AS NotificationCount
+	--then cross join to produce one row for each combination of year/month and local authority
+	SELECT 
+		m.YearMonthValue, 
+		m.FirstOfMonthValue, 
+		la.LA_Code, 
+		la.LA_Name, 
+	COALESCE(c.NotificationCount, 0) AS NotificationCount
 	FROM Months m
 		CROSS JOIN LocalAuthority la
-		LEFT OUTER JOIN CountedNotifications c ON c.FirstOfMonth = m.FirstOfMonthValue AND c.LocalAuthorityCode = la.LA_Code
+		LEFT OUTER JOIN CountedNotifications c ON c.YearMonth = m.YearMonthValue AND c.LocalAuthorityCode = la.LA_Code
