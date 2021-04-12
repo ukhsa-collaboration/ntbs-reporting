@@ -8,9 +8,6 @@
 CREATE PROCEDURE [dbo].[uspGenerateReportingLegacyExtract]
 AS
 BEGIN TRY
-	--TODO: I think some fields are missing still from Record_LegacyExtract, e.g. ImmunosuppressionComments, HIVStatus
-	--previous Id
-
 	INSERT INTO [dbo].[Record_LegacyExtract]([NotificationId]
 		,[LocalPatientId]
         ,[ReportYear]
@@ -24,13 +21,15 @@ BEGIN TRY
         ,[BcgVaccinationDate]
         ,[InPatient]
         ,[Comments]
+        ,[ImmunosuppressionComments]
         ,[PrisonAbroadLast5Years]
         ,[PrisonAbroadMoreThan5YearsAgo]
 		,[PCT]
+        ,[HPU]
         ,[TreatmentHPU]
         ,[HospitalPCT]
         ,[HospitalLocalAuthority]
-        ,[ResolvedResidenceHPU]
+        ,[ResolvedResidenceHPU] --this has the same value as HPU
         ,[ResolvedResidenceRegion]
         ,[ResolvedResidenceLA]
         ,[WorldRegionName])
@@ -49,9 +48,11 @@ BEGIN TRY
 			,CONVERT(NVARCHAR(5), clinical.BCGVaccinationYear)							AS BCGVaccinationDate
 			,'Not known'																AS InPatient --field does not exist in NTBS
 			,LEFT(clinical.Notes, 500)													AS Comments
+            ,COALESCE(LEFT(id.OtherDescription, 50), '')                                AS ImmunosuppressionComments
 			,NULL																		AS PrisonAbroadLast5Years --field does not exist in NTBS
 			,NULL																		AS PrisonAbroadMoreThan5YearsAgo --field does not exist in NTBS
 			,nacs.PCT_name																AS PCT
+            ,nacs.HPU                                                                   AS HPU
 			,hv.TreatmentHPU															AS TreatmentHPU
 			,h.pctName																	AS HospitalPCT
 			,la.[Name]																	AS HospitalLocalAuthority
@@ -63,6 +64,7 @@ BEGIN TRY
 			[dbo].[RecordRegister] rr
 				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = rr.NotificationId
 				INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = rr.NotificationId
+                INNER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = rr.NotificationId
 				INNER JOIN [$(NTBS)].[dbo].[ClinicalDetails] clinical ON clinical.NotificationId = p.NotificationId
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[DenotificationDetails] dn ON dn.NotificationId = rr.NotificationId
 				LEFT OUTER JOIN [dbo].[DenotificationReasonMapping] drm ON drm.Reason = dn.Reason
@@ -119,6 +121,7 @@ BEGIN TRY
           ,[ShortCourse]
           ,[InPatient]
           ,[Comments]
+          ,[ImmunosuppressionComments]
           ,[PrisonAbroadLast5Years]
           ,[PrisonAbroadMoreThan5YearsAgo]
           ,[TOMTreatmentInterruptedReason]
@@ -175,7 +178,7 @@ BEGIN TRY
           ,[WorldRegionName])
 
         SELECT
-            [NotificationId]
+           rr.[NotificationId]
           ,[LocalPatientId]
           ,DATEPART(YEAR, rr.NotificationDate)		                                AS ReportYear
           ,[DenotificationDate]
@@ -184,7 +187,7 @@ BEGIN TRY
           ,[AddressLine1]
           ,[AddressLine2]
           ,[Town]
-          ,[County]
+          ,[county]
           ,[PCT]
           ,[HPU]
           ,[SitePulmonary]
@@ -209,6 +212,7 @@ BEGIN TRY
           ,[ShortCourse]
           ,[InPatient]
           ,[Comments]
+          ,[OtherComments]
           ,[PrisonAbroadLast5Years]
           ,[PrisonAbroadMoreThan5YearsAgo]
           ,[TOMTreatmentInterruptedReason]

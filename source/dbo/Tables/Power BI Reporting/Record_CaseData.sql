@@ -53,6 +53,7 @@
 	[DOTOffered] [varchar] (10) NULL,
 	[DOTReceived] [varchar] (20) NULL,
 	[TestPerformed] [varchar] (10) NULL,
+	[SampleTaken] [varchar] (10) NULL,
 	[ChestXRayResult] [nvarchar] (100) NULL,
 
 	--outcomes

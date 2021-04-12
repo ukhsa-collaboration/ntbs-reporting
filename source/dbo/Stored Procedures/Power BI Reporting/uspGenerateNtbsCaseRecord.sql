@@ -299,6 +299,18 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 	WHERE rr.SourceSystem = 'NTBS'
 
+	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
+	UPDATE cd
+		SET SampleTaken = CASE WHEN manualresults.NotificationId IS NULL THEN 'No' ELSE 'Yes' END
+
+	FROM [dbo].[Record_CaseData] cd
+		LEFT OUTER JOIN (
+			SELECT mr.NotificationId 
+			FROM [$(NTBS)].[dbo].[ManualTestResult] mr
+				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = mr.NotificationId
+			WHERE ManualTestTypeId != 4
+			) AS manualresults ON manualresults.NotificationId = cd.NotificationId
+
 	EXEC [dbo].uspGenerateRecordOutcome
 
 

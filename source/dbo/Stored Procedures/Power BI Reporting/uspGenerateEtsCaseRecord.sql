@@ -5,7 +5,6 @@ BEGIN TRY
 		[NotificationId]
 		,[EtsId]
 		,[LtbrId]
-		,[LinkedNotifications]
 		,[CaseManager]
 		,[Consultant]
 		,[HospitalId]
@@ -38,6 +37,7 @@ BEGIN TRY
 		,[DOTOffered] 
 		,[DOTReceived]
 		,[TestPerformed]
+		,[SampleTaken]
 		,[TreatmentOutcome12months]
 		,[TreatmentOutcome24months]
 		,[TreatmentOutcome36months]
@@ -94,11 +94,11 @@ BEGIN TRY
 		,[ReceivedVisitors]
 		,[FromHowManyCountries]
 		,[VisitorCountry1]
-		--,[MonthsVisitorsStayed1] TODO: resolve type mismatch between NTBS and ETS
+		,[MonthsVisitorsStayed1]
 		,[VisitorCountry2]
-		--,[MonthsVisitorsStayed2]
+		,[MonthsVisitorsStayed2]
 		,[VisitorCountry3]
-		--,[MonthsVisitorsStayed3]
+		,[MonthsVisitorsStayed3]
 		,[Diabetes]
 		,[HepatitisB]
 		,[HepatitisC]
@@ -115,7 +115,6 @@ BEGIN TRY
 		rr.NotificationId												AS NotificationId
 		,n.LegacyId														AS EtsId
 		,dbo.ufnNormalizeLtbrId(n.AuditMigrateId)						AS LtbrId
-		,NULL															AS LinkedNotifications --TODO: technically possible to do for ETS?
 		,s.Forename + ' ' + s.Surname									AS CaseManager
 		,n.PatientConsultant											AS Consultant
 		,CONVERT(VARCHAR(36), n.HospitalId)								AS HospitalId
@@ -183,6 +182,12 @@ BEGIN TRY
 			WHEN n.NoSampleTaken = 1 THEN 'No'
 			WHEN n.NoSampleTaken = 0 THEN 'Yes'
 		END																AS TestPerformed
+		--the same logic is used to set 'Sample Taken'
+		,CASE 
+			WHEN n.NoSampleTaken IS NULL THEN NULL
+			WHEN n.NoSampleTaken = 1 THEN 'No'
+			WHEN n.NoSampleTaken = 0 THEN 'Yes'
+		END																AS SampleTaken
 		,(CASE
 			WHEN te.PostMortemDiagnosis = 1 THEN 'Died' -- Step no 1
 			ELSE dbo.ufnGetTreatmentOutcome(
@@ -321,11 +326,11 @@ BEGIN TRY
 		,dbo.ufnYesNoUnknown(th.Haspatientreceivevisitors)				AS ReceivedVisitors
 		,th.Visitorcountrycount											AS FromHowManyCountries
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId1)                 AS VisitorCountry1
-		--,th.Visitduration1												AS MonthsVisitorsStayed1
+		,dbo.ufnMapEtsVisitorDurationToMonths(th.Visitduration1)		AS MonthsVisitorsStayed1
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId2)                 AS VisitorCountry2
-		--,th.Visitduration2												AS MonthsVisitorsStayed2
+		,dbo.ufnMapEtsVisitorDurationToMonths(th.Visitduration2)		AS MonthsVisitorsStayed2
 		,dbo.ufnGetETSCountryName(th.VisitorCountryId3)                 AS VisitorCountry3
-		--,th.Visitduration3												AS MonthsVisitorsStayed3
+		,dbo.ufnMapEtsVisitorDurationToMonths(th.Visitduration3)		AS MonthsVisitorsStayed3
 		,dbo.ufnYesNoUnknown(co.Diabetes)								AS Diabetes
 		,dbo.ufnYesNoUnknown(co.HepatitisB)								AS HepatitisB
 		,dbo.ufnYesNoUnknown(co.HepatitisC)								AS HepatitisC

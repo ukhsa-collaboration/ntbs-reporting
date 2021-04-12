@@ -129,6 +129,7 @@
     <Folder Include="dbo\Tables\Power BI Reporting" />
     <Folder Include="dbo\Stored Procedures\Power BI Reporting" />
     <Folder Include="dbo\Views\Power BI Reporting" />
+    <Folder Include="dbo\Functions\Power BI Reporting" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -357,6 +358,7 @@
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNotifiedRecords.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnMapEtsVisitorDurationToMonths.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
