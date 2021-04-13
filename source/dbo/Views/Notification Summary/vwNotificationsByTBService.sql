@@ -1,28 +1,36 @@
 ﻿CREATE VIEW [dbo].[vwNotificationsByTBService]
 	AS 
 	WITH TbService AS
-	(SELECT [TB_Service_Code]
+	(SELECT [TB_Service_Code] AS TbServiceCode
       ,[TB_Service_Name]
-      ,[PHEC_Code]
-      ,[PhecName]
-	FROM [dbo].[TB_Service]),
+	FROM [dbo].[TB_Service]
+	UNION
+	SELECT 'UNKNOWN', 'UNKNOWN'),
 
-	-- Get the list of months
+	-- Get the list of months. The first of month value will allow it to be associated to a specific row
+	-- in the Power BI calendar table
 	Months AS
-	(SELECT DISTINCT [YearMonthValue], FirstOfMonthValue
+	(SELECT DISTINCT [YearMonthValue], [FirstOfMonthValue]
 	FROM [dbo].[Calendar]
 	WHERE YearValue IN (SELECT NotificationYear FROM [dbo].[vwNotificationYear])),
-	Notifications AS
-	(SELECT NotificationId, COALESCE(TBServiceCode, 'UNKNOWN') AS TbServiceCode, COALESCE([Service], 'UNKNOWN') AS TbService,  DATEADD(DAY, 1, EOMONTH(NotificationDate, -1)) AS FirstOfMonth
-	FROM [dbo].ReusableNotification rn),
+
+	--count the notifications
 	CountedNotifications AS
-	(SELECT TbServiceCode, TbService, FirstOfMonth, COUNT(NotificationId) AS NotificationCount
-	FROM Notifications
-	GROUP BY TbServiceCode, TbService, FirstOfMonth)
+	(SELECT 
+		COALESCE(TbServiceCode, 'UNKNOWN') AS TbServiceCode, 
+		c.YearMonthValue AS YearMonth,
+		COUNT(NotificationId) AS NotificationCount
+	FROM [dbo].vwNotifiedRecords nr
+		LEFT OUTER JOIN [dbo].[Calendar] c ON c.DateValue = nr.NotificationDate
+	GROUP BY COALESCE(TbServiceCode, 'UNKNOWN'), c.YearMonthValue)
 
-	--SELECT * FROM CountedNotifications
-
-	SELECT m.YearMonthValue, m.FirstOfMonthValue, FORMAT(m.FirstOfMonthValue, 'MMM yyyy') AS NotificationPeriod, tbs.TB_Service_Code, tbs.TB_Service_Name, COALESCE(c.NotificationCount, 0) AS NotificationCount
+	--then cross join to produce one row for each combination of year/month and local authority
+	SELECT 
+		m.YearMonthValue, 
+		m.FirstOfMonthValue, 
+		tbs.TbServiceCode, 
+		tbs.TB_Service_Name, 
+	COALESCE(c.NotificationCount, 0) AS NotificationCount
 	FROM Months m
 		CROSS JOIN TbService tbs
-		LEFT OUTER JOIN CountedNotifications c ON c.FirstOfMonth = m.FirstOfMonthValue AND c.TbServiceCode = tbs.TB_Service_Code
+		LEFT OUTER JOIN CountedNotifications c ON c.YearMonth = m.YearMonthValue AND c.TbServiceCode = tbs.TbServiceCode
