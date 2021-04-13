@@ -21,22 +21,16 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 
 		-- Populate manual lab result tables
 		
-
-		-- Populate reusable notification table
-		EXEC dbo.uspGenerateReusableNotification_ETS
-		EXEC dbo.uspGenerateReusableNotification
+		EXEC [dbo].[uspGenerateReportingRecords]
+		
 
 		-- Populate report-specific tables
-		EXEC dbo.uspGenerateLegacyExtract
-		EXEC dbo.uspGenerateLegacyLabDataExtract
 		EXEC dbo.uspGenerateCultureResistance
 		EXEC dbo.uspGenerateOutcomeSummary
 		EXEC dbo.uspGenerateDataQuality
 
 		-- Populate boilerplate report too (not much overhead, so might as well for demo purposes)
 
-		-- Needs to be executed after any report requiring use of PostcodeLookup table
-		EXEC dbo.uspUpdateReusableNotificationPostcode
 
 		-- Save last refresh date to footer
 		EXEC dbo.uspGenerateFooter

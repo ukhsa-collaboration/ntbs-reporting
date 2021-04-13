@@ -26,7 +26,7 @@ BEGIN TRY
 	EtsGroupings AS
 	(SELECT g1.EtsId, rr.SourceSystem, STRING_AGG(g2.EtsId, ', ') AS LinkedNotifications 
 	FROM [$(migration)].[dbo].[EtsGroupingsAudited] g1
-		INNER JOIN GroupedEtsNotifications g2 ON g2.GroupId = g1.groupId and g2.EtsId != g1.EtsId
+		INNER JOIN GroupedEtsNotifications g2 ON g2.GroupId = g1.GroupId and g2.EtsId != g1.EtsId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = g1.EtsId AND rr.SourceSystem = 'ETS'
 	GROUP BY g1.EtsId, rr.SourceSystem),
 

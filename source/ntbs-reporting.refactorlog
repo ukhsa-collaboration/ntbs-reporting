@@ -140,4 +140,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="TbService" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="88dcffe4-7426-4b94-8208-14bc4dba02a2" ChangeDateTime="04/13/2021 12:51:51">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ReusableNotification-delete]" />
+  </Operation>
 </Operations>

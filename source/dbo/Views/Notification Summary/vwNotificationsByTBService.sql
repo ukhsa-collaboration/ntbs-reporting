@@ -17,7 +17,7 @@
 	--count the notifications
 	CountedNotifications AS
 	(SELECT 
-		COALESCE(TbServiceCode, 'UNKNOWN') AS TbServiceCode, 
+		COALESCE(TBServiceCode, 'UNKNOWN') AS TbServiceCode, 
 		c.YearMonthValue AS YearMonth,
 		COUNT(NotificationId) AS NotificationCount
 	FROM [dbo].vwNotifiedRecords nr

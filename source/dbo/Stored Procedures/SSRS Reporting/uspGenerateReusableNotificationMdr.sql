@@ -8,7 +8,7 @@ Desc:    This re/calculates the value for the data point ReusableNotification.MD
          
 **************************************************************************************************/
 
-CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationMdr] AS
+/*CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationMdr] AS
 	BEGIN TRY
 		SET NOCOUNT ON
 
@@ -45,3 +45,4 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationMdr] AS
 	BEGIN CATCH
 		THROW
 	END CATCH
+	*/
