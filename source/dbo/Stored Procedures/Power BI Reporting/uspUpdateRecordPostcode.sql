@@ -1,7 +1,7 @@
 ﻿/*
 	This procedure creates a cleaned postcode from the value supplied from the notification system (ETS or NTBS)
 	Provided the postcode matches the format and length of a UK postcode, this will insert a single space 3 characters from
-	the left hand side of the string
+	the right hand side of the string
 */
 
 CREATE PROCEDURE [dbo].[uspUpdateRecordPostcode] AS
