@@ -26,8 +26,7 @@ AS
 								WHERE th.TuberculosisHistoryId = @TuberculosisHistoryId
 									AND r.LegacyId = @PrisonHistoryStatusId)
 
-		IF (@ReturnValue IS NULL)
-			SET @ReturnValue = ''
+		--return NULL if no value
 
 		RETURN @ReturnValue
 	END

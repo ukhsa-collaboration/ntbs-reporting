@@ -91,7 +91,8 @@ BEGIN TRY
 		,GivenName
 		,FamilyName
 		,DateOfBirth
-		,PostcodeToLookup)
+		,PostcodeToLookup
+		,Postcode)
 	SELECT
 		rr.NotificationId								AS NotificationId
 		,p.NhsNumber									AS NhsNumber
@@ -99,6 +100,7 @@ BEGIN TRY
 		,p.FamilyName									AS Surname
 		,CONVERT(DATE, p.Dob) 							AS DateOfBirth
 		,p.PostcodeToLookup								AS PostcodeToLookup
+		,p.PostcodeToLookup								AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = rr.NotificationId
@@ -112,7 +114,8 @@ BEGIN TRY
 		,GivenName
 		,FamilyName
 		,DateOfBirth
-		,PostcodeToLookup)
+		,PostcodeToLookup
+		,Postcode)
 	SELECT
 		rr.NotificationId								AS NotificationId
 		,p.NhsNumber                                    AS NhsNumber
@@ -120,6 +123,7 @@ BEGIN TRY
 		,p.Surname                                      AS FamilyName
 		,CONVERT(DATE, p.DateOfBirth)                   AS DateOfBirth
 		,REPLACE(po.Pcd2, ' ', '')						AS PostcodeToLookup
+		,po.Pcd2										AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
 		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId

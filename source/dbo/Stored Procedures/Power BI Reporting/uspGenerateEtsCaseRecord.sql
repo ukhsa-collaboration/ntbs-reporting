@@ -198,7 +198,7 @@ BEGIN TRY
 					)
 		END)															AS TreatmentOutcome12months
 		,(CASE
-			WHEN tr24.Id IS NULL THEN '' -- Step no 1
+			WHEN tr24.Id IS NULL THEN NULL -- Step no 1
 			ELSE dbo.ufnGetTreatmentOutcome(
 					'24',
 					tr24.AnswerToCompleteQuestion,
@@ -207,7 +207,7 @@ BEGIN TRY
 					)
 		END)															AS TreatmentOutcome24months
 		,(CASE
-			WHEN tr36.Id IS NULL THEN '' -- Step no 1
+			WHEN tr36.Id IS NULL THEN NULL -- Step no 1
 			ELSE dbo.ufnGetTreatmentOutcome(
 					'36',
 					tr36.AnswerToCompleteQuestion,
