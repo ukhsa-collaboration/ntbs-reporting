@@ -18,10 +18,11 @@ AS
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 	WHERE 
 		mn.GroupId IS NOT NULL
 		AND p.PHEC_Name = @Region
-		AND mn.NotificationDate >= '2017-01-01'),
+		AND ny.Id >= -3),
 	LinkedNotifications AS
 	(SELECT ng.GroupId, STRING_AGG(CAST(mn.PrimaryNotificationId AS NVARCHAR(MAX)), ', ') AS LinkedNotifications
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
@@ -50,10 +51,15 @@ AS
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 		LEFT OUTER JOIN NotificationGroups ng ON ng.GroupId = mn.GroupId
 		LEFT OUTER JOIN LinkedNotifications ln ON ln.GroupId = mn.GroupId
+		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 	WHERE 
 		ng.GroupId IS NOT NULL
 	OR 
-		(p.PHEC_Name = @Region AND mn.NotificationDate >= '2017-01-01')
+		(p.PHEC_Name = @Region AND ny.Id >= -3)
+	AND NOT EXISTS
+		(SELECT LegacyId
+		FROM [$(migration)].[dbo].ImportedNotifications impn
+		WHERE LegacyId = EtsId OR LegacyId = LtbrId)
 
 	ORDER BY mn.NotificationDate DESC
 	

@@ -14,21 +14,27 @@ AS
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 	WHERE 
 	mn.GroupId IS NOT NULL
 	AND p.PHEC_Name = @Region
-	AND mn.NotificationDate >= '2017-01-01')
+	AND ny.Id >= -3)
 
 	SELECT DATEPART(YEAR, NotificationDate) AS 'NotificationYear', p.PHEC_Name AS Region, COUNT(PrimaryNotificationId) AS CountOfRecords  
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
 		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 		INNER JOIN NotificationGroups ng ON ng.GroupId = mn.GroupId
 	WHERE mn.GroupId IS NOT NULL
 	AND 
 	(p.PHEC_Name != @Region
-	OR mn.NotificationDate < '2017-01-01')
+	OR ny.Id >= -3)
+	AND NOT EXISTS
+		(SELECT LegacyId
+		FROM [$(migration)].[dbo].ImportedNotifications impn
+		WHERE LegacyId = EtsId OR LegacyId = LtbrId)
 	GROUP BY DATEPART(YEAR, NotificationDate), p.PHEC_Name
 	ORDER BY DATEPART(YEAR, NotificationDate), p.PHEC_Name DESC 
 RETURN 0
