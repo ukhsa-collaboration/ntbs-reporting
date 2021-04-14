@@ -22,7 +22,11 @@ AS
 	WHERE 
 		mn.GroupId IS NOT NULL
 		AND p.PHEC_Name = @Region
-		AND ny.Id >= -3),
+		AND ny.Id >= -3
+		AND NOT EXISTS
+			(SELECT LegacyId
+			FROM [$(migration)].[dbo].ImportedNotifications impn
+			WHERE LegacyId = EtsId OR LegacyId = LtbrId)),
 	LinkedNotifications AS
 	(SELECT ng.GroupId, STRING_AGG(CAST(mn.PrimaryNotificationId AS NVARCHAR(MAX)), ', ') AS LinkedNotifications
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 

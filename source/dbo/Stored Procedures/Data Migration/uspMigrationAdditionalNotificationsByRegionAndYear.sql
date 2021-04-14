@@ -18,7 +18,11 @@ AS
 	WHERE 
 	mn.GroupId IS NOT NULL
 	AND p.PHEC_Name = @Region
-	AND ny.Id >= -3)
+	AND ny.Id >= -3
+	AND NOT EXISTS
+		(SELECT LegacyId
+		FROM [$(migration)].[dbo].ImportedNotifications impn
+		WHERE LegacyId = EtsId OR LegacyId = LtbrId))
 
 	SELECT DATEPART(YEAR, NotificationDate) AS 'NotificationYear', p.PHEC_Name AS Region, COUNT(PrimaryNotificationId) AS CountOfRecords  
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
