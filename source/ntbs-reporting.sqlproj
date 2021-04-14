@@ -333,6 +333,7 @@
     <Build Include="dbo\Stored Procedures\Reusable Notification\uspGenerateReusableNotificationTreatmentRegimen_ETS.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TreatmentRegimenLookup.sql" />
     <Build Include="dbo\Stored Procedures\Authorization\uspGenerateTB_Service.sql" />
+    <Build Include="dbo\Tables\Audit\ReleaseVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

@@ -138,13 +138,18 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (454, N'TUBERCULOSIS COMPLEX', 5)
 		SET IDENTITY_INSERT [dbo].[OrganismNameMapping] OFF
 
+		TRUNCATE TABLE [dbo].[ReleaseVersion]
+		INSERT INTO [dbo].[ReleaseVersion]([Version],[Date])
+		VALUES ('pre-release', GETDATE())
+
 		TRUNCATE TABLE [dbo].[TemplateText]
 		INSERT INTO [dbo].[TemplateText]([Desc],[Text])
 		VALUES
 			('Footer text to be displayed in each report',
 			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}.
 			2. The data presented are provisional and are subject to change.
-			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies')
+			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies
+			Report version: Release-{REPORTING_RELEASE_VERSION}-{REPORTING_RELEASE_DATE}')
 
 
 		EXEC dbo.uspAntibioticMapping

@@ -14,6 +14,8 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		DECLARE @ReportingLastRefreshed AS DATETIME
 		DECLARE @EtsLastRefreshed AS DATETIME
 		DECLARE @NtbsLastRefreshed AS DATETIME
+		DECLARE @ReportingVersion AS VARCHAR(50)
+		DECLARE @ReportingVersionDate AS DATETIME
 		
 		-- Get footer template text
 		SET @FooterText = (SELECT Text
@@ -32,6 +34,9 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		Set @EtsLastRefreshed = (SELECT top 1 AuditAlter FROM [$(ETS)].[dbo].[Notification] order by AuditAlter desc)
 		--This is not correct but is the best approximation that can be obtained.
 
+		Set @ReportingVersionDate = (SELECT [Date] FROM ReleaseVersion)
+		Set @ReportingVersion = (SELECT [Version] FROM ReleaseVersion)
+
 		-- Fail gracefully
 		IF (@ReportingLastRefreshed IS NOT NULL)
 			SET @FooterText = REPLACE(@FooterText, '{REPORTING_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@ReportingLastRefreshed) + ' ' + FORMAT(@ReportingLastRefreshed, 'HH:mm'))
@@ -47,6 +52,16 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@NtbsLastRefreshed) + ' ' + FORMAT(@NtbsLastRefreshed, 'HH:mm'))
 		ELSE
 			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', '"UNKNOWN"')
+
+		IF (@ReportingVersion IS NOT NULL)
+			SET @FooterText = REPLACE(@FooterText, '{REPORTING_RELEASE_VERSION}', @ReportingVersion)
+		ELSE
+			SET @FooterText = REPLACE(@FooterText, '{REPORTING_RELEASE_VERSION}', '"UNKNOWN"')
+
+		IF (@ReportingVersion IS NOT NULL)
+			SET @FooterText = REPLACE(@FooterText, '{REPORTING_RELEASE_DATE}', dbo.ufnFormatDateConsistently(@ReportingVersionDate))
+		ELSE
+			SET @FooterText = REPLACE(@FooterText, '{REPORTING_RELEASE_DATE}', '"UNKNOWN"')
 
 		DELETE FROM [dbo].[FooterText]
 
