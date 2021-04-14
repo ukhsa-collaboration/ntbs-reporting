@@ -1,7 +1,6 @@
 ﻿CREATE VIEW [dbo].[vwUserPermissions]
 	AS 
 	--create one row for each AD group the user is a member of
-	--TODO: replace this with a call to the reporting user table
 	SELECT Username AS upn, COALESCE(t.Code, p.Code, A.[value]) AS 'Code', COALESCE(t.[Name], p.[Name]) AS 'Name',  COALESCE(p.[Code], tbsphec.[Code]) AS 'RegionCode' 
 	FROM [$(NTBS)].[dbo].[User]
 

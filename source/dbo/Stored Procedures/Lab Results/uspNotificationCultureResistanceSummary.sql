@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspNotificationCultureResistanceSummary]
+﻿/*CREATE PROCEDURE [dbo].[uspNotificationCultureResistanceSummary]
 	
 AS
 	SET NOCOUNT ON
@@ -121,3 +121,4 @@ AS
 	BEGIN CATCH
 		THROW
 	END CATCH
+	*/

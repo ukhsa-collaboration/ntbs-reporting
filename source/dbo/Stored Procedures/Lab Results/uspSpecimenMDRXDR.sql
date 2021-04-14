@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspSpecimenMDRXDR]
+﻿/*CREATE PROCEDURE [dbo].[uspSpecimenMDRXDR]
 	
 AS
 		--calculate MDR using same rules as R1
@@ -53,3 +53,4 @@ AS
 				)
 
 RETURN 0
+*/

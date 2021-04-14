@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspNotificationSensitivityResult]
+﻿/*CREATE PROCEDURE [dbo].[uspNotificationSensitivityResult]
 	@Antibiotic nvarchar(5) = NULL
 AS
 	
@@ -34,4 +34,4 @@ AS
 END TRY
 BEGIN CATCH
 	THROW
-END CATCH
+END CATCH*/

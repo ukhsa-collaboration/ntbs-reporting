@@ -112,4 +112,39 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[uspGetAuthenticatedLoginGroupsAndType]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="1572d77c-8d50-45d4-ad23-e2416148da74" ChangeDateTime="04/07/2021 20:48:40">
+    <Property Name="ElementName" Value="[dbo].[Record_CaseData].[DaysVisitorsStayed1]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Record_CaseData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsVisitorsStayed1" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="73b69c82-c2cc-4501-8415-309efc71bc0d" ChangeDateTime="04/07/2021 20:48:56">
+    <Property Name="ElementName" Value="[dbo].[Record_CaseData].[DaysVisitorsStayed2]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Record_CaseData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsVisitorsStayed2" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6202bf4d-995c-417c-8592-54c21e62541b" ChangeDateTime="04/07/2021 20:49:06">
+    <Property Name="ElementName" Value="[dbo].[Record_CaseData].[DaysVisitorsStayed3]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Record_CaseData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MonthsVisitorsStayed3" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="54ae0be2-79a7-4bcd-9ee2-ea82d85ba316" ChangeDateTime="04/08/2021 14:31:59">
+    <Property Name="ElementName" Value="[dbo].[Record_CaseData].[Service]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Record_CaseData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TbService" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="88dcffe4-7426-4b94-8208-14bc4dba02a2" ChangeDateTime="04/13/2021 12:51:51">
+    <Property Name="ElementName" Value="[dbo].[ReusableNotification]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ReusableNotification-delete]" />
+  </Operation>
 </Operations>

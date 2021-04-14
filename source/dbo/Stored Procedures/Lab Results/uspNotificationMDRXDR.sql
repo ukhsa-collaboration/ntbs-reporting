@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspNotificationMDRXDR]
+﻿/*CREATE PROCEDURE [dbo].[uspNotificationMDRXDR]
 	
 AS
 		--calculate MDR using same rules as R1
@@ -53,3 +53,4 @@ AS
 				)
 
 RETURN 0
+*/

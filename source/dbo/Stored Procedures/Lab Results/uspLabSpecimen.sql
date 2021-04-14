@@ -157,7 +157,7 @@ CREATE PROCEDURE [dbo].[uspLabSpecimen] AS
 				
 
 			/*START OF MDR/XDR RESULT*/
-			EXEC uspSpecimenMDRXDR
+			--EXEC uspSpecimenMDRXDR
 			/*END OF SENSITIVITY RESULT*/
 
 

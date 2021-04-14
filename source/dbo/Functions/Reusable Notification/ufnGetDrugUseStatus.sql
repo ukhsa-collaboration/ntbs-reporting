@@ -27,9 +27,7 @@ AS
 								WHERE th.TuberculosisHistoryId = @TuberculosisHistoryId
 									AND r.LegacyId = @DrugUseStatusId)
 
-		-- 2. Else no drug misuse
-		IF (@ReturnValue IS NULL)
-			SET @ReturnValue = ''
-
+		-- 2. Else no drug misuse, return NULL
+		
 		RETURN @ReturnValue
 	END

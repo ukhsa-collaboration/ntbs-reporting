@@ -30,7 +30,7 @@ AS
 
 		-- 4. HIVTestOffered is NULL
 		IF (@HivTestOffered IS NULL)
-			SET @ReturnValue = ''
+			SET @ReturnValue = NULL
 
 		-- 5. An error has occurred
 		IF (@ReturnValue IS NULL)

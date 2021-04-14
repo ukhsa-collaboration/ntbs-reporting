@@ -12,10 +12,10 @@ NTBS's ClinicalDetails table, and are:
 **************************************************************************************************/
 
 
-CREATE PROCEDURE [dbo].[uspGenerateReusableNotificationTreatmentRegimen_ETS]
+CREATE PROCEDURE [dbo].[uspGenerateEtsTreatmentRegimen]
 
 AS
-
+BEGIN TRY
 	DECLARE @StandardTreatment NVARCHAR(30), @MdrTreatment NVARCHAR(30), @OtherTreatment NVARCHAR(30)
 
 	SELECT @StandardTreatment = TreatmentRegimenDescription
@@ -30,28 +30,46 @@ AS
 	FROM TreatmentRegimenLookup
 	WHERE TreatmentRegimenCode = 'Other'
 
-	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = @StandardTreatment
-	WHERE NotificationId IN (SELECT n.LegacyId
-							 FROM [$(ETS)].dbo.Notification n
+	UPDATE cd
+	SET
+		TreatmentRegimen = @StandardTreatment
+	FROM
+		dbo.Record_CaseData cd
+		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
+	WHERE rr.NotificationId IN (SELECT n.LegacyId
+							 FROM [$(ETS)].dbo.[Notification] n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE tp.ShortCourseTreatment = 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
+	AND rr.SourceSystem = 'ETS'
+		
 
-
-	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = @MdrTreatment
-	WHERE NotificationId IN (SELECT n.LegacyId
-							 FROM [$(ETS)].dbo.Notification n
+	UPDATE cd
+	SET
+		TreatmentRegimen = @MdrTreatment
+	FROM
+		dbo.Record_CaseData cd
+		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
+	WHERE rr.NotificationId IN (SELECT n.LegacyId
+							 FROM [$(ETS)].dbo.[Notification] n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND tp.MDRTreatment = 1)
+	AND rr.SourceSystem = 'ETS'
 
 
-	UPDATE dbo.ReusableNotification_ETS
-		SET TreatmentRegimen = @OtherTreatment
-	WHERE NotificationId IN (SELECT n.LegacyId
+	UPDATE cd
+	SET
+		TreatmentRegimen = @OtherTreatment
+	FROM
+		dbo.Record_CaseData cd
+		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
+	WHERE rr.NotificationId IN (SELECT n.LegacyId
 							 FROM [$(ETS)].dbo.Notification n
 								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE (COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
 								OR (tp.ShortCourseTreatment  = 1 AND tp.MDRTreatment  = 1))
+	AND rr.SourceSystem = 'ETS'
 
-RETURN 0
+END TRY
+BEGIN CATCH
+	THROW
+END CATCH

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[ReusableNotification](
+﻿CREATE TABLE [dbo].[ReusableNotification-delete](
 	-- This primary key
 	[ReusableNotificationId] [int] IDENTITY(1,1) NOT NULL,
 
@@ -155,55 +155,55 @@
 ) ON [PRIMARY]
 GO
 
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_NotificationId ON dbo.ReusableNotification(NotificationId)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_NotificationId ON dbo.[ReusableNotification-delete](NotificationId)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_NotificationDate ON dbo.ReusableNotification(NotificationDate)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_NotificationDate ON dbo.[ReusableNotification-delete](NotificationDate)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_Postcode ON dbo.ReusableNotification(Postcode)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_Postcode ON dbo.[ReusableNotification-delete](Postcode)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_Age ON dbo.ReusableNotification(Age)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_Age ON dbo.[ReusableNotification-delete](Age)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_UkBorn ON dbo.ReusableNotification(UkBorn)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_UkBorn ON dbo.[ReusableNotification-delete](UkBorn)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_Service ON dbo.ReusableNotification([Service])
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_Service ON dbo.[ReusableNotification-delete]([Service])
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_TBServiceCode ON dbo.ReusableNotification([TBServiceCode])
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_TBServiceCode ON dbo.[ReusableNotification-delete]([TBServiceCode])
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_LocalAuthority ON dbo.ReusableNotification(LocalAuthority)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_LocalAuthority ON dbo.[ReusableNotification-delete](LocalAuthority)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhec ON dbo.ReusableNotification(TreatmentPhec)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhec ON dbo.[ReusableNotification-delete](TreatmentPhec)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhecCode ON dbo.ReusableNotification(TreatmentPhecCode)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_TreatmentPhecCode ON dbo.[ReusableNotification-delete](TreatmentPhecCode)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhec ON dbo.ReusableNotification(ResidencePhec)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhec ON dbo.[ReusableNotification-delete](ResidencePhec)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhecCode ON dbo.ReusableNotification(ResidencePhecCode)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_ResidencePhecCode ON dbo.[ReusableNotification-delete](ResidencePhecCode)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_AnySocialRiskFactor ON dbo.ReusableNotification(AnySocialRiskFactor)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_AnySocialRiskFactor ON dbo.[ReusableNotification-delete](AnySocialRiskFactor)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_AlcoholMisuse ON dbo.ReusableNotification(AlcoholMisuse)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_AlcoholMisuse ON dbo.[ReusableNotification-delete](AlcoholMisuse)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentDrugMisuse ON dbo.ReusableNotification(CurrentDrugMisuse)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentDrugMisuse ON dbo.[ReusableNotification-delete](CurrentDrugMisuse)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentlyHomeless ON dbo.ReusableNotification(CurrentlyHomeless)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentlyHomeless ON dbo.[ReusableNotification-delete](CurrentlyHomeless)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentlyInPrisonOrInPrisonWhenFirstSeen ON dbo.ReusableNotification(CurrentlyInPrisonOrInPrisonWhenFirstSeen)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentlyInPrisonOrInPrisonWhenFirstSeen ON dbo.[ReusableNotification-delete](CurrentlyInPrisonOrInPrisonWhenFirstSeen)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_ChronicLiverDisease ON dbo.ReusableNotification(ChronicLiverDisease)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_ChronicLiverDisease ON dbo.[ReusableNotification-delete](ChronicLiverDisease)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_ChronicRenalDisease ON dbo.ReusableNotification(ChronicRenalDisease)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_ChronicRenalDisease ON dbo.[ReusableNotification-delete](ChronicRenalDisease)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_Diabetes ON dbo.ReusableNotification(Diabetes)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_Diabetes ON dbo.[ReusableNotification-delete](Diabetes)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_HepatitisB ON dbo.ReusableNotification(HepatitisB)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_HepatitisB ON dbo.[ReusableNotification-delete](HepatitisB)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_HepatitisC ON dbo.ReusableNotification(HepatitisC)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_HepatitisC ON dbo.[ReusableNotification-delete](HepatitisC)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentSmoker ON dbo.ReusableNotification(CurrentSmoker)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_CurrentSmoker ON dbo.[ReusableNotification-delete](CurrentSmoker)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_SiteOfDisease ON dbo.ReusableNotification(SiteOfDisease)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_SiteOfDisease ON dbo.[ReusableNotification-delete](SiteOfDisease)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_DrugResistanceProfile ON dbo.ReusableNotification(DrugResistanceProfile)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_DrugResistanceProfile ON dbo.[ReusableNotification-delete](DrugResistanceProfile)
 GO
-CREATE NONCLUSTERED INDEX IX_ReusableNotification_Species ON dbo.ReusableNotification(Species)
+CREATE NONCLUSTERED INDEX IX_ReusableNotification_Species ON dbo.[ReusableNotification-delete](Species)
 GO
