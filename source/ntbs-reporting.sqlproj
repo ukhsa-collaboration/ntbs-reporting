@@ -347,6 +347,7 @@
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
     <None Include="azure-ntbs-int-reporting.publish.xml" />
     <None Include="DEV-reporting.publish.xml" />
+    <None Include="ntbs-reporting_Adil_Local.publish.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
