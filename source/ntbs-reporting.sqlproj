@@ -127,6 +127,10 @@
     <Folder Include="dbo\Functions\Power BI Reporting" />
     <Folder Include="dbo\Stored Procedures\SSRS Reporting" />
     <Folder Include="dbo\Stored Procedures\Report LegacyExtract\" />
+    <Folder Include="Publish Profiles" />
+    <Folder Include="Publish Profiles\Production" />
+    <Folder Include="Publish Profiles\DELETE" />
+    <Folder Include="Publish Profiles\Pre-production" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -338,17 +342,24 @@
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
-    <None Include="azure-ntbs-test-reporting.publish.xml" />
-    <None Include="phe-ntbs-dev-reporting.publish.xml" />
-    <None Include="phe-ntbs-uat-reporting.publish.xml" />
-    <None Include="azure-ntbs-uat-reporting.publish.xml" />
-    <None Include="phe-ntbs-live-reporting.publish.xml" />
-    <None Include="DEV-USER-reporting.publish.xml" />
-    <None Include="LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
-    <None Include="azure-ntbs-int-reporting.publish.xml" />
-    <None Include="DEV-reporting.publish.xml" />
-    <None Include="DEV-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\Production\LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
+    <None Include="Publish Profiles\Production\phe-ntbs-live-reporting.publish.xml" />
+    <None Include="Publish Profiles\DELETE\phe-ntbs-uat-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\DEV-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-ntbs-int-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-ntbs-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-ntbs-uat-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-ntbs-dev-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-ntbs-uat-reporting.publish.xml" />
+    <None Include="Publish Profiles\DELETE\azure-ntbs-int-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\azure-ntbs-test-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\azure-ntbs-uat-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\DEV-USER-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\phe-ntbs-dev-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\phe-ntbs-live-reporting-DELETE.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
@@ -391,11 +402,6 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\migration.dacpac">
-      <HintPath>..\data\DACPAC\migration.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
-    </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\LTBR.dacpac">
       <HintPath>..\data\DACPAC\LTBR.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
@@ -405,6 +411,11 @@
       <HintPath>..\data\DACPAC\NTBS_AUDIT.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_AUDIT</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\migration.dacpac">
+      <HintPath>..\data\DACPAC\migration.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
@@ -426,7 +437,7 @@
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
       <DefaultValue>migration</DefaultValue>
-      <Value>$(SqlCmdVar__18)</Value>
+      <Value>$(SqlCmdVar__21)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <DefaultValue>test-ntbs</DefaultValue>

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7A0AA3C1-7AB7-4EF5-B1A0-A5E6A62D073C}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		source\Publish Profiles\DELETE\README.md = source\Publish Profiles\DELETE\README.md
 	EndProjectSection
 EndProject
 Global

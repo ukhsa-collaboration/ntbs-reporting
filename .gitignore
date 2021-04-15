@@ -265,3 +265,5 @@ __pycache__/
 /Data (E) - Shortcut.lnk
 /source/azure-ntbs-USER-reporting.publish.xml
 /source/ntbs-reporting_Adil_Local.publish.publish.xml
+/source/Publish Profiles/DELETE/DEV-USER-reporting-DELETE.publish.xml
+/source/Publish Profiles/Pre-production/DEV-USER-reporting.publish.xml
