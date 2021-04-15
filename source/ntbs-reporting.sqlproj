@@ -179,7 +179,6 @@
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspFooter.sql" />
     <Build Include="dbo\Stored Procedures\Reusable Footer\uspGenerateFooter.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsImmunosuppression.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\ReusableNotification-delete.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnNormalizeLtbrId.sql" />
     <Build Include="dbo\Functions\View Model\ufnCalculatePercentage.sql" />
     <Build Include="dbo\Tables\Reusable Drop Downs\TB_Service.sql" />
@@ -215,7 +214,6 @@
     <Build Include="dbo\Views\ClusterMatching\vwNotificationClusterMatch.sql" />
     <Build Include="dbo\Views\Lab Results\vwChangesToDRPSpecies.sql" />
     <Build Include="dbo\Views\Lab Results\vwComparisonDates.sql" />
-    <Build Include="dbo\Tables\Reusable Notification\ReusableNotification_ETS.sql" />
     <Build Include="dbo\Tables\Reusable Notification\Outcome.sql" />
     <Build Include="dbo\Tables\Reusable Notification\OutcomeLookup.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
