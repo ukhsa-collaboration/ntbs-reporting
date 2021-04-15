@@ -303,7 +303,37 @@
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsTreatmentRegimen.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TreatmentRegimenLookup.sql" />
     <Build Include="dbo\Stored Procedures\Authorization\uspGenerateTB_Service.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_CaseData.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_LegacyExtract.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Record_PersonalDetails.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\RecordRegister.sql" />
     <Build Include="dbo\Tables\Audit\ReleaseVersion.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateRecordOutcome.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingCaseData.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingRecords.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordPostcode.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateNtbsCaseRecord.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateEtsCaseRecord.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\DOTLookup.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspPopulateLookupTables.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateLinkedNotifications.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacySitesOfDisease.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTOMFields.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwNotifiedRecords.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnMapEtsVisitorDurationToMonths.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\ReusableNotification.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateCultureResistance.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateDataQuality.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateOutcomeSummary.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspCallDivZero.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspDivZero.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableNotificationMdr.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableNotificationXdr.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableOutcomePeriodic.sql" />
+    <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
@@ -318,6 +348,7 @@
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
     <None Include="azure-ntbs-int-reporting.publish.xml" />
     <None Include="DEV-reporting.publish.xml" />
+    <None Include="DEV-reporting-DELETE.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
