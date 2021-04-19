@@ -24,9 +24,9 @@ AS
 		AND p.PHEC_Name = @Region
 		AND ny.Id >= -3
 		AND NOT EXISTS
-			(SELECT LegacyId
-			FROM [$(migration)].[dbo].ImportedNotifications impn
-			WHERE LegacyId = EtsId OR LegacyId = LtbrId)),
+			(SELECT NotificationId
+			FROM [$(NTBS)].[dbo].Notification ntbsn
+			WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)),
 	LinkedNotifications AS
 	(SELECT ng.GroupId, STRING_AGG(CAST(mn.PrimaryNotificationId AS NVARCHAR(MAX)), ', ') AS LinkedNotifications
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
@@ -61,9 +61,9 @@ AS
 	OR 
 		(p.PHEC_Name = @Region AND ny.Id >= -3)
 	AND NOT EXISTS
-		(SELECT LegacyId
-		FROM [$(migration)].[dbo].ImportedNotifications impn
-		WHERE LegacyId = EtsId OR LegacyId = LtbrId)
+		(SELECT NotificationId
+		FROM [$(NTBS)].[dbo].Notification ntbsn
+		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
 
 	ORDER BY mn.NotificationDate DESC
 	

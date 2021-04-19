@@ -29,9 +29,9 @@ AS
 	WHERE mn.GroupId IS NOT NULL
 	AND p.PHEC_Name != @Region
 	AND NOT EXISTS
-		(SELECT LegacyId
-		FROM [$(migration)].[dbo].ImportedNotifications impn
-		WHERE LegacyId = EtsId OR LegacyId = LtbrId)
+		(SELECT NotificationId
+		FROM [$(NTBS)].[dbo].Notification ntbsn
+		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
 	GROUP BY DATEPART(YEAR, NotificationDate), p.PHEC_Name
 	ORDER BY DATEPART(YEAR, NotificationDate), p.PHEC_Name DESC 
 RETURN 0

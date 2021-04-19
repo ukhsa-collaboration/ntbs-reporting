@@ -9,9 +9,9 @@ AS
 	LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 	WHERE p.PHEC_Name = @Region AND ny.Id >= -3
 	AND NOT EXISTS
-		(SELECT LegacyId
-		FROM [$(migration)].[dbo].ImportedNotifications impn
-		WHERE LegacyId = EtsId OR LegacyId = LtbrId)
+		(SELECT NotificationId
+		FROM [$(NTBS)].[dbo].Notification ntbsn
+		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
 	GROUP BY DATEPART(YEAR, NotificationDate)
 	ORDER BY DATEPART(YEAR, NotificationDate) DESC 
 RETURN 0
