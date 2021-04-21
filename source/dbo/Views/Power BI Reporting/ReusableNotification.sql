@@ -5,7 +5,7 @@
 	  ,rr.[NotificationId]
       ,CASE rr.SourceSystem WHEN 'NTBS' THEN rr.NotificationId ELSE NULL END AS [NtbsId]
       ,[EtsId]
-      ,[SourceSystem]
+      ,rr.[SourceSystem]
       ,[LtbrId]
       ,[NotificationDate]
       ,[CaseManager]
@@ -121,25 +121,26 @@
       ,[LastRecordedTreatmentOutcome]
       ,[DateOfDeath]
       ,[TreatmentEndDate]
-      ,CASE [SampleTaken] WHEN  'Yes' THEN 'No' WHEN 'No' THEN 'Yes' END AS NoSampleTaken
-	  
-	  --can't compare these fields because they haven't been (re) developed yet
-
-      ,'No' AS [CulturePositive]
-      ,'No result' AS [Species]
-      ,NULL [EarliestSpecimenDate]
-      ,'No result' AS [DrugResistanceProfile]
-      ,'No result' AS [INH]
-      ,'No result' AS [RIF]
-      ,'No result' AS [EMB]
-      ,'No result' AS [PZA]
-      ,'No result' AS [AMINO]
-      ,'No result' AS [QUIN]
-      ,'No result' AS [MDR]
-      ,'No result' AS [XDR]
+      ,CASE [SampleTaken] 
+        WHEN  'Yes' THEN 'No' 
+        WHEN 'No' THEN 'Yes' 
+       END                                      AS NoSampleTaken
+      ,car.CulturePositive 
+      ,car.Species
+      ,car.EarliestSpecimenDate
+      ,car.DrugResistanceProfile
+      ,car.INH
+      ,car.RIF
+      ,car.EMB
+      ,car.PZA
+      ,car.AMINO
+      ,car.QUIN
+      ,car.MDR
+      ,car.XDR
       ,[DataRefreshedAt] 
   FROM [dbo].[RecordRegister] rr
 	INNER JOIN [dbo].[Record_PersonalDetails] pd ON pd.NotificationId = rr.NotificationId
 	INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = rr.NotificationId
+    INNER JOIN [dbo].[Record_CultureAndResistance] car ON car.NotificationId = rr.NotificationId
 WHERE rr.Denotified = 0 
 

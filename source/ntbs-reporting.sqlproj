@@ -336,6 +336,7 @@
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableNotificationXdr.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableOutcomePeriodic.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\Record_CultureAndResistance.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
