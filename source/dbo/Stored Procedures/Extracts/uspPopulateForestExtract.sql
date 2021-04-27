@@ -61,7 +61,7 @@ BEGIN
 			,ReferenceLaboratoryNumber
 			,ExtractDate
 			,Localpatientid
-			--,Age
+			,Age
 			--,OwnerUserId
 			,CaseManager 
 			,PatientsConsultant
@@ -117,7 +117,7 @@ BEGIN
 			lab.ReferenceLaboratoryNumber																	AS ReferenceLaboratoryNumber,
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
-			--Age																							AS Age,
+			(0 + Convert(Char(8),patient.Dob,112) - Convert(Char(8),patient.Dob,112)) / 10000				AS Age,
 			--hospitalDetails.CaseManagerUsername															AS OwnerUserId,
 			hospitalDetails.CaseManagerUsername																AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
