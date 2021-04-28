@@ -86,7 +86,7 @@ BEGIN
 			hospital.Name																					AS Hospital,
 			localAuth.Name																					AS ResidenceLocalAuthority,
 			nacs.HPU																						AS ResidenceHPU,
-			phec.Name																						AS Region,
+			patientPhec.Name																				AS Region,
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			ethnicity.Label																					AS EthnicGroup,
@@ -109,7 +109,7 @@ BEGIN
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.InPastFiveYears)					AS InPrisonInLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.MoreThanFiveYearsAgo)				AS PrisonMoreThan5YearsAgo,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.IsCurrent)							AS CurrentlyInPrisonOrWhenFirstSeen,
-			phec.Name																						AS TreatmentRegion,
+			servicePhec.Name																				AS TreatmentRegion,
 			socialRiskFactors.AlcoholMisuseStatus															AS AlcoholUse,
 			lab.[SpecimenTypeCode]																			AS SmearSample,
 			'Positive'																						AS SmearSampleResult,
@@ -117,7 +117,7 @@ BEGIN
 			lab.ReferenceLaboratoryNumber																	AS ReferenceLaboratoryNumber,
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
-			(0 + Convert(Char(8),patient.Dob,112) - Convert(Char(8),patient.Dob,112)) / 10000				AS Age,
+			(0 + Convert(Char(8),GETDATE(),112) - Convert(Char(8),patient.Dob,112)) / 10000					AS Age,
 			--hospitalDetails.CaseManagerUsername															AS OwnerUserId,
 			hospitalDetails.CaseManagerUsername																AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
@@ -136,7 +136,9 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[ReferenceData].TbService tbService ON tbService.Code = hospitalDetails.TBServiceCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcodeLookup ON postcodeLookup.Postcode = patient.PostcodeToLookup
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthority localAuth ON localAuth.Code = postcodeLookup.LocalAuthorityCode
-		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC phec ON phec.Code = tbService.PHECCode
+		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthorityToPHEC localPhecMap ON localAuth.Code = localPhecMap.LocalAuthorityCode
+		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC patientPhec ON localPhecMap.LocalAuthorityCode = patientPhec.Code
+		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC servicePhec ON servicePhec.Code = tbService.PHECCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].Occupation occupation ON occupation.OccupationId = patient.OccupationId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Hospital hospital ON hospitalDetails.HospitalId = hospital.HospitalId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Ethnicity ethnicity ON ethnicity.EthnicityId = patient.EthnicityId
@@ -145,7 +147,7 @@ BEGIN
 		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
 		WHERE nsm.MatchType = 'Confirmed' 
-			AND (phec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands', 
+			AND (servicePhec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands', 
 										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
 
 		
