@@ -62,7 +62,6 @@ BEGIN
 			,ExtractDate
 			,Localpatientid
 			,Age
-			--,OwnerUserId
 			,CaseManager 
 			,PatientsConsultant
 			,DiseaseSites
@@ -117,8 +116,7 @@ BEGIN
 			lab.ReferenceLaboratoryNumber																	AS ReferenceLaboratoryNumber,
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
-			(0 + Convert(Char(8),GETDATE(),112) - Convert(Char(8),patient.Dob,112)) / 10000					AS Age,
-			--hospitalDetails.CaseManagerUsername															AS OwnerUserId,
+			CAST(dbo.ufnGetAgefrom(patient.Dob,n.NotificationDate) AS tinyint)								AS Age,
 			hospitalDetails.CaseManagerUsername																AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
 			 --ClusterNumber																				AS ClusterNumber,
