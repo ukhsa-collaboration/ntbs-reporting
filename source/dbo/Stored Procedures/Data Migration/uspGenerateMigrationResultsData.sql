@@ -188,7 +188,7 @@ BEGIN TRY
 		GroupId = mn.GroupId,
 		NTBSNotificationId = ntbs.NotificationId,
 		NTBSHospitalName = hos.[Name],
-		NTBSCaseManagerUsername = h.CaseManagerUsername,
+		NTBSCaseManagerUsername = u.Username,
 		TBServiceName = tbs.[Name],
 		NTBSRegion = region.[Name]
 		
@@ -199,6 +199,7 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 	LEFT OUTER JOIN  [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mn.EtsId
 	LEFT OUTER JOIN  [$(NTBS)].[dbo].[HospitalDetails] h ON h.NotificationId = ntbs.NotificationId
+	LEFT OUTER JOIN  [$(NTBS)].[dbo].[User] u ON u.Id = h.CaseManagerId
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[Hospital] hos ON hos.HospitalId = h.HospitalId
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = hos.TBServiceCode
 	LEFT OUTER JOIN  [$(NTBS)].[ReferenceData].[PHEC] region ON region.Code = tbs.PHECCode
