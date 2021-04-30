@@ -117,7 +117,7 @@ BEGIN
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
 			CAST(dbo.ufnGetAgefrom(patient.Dob,n.NotificationDate) AS tinyint)								AS Age,
-			hospitalDetails.CaseManagerUsername																AS CaseManager,
+			u.Username																						AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
 			 --ClusterNumber																				AS ClusterNumber,
 			diseaseSites.[Description]																		AS DiseaseSites
@@ -131,6 +131,7 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorHomelessness homeless ON homeless.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorImprisonment prison ON prison.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].SocialRiskFactors socialRiskFactors ON socialRiskFactors.NotificationId = patient.NotificationId
+		LEFT JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hospitalDetails.CaseManagerId
 		LEFT JOIN [$(NTBS)].[ReferenceData].TbService tbService ON tbService.Code = hospitalDetails.TBServiceCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcodeLookup ON postcodeLookup.Postcode = patient.PostcodeToLookup
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthority localAuth ON localAuth.Code = postcodeLookup.LocalAuthorityCode
