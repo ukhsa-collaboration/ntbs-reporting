@@ -17,14 +17,14 @@ BEGIN TRY
 
 	DECLARE @IncludeNTBS BIT = (SELECT TOP(1) IncludeNTBS FROM [dbo].[ReportingFeatureFlags]);
 	DECLARE @IncludeETS BIT = (SELECT TOP(1) IncludeETS FROM [dbo].[ReportingFeatureFlags]);
-	
+
 	--first create a list of all the notification which should be in the record register
 	--then perform a lookup to get the residence and treatment phec codes
 	WITH NotificationsToLookup
 	AS
 		(SELECT
-			n.LegacyId                                                  AS NotificationId				 
-			,'ETS'														AS SourceSystem	
+			n.LegacyId                                                  AS NotificationId
+			,'ETS'														AS SourceSystem
 			,CONVERT(DATE, n.NotificationDate)                          AS NotificationDate
 			,CASE WHEN n.DenotificationId IS NOT NULL THEN 1 ELSE 0 END	AS Denotified
 			,tbh.TB_Service_Code										AS TBServiceCode
@@ -34,7 +34,7 @@ BEGIN TRY
 			LEFT OUTER JOIN [$(ETS)].dbo.[Address] a ON a.Id = n.AddressId
 			LEFT OUTER JOIN [$(ETS)].dbo.Postcode po ON po.Id = a.PostcodeId
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = n.HospitalId
-			LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = n.LegacyId			
+			LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = n.LegacyId
 		WHERE n.Submitted = 1
 			AND n.AuditDelete IS NULL
 			--record is not already in NTBS
@@ -46,7 +46,7 @@ BEGIN TRY
 			n.NotificationId											AS NotificationId
 			,'NTBS'														AS SourceSystem
 			,CONVERT(DATE, n.NotificationDate)							AS NotificationDate
-			,CASE WHEN n.NotificationStatus = 'Denotified' 
+			,CASE WHEN n.NotificationStatus = 'Denotified'
 				THEN 1 ELSE 0 END										AS Denotified
 			,hd.TBServiceCode											AS TBServiceCode
 			,p.PostcodeToLookup											AS Postcode
@@ -66,18 +66,18 @@ BEGIN TRY
 			,[TreatmentPhecCode]
 			,[ResidencePhecCode]
 			,[ClusterId])
-		SELECT 
-			ntl.NotificationId, 
-			ntl.SourceSystem, 
-			ntl.NotificationDate, 
-			ntl.Denotified, 
+		SELECT
+			ntl.NotificationId,
+			ntl.SourceSystem,
+			ntl.NotificationDate,
+			ntl.Denotified,
 			ntl.TBServiceCode,
 			reside.LA_Code,
 			treat.PHEC_Code AS TreatmentPhec,
-			reside.PHEC_Code AS ResidencePhec, 
+			reside.PHEC_Code AS ResidencePhec,
 			cluster.ClusterId
 		FROM NotificationsToLookup ntl
-			LEFT OUTER JOIN [dbo].[NotificationClusterMatch] cluster ON cluster.NotificationId = ntl.NotificationId  
+			LEFT OUTER JOIN [$(NTBS_Specimen_Matching)].[dbo].[NotificationClusterMatch] cluster ON cluster.NotificationId = ntl.NotificationId
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = ntl.Postcode
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.LA_to_PHEC reside ON reside.LA_Code = r.LA_Code
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC treat  ON treat.TB_Service_Code = ntl.TBServiceCode
@@ -134,7 +134,7 @@ BEGIN TRY
 
 	--now create a standardised postcode where possible
 	EXEC [dbo].[uspUpdateRecordPostcode]
-		
+
 	--now populate case data
 	EXEC [dbo].[uspGenerateReportingCaseData]
 
@@ -142,7 +142,7 @@ BEGIN TRY
 	EXEC [dbo].[uspGenerateReportingLegacyExtract]
 
 
-		
+
 END TRY
 BEGIN CATCH
 	THROW
