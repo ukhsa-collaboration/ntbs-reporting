@@ -361,6 +361,10 @@
     <None Include="Publish Profiles\DELETE\DEV-USER-reporting-DELETE.publish.xml" />
     <None Include="Publish Profiles\DELETE\phe-ntbs-dev-reporting-DELETE.publish.xml" />
     <None Include="Publish Profiles\DELETE\phe-ntbs-live-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-ntbs-load-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-ntbs-training-reporting.publish.xml" />
+    <None Include="Publish Profiles\DELETE\azure-ntbs-load-test-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\DELETE\azure-ntbs-training-reporting-DELETE.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PostDeployment.sql" />
