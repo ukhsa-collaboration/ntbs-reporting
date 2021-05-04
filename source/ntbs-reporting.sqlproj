@@ -339,6 +339,7 @@
     <Build Include="dbo\Views\Power BI Reporting\Record_CultureAndResistance.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwPhec.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwLocalAuthority.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwClusterSummary.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

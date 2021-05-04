@@ -45,7 +45,7 @@
 	[HivTestOffered] [varchar](30) NULL,
 	[SiteOfDisease] [varchar](50) NULL,
 	[PostMortemDiagnosis] [varchar](10) NULL,
-	[DidNotStartTreatment] [varchar](10) NULL,
+	[StartedTreatment] [varchar](10) NULL,
 	[TreatmentRegimen] [nvarchar](30) NULL,
 	[MdrTreatmentDate] date NULL,
 	[EnhancedCaseManagement] [varchar] (10) NULL,

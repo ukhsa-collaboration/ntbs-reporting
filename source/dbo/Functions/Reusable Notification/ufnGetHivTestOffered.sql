@@ -32,12 +32,5 @@ AS
 		IF (@HivTestOffered IS NULL)
 			SET @ReturnValue = NULL
 
-		-- 5. An error has occurred
-		IF (@ReturnValue IS NULL)
-		BEGIN
-			SET @ReturnValue = 'Error: Invalid value'
-
-		END
-
 		RETURN @ReturnValue
 	END
