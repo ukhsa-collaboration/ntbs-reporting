@@ -275,6 +275,7 @@
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspMapCaseRecordChestXrayResults.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNotifiedRecords.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnMapEtsVisitorDurationToMonths.sql" />
     <Build Include="dbo\Views\Power BI Reporting\ReusableNotification.sql" />
