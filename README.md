@@ -43,7 +43,6 @@ Steps:
 1. If the instance of SQL Server that you are using is not at `localhost` then update the `Data Source` in the `TargetConnectionString`.
 1. Double-click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
 1. To populate the database, do the following:
-    1. Run the stored procedure `uspLabSpecimen` in the reporting database.
     1. Run the stored procedure `uspGenerate` in the specimen matching database.
         - If this fails, then try creating at least three notfications in the NTBS application. At this point the NTBS application should run, but some Hangfire jobs and legacy notification importing will not work properly with unpopulated specimen matching and reporting databases.
     1. Run the stored procedure `uspGenerate` in the reporting database.
