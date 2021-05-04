@@ -32,7 +32,7 @@ BEGIN TRY
 		,[HivTestOffered]
 		,[SiteOfDisease]
 		,[PostMortemDiagnosis]
-		,[DidNotStartTreatment]
+		,[StartedTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
 		,[EnhancedCaseManagement]
@@ -169,7 +169,8 @@ BEGIN TRY
 		--summarise sites of disease
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
 		,dbo.ufnYesNo(cd.IsPostMortem)							AS PostMortemDiagnosis
-		,dbo.ufnYesNo(cd.DidNotStartTreatment)					AS DidNotStartTreatment
+		--invert value as stored the wrong way round in the database
+		,dbo.ufnYesNo(~cd.DidNotStartTreatment)					AS StartedTreatment
 		,trl.TreatmentRegimenDescription						AS TreatmentRegimen
 		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement

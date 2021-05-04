@@ -31,7 +31,7 @@ BEGIN TRY
 		,[HivTestOffered]
 		,[SiteOfDisease]
 		,[PostMortemDiagnosis]
-		,[DidNotStartTreatment]
+		,[StartedTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
 		,[DOTOffered] 
@@ -170,7 +170,7 @@ BEGIN TRY
 
 		-- Treatment
 		,dbo.ufnYesNo(te.PostMortemDiagnosis)							AS PostMortemDiagnosis
-		,dbo.ufnYesNo(te.DidNotStartTreatment)							AS DidNotStartTreatment
+		,dbo.ufnYesNo(~te.DidNotStartTreatment)							AS StartedTreatment
 		,NULL															AS TreatmentRegimen
 		,CONVERT(DATE, tp.MDRTreatmentDate)								AS MdrTreatmentDate
 		,dl.DOTOffered													AS DOTOffered

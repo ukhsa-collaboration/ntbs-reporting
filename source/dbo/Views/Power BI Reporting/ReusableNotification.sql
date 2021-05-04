@@ -112,7 +112,10 @@
       ,[OtherImmunoSuppression]
       ,[Smoking] AS CurrentSmoker --we now have time periods in NTBS for smoking, so need to select the 'Yes/No' field rather than CurrentSmoker as previously
       ,[PostMortemDiagnosis]
-      ,[DidNotStartTreatment]
+      ,CASE [StartedTreatment]
+        WHEN 'No' THEN 'Yes'
+        WHEN 'Yes' THEN 'No'
+        END                                     AS [DidNotStartTreatment]
       ,[TreatmentRegimen]
       ,[MdrTreatmentDate]
       ,[TreatmentOutcome12months]
