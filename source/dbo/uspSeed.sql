@@ -100,44 +100,6 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		SET IDENTITY_INSERT [dbo].[PhecAdGroup] OFF
 
 		-- Other inserts
-		DELETE FROM dbo.Organism
-		SET IDENTITY_INSERT [dbo].[Organism] ON
-		INSERT [dbo].[Organism] ([OrganismId], [Organism_CD], [OrganismName], [SortOrder]) VALUES (1, N'A1000', N'M. bovis', 2)
-		INSERT [dbo].[Organism] ([OrganismId], [Organism_CD], [OrganismName], [SortOrder]) VALUES (2, N'A2000', N'M. africanum', 3)
-		INSERT [dbo].[Organism] ([OrganismId], [Organism_CD], [OrganismName], [SortOrder]) VALUES (3, N'A3000', N'M. microti', 4)
-		INSERT [dbo].[Organism] ([OrganismId], [Organism_CD], [OrganismName], [SortOrder]) VALUES (4, N'A4000', N'M. tuberculosis', 1)
-		INSERT [dbo].[Organism] ([OrganismId], [Organism_CD], [OrganismName], [SortOrder]) VALUES (5, N'A5000', N'M. tuberculosis complex', 5)
-		SET IDENTITY_INSERT [dbo].[Organism] OFF
-
-		DELETE FROM dbo.OrganismNameMapping
-		SET IDENTITY_INSERT [dbo].[OrganismNameMapping] ON
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (6, N'AFRICANUM', 2)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (7, N'AFRICANUM TYPE I', 2)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (18, N'BOVIS', 1)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (86, N'M. MICROTI', 3)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (110, N'MAFR', 2)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (121, N'MBOV', 1)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (136, N'MICROTI', 3)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (152, N'MMIC', 3)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (169, N'MTBC', 5)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (173, N'MTUB', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (174, N'MTUBC', 5)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (180, N'MYCAFR', 2)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (182, N'MYCBOV', 1)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (217, N'MYCOBACTERIUM AFRICANUM', 2)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (231, N'MYCOBACTERIUM BOVIS', 1)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (300, N'MYCOBACTERIUM MICROTI', 3)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (346, N'MYCOBACTERIUM TUBERCULOSIS', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (347, N'MYCOBACTERIUM TUBERCULOSIS COMPLEX', 5)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (348, N'MYCOBACTERIUM TUBERCULOSIS(IDENTIFIED BY WHOLE GEN', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (349, N'MYCOBACTERIUM TUBERCULOSIS(IDENTIFIED BY WHOLE GENOME SEQUENCING', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (361, N'MYCTUB', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (447, N'TBCD', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (448, N'TBPCR3', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (453, N'TUBERCULOSIS', 4)
-		INSERT [dbo].[OrganismNameMapping] ([OrganismNameMappingId], [OrganismName], [OrganismId]) VALUES (454, N'TUBERCULOSIS COMPLEX', 5)
-		SET IDENTITY_INSERT [dbo].[OrganismNameMapping] OFF
-
 		TRUNCATE TABLE [dbo].[ReleaseVersion]
 		INSERT INTO [dbo].[ReleaseVersion]([Version],[Date])
 		VALUES ('pre-release', GETDATE())
@@ -151,12 +113,6 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies
 			Report version: Release-{REPORTING_RELEASE_VERSION}-{REPORTING_RELEASE_DATE}')
 
-
-		EXEC dbo.uspAntibioticMapping
-
-		EXEC dbo.uspSampleMapping
-
-		EXEC dbo.uspResultMapping
 
 		DELETE FROM [dbo].[OutcomeLookup]
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Completed', 'Completed')
@@ -198,30 +154,6 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbContributedToDeath', 'TB contributed to death')
 		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('TbIncidentalToDeath', 'TB incidental to death')
 		INSERT [dbo].[DeathLookup] (DeathCode, DeathDescription) VALUES ('Unknown', 'Unknown')
-
-		DELETE FROM [dbo].[AntibioticLookup]
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AK','Amikacin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AMINO','Aminoglycoside')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('AZI','Azithromycin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CAP','Capreomycin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CIP','Ciprofloxacin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CLA','Clarithromycin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CLO','Clofazimine')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('CYC','Cycloserine')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('EMB','Ethambutol')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('ETI','Ethionamide')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('INH','Isoniazid')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('KAN','Kanamycin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('LZD','Linezolid')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('MFX','Moxifloxacin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('OFX','Ofloxacin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PAS','Para Aminosalicylic Acid')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PRO','Prothionamide')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('PZA','Pyrazinamide')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('QUIN','Quinolone')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('RIF','Rifampicin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('RB','Rifabutin')
-		INSERT [dbo].AntibioticLookup (AntibioticOutputName, AntibioticDescription) VALUES ('STR','Streptomycin')
 
 		DELETE FROM [dbo].[TreatmentRegimenLookup]
 		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('StandardTherapy', 'Standard therapy')

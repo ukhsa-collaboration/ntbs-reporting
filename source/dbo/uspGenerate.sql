@@ -3,7 +3,7 @@ Desc:    This pre-calculates and pre-generates most reporting data.
          This job is scheduled to run over-night!
 
 
-         
+
 **************************************************************************************************/
 CREATE PROCEDURE [dbo].[uspGenerate] AS
 	SET NOCOUNT ON
@@ -16,13 +16,10 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC dbo.uspSeed
 		EXEC dbo.uspGenerateTB_Service
 
-		-- Populate Reference Lab Result data
-		EXEC dbo.uspLabSpecimen
-
 		-- Populate manual lab result tables
-		
+
 		EXEC [dbo].[uspGenerateReportingRecords]
-		
+
 
 		-- Populate report-specific tables
 		EXEC dbo.uspGenerateCultureResistance
@@ -39,8 +36,8 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 	END TRY
 	BEGIN CATCH
 		-- A "Generate" proc has errored
-		IF @@TRANCOUNT > 0  
-			ROLLBACK TRANSACTION;  
+		IF @@TRANCOUNT > 0
+			ROLLBACK TRANSACTION;
 
 		-- Show error on screen
 		EXEC dbo.uspHandleException

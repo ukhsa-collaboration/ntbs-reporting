@@ -3,7 +3,7 @@ AS
 BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
-		
+
 		IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'ForestExtract')
 			BEGIN
 				TRUNCATE TABLE [dbo].ForestExtract
@@ -18,7 +18,7 @@ BEGIN
 		INSERT INTO @TempDiseaseSites
 		SELECT NotificationId, [Description] = STRING_AGG([Description], N',')
 			FROM [$(NTBS)].[dbo].[NotificationSite] notificationSite
-			JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId 
+			JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
 			GROUP BY NotificationId
 
 		INSERT INTO ForestExtract (
@@ -47,11 +47,11 @@ BEGIN
 			,DatePresented
 			,DateOfDiagnosis
 			,StartOfTreatment
-			,DrugUse 
+			,DrugUse
 			,DrugUseLast5Years, DrugUseMoreThan5YearsAgo, CurrentDrugUse
-			,Homeless 
+			,Homeless
 			,HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
-			,Prison 
+			,Prison
 			,PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonorWhenFirstSeen
 			,TreatmentRegion
 			,AlcoholUse
@@ -62,7 +62,7 @@ BEGIN
 			,ExtractDate
 			,Localpatientid
 			,Age
-			,CaseManager 
+			,CaseManager
 			,PatientsConsultant
 			,DiseaseSites
 			)
@@ -77,10 +77,10 @@ BEGIN
 			patient.[Address]																				AS AddressLine,
 			patient.NoFixedAbode																			AS NoFixedAbode,
 			patient.Postcode																				AS Postcode,
-			CASE patient.SexId 
-				WHEN 1 THEN 'M' 
-				WHEN 2 THEN 'F' 
-				WHEN 3 THEN 'U' 
+			CASE patient.SexId
+				WHEN 1 THEN 'M'
+				WHEN 2 THEN 'F'
+				WHEN 3 THEN 'U'
 			END																								AS Sex,
 			hospital.Name																					AS Hospital,
 			localAuth.Name																					AS ResidenceLocalAuthority,
@@ -123,7 +123,7 @@ BEGIN
 			diseaseSites.[Description]																		AS DiseaseSites
 		FROM ([$(NTBS)].[dbo].Notification n
 		INNER JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.NotificationID = n.NotificationId
-		INNER JOIN [dbo].LabSpecimen lab ON lab.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber)
+		INNER JOIN [$(NTBS_Specimen_Matching)].[dbo].LabSpecimen lab ON lab.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber)
 		LEFT JOIN [$(NTBS)].[dbo].Patients patient ON patient.NotificationId = n.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].HospitalDetails hospitalDetails ON hospitalDetails.NotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].ClinicalDetails clinicalDetails ON clinicalDetails.NotificationId = patient.NotificationId
@@ -145,19 +145,19 @@ BEGIN
 		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(patient.Postcode, ' ', '')
 		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
-		WHERE nsm.MatchType = 'Confirmed' 
-			AND (servicePhec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands', 
+		WHERE nsm.MatchType = 'Confirmed'
+			AND (servicePhec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands',
 										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
 
-		
+
 		--VNTR and ClusterNumber are now fixed values, but are expressed at the level of OpieId, which we are not currently supporting
 		--in the equivalent extract
 		--see if there is a value populated on any record for the Case Id and Reference Laboratory Number and populate the columns with this
 
 
-		
+
 		WITH LegacyVntrCluster AS
-		(SELECT DISTINCT CaseId, ReferenceLaboratoryNumber, VntrProfile, ClusterNumber 
+		(SELECT DISTINCT CaseId, ReferenceLaboratoryNumber, VntrProfile, ClusterNumber
 		 FROM [$(ETS)].[dbo].[ETSOxfordExtract]
 		 WHERE VntrProfile IS NOT NULL AND ReferenceLaboratoryNumber IS NOT NULL)
 
@@ -177,7 +177,7 @@ BEGIN
 		DECLARE @IncludeETS BIT = (SELECT TOP(1) IncludeETS FROM [dbo].[ReportingFeatureFlags])
 		IF @IncludeETS = 1
 		BEGIN
-			INSERT INTO [dbo].ForestExtract 
+			INSERT INTO [dbo].ForestExtract
 			SELECT etsForest.*
 			FROM [$(ETS)].dbo.ETSOxfordExtract etsForest
 			LEFT JOIN [dbo].[ReusableNotification] reusableNotification ON reusableNotification.EtsId = etsForest.CaseId
