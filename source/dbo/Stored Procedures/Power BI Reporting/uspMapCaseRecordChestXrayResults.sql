@@ -1,6 +1,7 @@
 ﻿CREATE PROCEDURE [dbo].[uspMapCaseRecordChestXrayResults]
 AS
 BEGIN TRY
+
 	WITH rankedResults AS
 	(
 	SELECT mr.NotificationId
@@ -8,27 +9,19 @@ BEGIN TRY
 	,ROW_NUMBER() OVER
 		(PARTITION BY mr.NotificationId
 		ORDER BY ABS(DATEDIFF(day, mr.TestDate, cd.DiagnosisDate)) ASC
-		,CASE WHEN Result = 'ConsistentWithTbCavities' THEN 1
-			WHEN Result = 'ConsistentWithTbOther' THEN 2
-			WHEN Result = 'NotConsistentWithTb' THEN 3
-			WHEN Result = 'Awaiting' THEN 4 END ASC
+		,resultLookup.Ranking ASC
 		) AS rn
 	FROM [$(NTBS)].[dbo].[ManualTestResult] mr
 		INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = mr.NotificationId
+		LEFT JOIN ChestXrayResultLookup resultLookup ON resultLookup.Result = mr.Result
 	WHERE ManualTestTypeId = 4
 	)
 	UPDATE cd
-	SET ChestXRayResult =
-	CASE
-	WHEN rankedResults.result = 'Awaiting' THEN 'Awaiting'
-	WHEN rankedResults.result = 'NotConsistentWithTb' THEN 'Not consistent with TB'
-	WHEN rankedResults.result = 'ConsistentWithTbCavities' THEN 'Consistent with TB - cavities'
-	WHEN rankedResults.result = 'ConsistentWithTbOther' THEN 'Consistent with TB - other'
-	ELSE 'No result'
-	END
+	SET ChestXRayResult = resultLookup.FormattedResult
 	
 	FROM [dbo].[Record_CaseData] cd
-		LEFT OUTER JOIN rankedResults rankedResults ON rankedResults.NotificationId = cd.NotificationId AND rankedResults.rn = 1
+		LEFT OUTER JOIN rankedResults ON rankedResults.NotificationId = cd.NotificationId AND rankedResults.rn = 1
+		LEFT JOIN ChestXrayResultLookup resultLookup ON resultLookup.Result = rankedResults.result
 
 END TRY
 BEGIN CATCH
