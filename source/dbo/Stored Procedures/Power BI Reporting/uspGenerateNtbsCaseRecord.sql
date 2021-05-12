@@ -1,6 +1,18 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateNtbsCaseRecord]
 AS
 BEGIN TRY
+	DECLARE @TempDiseaseSites TABLE
+	(
+		NotificationId int,
+		[Description] nvarchar(2000)
+	);
+
+	INSERT INTO @TempDiseaseSites
+	SELECT NotificationId, [Description] = STRING_AGG([Description], N', ')
+		FROM [$(NTBS)].[dbo].[NotificationSite] notificationSite
+		JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
+		GROUP BY NotificationId;
+
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
 		,[EtsId]
@@ -31,6 +43,7 @@ BEGIN TRY
 		,[OnsetToTreatmentDays]
 		,[HivTestOffered]
 		,[SiteOfDisease]
+		,[DiseaseSiteList]
 		,[PostMortemDiagnosis]
 		,[StartedTreatment]
 		,[TreatmentRegimen]
@@ -149,7 +162,7 @@ BEGIN TRY
 		,cd.TBServicePresentationDate							AS TbServicePresentationDate
 		,CAST((DATEDIFF(DAY,
 						cd.FirstPresentationDate,
-						cd.TBServicePresentationDate))			
+						cd.TBServicePresentationDate))
 					AS SMALLINT)								AS FirstPresentationToTbServicePresentationDays
 		,cd.DiagnosisDate										AS DiagnosisDate
 		,CAST((DATEDIFF(DAY,
@@ -168,6 +181,7 @@ BEGIN TRY
 		,dbo.ufnGetHivTestOffered (cd.HIVTestState)				AS HivTestOffered
 		--summarise sites of disease
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
+		,diseaseSites.[Description]								AS DiseaseSiteList
 		,dbo.ufnYesNo(cd.IsPostMortem)							AS PostMortemDiagnosis
 		--invert value as stored the wrong way round in the database
 		,dbo.ufnYesNo(~cd.DidNotStartTreatment)					AS StartedTreatment
@@ -186,7 +200,7 @@ BEGIN TRY
 		,NULL													AS LastRecordedTreatmentOutcome
 		--date of death fetched from the Treatment Event table
 		,dbo.ufnGetDateOfDeath(n.NotificationId)				AS DateOfDeath
-		,dbo.ufnGetTreatmentEndDate(n.NotificationId)			AS TreatmentEndDate	
+		,dbo.ufnGetTreatmentEndDate(n.NotificationId)			AS TreatmentEndDate
 		--Contact Tracing
 		,ct.AdultsIdentified									AS AdultContactsIdentified
 		,ct.ChildrenIdentified									AS ChildContactsIdentified
@@ -258,7 +272,7 @@ BEGIN TRY
 		,vd.HasVisitor											AS ReceivedVisitors
 		,vd.TotalNumberOfCountries								AS FromHowManyCountries
 		,dbo.ufnGetCountryName(vd.Country1Id)					AS VisitorCountry1
-		,vd.StayLengthInMonths1									AS MonthsVisitorsStayed1 
+		,vd.StayLengthInMonths1									AS MonthsVisitorsStayed1
 		,dbo.ufnGetCountryName(vd.Country2Id)					AS VisitorCountry2
 		,vd.StayLengthInMonths2									AS MonthsVisitorsStayed2
 		,dbo.ufnGetCountryName(vd.Country3Id)					AS VisitorCountry3
@@ -298,6 +312,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
+		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 	WHERE rr.SourceSystem = 'NTBS'
 
 	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
@@ -306,7 +321,7 @@ BEGIN TRY
 
 	FROM [dbo].[Record_CaseData] cd
 		LEFT OUTER JOIN (
-			SELECT mr.NotificationId 
+			SELECT mr.NotificationId
 			FROM [$(NTBS)].[dbo].[ManualTestResult] mr
 				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = mr.NotificationId
 			WHERE ManualTestTypeId != 4
