@@ -13,13 +13,8 @@
     <DataSet Name="RegionShared">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Option">
-            <Value>ADD_UNKNOWN</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandType>StoredProcedure</CommandType>
-        <CommandText>uspPhec</CommandText>
+        <CommandText>SELECT PHEC_Code AS PhecCode, PHEC_Name AS PhecName
+FROM [dbo].[vwPhec]</CommandText>
       </Query>
       <Fields>
         <Field Name="PhecCode">
@@ -29,10 +24,6 @@
         <Field Name="PhecName">
           <DataField>PhecName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SortOrder">
-          <DataField>SortOrder</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -433,6 +424,10 @@ ORDER BY NotificationYear, NtbsRegion</CommandText>
           <DataField>NTBS Treatment outcome</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="Migration_Alerts">
+          <DataField>Migration Alerts</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="Linked_notifications">
           <DataField>Linked notifications</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -535,6 +530,28 @@ ORDER BY CountOfRecords DESC</CommandText>
         <Field Name="Comments">
           <DataField>Comments</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+      </Fields>
+    </DataSet>
+    <DataSet Name="MigrationAlertSummary">
+      <Query>
+        <DataSourceName>PHE</DataSourceName>
+        <QueryParameters>
+          <QueryParameter Name="@MigrationRun">
+            <Value>=Parameters!MigrationRun.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspMigrationAlertSummary</CommandText>
+      </Query>
+      <Fields>
+        <Field Name="AlertType">
+          <DataField>AlertType</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="Count">
+          <DataField>Count</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -2291,6 +2308,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                       <Value>=Fields!NotificationDate.Value</Value>
                                       <Style>
                                         <FontFamily>Arial</FontFamily>
+                                        <Format>dd MMM yyyy</Format>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2313,6 +2331,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
+                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                       </TablixCells>
@@ -3051,6 +3070,9 @@ ORDER BY CountOfRecords DESC</CommandText>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>5.38396cm</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>8.10917cm</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>5.46333cm</Width>
@@ -4019,6 +4041,46 @@ ORDER BY CountOfRecords DESC</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox69">
+                          <CanGrow>true</CanGrow>
+                          <UserSort>
+                            <SortExpression>=Fields!Migration_Alerts.Value</SortExpression>
+                          </UserSort>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>Migration Alerts</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <FontWeight>Bold</FontWeight>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox69</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>0.5pt</Width>
+                            </Border>
+                            <BackgroundColor>#98002e</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox122">
                           <CanGrow>true</CanGrow>
                           <UserSort>
@@ -4680,6 +4742,42 @@ ORDER BY CountOfRecords DESC</CommandText>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Comments</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>=IIF(RunningValue (Fields!NotificationYear.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Migration_Alerts">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!Migration_Alerts.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Migration_Alerts</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -5374,6 +5472,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="Textbox72">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial</FontFamily>
+                                    <Color>White</Color>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox72</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <BackgroundColor>DimGray</BackgroundColor>
+                            <VerticalAlign>Middle</VerticalAlign>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox138">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -5435,6 +5570,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
+                <TablixMember />
               </TablixMembers>
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
@@ -5458,7 +5594,7 @@ ORDER BY CountOfRecords DESC</CommandText>
             <Top>35.0478cm</Top>
             <Left>1.34171cm</Left>
             <Height>2.90187cm</Height>
-            <Width>82.88117cm</Width>
+            <Width>90.99034cm</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -5811,8 +5947,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataLossReasons</DataSetName>
-                <Top>12.07231cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>14.61231cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>2.39916cm</Height>
                 <Width>14.58405cm</Width>
                 <Style>
@@ -5844,8 +5980,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox46</rd:DefaultName>
-                <Top>11.47231cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>14.01231cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6.53293cm</Width>
                 <ZIndex>1</ZIndex>
@@ -6142,8 +6278,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>ErrorReasons</DataSetName>
-                <Top>15.74202cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>18.28202cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>2.39916cm</Height>
                 <Width>14.58405cm</Width>
                 <ZIndex>2</ZIndex>
@@ -6176,8 +6312,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox46</rd:DefaultName>
-                <Top>15.14202cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>17.68202cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6.53293cm</Width>
                 <ZIndex>3</ZIndex>
@@ -6572,8 +6708,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>MismatchTreatmentOutcomes</DataSetName>
-                <Top>19.18312cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>21.72312cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>2.39916cm</Height>
                 <Width>14.58406cm</Width>
                 <ZIndex>4</ZIndex>
@@ -6609,8 +6745,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox46</rd:DefaultName>
-                <Top>18.58312cm</Top>
-                <Left>0.00002cm</Left>
+                <Top>21.12312cm</Top>
+                <Left>0.01191cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6.53293cm</Width>
                 <ZIndex>5</ZIndex>
@@ -6910,8 +7046,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>RecordsPerCaseManager</DataSetName>
-                <Top>22.78161cm</Top>
-                <Left>0.00001cm</Left>
+                <Top>25.32161cm</Top>
+                <Left>0.0119cm</Left>
                 <Height>2.39916cm</Height>
                 <Width>8.58456cm</Width>
                 <ZIndex>6</ZIndex>
@@ -6947,8 +7083,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox46</rd:DefaultName>
-                <Top>22.18161cm</Top>
-                <Left>0.00001cm</Left>
+                <Top>24.72161cm</Top>
+                <Left>0.0119cm</Left>
                 <Height>0.6cm</Height>
                 <Width>6.53293cm</Width>
                 <ZIndex>7</ZIndex>
@@ -6983,8 +7119,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox46</rd:DefaultName>
-                <Top>10.30064cm</Top>
-                <Left>0.00001cm</Left>
+                <Top>12.84064cm</Top>
+                <Left>0.0119cm</Left>
                 <Height>0.6cm</Height>
                 <Width>4.36334cm</Width>
                 <ZIndex>8</ZIndex>
@@ -7021,8 +7157,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Paragraph>
                 </Paragraphs>
                 <rd:DefaultName>Textbox8</rd:DefaultName>
-                <Top>10.30064cm</Top>
-                <Left>4.46919cm</Left>
+                <Top>12.84064cm</Top>
+                <Left>4.48108cm</Left>
                 <Height>0.6cm</Height>
                 <Width>1.5676cm</Width>
                 <ZIndex>9</ZIndex>
@@ -7344,6 +7480,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
                 <Top>7.06183cm</Top>
+                <Left>0.01189cm</Left>
                 <Height>2.61084cm</Height>
                 <Width>19.21592cm</Width>
                 <ZIndex>10</ZIndex>
@@ -7690,7 +7827,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
                 <Top>0.03528cm</Top>
-                <Left>0.00001cm</Left>
+                <Left>0.0119cm</Left>
                 <Height>3.07096cm</Height>
                 <Width>13.46093cm</Width>
                 <ZIndex>11</ZIndex>
@@ -8131,7 +8268,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 </ReportItems>
                 <KeepTogether>true</KeepTogether>
                 <Top>3.60406cm</Top>
-                <Left>0.00001cm</Left>
+                <Left>0.0119cm</Left>
                 <Height>3.03444cm</Height>
                 <Width>10.55688cm</Width>
                 <ZIndex>12</ZIndex>
@@ -8141,12 +8278,355 @@ ORDER BY CountOfRecords DESC</CommandText>
                   </Border>
                 </Style>
               </Rectangle>
+              <Rectangle Name="Rectangle7">
+                <ReportItems>
+                  <Textbox Name="Textbox77">
+                    <CanGrow>true</CanGrow>
+                    <KeepTogether>true</KeepTogether>
+                    <Paragraphs>
+                      <Paragraph>
+                        <TextRuns>
+                          <TextRun>
+                            <Value>Migration Alerts Summary:</Value>
+                            <Style>
+                              <FontFamily>Arial</FontFamily>
+                              <FontWeight>Bold</FontWeight>
+                            </Style>
+                          </TextRun>
+                        </TextRuns>
+                        <Style />
+                      </Paragraph>
+                    </Paragraphs>
+                    <rd:DefaultName>Textbox46</rd:DefaultName>
+                    <Left>0.01191cm</Left>
+                    <Height>0.6cm</Height>
+                    <Width>6.53293cm</Width>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <PaddingLeft>2pt</PaddingLeft>
+                      <PaddingRight>2pt</PaddingRight>
+                      <PaddingTop>2pt</PaddingTop>
+                      <PaddingBottom>2pt</PaddingBottom>
+                    </Style>
+                  </Textbox>
+                  <Tablix Name="Tablix15">
+                    <TablixBody>
+                      <TablixColumns>
+                        <TablixColumn>
+                          <Width>7.81812cm</Width>
+                        </TablixColumn>
+                        <TablixColumn>
+                          <Width>1.46647cm</Width>
+                        </TablixColumn>
+                      </TablixColumns>
+                      <TablixRows>
+                        <TablixRow>
+                          <Height>1.05833cm</Height>
+                          <TablixCells>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="Textbox70">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Alert Type</Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                            <FontWeight>Bold</FontWeight>
+                                            <Color>White</Color>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox8</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </Border>
+                                    <TopBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </TopBorder>
+                                    <BottomBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </BottomBorder>
+                                    <LeftBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </LeftBorder>
+                                    <RightBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </RightBorder>
+                                    <BackgroundColor>#98002e</BackgroundColor>
+                                    <VerticalAlign>Middle</VerticalAlign>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="Textbox74">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Count</Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                            <FontWeight>Bold</FontWeight>
+                                            <Color>White</Color>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style />
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox10</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </Border>
+                                    <TopBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </TopBorder>
+                                    <BottomBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </BottomBorder>
+                                    <LeftBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </LeftBorder>
+                                    <RightBorder>
+                                      <Color>Gray</Color>
+                                      <Style>Solid</Style>
+                                      <Width>0.5pt</Width>
+                                    </RightBorder>
+                                    <BackgroundColor>#98002e</BackgroundColor>
+                                    <VerticalAlign>Middle</VerticalAlign>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                          </TablixCells>
+                        </TablixRow>
+                        <TablixRow>
+                          <Height>0.74083cm</Height>
+                          <TablixCells>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="EtsID13">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>=Fields!AlertType.Value</Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style>
+                                        <TextAlign>Left</TextAlign>
+                                      </Style>
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>EtsID</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>LightGrey</Color>
+                                      <Style>Solid</Style>
+                                    </Border>
+                                    <BackgroundColor>=IIF(RunningValue (Fields!AlertType.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                                    <VerticalAlign>Middle</VerticalAlign>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="NotificationDate13">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>=Fields!Count.Value</Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style>
+                                        <TextAlign>Center</TextAlign>
+                                      </Style>
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>NotificationDate</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>LightGrey</Color>
+                                      <Style>Solid</Style>
+                                    </Border>
+                                    <BackgroundColor>=IIF(RunningValue (Fields!AlertType.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                                    <VerticalAlign>Middle</VerticalAlign>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                              </CellContents>
+                            </TablixCell>
+                          </TablixCells>
+                        </TablixRow>
+                        <TablixRow>
+                          <Height>0.6cm</Height>
+                          <TablixCells>
+                            <TablixCell>
+                              <CellContents>
+                                <Textbox Name="Textbox75">
+                                  <CanGrow>true</CanGrow>
+                                  <KeepTogether>true</KeepTogether>
+                                  <Paragraphs>
+                                    <Paragraph>
+                                      <TextRuns>
+                                        <TextRun>
+                                          <Value>Total records: </Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                            <Color>White</Color>
+                                          </Style>
+                                        </TextRun>
+                                        <TextRun>
+                                          <Value>=Sum(Fields!Count.Value)</Value>
+                                          <Style>
+                                            <FontFamily>Arial</FontFamily>
+                                            <Color>White</Color>
+                                          </Style>
+                                        </TextRun>
+                                      </TextRuns>
+                                      <Style>
+                                        <TextAlign>Left</TextAlign>
+                                      </Style>
+                                    </Paragraph>
+                                  </Paragraphs>
+                                  <rd:DefaultName>Textbox37</rd:DefaultName>
+                                  <Style>
+                                    <Border>
+                                      <Color>LightGrey</Color>
+                                      <Style>Solid</Style>
+                                    </Border>
+                                    <BackgroundColor>DimGray</BackgroundColor>
+                                    <VerticalAlign>Middle</VerticalAlign>
+                                    <PaddingLeft>2pt</PaddingLeft>
+                                    <PaddingRight>2pt</PaddingRight>
+                                    <PaddingTop>2pt</PaddingTop>
+                                    <PaddingBottom>2pt</PaddingBottom>
+                                  </Style>
+                                </Textbox>
+                                <ColSpan>2</ColSpan>
+                              </CellContents>
+                            </TablixCell>
+                            <TablixCell />
+                          </TablixCells>
+                        </TablixRow>
+                      </TablixRows>
+                    </TablixBody>
+                    <TablixColumnHierarchy>
+                      <TablixMembers>
+                        <TablixMember />
+                        <TablixMember />
+                      </TablixMembers>
+                    </TablixColumnHierarchy>
+                    <TablixRowHierarchy>
+                      <TablixMembers>
+                        <TablixMember>
+                          <KeepWithGroup>After</KeepWithGroup>
+                        </TablixMember>
+                        <TablixMember>
+                          <Group Name="Details13" />
+                          <TablixMembers>
+                            <TablixMember />
+                          </TablixMembers>
+                        </TablixMember>
+                        <TablixMember>
+                          <KeepWithGroup>Before</KeepWithGroup>
+                        </TablixMember>
+                      </TablixMembers>
+                    </TablixRowHierarchy>
+                    <DataSetName>MigrationAlertSummary</DataSetName>
+                    <Top>0.63528cm</Top>
+                    <Height>2.39916cm</Height>
+                    <Width>9.28459cm</Width>
+                    <ZIndex>1</ZIndex>
+                    <Style>
+                      <Border>
+                        <Style>None</Style>
+                      </Border>
+                      <FontFamily>Arial Black</FontFamily>
+                      <PaddingLeft>5pt</PaddingLeft>
+                      <PaddingRight>5pt</PaddingRight>
+                      <PaddingTop>5pt</PaddingTop>
+                      <PaddingBottom>5pt</PaddingBottom>
+                    </Style>
+                  </Tablix>
+                </ReportItems>
+                <KeepTogether>true</KeepTogether>
+                <Top>9.74323cm</Top>
+                <Height>3.09741cm</Height>
+                <Width>10.56879cm</Width>
+                <ZIndex>13</ZIndex>
+                <Style>
+                  <Border>
+                    <Style>None</Style>
+                  </Border>
+                </Style>
+              </Rectangle>
             </ReportItems>
             <KeepTogether>true</KeepTogether>
             <Top>6.4539cm</Top>
-            <Left>21.9837cm</Left>
-            <Height>26.61584cm</Height>
-            <Width>20.19325cm</Width>
+            <Left>21.97181cm</Left>
+            <Height>27.72077cm</Height>
+            <Width>20.20514cm</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -8162,7 +8642,7 @@ ORDER BY CountOfRecords DESC</CommandText>
           </Border>
         </Style>
       </Body>
-      <Width>842.2288mm</Width>
+      <Width>923.3205mm</Width>
       <Page>
         <PageFooter>
           <Height>5.34459mm</Height>

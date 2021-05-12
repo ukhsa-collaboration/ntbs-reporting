@@ -291,6 +291,10 @@
     <Build Include="dbo\Views\Power BI Reporting\vwPhec.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwLocalAuthority.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwClusterSummary.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspSummaryUnmatchedLabSpecimens.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspRecentSpecimensByRefLab.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspNewEtsMatches.sql" />
+    <Build Include="dbo\Stored Procedures\Lab Results\uspAllEtsMatches.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

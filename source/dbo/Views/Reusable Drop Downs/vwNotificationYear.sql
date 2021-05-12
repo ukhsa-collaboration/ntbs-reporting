@@ -29,9 +29,5 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 			SELECT
 				-3 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -3, 0)) AS NotificationYear
-			UNION
-			SELECT
-				-4 AS Id,
-				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -4, 0)) AS NotificationYear
 		) NotificationYear
 	ORDER BY NotificationYear DESC

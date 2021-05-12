@@ -10,28 +10,11 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="UnmatchedSpecimensLast5Years">
+    <DataSet Name="UnmatchedSpecimensLast4Years">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <CommandText>SELECT DISTINCT DATEPART(YEAR, Q1.SpecimenDate) AS SpecimenYear, COUNT(Q1.ReferenceLaboratoryNumber) AS TotalNumberofRecords
-FROM
-(SELECT DISTINCT
-		  ls.[ReferenceLaboratoryNumber]
-		  ,[SpecimenDate]
-	  FROM [dbo].[LabSpecimen] ls
-
-	WHERE ls.ReferenceLaboratoryNumber NOT IN
-	(SELECT ReferenceLaboratoryNumber FROM [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch]
-	WHERE MatchType = 'Confirmed')
-	AND
-	ls.ReferenceLaboratoryNumber NOT IN
-	(SELECT [ReferenceLaboratoryNumber]
-		FROM EtsSpecimenMatch)
-
-) AS Q1
-WHERE DATEPART(YEAR, Q1.SpecimenDate) &gt;= 2018
-GROUP BY DATEPART(YEAR, Q1.SpecimenDate) 
-ORDER BY DATEPART(YEAR, Q1.SpecimenDate)  DESC</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspSummaryUnmatchedLabSpecimens</CommandText>
       </Query>
       <Fields>
         <Field Name="SpecimenYear">
@@ -48,15 +31,12 @@ ORDER BY DATEPART(YEAR, Q1.SpecimenDate)  DESC</CommandText>
       <Query>
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
-          <QueryParameter Name="@RecentDate1">
+          <QueryParameter Name="@RecentDate">
             <Value>=Parameters!RecentDate.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--could just add the EarlisestRecordDate t theo LabSpecimen Table
-SELECT ReferenceLaboratory, COUNT(ReferenceLaboratoryNumber) AS NumberOfRecords FROM
-	LabSpecimen
-WHERE EarliestRecordDate &gt;= DATEADD(DAY, -3, @RecentDate1)
-GROUP BY ReferenceLaboratory</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspRecentSpecimensByRefLab</CommandText>
       </Query>
       <Fields>
         <Field Name="ReferenceLaboratory">
@@ -73,13 +53,12 @@ GROUP BY ReferenceLaboratory</CommandText>
       <Query>
         <DataSourceName>PHE</DataSourceName>
         <QueryParameters>
-          <QueryParameter Name="@RecentDate1">
+          <QueryParameter Name="@RecentDate">
             <Value>=Parameters!RecentDate.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>--Query 3.1: all the new matches in ETS, including any draft and denotified
-SELECT 'ETS' AS 'System', COUNT(LegacyId) AS 'NumberOfNewMatches', SUM(Denotified) AS NumberOfDenotifiedRecords, SUM(Draft) AS NumberOfDraftRecords, SUM(Automatched) AS NumberOfAutomatches FROM
-	EtsSpecimenMatch WHERE EarliestMatchDate &gt;=  DATEADD(DAY, -3, @RecentDate1)</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspNewEtsMatches</CommandText>
       </Query>
       <Fields>
         <Field Name="System">
@@ -153,12 +132,8 @@ SELECT 'ETS' AS 'System', COUNT(LegacyId) AS 'NumberOfNewMatches', SUM(Denotifie
     <DataSet Name="AllEtsMatches">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <CommandText>SELECT 'ETS' AS 'System', DATEPART(YEAR, EarliestMatchDate) AS 'Year',  COUNT(LegacyId) AS 'NumberOfNewMatches',  SUM(Automatched) AS NumberOfAutomatches, SUM(Denotified) AS NumberOfDenotifiedRecords, SUM(Draft) AS NumberOfDraftRecords FROM
-	EtsSpecimenMatch WHERE 
-DATEPART(YEAR, EarliestMatchDate) &gt;= (SELECT MIN([NotificationYear])
-  FROM [vwNotificationYear])
-GROUP BY DATEPART(YEAR, EarliestMatchDate)
-ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
+        <CommandType>StoredProcedure</CommandType>
+        <CommandText>uspAllEtsMatches</CommandText>
       </Query>
       <Fields>
         <Field Name="System">
@@ -667,7 +642,7 @@ ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>UnmatchedSpecimensLast5Years</DataSetName>
+            <DataSetName>UnmatchedSpecimensLast4Years</DataSetName>
             <Top>9.25724cm</Top>
             <Left>26.34932cm</Left>
             <Height>1.78181cm</Height>
@@ -697,7 +672,7 @@ ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
                   </TextRun>
                   <TextRun>
                     <Label>EarliestYear</Label>
-                    <Value>=MIN(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast5Years")</Value>
+                    <Value>=MIN(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast4Years")</Value>
                     <Style>
                       <FontFamily>Arial</FontFamily>
                       <FontSize>11pt</FontSize>
@@ -2729,7 +2704,7 @@ ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
                   </TextRun>
                   <TextRun>
                     <Label>EarliestYear</Label>
-                    <Value>=Min(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast5Years")</Value>
+                    <Value>=Min(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast4Years")</Value>
                     <Style>
                       <FontFamily>Arial</FontFamily>
                       <FontSize>11pt</FontSize>
@@ -3675,7 +3650,7 @@ ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
                   </TextRun>
                   <TextRun>
                     <Label>EarliestYear</Label>
-                    <Value>=Min(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast5Years")</Value>
+                    <Value>=Min(Fields!SpecimenYear.Value, "UnmatchedSpecimensLast4Years")</Value>
                     <Style>
                       <FontFamily>Arial</FontFamily>
                       <FontSize>11pt</FontSize>
@@ -6520,7 +6495,7 @@ ORDER BY DATEPART(YEAR, EarliestMatchDate)</CommandText>
       <DataType>DateTime</DataType>
       <DefaultValue>
         <Values>
-          <Value>01/25/2021 00:00:00</Value>
+          <Value>04/25/2021 00:00:00</Value>
         </Values>
       </DefaultValue>
       <Prompt>RecentDate</Prompt>

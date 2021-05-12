@@ -20,9 +20,8 @@
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT tbs.TB_Service_Code, tbs.TB_Service_Name, short.Short_Name
+        <CommandText>SELECT tbs.TB_Service_Code, tbs.TB_Service_Name, tbs.TB_Service_Name AS Short_Name
 FROM [dbo].[TB_Service] tbs
-LEFT OUTER JOIN [TBServiceShortNames] short ON short.TB_Service_Code = tbs.TB_Service_Code
 WHERE PhecName = @Region
 AND IsLegacy = 0</CommandText>
       </Query>
@@ -164,21 +163,17 @@ ORDER BY IsLegacy, TB_Service_Name</CommandText>
             <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
-        <CommandType>StoredProcedure</CommandType>
-        <CommandText>uspPhec</CommandText>
+        <CommandText>SELECT *
+  FROM [dbo].[vwPhec]</CommandText>
       </Query>
       <Fields>
-        <Field Name="PhecCode">
-          <DataField>PhecCode</DataField>
+        <Field Name="PHEC_Code">
+          <DataField>PHEC_Code</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="PhecName">
-          <DataField>PhecName</DataField>
+          <DataField>PHEC_Name</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SortOrder">
-          <DataField>SortOrder</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -1238,7 +1233,6 @@ AND ETS_username IS NULL</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
