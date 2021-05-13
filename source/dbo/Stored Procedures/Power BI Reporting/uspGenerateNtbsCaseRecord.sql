@@ -312,6 +312,7 @@ BEGIN TRY
 			WHERE ManualTestTypeId != 4
 			) AS manualresults ON manualresults.NotificationId = cd.NotificationId
 
+	EXEC [dbo].uspMapCaseRecordChestXrayResults
 	EXEC [dbo].uspGenerateRecordOutcome
 
 

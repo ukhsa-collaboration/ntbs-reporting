@@ -44,7 +44,8 @@ Steps:
 1. Double-click on this config in the `Solution Explorer` panel in Visual Studio to publish the codebase. This will build the relevant views and set up the relevant tables.
 1. To populate the database, do the following:
     1. Run the stored procedure `uspGenerate` in the specimen matching database.
-        - If this fails, then try creating at least three notfications in the NTBS application. At this point the NTBS application should run, but some Hangfire jobs and legacy notification importing will not work properly with unpopulated specimen matching and reporting databases.
+        - At this point the NTBS application should run, but some Hangfire jobs and legacy notification importing will not work properly with unpopulated specimen matching and reporting databases.
+        - If this stored procedure fails, try creating at least three notifications in the NTBS application. The specimen matching process is quite fragile when there is small amounts of data, previous issues have been caused by: all patients having the same gender, or exactly one patient having a house number at the start of their address.
     1. Run the stored procedure `uspGenerate` in the reporting database.
 
 To make a change to the project you should then:
