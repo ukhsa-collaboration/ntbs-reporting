@@ -294,6 +294,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwClusterSummary.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\ChestXrayResultLookup.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetEtsBirthCountryAsNtbsCountry.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordNhsNumber.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />
