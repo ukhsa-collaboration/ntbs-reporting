@@ -19,8 +19,10 @@
 	(SELECT 
 		COALESCE(TBServiceCode, 'UNKNOWN') AS TbServiceCode, 
 		c.YearMonthValue AS YearMonth,
-		COUNT(NotificationId) AS NotificationCount
+		COUNT(nr.NotificationId) AS NotificationCount,
+		SUM(CASE cr.CulturePositive WHEN 'Yes' THEN 1 ELSE 0 END) AS CulturePositiveCount
 	FROM [dbo].vwNotifiedRecords nr
+		INNER JOIN [dbo].[Record_CultureAndResistance] cr ON cr.NotificationId = nr.NotificationId
 		LEFT OUTER JOIN [dbo].[Calendar] c ON c.DateValue = nr.NotificationDate
 	GROUP BY COALESCE(TbServiceCode, 'UNKNOWN'), c.YearMonthValue)
 
@@ -30,7 +32,8 @@
 		m.FirstOfMonthValue, 
 		tbs.TbServiceCode, 
 		tbs.TB_Service_Name, 
-	COALESCE(c.NotificationCount, 0) AS NotificationCount
+		COALESCE(c.NotificationCount, 0) AS NotificationCount,
+		COALESCE(c.CulturePositiveCount, 0) AS CulturePositiveCount
 	FROM Months m
 		CROSS JOIN TbService tbs
 		LEFT OUTER JOIN CountedNotifications c ON c.YearMonth = m.YearMonthValue AND c.TbServiceCode = tbs.TbServiceCode
