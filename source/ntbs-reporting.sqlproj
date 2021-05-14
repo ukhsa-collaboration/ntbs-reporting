@@ -293,6 +293,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwLocalAuthority.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwClusterSummary.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\ChestXrayResultLookup.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnGetEtsBirthCountryAsNtbsCountry.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

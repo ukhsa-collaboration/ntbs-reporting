@@ -128,11 +128,7 @@ BEGIN TRY
 		END																AS Occupation
 		,occat.[Name]													AS OccupationCategory
 		-- RP-859 populate birth country consistently
-		,CASE
-			WHEN p.UkBorn = 1
-			THEN 'UNITED KINGDOM'
-			ELSE c.[Name]
-		END 															AS BirthCountry
+		,dbo.ufnGetEtsBirthCountryAsNtbsCountry(p.UkBorn, p.BirthCountryId) AS BirthCountry
 		,p.UkEntryYear													AS UkEntryYear
 		,dbo.ufnYesNo(a.NoFixedAbode)									AS NoFixedAbode
 		
@@ -355,7 +351,6 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
 		LEFT OUTER JOIN [$(ETS)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
 		LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
-		LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
