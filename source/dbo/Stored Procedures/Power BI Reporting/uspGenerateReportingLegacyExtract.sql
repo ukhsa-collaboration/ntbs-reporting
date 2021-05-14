@@ -212,7 +212,7 @@ BEGIN TRY
           ,[ShortCourse]
           ,[InPatient]
           ,[Comments]
-          ,LEFT([OtherComments], 60) AS ImmunosuppressionComments
+          ,LEFT([OtherComments], 100) AS ImmunosuppressionComments
           ,[PrisonAbroadLast5Years]
           ,[PrisonAbroadMoreThan5YearsAgo]
           ,[TOMTreatmentInterruptedReason]
