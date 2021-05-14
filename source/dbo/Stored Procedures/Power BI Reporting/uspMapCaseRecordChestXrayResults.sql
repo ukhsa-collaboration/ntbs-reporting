@@ -17,8 +17,7 @@ BEGIN TRY
 	WHERE ManualTestTypeId = 4
 	)
 	UPDATE cd
-	SET ChestXRayResult = resultLookup.FormattedResult
-	
+	SET ChestXRayResult = COALESCE(resultLookup.FormattedResult, 'No result')
 	FROM [dbo].[Record_CaseData] cd
 		LEFT OUTER JOIN rankedResults ON rankedResults.NotificationId = cd.NotificationId AND rankedResults.rn = 1
 		LEFT JOIN ChestXrayResultLookup resultLookup ON resultLookup.Result = rankedResults.result
