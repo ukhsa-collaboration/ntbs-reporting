@@ -8,11 +8,13 @@ BEGIN TRY
 	);
 
 	INSERT INTO @TempDiseaseSites
-	SELECT TuberculosisEpisodeId, [Description] = STRING_AGG([Name], N', ')
-		FROM [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite
+	SELECT n.TuberculosisEpisodeId, [Description] = STRING_AGG(sites.[Name], N', ')
+		FROM RecordRegister rr
+			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
 			INNER JOIN [$(ETS)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
-		WHERE diseaseSite.AuditDelete IS NULL
-		GROUP BY TuberculosisEpisodeId;
+		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
+		GROUP BY n.TuberculosisEpisodeId;
 
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]

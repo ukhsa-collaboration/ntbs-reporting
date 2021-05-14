@@ -8,10 +8,12 @@ BEGIN TRY
 	);
 
 	INSERT INTO @TempDiseaseSites
-	SELECT NotificationId, [Description] = STRING_AGG([Description], N', ')
-		FROM [$(NTBS)].[dbo].[NotificationSite] notificationSite
-		JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
-		GROUP BY NotificationId;
+	SELECT rr.NotificationId, [Description] = STRING_AGG([Description], N', ')
+		FROM RecordRegister rr
+			INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
+			INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
+		WHERE rr.SourceSystem = 'NTBS'
+		GROUP BY rr.NotificationId;
 
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
