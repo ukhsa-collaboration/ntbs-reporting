@@ -212,7 +212,7 @@ BEGIN TRY
           ,[ShortCourse]
           ,[InPatient]
           ,[Comments]
-          ,[OtherComments]
+          ,LEFT([OtherComments], 100) AS ImmunosuppressionComments
           ,[PrisonAbroadLast5Years]
           ,[PrisonAbroadMoreThan5YearsAgo]
           ,[TOMTreatmentInterruptedReason]
@@ -227,7 +227,7 @@ BEGIN TRY
           ,[TOMTreatmentRegimen]
           ,[TOMNonTuberculousMycobacteria]
           ,[TOMConversion]
-          ,[TOMComment]
+          ,LEFT([TOMComment], 500) AS TOMComment
           ,[TOMReasonExceeds12mths]
           ,[TOMReported12mth]
           ,[TOMTreatmentInterruptedReason24mth]

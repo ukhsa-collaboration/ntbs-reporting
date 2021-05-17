@@ -329,7 +329,7 @@ BEGIN TRY
 		,dbo.ufnYesNoUnknown(co.Smoker)									AS CurrentSmoker
 		--travel
 		,dbo.ufnYesNoUnknown(th.Haspatienttravelledpriordiagonosis)		AS TravelledOutsideUk
-		,th.Countriestravelled											AS ToHowManyCountries
+		,REPLACE(th.Countriestravelled, '+', '')						AS ToHowManyCountries
 		,dbo.ufnGetETSCountryName(th.TravelledCountryId1)               AS TravelCountry1
 		,dbo.ufnEmptyOrIntValue(th.Travelduration1)						AS MonthsTravelled1
 		,dbo.ufnGetETSCountryName(th.TravelledCountryId2)               AS TravelCountry2
