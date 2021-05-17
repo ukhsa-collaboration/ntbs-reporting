@@ -88,19 +88,21 @@ BEGIN TRY
 	INSERT INTO [dbo].[Record_PersonalDetails]
 		(NotificationId
 		,NhsNumber
+		,NhsNumberToLookup
 		,GivenName
 		,FamilyName
 		,DateOfBirth
 		,PostcodeToLookup
 		,Postcode)
 	SELECT
-		rr.NotificationId								AS NotificationId
-		,p.NhsNumber									AS NhsNumber
-		,p.GivenName									AS Forename
-		,p.FamilyName									AS Surname
-		,CONVERT(DATE, p.Dob) 							AS DateOfBirth
-		,p.PostcodeToLookup								AS PostcodeToLookup
-		,p.PostcodeToLookup								AS Postcode --this will later be reformatted if valid
+		rr.NotificationId									AS NotificationId
+		,p.NhsNumber										AS NhsNumber --this will later be reformatted if valid
+		,p.NhsNumber										AS NhsNumberToLookup --this will later be reformatted if valid
+		,p.GivenName										AS Forename
+		,p.FamilyName										AS Surname
+		,CONVERT(DATE, p.Dob)								AS DateOfBirth
+		,p.PostcodeToLookup									AS PostcodeToLookup
+		,p.PostcodeToLookup									AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = rr.NotificationId
@@ -111,19 +113,21 @@ BEGIN TRY
 	INSERT INTO [dbo].[Record_PersonalDetails]
 		(NotificationId
 		,NhsNumber
+		,NhsNumberToLookup
 		,GivenName
 		,FamilyName
 		,DateOfBirth
 		,PostcodeToLookup
 		,Postcode)
 	SELECT
-		rr.NotificationId								AS NotificationId
-		,p.NhsNumber                                    AS NhsNumber
-		,p.Forename                                     AS GivenName
-		,p.Surname                                      AS FamilyName
-		,CONVERT(DATE, p.DateOfBirth)                   AS DateOfBirth
-		,REPLACE(po.Pcd2, ' ', '')						AS PostcodeToLookup
-		,po.Pcd2										AS Postcode --this will later be reformatted if valid
+		rr.NotificationId									AS NotificationId
+		,p.NhsNumber										AS NhsNumber --this will later be reformatted if valid
+		,p.NhsNumber										AS NhsNumberToLookup --this will later be reformatted if valid
+		,p.Forename											AS GivenName
+		,p.Surname											AS FamilyName
+		,CONVERT(DATE, p.DateOfBirth)						AS DateOfBirth
+		,REPLACE(po.Pcd2, ' ', '')							AS PostcodeToLookup
+		,po.Pcd2											AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
 		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
@@ -131,6 +135,9 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].[dbo].[Address] a ON a.Id = n.AddressId
 		LEFT OUTER JOIN [$(ETS)].[dbo].[Postcode] po ON po.Id = a.PostcodeId
 	WHERE rr.SourceSystem = 'ETS'
+
+	--now create a standardised nhsnumber when possible
+	EXEC [dbo].[uspUpdateRecordNhsNumber]
 
 	--now create a standardised postcode where possible
 	EXEC [dbo].[uspUpdateRecordPostcode]

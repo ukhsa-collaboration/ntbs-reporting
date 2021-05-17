@@ -5,6 +5,7 @@
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
 	[NotificationId] [int] NOT NULL,
 	[NhsNumber] [nvarchar](20) NULL,
+	[NhsNumberToLookup] [nvarchar](20) NULL,
 	[GivenName] [nvarchar](50) NULL,
 	[FamilyName] [nvarchar](50) NULL,
 	[DateOfBirth] [date] NULL,
