@@ -1,6 +1,8 @@
 ﻿CREATE PROCEDURE [dbo].[uspMigrationDubiousSpecimenMatches]
 
 AS
+BEGIN TRY
+SET NOCOUNT ON
 
 TRUNCATE TABLE MigrationDubiousSpecimenMatches
 ------------------------------------------------------------------------------------------------------------
@@ -124,3 +126,7 @@ CONCAT_WS(', ',REPLACE(cast([SpecimenDateRangeFlag] as varchar),'1','Specimen Da
 
  --Update Comments in MigrationRunResults field MigrationNotes
  --Review specimen match(es) to Isolate(s) [ReferenceLaboratoryNumber] (),[ReferenceLaboratoryNumber2]()
+ 	END TRY
+	BEGIN CATCH
+		THROW
+	END CATCH
