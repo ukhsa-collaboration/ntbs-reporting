@@ -37,7 +37,7 @@
 	[ShortCourse] [nvarchar](10) NULL,
 	[InPatient] [nvarchar](10) NULL,
 	[Comments] [nvarchar](max) NULL,
-	[ImmunosuppressionComments] [nvarchar](50) NULL,
+	[ImmunosuppressionComments] [nvarchar](100) NULL,
 	[PrisonAbroadLast5Years] [nvarchar](10) NULL,
 	[PrisonAbroadMoreThan5YearsAgo] [nvarchar](10) NULL,
 	[TOMTreatmentInterruptedReason] [varchar](150) NULL,

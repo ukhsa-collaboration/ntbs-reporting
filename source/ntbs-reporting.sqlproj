@@ -275,6 +275,7 @@
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspMapCaseRecordChestXrayResults.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNotifiedRecords.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnMapEtsVisitorDurationToMonths.sql" />
     <Build Include="dbo\Views\Power BI Reporting\ReusableNotification.sql" />
@@ -295,6 +296,9 @@
     <Build Include="dbo\Stored Procedures\Lab Results\uspRecentSpecimensByRefLab.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspNewEtsMatches.sql" />
     <Build Include="dbo\Stored Procedures\Lab Results\uspAllEtsMatches.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\ChestXrayResultLookup.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnGetEtsBirthCountryAsNtbsCountry.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordNhsNumber.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

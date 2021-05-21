@@ -75,7 +75,7 @@ BEGIN
 			patient.NhsNumber																				AS NhsNumber,
 			patient.Dob																						AS DateOfBirth,
 			patient.[Address]																				AS AddressLine,
-			patient.NoFixedAbode																			AS NoFixedAbode,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(patient.NoFixedAbode)						AS NoFixedAbode,
 			patient.Postcode																				AS Postcode,
 			CASE patient.SexId
 				WHEN 1 THEN 'M'
@@ -89,7 +89,7 @@ BEGIN
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			ethnicity.Label																					AS EthnicGroup,
-			patient.UkBorn																					AS UKBorn,
+			dbo.ufnYesNoUnknown(patient.UkBorn)																AS UKBorn,
 			UPPER(country.Name)																				AS BirthCountry,
 			patient.YearOfUkEntry																			AS UkEntryYear,
 			CONVERT(varchar, clinicalDetails.SymptomStartDate, 103)											AS SymptomOnset,
@@ -117,7 +117,7 @@ BEGIN
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
 			CAST(dbo.ufnGetAgefrom(patient.Dob,n.NotificationDate) AS tinyint)								AS Age,
-			u.Username																						AS CaseManager,
+			u.DisplayName																					AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
 			 --ClusterNumber																				AS ClusterNumber,
 			diseaseSites.[Description]																		AS DiseaseSites
@@ -136,7 +136,7 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcodeLookup ON postcodeLookup.Postcode = patient.PostcodeToLookup
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthority localAuth ON localAuth.Code = postcodeLookup.LocalAuthorityCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthorityToPHEC localPhecMap ON localAuth.Code = localPhecMap.LocalAuthorityCode
-		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC patientPhec ON localPhecMap.LocalAuthorityCode = patientPhec.Code
+		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC patientPhec ON localPhecMap.PHECCode = patientPhec.Code
 		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC servicePhec ON servicePhec.Code = tbService.PHECCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].Occupation occupation ON occupation.OccupationId = patient.OccupationId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Hospital hospital ON hospitalDetails.HospitalId = hospital.HospitalId

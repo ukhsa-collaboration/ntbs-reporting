@@ -1,6 +1,21 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateEtsCaseRecord]
 AS
 BEGIN TRY
+	DECLARE @TempDiseaseSites TABLE
+	(
+		TuberculosisEpisodeId uniqueidentifier,
+		[Description] nvarchar(2000)
+	);
+
+	INSERT INTO @TempDiseaseSites
+	SELECT n.TuberculosisEpisodeId, [Description] = STRING_AGG(sites.[Name], N', ')
+		FROM RecordRegister rr
+			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
+			INNER JOIN [$(ETS)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
+		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
+		GROUP BY n.TuberculosisEpisodeId;
+
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
 		,[EtsId]
@@ -30,11 +45,12 @@ BEGIN TRY
 		,[OnsetToTreatmentDays]
 		,[HivTestOffered]
 		,[SiteOfDisease]
+		,[DiseaseSiteList]
 		,[PostMortemDiagnosis]
 		,[StartedTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
-		,[DOTOffered] 
+		,[DOTOffered]
 		,[DOTReceived]
 		,[TestPerformed]
 		,[SampleTaken]
@@ -128,17 +144,13 @@ BEGIN TRY
 		END																AS Occupation
 		,occat.[Name]													AS OccupationCategory
 		-- RP-859 populate birth country consistently
-		,CASE
-			WHEN p.UkBorn = 1
-			THEN 'UNITED KINGDOM'
-			ELSE c.[Name]
-		END 															AS BirthCountry
+		,dbo.ufnGetEtsBirthCountryAsNtbsCountry(p.UkBorn, p.BirthCountryId) AS BirthCountry
 		,p.UkEntryYear													AS UkEntryYear
 		,dbo.ufnYesNo(a.NoFixedAbode)									AS NoFixedAbode
-		
+
 		--symptomatic is not a field in NTBS but we can derive that it should be 'Yes' if there is a SymptomOnSetDate
 		--otherwise leave it empty
-		,CASE 
+		,CASE
 			WHEN te.SymptomOnset IS NOT NULL THEN 'Yes'
 		END																AS Symptomatic
 
@@ -167,6 +179,7 @@ BEGIN TRY
 			te.HIVTestOffered
 		)																AS HivTestOffered
 		,dbo.ufnGetETSSiteOfDisease(n.TuberculosisEpisodeId)			AS SiteOfDisease
+		,diseaseSites.[Description]										AS DiseaseSiteList
 
 		-- Treatment
 		,dbo.ufnYesNo(te.PostMortemDiagnosis)							AS PostMortemDiagnosis
@@ -177,13 +190,13 @@ BEGIN TRY
 		,dl.DOTReceived													AS DOTReceived
 		--we need to reverse ETS' no sample taken. So if no sample taken = yes, no test was performed
 		--if it = no, it means a test was performed
-		,CASE 
+		,CASE
 			WHEN n.NoSampleTaken IS NULL THEN NULL
 			WHEN n.NoSampleTaken = 1 THEN 'No'
 			WHEN n.NoSampleTaken = 0 THEN 'Yes'
 		END																AS TestPerformed
 		--the same logic is used to set 'Sample Taken'
-		,CASE 
+		,CASE
 			WHEN n.NoSampleTaken IS NULL THEN NULL
 			WHEN n.NoSampleTaken = 1 THEN 'No'
 			WHEN n.NoSampleTaken = 0 THEN 'Yes'
@@ -316,7 +329,7 @@ BEGIN TRY
 		,dbo.ufnYesNoUnknown(co.Smoker)									AS CurrentSmoker
 		--travel
 		,dbo.ufnYesNoUnknown(th.Haspatienttravelledpriordiagonosis)		AS TravelledOutsideUk
-		,th.Countriestravelled											AS ToHowManyCountries
+		,REPLACE(th.Countriestravelled, '+', '')						AS ToHowManyCountries
 		,dbo.ufnGetETSCountryName(th.TravelledCountryId1)               AS TravelCountry1
 		,dbo.ufnEmptyOrIntValue(th.Travelduration1)						AS MonthsTravelled1
 		,dbo.ufnGetETSCountryName(th.TravelledCountryId2)               AS TravelCountry2
@@ -355,10 +368,10 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
 		LEFT OUTER JOIN [$(ETS)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
 		LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
-		LEFT OUTER JOIN [$(ETS)].dbo.Country C ON c.Id = p.BirthCountryId
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
+		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
 	WHERE rr.SourceSystem = 'ETS'
 
 	EXEC [dbo].[uspGenerateEtsImmunosuppression]

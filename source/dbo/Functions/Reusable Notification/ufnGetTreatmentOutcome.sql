@@ -1,12 +1,11 @@
 ﻿/***************************************************************************************************
 Desc:    This re/calculates the value for the data points ReusableNotification.TreatmentOutcome12months,
-		 and a few other ReusableNotification data points for each notification record (every night when 
-		 the uspGenerate schedule runs). The inline comments no 1, 2, 3 ... below have been copied 
-		 across from the NTBS R1 specification in Confluence, and are to be kept in sync with that 
+		 and a few other ReusableNotification data points for each notification record (every night when
+		 the uspGenerate schedule runs). The inline comments no 1, 2, 3 ... below have been copied
+		 across from the NTBS R1 specification in Confluence, and are to be kept in sync with that
 		 specification.
 
 
-         
 **************************************************************************************************/
 
 CREATE FUNCTION [dbo].[ufnGetTreatmentOutcome] (
@@ -97,9 +96,9 @@ AS
 		IF (@ReturnValue IS NULL)
 		BEGIN
 			IF (@AnswerToCompleteQuestion = 'No, the patient did not complete a full course within ' + @Month + ' months' AND (@AnswerToIncompleteReason1 IS NULL OR @AnswerToIncompleteReason2 IS NULL))
-				SET @ReturnValue = 'Lost to follow-up'
+				SET @ReturnValue = 'Not evaluated'
 		END
-			
+
 		-- 9. The values in the relevant fields are all set to NULL
 		IF (@ReturnValue IS NULL)
 		BEGIN

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Record_CaseData](
-	
+
 	[CaseDataId] [int] IDENTITY(1,1) NOT NULL,
 
 	-- Global (ETS, LTBR, NTBS encompassing) primary key
@@ -7,7 +7,7 @@
 	[EtsId] [bigint] NULL,
 	[LtbrId] [varchar](20) NULL,
 	[LinkedNotifications] [varchar](200) NULL,
-	
+
 	[CaseManager] [nvarchar](101) NULL,
 	[Consultant] [nvarchar](255) NULL,
 	[HospitalId] [varchar](36) NULL,
@@ -44,6 +44,7 @@
 	[OnsetToTreatmentDays] INT NULL,
 	[HivTestOffered] [varchar](30) NULL,
 	[SiteOfDisease] [varchar](50) NULL,
+	[DiseaseSiteList] [varchar](2000) NULL,
 	[PostMortemDiagnosis] [varchar](10) NULL,
 	[StartedTreatment] [varchar](10) NULL,
 	[TreatmentRegimen] [nvarchar](30) NULL,
@@ -141,15 +142,15 @@
 	[BiologicalTherapy] [varchar](10)  NULL,
 	[Transplantation] [varchar](10)  NULL,
 	[OtherImmunoSuppression] [varchar](30) NULL,
-	
-	
-	
-	
+
+
+
+
 	[DataRefreshedAt] [datetime] NOT NULL
 
 	 CONSTRAINT [PK_CaseDataId] PRIMARY KEY CLUSTERED (
 		[CaseDataId] ASC
-	) 
+	)
 ) ON [PRIMARY]
 GO
 
