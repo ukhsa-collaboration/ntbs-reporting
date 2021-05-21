@@ -13,13 +13,8 @@
     <DataSet Name="RegionShared">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Option">
-            <Value>ADD_UNKNOWN</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandType>StoredProcedure</CommandType>
-        <CommandText>uspPhec</CommandText>
+        <CommandText>SELECT PHEC_Code AS PhecCode, PHEC_Name AS PhecName
+  FROM [dbo].[vwPhec]</CommandText>
       </Query>
       <Fields>
         <Field Name="PhecCode">
@@ -29,10 +24,6 @@
         <Field Name="PhecName">
           <DataField>PhecName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SortOrder">
-          <DataField>SortOrder</DataField>
-          <rd:TypeName>System.Byte</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>

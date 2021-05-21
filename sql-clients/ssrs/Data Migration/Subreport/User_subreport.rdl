@@ -20,9 +20,8 @@
           </QueryParameter>
         </QueryParameters>
         <CommandText>SELECT 
-[TB_Service_Name], short.Short_Name
+[TB_Service_Name],  TB_Service_Name AS Short_Name
 FROM [TB_Service] tbs
-LEFT OUTER JOIN [TBServiceShortNames] short ON short.TB_Service_Code = tbs.TB_Service_Code
 WHERE tbs.TB_Service_Code = @TBServiceCode</CommandText>
       </Query>
       <Fields>
@@ -1297,7 +1296,6 @@ WHERE h.IsLegacy = 1</CommandText>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
