@@ -14,12 +14,12 @@ WHERE ReferenceLaboratoryNumber = @ReferenceLaboratoryNumber
  --then all NTBS matches, including any rejected ones
 
 SELECT 'NTBS match' AS 'Info', nsm.NotificationId, MatchType, UpdateDateTime, ConfidenceLevel, MatchMethod,
- CASE WHEN le.Denotified = 'Yes' THEN 'Denotified' ELSE 'Notified' END AS NotificationStatus, rn.NotificationDate, rn.NhsNumber, rn.DateOfBirth,
+ CASE WHEN rr.Denotified = 0 THEN 'Denotified' ELSE 'Notified' END AS NotificationStatus, rn.NotificationDate, rn.NhsNumber, rn.DateOfBirth,
 	CONCAT(UPPER(rn.Surname), ', ', rn.Forename) AS PatientName,
 	rn.Sex, le.AddressLine1, rn.Postcode
 FROM [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch] nsm
 	INNER JOIN [dbo].[ReusableNotification] rn ON rn.NtbsId = nsm.NotificationID
-	LEFT OUTER JOIN [dbo].[LegacyExtract] le ON le.NtbsId = nsm.NotificationID
+	LEFT OUTER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = nsm.NotificationID
 WHERE ReferenceLaboratoryNumber = @ReferenceLaboratoryNumber
 
 --then the ETS record that the NTBS one(s) were migrated from

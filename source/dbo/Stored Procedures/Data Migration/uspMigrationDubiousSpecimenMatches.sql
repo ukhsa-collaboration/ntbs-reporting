@@ -29,8 +29,9 @@ SELECT DISTINCT LegacyId,ReferenceLaboratoryNumber,1 FROM #SpecimenMultipleNotif
 <MAYBE> specimen date is outside the allowable date range for the notification (i.e. too long after as well as too long before)
 */
    select e.* into #SpecimenDateRangeFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
-  inner join LegacyExtract l on l.EtsId = e.LegacyId
-  where ABS(DATEDIFF(day,CaseReportDate,[SpecimenDate])) >365
+  inner join Record_CaseData cd on cd.EtsId = e.LegacyId
+  inner join RecordRegister rr on rr.NotificationId = cd.NotificationId
+  where ABS(DATEDIFF(day,rr.NotificationDate,[SpecimenDate])) >365
   and
  ( year([EarliestMatchDate]) > (year(GETDATE())-3))
 
@@ -48,8 +49,9 @@ WHERE M.EtsId IS NULL
 
  ------------------------------------------------------------------------------------------------------------
  --different NHS numbers
-    select e.*,le.NHSNumber,ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
-  inner join LegacyExtract le on le.EtsId = e.LegacyId
+    select e.*,pd.NHSNumber,ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
+  inner join Record_CaseData cd on cd.EtsId = e.LegacyId
+  inner join Record_PersonalDetails pd on pd.NotificationId = cd.NotificationId
   inner join [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls on ls.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
   where Replace(NHSNumber,' ','') <> Replace(PatientNhsNumber,' ','')
   and NHSNumber not in ('','0000000000') and PatientNhsNumber not in ('','.') and PatientNhsNumber not like '%[A-Z]%'
@@ -69,8 +71,9 @@ WHERE M.EtsId IS NULL
    ------------------------------------------------------------------------------------------------------------
  --matched to a denotified case
       select e.* into #DenotifiedMatchFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
-  inner join LegacyExtract l on l.EtsId = e.LegacyId
-  where l.Denotified = 'Yes'
+  inner join Record_CaseData cd on cd.EtsId = e.LegacyId
+  inner join RecordRegister rr on rr.NotificationId = cd.NotificationId
+  where rr.Denotified = 0
 
     UPDATE M
 SET DenotifiedMatchFlag = 1

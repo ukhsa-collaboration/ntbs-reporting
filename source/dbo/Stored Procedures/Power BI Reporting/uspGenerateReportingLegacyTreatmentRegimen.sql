@@ -26,16 +26,16 @@ BEGIN TRY
 
 	UPDATE le
 		SET ShortCourse = 'No', MDRTreatment = 'Yes'
-	FROM [dbo].[LegacyExtract] le
+	FROM [dbo].[Record_LegacyExtract] le
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = le.NotificationId
-	WHERE NtbsId IN (SELECT NotificationId FROM [$(NTBS)].dbo.ClinicalDetails WHERE TreatmentRegimen = 'MdrTreatment')
+	WHERE le.NotificationId IN (SELECT NotificationId FROM [$(NTBS)].dbo.ClinicalDetails WHERE TreatmentRegimen = 'MdrTreatment')
 	AND rr.SourceSystem = 'NTBS'
 
 	UPDATE le
 		SET ShortCourse = 'No', MdrTreatment = 'No'
-	FROM [dbo].[LegacyExtract] le
+	FROM [dbo].[Record_LegacyExtract] le
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = le.NotificationId
-	WHERE NtbsId IN (SELECT NotificationId FROM [$(NTBS)].dbo.ClinicalDetails WHERE TreatmentRegimen = 'Other')
+	WHERE le.NotificationId IN (SELECT NotificationId FROM [$(NTBS)].dbo.ClinicalDetails WHERE TreatmentRegimen = 'Other')
 	AND rr.SourceSystem = 'NTBS'
 END TRY
 BEGIN CATCH
