@@ -52,7 +52,7 @@
 	[TOMTreatmentRegimen] [varchar](150) NULL,
 	[TOMNonTuberculousMycobacteria] [varchar](500) NULL,
 	[TOMConversion] [varchar](24) NULL,
-	[TOMComment] [nvarchar](500) NULL,
+	[TOMComment] [nvarchar](2000) NULL,
 	[TOMReasonExceeds12mths] [nvarchar](50) NULL,
 	[TOMReported12mth] [nvarchar](10) NULL,
 	[TOMTreatmentInterruptedReason24mth] [nvarchar](150) NULL,

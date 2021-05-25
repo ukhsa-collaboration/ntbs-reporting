@@ -205,7 +205,6 @@
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCPatients.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspNTSReportLabMappings.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\DenotificationReasonMapping.sql" />
-    <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtract.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetLegacyDOTvalue.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetHIVValue.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacySiteMapping.sql" />
@@ -299,6 +298,7 @@
     <Build Include="dbo\Tables\Power BI Reporting\ChestXrayResultLookup.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetEtsBirthCountryAsNtbsCountry.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordNhsNumber.sql" />
+    <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatchesBackup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Script.PreDeployment.sql" />

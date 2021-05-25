@@ -15,7 +15,7 @@
 	[TOMTreatmentRegimen] [varchar](150) NULL,
 	[TOMNonTuberculousMycobacteria] [varchar](500) NULL,
 	[TOMConversion] [varchar](24) NULL,
-	[TOMComment] [nvarchar](500) NULL,
+	[TOMComment] [nvarchar](2000) NULL,
 	[TOMReasonExceeds] [nvarchar](50) NULL,
 	[TOMReported] [nvarchar](10) NULL, 
     CONSTRAINT [PK_LegacyPeriodicOutcome] PRIMARY KEY ([LegacyOutcomeId]),
