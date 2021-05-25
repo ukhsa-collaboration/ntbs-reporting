@@ -299,9 +299,9 @@
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetEtsBirthCountryAsNtbsCountry.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspUpdateRecordNhsNumber.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatchesBackup.sql" />
+    <None Include="Scripts\SetVersionNumber.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\Script.PreDeployment.sql" />
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
     <None Include="Publish Profiles\Production\LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
@@ -327,15 +327,6 @@
     <None Include="Publish Profiles\DELETE\azure-ntbs-training-reporting-DELETE.publish.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Scripts\Script.PostDeployment.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ContinuousDeployment\1.PreDeployment.Updates.sql" />
-    <None Include="ContinuousDeployment\2.PostDeployment.StaticTablesList.sql" />
-    <None Include="ContinuousDeployment\3.PostDeployment.Updates.sql">
-      <SuppressTSqlWarnings>
-      </SuppressTSqlWarnings>
-    </None>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
     <Build Include="Security\Permissions.sql" />
     <None Include="Scripts\RestoreETS.sql" />
@@ -431,5 +422,8 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="ntbs-reporting.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\PostDeploy.sql" />
   </ItemGroup>
 </Project>
