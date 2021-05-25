@@ -86,7 +86,7 @@
 SELECT DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion, Count(MigrationNotificationId) AS CountOfRecords
 FROM [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
-AND DATEPART(YEAR, NotificationDate) &gt; 2018
+AND DATEPART(YEAR, NotificationDate) &gt;= 2018
 	GROUP BY DATEPART(YEAR, NotificationDate), LegacyRegion
 ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
       </Query>
@@ -116,11 +116,11 @@ ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
         <CommandText>--because Group ID is always populated for LTBR records, this will
 -- find the genuine groups
 SELECT GroupId, MigrationNotificationId, DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion
-FROM  [ntbs-reporting-dev].[dbo].[MigrationRunResults]
+FROM  [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
 	AND GroupId IN
 	(SELECT GroupId
-FROM  [ntbs-reporting-dev].[dbo].[MigrationRunResults]
+FROM  [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
 	AND GroupId IS NOT NULL
 GROUP BY GroupId
