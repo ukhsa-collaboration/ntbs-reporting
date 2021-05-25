@@ -4,6 +4,13 @@ AS
 BEGIN TRY
 SET NOCOUNT ON
 
+
+--Create backup of table so previous set of results remain available.
+TRUNCATE TABLE MigrationDubiousSpecimenMatchesBackup
+
+INSERT INTO MigrationDubiousSpecimenMatchesBackup 
+SELECT * FROM MigrationDubiousSpecimenMatches
+
 TRUNCATE TABLE MigrationDubiousSpecimenMatches
 ------------------------------------------------------------------------------------------------------------
 --where one specimen has been matched to two different notifications.
