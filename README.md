@@ -16,7 +16,8 @@ Steps:
 
 1. Follow the instructions for setting up the NTBS application in the [ntbs_Beta repository](https://github.com/publichealthengland/ntbs_Beta/blob/master/ntbs-service/README.md).
 1. Follow the instructions for setting up the NTBS migration database in the [ntbs-data-migration repository](https://github.com/publichealthengland/ntbs-data-migration/blob/master/README.md).
-1. Restore a backup of the geography database by carrying out the following steps:
+1. Restore a backup of the geography database and seed NTBS reference data by carrying out the following steps:
+(:warning:**WARNING: if this is not done then reference data will need to be seeded manually**)
     1. Connect to the `ntbs-ops-dbs.uksouth.cloudapp.azure.com\NTBS` database server in SSMS.
     1. In the `Object Explorer` panel, right-click on the `int-geography` database and select `Tasks` -> `Back Up...`.
     1. Click `OK`.
@@ -31,6 +32,7 @@ Steps:
     1. Change the name of the database from `int-geography` to `geography`.
     1. Click `OK`.
     1. You should see a message saying that the database has restored successfully.
+    1. Run the uspUpdateNTBSRefData stored procedure
 1. Set up specimen matching database:
     1. Clone the [specimen-matching repository](https://github.com/publichealthengland/ntbs-specimen-matching).
     1. Make a copy of the `DEV-specimen-matching.publish.xml` file, named `DEV-USER-specimen-matching.publish.xml`. This file will be ignored by git.
