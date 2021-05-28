@@ -56,7 +56,7 @@ WHERE M.EtsId IS NULL
 
  ------------------------------------------------------------------------------------------------------------
  --different NHS numbers
-    select e.*,pd.NHSNumber,ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
+    select e.*,pd.NhsNumber, ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
   inner join Record_CaseData cd on cd.EtsId = e.LegacyId
   inner join Record_PersonalDetails pd on pd.NotificationId = cd.NotificationId
   inner join [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls on ls.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber

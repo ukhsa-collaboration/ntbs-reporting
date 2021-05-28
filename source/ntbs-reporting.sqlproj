@@ -225,7 +225,6 @@
     <Build Include="dbo\Functions\Data Migration\ufnGetMigrationNotificationId.sql" />
     <Build Include="dbo\Functions\Data Migration\ufnGetMigrationDataLossReason.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationRunResults.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationRunsForRegion.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationResultsNotifications.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspConfirmCurrentDatabaseVersions.sql" />
     <Build Include="dbo\Functions\Data Migration\ufnStripNonAlphaChars.sql" />
