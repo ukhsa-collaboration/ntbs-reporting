@@ -10,23 +10,6 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="RegionShared">
-      <Query>
-        <DataSourceName>PHE</DataSourceName>
-        <CommandText>SELECT PHEC_Code AS PhecCode, PHEC_Name AS PhecName
-FROM [dbo].[vwPhec]</CommandText>
-      </Query>
-      <Fields>
-        <Field Name="PhecCode">
-          <DataField>PhecCode</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PhecName">
-          <DataField>PhecName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-      </Fields>
-    </DataSet>
     <DataSet Name="DataAsAt">
       <Query>
         <DataSourceName>PHE</DataSourceName>
@@ -77,13 +60,8 @@ FROM [dbo].[vwPhec]</CommandText>
     <DataSet Name="MigrationRun">
       <Query>
         <DataSourceName>PHE</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandType>StoredProcedure</CommandType>
-        <CommandText>uspMigrationRunsForRegion</CommandText>
+        <CommandText>SELECT mr.MigrationRunId, CONCAT(MigrationRunDate, ': ', MigrationRunName) AS 'MigrationDescription' 
+	FROM [MigrationRun] mr</CommandText>
       </Query>
       <Fields>
         <Field Name="MigrationRunId">
@@ -103,16 +81,12 @@ FROM [dbo].[vwPhec]</CommandText>
           <QueryParameter Name="@MigrationRun">
             <Value>=Parameters!MigrationRun.Value</Value>
           </QueryParameter>
-          <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
-          </QueryParameter>
         </QueryParameters>
         <CommandText>--by region migrated to
 SELECT DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion, Count(MigrationNotificationId) AS CountOfRecords
 FROM [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
-AND LegacyRegion = @Region
-AND DATEPART(YEAR, NotificationDate) &gt; 2016
+AND DATEPART(YEAR, NotificationDate) &gt;= 2018
 	GROUP BY DATEPART(YEAR, NotificationDate), LegacyRegion
 ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
       </Query>
@@ -139,10 +113,18 @@ ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
             <Value>=Parameters!MigrationRun.Value</Value>
           </QueryParameter>
         </QueryParameters>
-        <CommandText>SELECT GroupId, MigrationNotificationId, DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion
-FROM [NTBS_Reporting_Staging].[dbo].[MigrationRunResults]
+        <CommandText>--because Group ID is always populated for LTBR records, this will
+-- find the genuine groups
+SELECT GroupId, MigrationNotificationId, DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion
+FROM  [dbo].[MigrationRunResults]
+	WHERE MigrationRunId = @MigrationRun
+	AND GroupId IN
+	(SELECT GroupId
+FROM  [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
 	AND GroupId IS NOT NULL
+GROUP BY GroupId
+HAVING COUNT(MigrationNotificationId) &gt; 1)
 	ORDER BY GroupId, NotificationYear</CommandText>
       </Query>
       <Fields>
@@ -170,19 +152,15 @@ FROM [NTBS_Reporting_Staging].[dbo].[MigrationRunResults]
         <QueryParameters>
           <QueryParameter Name="@MigrationRun">
             <Value>=Parameters!MigrationRun.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@Region">
-            <Value>=Parameters!Region.Value</Value>
+            <rd:UserDefined>true</rd:UserDefined>
           </QueryParameter>
         </QueryParameters>
         <CommandText>--by region migrated to
 SELECT DATEPART(YEAR, NotificationDate) AS NotificationYear, LegacyRegion, Count(MigrationNotificationId) AS CountOfRecords
 FROM [dbo].[MigrationRunResults]
-WHERE MigrationRunId = @MigrationRun
-AND 
-(LegacyRegion != @Region
-OR DATEPART(YEAR, NotificationDate) &lt; 2017)
-GROUP BY DATEPART(YEAR, NotificationDate), LegacyRegion
+	WHERE MigrationRunId = @MigrationRun
+AND DATEPART(YEAR, NotificationDate) &lt; 2018
+	GROUP BY DATEPART(YEAR, NotificationDate), LegacyRegion
 ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
       </Query>
       <Fields>
@@ -210,7 +188,7 @@ ORDER BY  DATEPART(YEAR, NotificationDate), LegacyRegion</CommandText>
         </QueryParameters>
         <CommandText>
 SELECT MigrationNotificationId, NotificationDate, LegacyETSId, LegacyLtbrNo
-FROM [NTBS_Reporting_Staging].[dbo].[MigrationRunResults]
+FROM [dbo].[MigrationRunResults]
 WHERE MigrationRunId = @MigrationRun
 AND SourceSystem = 'LTBR'
 ORDER BY NotificationDate</CommandText>
@@ -243,7 +221,7 @@ ORDER BY NotificationDate</CommandText>
           </QueryParameter>
         </QueryParameters>
         <CommandText>SELECT MigrationResult, Count(MigrationNotificationId) AS CountOfRecords
-    FROM [NTBS_Reporting_Staging].[dbo].[MigrationRunResults]
+    FROM [dbo].[MigrationRunResults]
 	WHERE MigrationRunId = @MigrationRun
 	GROUP BY MigrationResult
 ORDER BY CountOfRecords DESC</CommandText>
@@ -2331,7 +2309,6 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 <PaddingBottom>2pt</PaddingBottom>
                               </Style>
                             </Textbox>
-                            <rd:Selected>true</rd:Selected>
                           </CellContents>
                         </TablixCell>
                       </TablixCells>
@@ -2822,20 +2799,6 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <FontSize>20pt</FontSize>
                       <FontWeight>Normal</FontWeight>
                       <TextDecoration>None</TextDecoration>
-                    </Style>
-                  </TextRun>
-                </TextRuns>
-                <Style>
-                  <LineHeight>21pt</LineHeight>
-                </Style>
-              </Paragraph>
-              <Paragraph>
-                <TextRuns>
-                  <TextRun>
-                    <Value>=Parameters!Region.Label</Value>
-                    <Style>
-                      <FontFamily>Arial</FontFamily>
-                      <FontSize>20pt</FontSize>
                     </Style>
                   </TextRun>
                   <TextRun>
@@ -8668,23 +8631,6 @@ ORDER BY CountOfRecords DESC</CommandText>
     </ReportSection>
   </ReportSections>
   <ReportParameters>
-    <ReportParameter Name="Region">
-      <DataType>String</DataType>
-      <Prompt>*Region</Prompt>
-      <ValidValues>
-        <DataSetReference>
-          <DataSetName>RegionShared</DataSetName>
-          <ValueField>PhecName</ValueField>
-          <LabelField>PhecName</LabelField>
-        </DataSetReference>
-      </ValidValues>
-      <cl:ComponentMetadata>
-        <cl:ComponentId>cb9b200c-9939-4412-921f-1746f306fe5c</cl:ComponentId>
-        <cl:HideUpdateNotifications>true</cl:HideUpdateNotifications>
-        <cl:SourcePath>/Report Parts/Region</cl:SourcePath>
-        <cl:SyncDate>2019-01-29T11:11:23.3360977+00:00</cl:SyncDate>
-      </cl:ComponentMetadata>
-    </ReportParameter>
     <ReportParameter Name="MigrationRun">
       <DataType>String</DataType>
       <Prompt>*Migration run</Prompt>
@@ -8705,11 +8651,6 @@ ORDER BY CountOfRecords DESC</CommandText>
         <CellDefinition>
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>0</RowIndex>
-          <ParameterName>Region</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
-          <RowIndex>1</RowIndex>
           <ParameterName>MigrationRun</ParameterName>
         </CellDefinition>
       </CellDefinitions>
