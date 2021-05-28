@@ -14,7 +14,7 @@ WHERE ReferenceLaboratoryNumber = @ReferenceLaboratoryNumber
  --then all NTBS matches, including any rejected ones
 
 SELECT 'NTBS match' AS 'Info', nsm.NotificationId, MatchType, UpdateDateTime, ConfidenceLevel, MatchMethod,
- CASE WHEN rr.Denotified = 0 THEN 'Denotified' ELSE 'Notified' END AS NotificationStatus, rn.NotificationDate, rn.NhsNumber, rn.DateOfBirth,
+ CASE WHEN rr.Denotified = 1 THEN 'Denotified' ELSE 'Notified' END AS NotificationStatus, rn.NotificationDate, rn.NhsNumber, rn.DateOfBirth,
 	CONCAT(UPPER(rn.Surname), ', ', rn.Forename) AS PatientName,
 	rn.Sex, le.AddressLine1, rn.Postcode
 FROM [NTBS_Specimen_Matching].[dbo].[NotificationSpecimenMatch] nsm

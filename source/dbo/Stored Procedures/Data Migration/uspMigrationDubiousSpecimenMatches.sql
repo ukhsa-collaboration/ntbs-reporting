@@ -80,7 +80,7 @@ WHERE M.EtsId IS NULL
       select e.* into #DenotifiedMatchFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
   inner join Record_CaseData cd on cd.EtsId = e.LegacyId
   inner join RecordRegister rr on rr.NotificationId = cd.NotificationId
-  where rr.Denotified = 0
+  where rr.Denotified = 1
 
     UPDATE M
 SET DenotifiedMatchFlag = 1
