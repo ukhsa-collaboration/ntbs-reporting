@@ -18,7 +18,7 @@
       <Value>LondonTBR</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>ntbs_migration</Value>
+      <Value>ntbs_migration_training</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>training-ntbs</Value>
