@@ -315,7 +315,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
-		CROSS APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
 	WHERE rr.SourceSystem = 'NTBS'
 
 	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
