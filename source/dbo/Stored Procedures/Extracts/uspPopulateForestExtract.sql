@@ -168,7 +168,7 @@ BEGIN
 		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = patient.PostcodeToLookup
 		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
-		CROSS APPLY [dbo].[ufnGetCaseRecordChestXrayResults](n.NotificationId, clinicalDetails.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](n.NotificationId, clinicalDetails.DiagnosisDate) ChestXRayResult
 		WHERE nsm.MatchType = 'Confirmed'
 			AND (servicePhec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands',
 										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
