@@ -205,7 +205,6 @@
     <Build Include="dbo\Stored Procedures\National Team\uspGenerateSGSSMTBCPatients.sql" />
     <Build Include="dbo\Stored Procedures\National Team\uspNTSReportLabMappings.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\DenotificationReasonMapping.sql" />
-    <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtract.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetLegacyDOTvalue.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetHIVValue.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacySiteMapping.sql" />
