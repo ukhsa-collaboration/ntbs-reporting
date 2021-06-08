@@ -13,20 +13,31 @@ SELECT * FROM MigrationDubiousSpecimenMatches
 
 TRUNCATE TABLE MigrationDubiousSpecimenMatches
 
-Create Table #NotificationsInScope (EtsId int, MinEventDate Date,MaxEventDate Date)
+Create Table #NotificationsInScope (EtsId int, MinEventDate Date,MaxEventDate Date, MinSpecimenDate Date, MaxSpecimenDate Date, NhsNumber VARCHAR(20))
 INSERT into #NotificationsInScope 
 
     select EtsId
-   ,(Select Min(EDate) From (Values(SymptomOnsetDate),(FirstPresentationDate),(DiagnosisDate),(StartOfTreatmentDate),(NotificationDate)) as v (EDate)) as [MinEventDate]
-   ,(Select Max(EDate) From (Values(SymptomOnsetDate),(FirstPresentationDate),(DiagnosisDate),(StartOfTreatmentDate),(NotificationDate),(TreatmentEndDate),(DateOfDeath),(MdrTreatmentDate)) as v (EDate)) as [MaxEventDate]
-   from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
-  inner join Record_CaseData cd on cd.EtsId = e.LegacyId
-  inner join RecordRegister rr on rr.NotificationId = cd.NotificationId
-    where year(NotificationDate) in ( SELECT NotificationYear From vwNotificationYear)
+   ,(Select Min(EDate) From (Values(SymptomOnsetDate),(DiagnosisDate),(StartOfTreatmentDate),(NotificationDate)) as v (EDate)) as [MinEventDate]
+   ,(Select Max(EDate) From (Values(SymptomOnsetDate),(DiagnosisDate),(StartOfTreatmentDate),(NotificationDate),(TreatmentEndDate),(DateOfDeath),(MdrTreatmentDate)) as v (EDate)) as [MaxEventDate]
+   ,NULL
+   ,NULL
+   ,pd.NhsNumberToLookup
+  from RecordRegister rr 
+  inner join Record_CaseData cd on cd.NotificationId = rr.NotificationId
+  inner join Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
+    where year(rr.NotificationDate) in ( SELECT NotificationYear From vwNotificationYear) and  rr.SourceSystem = 'ETS'
+  and rr.NotificationId in (select distinct LegacyId 
+                                from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch)
+
+--calculate the allowable date range (365 days either side of the min and max dates for a notification)
+
+UPDATE #NotificationsInScope
+    SET 
+        MinSpecimenDate = DATEADD(DAY, -365, MinEventDate),
+        MaxSpecimenDate = DATEADD(DAY, 365, MaxEventDate)
+
 ------------------------------------------------------------------------------------------------------------
 --where one specimen has been matched to two different notifications.
-
-
 
 select distinct e.* into #SpecimenMultipleNotificationMatchFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
 INNER JOIN (
@@ -44,13 +55,11 @@ having COUNT(*) >1)  AS Q1 on Q1.ReferenceLaboratoryNumber = e.ReferenceLaborato
 INSERT INTO MigrationDubiousSpecimenMatches(EtsId,ReferenceLaboratoryNumber, SpecimenMultipleNotificationMatchFlag)
 SELECT DISTINCT LegacyId,ReferenceLaboratoryNumber,1 FROM #SpecimenMultipleNotificationMatchFlag
 ------------------------------------------------------------------------------------------------------------
-/*specimen date is more than a year before the notification date
+/*specimen date is outside the notification date range*/
 
-<MAYBE> specimen date is outside the allowable date range for the notification (i.e. too long after as well as too long before)
-*/
    select e.* into #SpecimenDateRangeFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e 
    inner join #NotificationsInScope n on n.EtsId = e.LegacyId
-   where DATEDIFF(day,[SpecimenDate],MinEventDate)>365 and DATEDIFF(day,[SpecimenDate],MaxEventDate) > 365
+   where SpecimenDate NOT BETWEEN n.MinSpecimenDate AND n.MaxSpecimenDate
 
 UPDATE M
 SET SpecimenDateRangeFlag = 1
@@ -64,10 +73,8 @@ WHERE M.EtsId IS NULL
 
  ------------------------------------------------------------------------------------------------------------
  --different NHS numbers
-    select e.*,pd.NhsNumber, ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
+    select e.*,n.NhsNumber, ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
     inner join #NotificationsInScope n on n.EtsId = e.LegacyId
-  inner join Record_CaseData cd on cd.EtsId = e.LegacyId
-  inner join Record_PersonalDetails pd on pd.NotificationId = cd.NotificationId
   inner join [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls on ls.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
   where Replace(NHSNumber,' ','') <> Replace(PatientNhsNumber,' ','')
   and NHSNumber not in ('','0000000000') and PatientNhsNumber not in ('','.') and PatientNhsNumber not like '%[A-Z]%'
@@ -84,13 +91,14 @@ LEFT JOIN MigrationDubiousSpecimenMatches M ON M.EtsId = S.LegacyId AND M.Refere
 WHERE M.EtsId IS NULL
    ------------------------------------------------------------------------------------------------------------
  --matched to a denotified case
-      select e.* into #DenotifiedMatchFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
-      inner join #NotificationsInScope n on n.EtsId = e.LegacyId
+ --we are only going to migrate in fairly recent denotified cases so exclude notifications where the notification date is more than 18 months ago
+  select e.* into #DenotifiedMatchFlag from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
+  inner join #NotificationsInScope n on n.EtsId = e.LegacyId
   inner join Record_CaseData cd on cd.EtsId = e.LegacyId
   inner join RecordRegister rr on rr.NotificationId = cd.NotificationId
-  where rr.Denotified = 1
+  where rr.Denotified = 1 AND DATEADD(day, 548, rr.[NotificationDate]) > GETDATE()
 
-    UPDATE M
+UPDATE M
 SET DenotifiedMatchFlag = 1
 FROM MigrationDubiousSpecimenMatches M
 INNER JOIN #DenotifiedMatchFlag S ON M.EtsId = S.LegacyId AND M.ReferenceLaboratoryNumber = S.ReferenceLaboratoryNumber
