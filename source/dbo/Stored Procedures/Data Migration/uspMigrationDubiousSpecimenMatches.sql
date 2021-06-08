@@ -52,9 +52,6 @@ SELECT DISTINCT LegacyId,ReferenceLaboratoryNumber,1 FROM #SpecimenMultipleNotif
    inner join #NotificationsInScope n on n.EtsId = e.LegacyId
    where DATEDIFF(day,[SpecimenDate],MinEventDate)>365 and DATEDIFF(day,[SpecimenDate],MaxEventDate) > 365
 
-
- --needs fixing for date range
-
 UPDATE M
 SET SpecimenDateRangeFlag = 1
 FROM MigrationDubiousSpecimenMatches M
