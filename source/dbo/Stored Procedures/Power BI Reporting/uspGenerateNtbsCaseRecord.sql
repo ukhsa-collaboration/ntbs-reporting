@@ -194,7 +194,7 @@ BEGIN TRY
 		,cd.IsDotOffered										AS DOTOffered
 		,dl.DOTReceived											AS DOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
-		,NULL													AS ChestXRayResult --TODO
+		,ChestXRayResult										AS ChestXRayResult
 		--Outcomes are done in a separate function later on
 		,NULL													AS TreatmentOutcome12months
 		,NULL													AS TreatmentOutcome24months
@@ -315,6 +315,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
 	WHERE rr.SourceSystem = 'NTBS'
 
 	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
@@ -329,7 +330,6 @@ BEGIN TRY
 			WHERE ManualTestTypeId != 4
 			) AS manualresults ON manualresults.NotificationId = cd.NotificationId
 
-	EXEC [dbo].uspMapCaseRecordChestXrayResults
 	EXEC [dbo].uspGenerateRecordOutcome
 
 

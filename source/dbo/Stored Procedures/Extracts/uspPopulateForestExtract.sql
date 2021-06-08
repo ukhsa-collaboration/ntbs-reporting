@@ -22,39 +22,49 @@ BEGIN
 			GROUP BY NotificationId
 
 		INSERT INTO ForestExtract (
-			-- NotificationId,
 			CaseId
+			,EtsId
+			,LtbrId
 			,Casereportdate
 			,Forename
 			,Surname
 			,NHSNumber
 			,DateOfBirth
-			,AddressLine1
+			,[Address]
 			,NoFixedAbode
 			,Postcode
 			,Sex
 			,Hospital
+			,HospitalTBService
 			,ResidenceLocalAuthority
 			,ResidenceHPU
-			,HPAResidenceRegion
 			,Occupation
 			,OccupationCategory
 			,EthnicGroup
 			,UKBorn
 			,BirthCountry
 			,UKEntryYear
+			,Symptomatic
 			,SymptomOnset
-			,DatePresented
+			,FirstPresentationDate
+			,HealthcareSetting
+			,TBServicePresentationDate
 			,DateOfDiagnosis
 			,StartOfTreatment
+			,ChestXRayResult
 			,DrugUse
-			,DrugUseLast5Years, DrugUseMoreThan5YearsAgo, CurrentDrugUse
+			,CurrentDrugUse, DrugUseLast5Years, DrugUseMoreThan5YearsAgo
 			,Homeless
-			,HomelessLast5Years, HomelessMoreThan5YearsAgo, CurrentlyHomeless
+			,CurrentlyHomeless, HomelessLast5Years, HomelessMoreThan5YearsAgo
 			,Prison
-			,PrisonLast5Years, PrisonMoreThan5YearsAgo, CurrentlyInPrisonorWhenFirstSeen
-			,TreatmentRegion
+			,CurrentlyInPrisonOrWhenFirstSeen, PrisonLast5Years, PrisonMoreThan5YearsAgo
+			,Smoking
+			,CurrentSmoking, SmokingLast5Years, SmokingMoreThan5YearsAgo
 			,AlcoholUse
+			,MentalHealth
+			,AsylumSeeker
+			,ImmigrationDetainee
+			,TreatmentRegion
 			,SmearSample
 			,SmearSampleResult
 			,SpecimenDate
@@ -62,19 +72,21 @@ BEGIN
 			,ExtractDate
 			,Localpatientid
 			,Age
+			,OwnerUsername
 			,CaseManager
 			,PatientsConsultant
 			,DiseaseSites
 			)
 		SELECT
-			--reusableNotification.NotificationId,
 			CAST(n.NotificationId AS bigint)																AS CaseId,
-			CONVERT(varchar(10), n.NotificationDate, 103)													AS CaseReportDate,
+			n.ETSID																							AS EtsId,
+			n.LTBRID																						AS LtbrId,
+			n.NotificationDate																				AS CaseReportDate,
 			patient.GivenName																				AS Forename,
 			patient.FamilyName																				AS Surname,
 			patient.NhsNumber																				AS NhsNumber,
 			patient.Dob																						AS DateOfBirth,
-			patient.[Address]																				AS AddressLine,
+			patient.[Address]																				AS [Address],
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(patient.NoFixedAbode)						AS NoFixedAbode,
 			patient.Postcode																				AS Postcode,
 			CASE patient.SexId
@@ -83,33 +95,44 @@ BEGIN
 				WHEN 3 THEN 'U'
 			END																								AS Sex,
 			hospital.Name																					AS Hospital,
+			tbService.Name																					AS HospitalTBService,
 			localAuth.Name																					AS ResidenceLocalAuthority,
 			nacs.HPU																						AS ResidenceHPU,
-			patientPhec.Name																				AS Region,
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			ethnicity.Label																					AS EthnicGroup,
 			dbo.ufnYesNoUnknown(patient.UkBorn)																AS UKBorn,
 			UPPER(country.Name)																				AS BirthCountry,
 			patient.YearOfUkEntry																			AS UkEntryYear,
-			CONVERT(varchar, clinicalDetails.SymptomStartDate, 103)											AS SymptomOnset,
-			CONVERT(varchar, clinicalDetails.FirstPresentationDate, 103)									AS DatePresented,
-			CONVERT(varchar, clinicalDetails.DiagnosisDate, 103)											AS DateOfDiagnosis,
-			CONVERT(varchar, clinicalDetails.TreatmentStartDate, 103)										AS StartOfTreatment,
+			dbo.ufnYesNo(clinicalDetails.IsSymptomatic)														AS Symptomatic,
+			clinicalDetails.SymptomStartDate																AS SymptomOnset,
+			clinicalDetails.FirstPresentationDate															AS FirstPresentationDate,
+			clinicalDetails.HealthcareSetting																AS HealthcareSetting,
+			clinicalDetails.TBServicePresentationDate														AS TBServicePresentationDate,
+			clinicalDetails.DiagnosisDate																	AS DateOfDiagnosis,
+			clinicalDetails.TreatmentStartDate																AS StartOfTreatment,
+			COALESCE(ChestXRayResult, 'No result')															AS ChestXRayResult,
 			drugs.Status																					AS DrugUse,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(drugs.IsCurrent)							AS CurrentDrugUse,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(drugs.InPastFiveYears)					AS DrugMisuseLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(drugs.MoreThanFiveYearsAgo)				AS DrugUseMoreThan5YearsAgo,
-			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(drugs.IsCurrent)							AS CurrentDrugUse,
 			homeless.Status																					AS Homeless,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(homeless.IsCurrent)						AS CurrentlyHomeless,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(homeless.InPastFiveYears)					AS HomelessLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(homeless.MoreThanFiveYearsAgo)			AS HomelessMoreThan5YearsAgo,
-			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(homeless.IsCurrent)						AS CurrentlyHomeless,
 			prison.Status																					AS Prison,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.IsCurrent)							AS CurrentlyInPrisonOrWhenFirstSeen,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.InPastFiveYears)					AS InPrisonInLast5Years,
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.MoreThanFiveYearsAgo)				AS PrisonMoreThan5YearsAgo,
-			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(prison.IsCurrent)							AS CurrentlyInPrisonOrWhenFirstSeen,
-			servicePhec.Name																				AS TreatmentRegion,
+			smoking.Status																					AS Smoking,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(smoking.IsCurrent)						AS CurrentSmoking,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(smoking.InPastFiveYears)					AS SmokingLast5Years,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(smoking.MoreThanFiveYearsAgo)				AS SmokingMoreThan5YearsAgo,
 			socialRiskFactors.AlcoholMisuseStatus															AS AlcoholUse,
+			socialRiskFactors.MentalHealthStatus															AS MentalHealth,
+			socialRiskFactors.AsylumSeekerStatus															AS AsylumSeeker,
+			socialRiskFactors.ImmigrationDetaineeStatus														AS ImmigrationDetainee,
+			servicePhec.Name																				AS TreatmentRegion,
 			lab.[SpecimenTypeCode]																			AS SmearSample,
 			'Positive'																						AS SmearSampleResult,
 			lab.SpecimenDate																				AS SpecimenDate,
@@ -117,9 +140,9 @@ BEGIN
 			GETUTCDATE()																					AS ExtractDate,
 			patient.LocalPatientId																			AS LocalPatientId,
 			CAST(dbo.ufnGetAgefrom(patient.Dob,n.NotificationDate) AS tinyint)								AS Age,
+			u.Username																						AS OwnerUsername,
 			u.DisplayName																					AS CaseManager,
 			hospitalDetails.Consultant																		AS PatientsConsultant,
-			 --ClusterNumber																				AS ClusterNumber,
 			diseaseSites.[Description]																		AS DiseaseSites
 		FROM ([$(NTBS)].[dbo].Notification n
 		INNER JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.NotificationID = n.NotificationId
@@ -130,21 +153,22 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorDrugs drugs ON drugs.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorHomelessness homeless ON homeless.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorImprisonment prison ON prison.SocialRiskFactorsNotificationId = patient.NotificationId
+		LEFT JOIN [$(NTBS)].[dbo].RiskFactorSmoking smoking ON smoking.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].SocialRiskFactors socialRiskFactors ON socialRiskFactors.NotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hospitalDetails.CaseManagerId
 		LEFT JOIN [$(NTBS)].[ReferenceData].TbService tbService ON tbService.Code = hospitalDetails.TBServiceCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcodeLookup ON postcodeLookup.Postcode = patient.PostcodeToLookup
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthority localAuth ON localAuth.Code = postcodeLookup.LocalAuthorityCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].LocalAuthorityToPHEC localPhecMap ON localAuth.Code = localPhecMap.LocalAuthorityCode
-		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC patientPhec ON localPhecMap.PHECCode = patientPhec.Code
 		LEFT JOIN [$(NTBS)].[ReferenceData].PHEC servicePhec ON servicePhec.Code = tbService.PHECCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].Occupation occupation ON occupation.OccupationId = patient.OccupationId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Hospital hospital ON hospitalDetails.HospitalId = hospital.HospitalId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Ethnicity ethnicity ON ethnicity.EthnicityId = patient.EthnicityId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Country country ON country.CountryId = patient.CountryId
-		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = REPLACE(patient.Postcode, ' ', '')
+		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = patient.PostcodeToLookup
 		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](n.NotificationId, clinicalDetails.DiagnosisDate) ChestXRayResult
 		WHERE nsm.MatchType = 'Confirmed'
 			AND (servicePhec.Name IN ('North East', 'North West', 'Yorkshire and Humber', 'West Midlands',
 										'East Midlands', 'East of England', 'London', 'South East', 'South West'));
@@ -153,8 +177,6 @@ BEGIN
 		--VNTR and ClusterNumber are now fixed values, but are expressed at the level of OpieId, which we are not currently supporting
 		--in the equivalent extract
 		--see if there is a value populated on any record for the Case Id and Reference Laboratory Number and populate the columns with this
-
-
 
 		WITH LegacyVntrCluster AS
 		(SELECT DISTINCT CaseId, ReferenceLaboratoryNumber, VntrProfile, ClusterNumber
@@ -168,21 +190,6 @@ BEGIN
 			FROM dbo.ForestExtract e
 				INNER JOIN LegacyVntrCluster v ON v.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
 
-		--convert Yorkshire and Humber to Yorkshire and The Humber
-		UPDATE dbo.ForestExtract
-			SET HPAResidenceRegion = 'Yorkshire and The Humber'
-			WHERE HPAResidenceRegion = 'Yorkshire and Humber'
-
-
-		DECLARE @IncludeETS BIT = (SELECT TOP(1) IncludeETS FROM [dbo].[ReportingFeatureFlags])
-		IF @IncludeETS = 1
-		BEGIN
-			INSERT INTO [dbo].ForestExtract
-			SELECT etsForest.*
-			FROM [$(ETS)].dbo.ETSOxfordExtract etsForest
-			LEFT JOIN [dbo].[ReusableNotification] reusableNotification ON reusableNotification.EtsId = etsForest.CaseId
-			WHERE reusableNotification.NtbsId IS NULL
-		END
 		COMMIT
 	END TRY
 	BEGIN CATCH

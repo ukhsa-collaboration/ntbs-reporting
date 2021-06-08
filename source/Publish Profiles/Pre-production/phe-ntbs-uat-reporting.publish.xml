@@ -23,7 +23,7 @@
       <Value>NTBS_LondonTBR_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>NTBS_Migration_Live</Value>
+      <Value>NTBS_Migration_UAT</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_UAT</Value>
