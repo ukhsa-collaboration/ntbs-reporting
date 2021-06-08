@@ -180,7 +180,7 @@ BEGIN TRY
 						cd.SymptomStartDate,
 						cd.TreatmentStartDate))
 					AS SMALLINT)								AS OnsetToTreatmentDays
-		,dbo.ufnGetHivTestOffered (cd.HIVTestState)				AS HivTestOffered
+		,dbo.ufnGetHIVValue (cd.HIVTestState)					AS HivTestOffered
 		--summarise sites of disease
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
 		,diseaseSites.[Description]								AS DiseaseSiteList
