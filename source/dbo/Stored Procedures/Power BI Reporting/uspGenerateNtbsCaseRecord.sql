@@ -142,7 +142,7 @@ BEGIN TRY
 		,hd.HospitalId											AS HospitalID
 		,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)			AS Age
 		,s.[Label]												AS Sex
-		,dbo.ufnYesNo(p.UkBorn)									AS UKBorn
+		,dbo.ufnUkBorn(p.CountryId)								AS UKBorn
 		,e.[Label]												AS EthnicGroup
 		,(CASE
 			WHEN occ.HasFreeTextField = 1 THEN p.OccupationOther

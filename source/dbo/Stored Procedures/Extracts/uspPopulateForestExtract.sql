@@ -101,7 +101,7 @@ BEGIN
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			ethnicity.Label																					AS EthnicGroup,
-			dbo.ufnYesNoUnknown(patient.UkBorn)																AS UKBorn,
+			dbo.ufnUkBorn(patient.CountryId)																AS UKBorn,
 			UPPER(country.Name)																				AS BirthCountry,
 			patient.YearOfUkEntry																			AS UkEntryYear,
 			dbo.ufnYesNo(clinicalDetails.IsSymptomatic)														AS Symptomatic,
