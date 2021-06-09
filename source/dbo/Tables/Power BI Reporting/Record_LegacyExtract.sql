@@ -74,7 +74,6 @@
 	
 	[HospitalPCT] [nvarchar](255) NULL,
 	[HospitalLocalAuthority] [nvarchar](255) NULL,
-	[ResolvedResidenceHPU] [nvarchar](100) NULL,
 	[ResolvedResidenceRegion] [nvarchar](100) NULL,
 	[ResolvedResidenceLA] [nvarchar](100) NULL,
 	

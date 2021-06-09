@@ -299,6 +299,7 @@
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatchesBackup.sql" />
     <None Include="Scripts\SetVersionNumber.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetCaseRecordChestXrayResults.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwEtsLegacyExtract.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
