@@ -278,7 +278,6 @@
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspCallDivZero.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspDivZero.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableNotificationMdr.sql" />
-    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableNotificationXdr.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspGenerateReusableOutcomePeriodic.sql" />
     <Build Include="dbo\Stored Procedures\Report LegacyExtract\uspSeedHospitalLookupValues.sql" />
     <Build Include="dbo\Views\Power BI Reporting\Record_CultureAndResistance.sql" />
@@ -360,6 +359,11 @@
       <HintPath>..\data\DACPAC\migration.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
