@@ -298,6 +298,7 @@
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetCaseRecordChestXrayResults.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwEtsLegacyExtract.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHIVValue.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnUkBorn.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
