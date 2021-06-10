@@ -66,14 +66,10 @@ BEGIN TRY
 
 	--Add in the OtherExtraPulmonarySite text
 	UPDATE le
-		SET OtherExtraPulmonarySite = Descriptions.SiteDescription
+		SET OtherExtraPulmonarySite = ns.SiteDescription
 	FROM [dbo].[Record_LegacyExtract] le
-		INNER JOIN (
-			SELECT NotificationId,
-					SiteDescription
-				FROM [$(NTBS)].[dbo].[NotificationSite]
-				WHERE SiteId = 17
-		) AS Descriptions ON Descriptions.NotificationId = le.NotificationId
+		INNER JOIN [$(NTBS)].[dbo].[NotificationSite] ns ON ns.NotificationId = le.NotificationId
+	WHERE ns.SiteId = 17 -- Other extra-pulmonary
 
 END TRY
 BEGIN CATCH
