@@ -296,6 +296,7 @@
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatchesBackup.sql" />
     <None Include="Scripts\SetVersionNumber.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetCaseRecordChestXrayResults.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwEtsLegacyExtract.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHIVValue.sql" />
   </ItemGroup>
   <ItemGroup>

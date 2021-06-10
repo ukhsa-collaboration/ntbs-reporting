@@ -27,6 +27,7 @@
 	[LocalAuthority] [varchar](50) NULL,
 	[ResidencePhec] [varchar](50) NULL,
 	[TreatmentPhec] [varchar](50) NULL,
+	[ResolvedResidenceHPU] [nvarchar](100) NULL,
 	[Lat] [nvarchar](50) NULL,
 	[Long] [nvarchar](50) NULL,
 
