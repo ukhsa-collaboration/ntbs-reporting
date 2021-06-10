@@ -3,7 +3,7 @@
 	SELECT
 		dem.Id
 		,dem.Id AS EtsId
-		,dem.IDOriginal
+		,dem.IDOriginal AS LtbrId
 		,dem.LocalPatientId
 		,dem.CaseReportDate
 		,YEAR(rr.NotificationDate) AS ReportYear
@@ -23,7 +23,7 @@
 		,dem.AddressLine1
 		,dem.AddressLine2
 		,dem.Town
-		,dem.county
+		,dem.county AS County
 		,dem.Postcode
 		,dem.PCT
 		,dem.HPU
@@ -32,9 +32,9 @@
 		,dem.Occupation
 		,dem.OccupationCategory
 		,dem.EthnicGroup
-		,dem.UKBorn
+		,dem.UKBorn AS UkBorn
 		,dem.BirthCountry
-		,dem.UKEntryYear
+		,dem.UKEntryYear AS UkEntryYear
 		,dem.SymptomOnset AS SymptomOnsetDate
 		,dem.StartOfTreatment AS StartOfTreatmentDate
 		,dem.DateOfDiagnosis AS DiagnosisDate
@@ -59,7 +59,7 @@
 		,dem.PreviouslyDiagnosed
 		,dem.YearsSinceDiagnosis
 		,dem.PreviouslyTreated
-		,dem.TreatmentInUK
+		,dem.TreatmentInUK AS TreatmentInUk
 		,dem.PreviousId
 		,dem.BcgVaccinated
 		,dem.BcgVaccinationDate
@@ -70,8 +70,8 @@
 		,dem.PostMortemDiagnosis
 		,dem.PostMortemDeathDate AS DateOfDeath
 		,dem.DidNotStartTreatment
-		,dem.MDRTreatment
-		,dem.MDRTreatmentDate
+		,dem.MDRTreatment 
+		,dem.MDRTreatmentDate AS MdrTreatmentDate
 		,dem.ShortCourse
 		,dem.DOT
 		,NULL AS DOTOffered
@@ -115,23 +115,26 @@
 		,dem.ResolvedResidenceHPU
 		,dem.ResolvedResidenceRegion
 		,dem.ResolvedResidenceLA
-		,dem.NoFixedAbode
-		,dem.HIVTestOffered
+		,CASE dem.NoFixedAbode
+			WHEN 0 THEN 'FALSE'
+			ELSE 'TRUE'
+			END AS NoFixedAbode
+		,dem.HIVTestOffered AS HivTestOffered
 		,dem.NoSampleTaken
 		,dem.ProposedDrugRegimen
 		,NULL AS TreatmentRegimen
 		,dem.CurrentDrugUse AS CurrentDrugMisuse
 		,dem.DrugUseLast5Years AS DrugMisuseInLast5Years
-		,dem.DrugUseMoreThan5YearsAgo AS DrugMisuseMoreThan5YearsAGo
+		,dem.DrugUseMoreThan5YearsAgo AS DrugMisuseMoreThan5YearsAgo
 		,dem.CurrentlyHomeless
-		,dem.HomelessLast5Years
+		,dem.HomelessLast5Years AS HomelessInLast5Years
 		,dem.HomelessMoreThan5YearsAgo
 		,dem.CurrentlyInprisonOrWhenFirstSeen AS CurrentlyInPrisonOrInPrisonWhenFirstSeen
 		,dem.PrisonLast5Years AS InPrisonInLast5Years
 		,dem.PrisonAbroadLast5Years
 		,dem.PrisonMoreThan5YearsAgo AS InPrisonMoreThan5YearsAgo
 		,dem.PrisonAbroadMoreThan5YearsAgo
-		,dem.TravelledOutsideUK
+		,dem.TravelledOutsideUK AS TravelledOutsideUk
 		,dem.ToHowManyCountries
 		,dem.TravelCountry1
 		,dem.[DurationofTravel1(Months)] AS MonthsTravelled1
