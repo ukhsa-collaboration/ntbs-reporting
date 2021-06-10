@@ -150,7 +150,6 @@
     <Build Include="dbo\Tables\Authorization\PhecAdGroup.sql" />
     <Build Include="dbo\Tables\Authorization\Phec.sql" />
     <Build Include="dbo\Tables\Report CultureResistance\CultureResistance.sql" />
-    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered_ETS.sql" />
     <Build Include="dbo\Functions\View Model\ufnFormatDateConsistently.sql" />
     <Build Include="dbo\Tables\Audit\AccessAudit.sql" />
     <Build Include="dbo\Tables\Report OutcomeSummary\OutcomeSummary.sql" />
@@ -185,7 +184,6 @@
     <Build Include="dbo\Tables\Reusable Notification\OutcomeLookup.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetSiteOfDisease.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetETSCountryName.sql" />
-    <Build Include="dbo\Functions\Reusable Notification\ufnGetHivTestOffered.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetDateOfDeath.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetTreatmentEndDate.sql" />
     <Build Include="dbo\Tables\Reusable Notification\PeriodicOutcome.sql" />
@@ -206,7 +204,6 @@
     <Build Include="dbo\Stored Procedures\National Team\uspNTSReportLabMappings.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\DenotificationReasonMapping.sql" />
     <Build Include="dbo\Functions\Report LegacyExtract\ufnGetLegacyDOTvalue.sql" />
-    <Build Include="dbo\Functions\Report LegacyExtract\ufnGetHIVValue.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacySiteMapping.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyExtractHospitalLookupValues.sql" />
     <Build Include="dbo\Tables\Report LegacyExtract\LegacyPeriodicOutcome.sql" />
@@ -300,6 +297,7 @@
     <None Include="Scripts\SetVersionNumber.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnGetCaseRecordChestXrayResults.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwEtsLegacyExtract.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetHIVValue.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />

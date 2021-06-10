@@ -72,6 +72,7 @@
     <DoNotDropUsers>True</DoNotDropUsers>
     <DoNotDropViews>False</DoNotDropViews>
     <DoNotDropXmlSchemaCollections>True</DoNotDropXmlSchemaCollections>
+    <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
