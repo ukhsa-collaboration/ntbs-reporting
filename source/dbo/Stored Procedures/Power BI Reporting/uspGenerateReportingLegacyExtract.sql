@@ -58,7 +58,7 @@ BEGIN TRY
 			,la.[Name]																	AS HospitalLocalAuthority
 			,nacs.HPU																	AS ResolvedResidenceHPU 
 			,cd.ResidencePhec															AS ResolvedResidenceRegion 
-			,ll.LTLAName																AS ResolvedResidenceLA
+			,pl.LTLA_Name																AS ResolvedResidenceLA
 			,continent.[Name]															AS WorldRegionName
 		FROM
 			[dbo].[RecordRegister] rr
@@ -72,7 +72,6 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Hospital] h ON h.Id = cd.HospitalId
 				LEFT OUTER JOIN [$(ETS)].[dbo].[LocalAuthority] la ON la.Code = h.LocalAuthorityCode
-				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].LTLALookup ll ON ll.Postcode = p.PostcodeToLookup
 				INNER JOIN [$(NTBS)].[ReferenceData].Country c ON c.CountryId = p.CountryId
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Country] c2 ON c2.IsoCode = c.IsoCode
 				LEFT OUTER JOIN [$(ETS)].[dbo].[Continent] continent ON continent.Id = c2.ContinentId
