@@ -102,7 +102,7 @@ BEGIN TRY
 		,p.FamilyName										AS Surname
 		,CONVERT(DATE, p.Dob)								AS DateOfBirth
 		,p.PostcodeToLookup									AS PostcodeToLookup
-		,p.PostcodeToLookup									AS Postcode --this will later be reformatted if valid
+		,p.Postcode											AS Postcode --this will replaced with a reformatted PostcodeToLookup if valid
 	FROM
 		[dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Patients] p ON p.NotificationId = rr.NotificationId
