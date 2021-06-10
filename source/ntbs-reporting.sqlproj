@@ -124,7 +124,6 @@
     <Folder Include="dbo\Stored Procedures\Report LegacyExtract\" />
     <Folder Include="Publish Profiles" />
     <Folder Include="Publish Profiles\Production" />
-    <Folder Include="Publish Profiles\DELETE" />
     <Folder Include="Publish Profiles\Pre-production" />
   </ItemGroup>
   <ItemGroup>
@@ -303,27 +302,17 @@
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
-    <None Include="Publish Profiles\Production\LIVE-phe-ntbs-R1Live-reporting.publish.xml" />
-    <None Include="Publish Profiles\Production\phe-ntbs-live-reporting.publish.xml" />
-    <None Include="Publish Profiles\DELETE\phe-ntbs-uat-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\DEV-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-ntbs-int-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-ntbs-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-ntbs-uat-reporting.publish.xml" />
+    <None Include="Publish Profiles\Production\phe-live-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-int-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-load-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-training-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\azure-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-ntbs-dev-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-ntbs-uat-reporting.publish.xml" />
-    <None Include="Publish Profiles\DELETE\azure-ntbs-int-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\azure-ntbs-test-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\azure-ntbs-uat-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\DEV-USER-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\phe-ntbs-dev-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\phe-ntbs-live-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-ntbs-load-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-ntbs-training-reporting.publish.xml" />
-    <None Include="Publish Profiles\DELETE\azure-ntbs-load-test-reporting-DELETE.publish.xml" />
-    <None Include="Publish Profiles\DELETE\azure-ntbs-training-reporting-DELETE.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-live-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
