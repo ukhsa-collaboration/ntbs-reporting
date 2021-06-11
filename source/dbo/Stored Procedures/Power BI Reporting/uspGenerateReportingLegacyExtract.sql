@@ -32,6 +32,7 @@ BEGIN TRY
         ,[HospitalLocalAuthority]
         ,[ResolvedResidenceRegion]
         ,[ResolvedResidenceLA]
+		,[NoSampleTaken]
         ,[WorldRegionName])
 
 		SELECT
@@ -58,7 +59,11 @@ BEGIN TRY
 			,la.[Name]																	AS HospitalLocalAuthority
 			,cd.ResidencePhec															AS ResolvedResidenceRegion 
 			,pl.LTLA_Name																AS ResolvedResidenceLA
-			,continent.[Name]															AS WorldRegionName
+			,CASE cd.SampleTaken
+				WHEN 'Yes' THEN 0
+				ELSE 1
+			END																			AS NoSampleTaken
+			,COALESCE(continent.[Name], 'Unknown')										AS WorldRegionName
 		FROM
 			[dbo].[RecordRegister] rr
 				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = rr.NotificationId
