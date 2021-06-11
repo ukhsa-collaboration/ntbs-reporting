@@ -27,5 +27,5 @@ AS
 	AND NOT EXISTS
 		(SELECT NotificationId
 		FROM [$(NTBS)].[dbo].Notification ntbsn
-		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
+		WHERE ntbsn.ETSID = mn.EtsId OR ntbsn.LTBRID = mn.LtbrId)
 RETURN 0

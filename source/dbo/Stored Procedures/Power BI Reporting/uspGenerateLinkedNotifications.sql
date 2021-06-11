@@ -14,7 +14,7 @@ BEGIN TRY
 	NtbsGroupings AS
 	(SELECT n.NotificationId, rr.SourceSystem, STRING_AGG(g.NotificationId, ', ') AS LinkedNotifications 
 	FROM [$(NTBS)].[dbo].[Notification] n
-		INNER JOIN GroupedNtbsNotifications g ON g.GroupId = n.groupId and g.NotificationId != n.NotificationId
+		INNER JOIN GroupedNtbsNotifications g ON g.GroupId = n.GroupId and g.NotificationId != n.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = n.NotificationId AND rr.SourceSystem = 'NTBS'
 	GROUP BY n.NotificationId, rr.SourceSystem),
 

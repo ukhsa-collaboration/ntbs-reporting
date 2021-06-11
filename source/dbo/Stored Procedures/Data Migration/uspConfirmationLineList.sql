@@ -26,7 +26,7 @@ AS
 		AND NOT EXISTS
 			(SELECT NotificationId
 			FROM [$(NTBS)].[dbo].Notification ntbsn
-			WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)),
+			WHERE ntbsn.ETSID = mn.EtsId OR ntbsn.LTBRID = mn.LtbrId)),
 	LinkedNotifications AS
 	(SELECT ng.GroupId, STRING_AGG(CAST(mn.PrimaryNotificationId AS NVARCHAR(MAX)), ', ') AS LinkedNotifications
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
@@ -63,7 +63,7 @@ AS
 	AND NOT EXISTS
 		(SELECT NotificationId
 		FROM [$(NTBS)].[dbo].Notification ntbsn
-		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
+		WHERE ntbsn.ETSID = mn.EtsId OR ntbsn.LTBRID = mn.LtbrId)
 
 	ORDER BY mn.NotificationDate DESC
 	

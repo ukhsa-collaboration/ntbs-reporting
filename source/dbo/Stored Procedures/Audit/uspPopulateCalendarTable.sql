@@ -5,7 +5,7 @@ This proc is intended to be run manually as a one-off job to populate a Calendar
 CREATE PROCEDURE [dbo].[uspPopulateCalendarTable]
 AS
     --first delete the existing table if it exists
-    IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'Calendar')
+    IF EXISTS (SELECT * FROM [INFORMATION_SCHEMA].[TABLES] WHERE TABLE_NAME = 'Calendar')
 			BEGIN
 				TRUNCATE TABLE [dbo].Calendar
 			END
