@@ -28,6 +28,7 @@ BEGIN TRY
 		NULL															AS TOMTreatmentChangedReason,
 		CASE	
 			WHEN po.OutcomeValue IN ('Completed', 'Cured') THEN 'Yes'
+			WHEN po.OutcomeValue = 'Lost to follow-up' THEN 'Lost to follow-up'
 			WHEN po.OutcomeValue = 'No outcome recorded' THEN NULL
 			ELSE 'No'
 		END																AS TOMCompleteCourse,

@@ -33,7 +33,7 @@ AS
 	AND NOT EXISTS
 		(SELECT NotificationId
 		FROM [$(NTBS)].[dbo].Notification ntbsn
-		WHERE ntbsn.ETSID = mn.EtsID OR ntbsn.LTBRID = mn.LtbrID)
+		WHERE ntbsn.ETSID = mn.EtsId OR ntbsn.LTBRID = mn.LtbrId)
 	GROUP BY DATEPART(YEAR, NotificationDate), p.PHEC_Name
 	ORDER BY DATEPART(YEAR, NotificationDate), p.PHEC_Name DESC 
 RETURN 0

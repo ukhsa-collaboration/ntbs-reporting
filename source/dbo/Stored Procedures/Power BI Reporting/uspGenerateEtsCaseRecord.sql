@@ -174,10 +174,7 @@ BEGIN TRY
 		,DATEDIFF(DAY,
 			te.SymptomOnset,
 			te.StartOfTreatment)										AS OnsetToTreatmentDays
-		,dbo.ufnGetHivTestOffered_ETS (
-			n.Id,
-			te.HIVTestOffered
-		)																AS HivTestOffered
+		,te.HIVTestOffered												AS HivTestOffered
 		,dbo.ufnGetETSSiteOfDisease(n.TuberculosisEpisodeId)			AS SiteOfDisease
 		,diseaseSites.[Description]										AS DiseaseSiteList
 

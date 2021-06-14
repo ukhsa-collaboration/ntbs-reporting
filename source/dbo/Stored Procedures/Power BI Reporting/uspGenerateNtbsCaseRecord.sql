@@ -142,7 +142,7 @@ BEGIN TRY
 		,hd.HospitalId											AS HospitalID
 		,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)			AS Age
 		,s.[Label]												AS Sex
-		,dbo.ufnYesNo(p.UkBorn)									AS UKBorn
+		,dbo.ufnUkBorn(p.CountryId)								AS UKBorn
 		,e.[Label]												AS EthnicGroup
 		,(CASE
 			WHEN occ.HasFreeTextField = 1 THEN p.OccupationOther
@@ -180,7 +180,7 @@ BEGIN TRY
 						cd.SymptomStartDate,
 						cd.TreatmentStartDate))
 					AS SMALLINT)								AS OnsetToTreatmentDays
-		,dbo.ufnGetHivTestOffered (cd.HIVTestState)				AS HivTestOffered
+		,dbo.ufnGetHIVValue (cd.HIVTestState)					AS HivTestOffered
 		--summarise sites of disease
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
 		,diseaseSites.[Description]								AS DiseaseSiteList

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>reporting</TargetDatabaseName>
-    <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=localhost;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetDatabaseName>NTBS_Reporting_Staging</TargetDatabaseName>
+    <DeployScriptFileName>ntbs-dev-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=SQLNTBSDEVCOL01;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
@@ -76,28 +76,31 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
-      <Value>ets</Value>
+      <Value>ETS</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ETSLabbase">
+      <Value>LabBase2</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
-      <Value>labbase2</Value>
+      <Value>LabBase2</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="LTBR">
       <Value>LondonTBR</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>ntbs_migration</Value>
+      <Value>NTBS_Migration</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>ntbsDev</Value>
+      <Value>NTBS_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>ntbsAudit</Value>
+      <Value>NTBS_Audit</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>geography</Value>
+      <Value>NTBS_R1_Geography_Staging</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>specimen-matching</Value>
+      <Value>NTBS_Specimen_Matching</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>ReportServer</Value>

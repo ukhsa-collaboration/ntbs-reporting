@@ -76,8 +76,8 @@ WHERE M.EtsId IS NULL
     select e.*,n.NhsNumber, ls.PatientNhsNumber into #DifferentNHS from [$(NTBS_Specimen_Matching)].dbo.EtsSpecimenMatch e
     inner join #NotificationsInScope n on n.EtsId = e.LegacyId
   inner join [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls on ls.ReferenceLaboratoryNumber = e.ReferenceLaboratoryNumber
-  where Replace(NHSNumber,' ','') <> Replace(PatientNhsNumber,' ','')
-  and NHSNumber not in ('','0000000000') and PatientNhsNumber not in ('','.') and PatientNhsNumber not like '%[A-Z]%'
+  where Replace(NhsNumber,' ','') <> Replace(PatientNhsNumber,' ','')
+  and NhsNumber not in ('','0000000000') and PatientNhsNumber not in ('','.') and PatientNhsNumber not like '%[A-Z]%'
 
 
   UPDATE M

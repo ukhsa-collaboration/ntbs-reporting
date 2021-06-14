@@ -4,7 +4,7 @@ BEGIN
 	BEGIN TRY
 		BEGIN TRANSACTION
 
-		IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.tables WHERE table_name = 'ForestExtract')
+		IF EXISTS (SELECT * FROM [INFORMATION_SCHEMA].[TABLES] WHERE TABLE_NAME = 'ForestExtract')
 			BEGIN
 				TRUNCATE TABLE [dbo].ForestExtract
 			END
@@ -101,7 +101,7 @@ BEGIN
 			occupation.[Role]																				AS Occupation,
 			occupation.Sector																				AS OccupationCategory,
 			ethnicity.Label																					AS EthnicGroup,
-			dbo.ufnYesNoUnknown(patient.UkBorn)																AS UKBorn,
+			dbo.ufnUkBorn(patient.CountryId)																AS UKBorn,
 			UPPER(country.Name)																				AS BirthCountry,
 			patient.YearOfUkEntry																			AS UkEntryYear,
 			dbo.ufnYesNo(clinicalDetails.IsSymptomatic)														AS Symptomatic,

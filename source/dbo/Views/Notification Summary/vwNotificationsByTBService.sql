@@ -24,7 +24,7 @@
 	FROM [dbo].vwNotifiedRecords nr
 		INNER JOIN [dbo].[Record_CultureAndResistance] cr ON cr.NotificationId = nr.NotificationId
 		LEFT OUTER JOIN [dbo].[Calendar] c ON c.DateValue = nr.NotificationDate
-	GROUP BY COALESCE(TbServiceCode, 'UNKNOWN'), c.YearMonthValue)
+	GROUP BY COALESCE(TBServiceCode, 'UNKNOWN'), c.YearMonthValue)
 
 	--then cross join to produce one row for each combination of year/month and local authority
 	SELECT 
