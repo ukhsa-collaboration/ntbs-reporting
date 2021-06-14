@@ -91,7 +91,7 @@
       <Value>NTBS_Migration</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>NTBS_Live</Value>
+      <Value>NTBS_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
       <Value>NTBS_Audit</Value>
