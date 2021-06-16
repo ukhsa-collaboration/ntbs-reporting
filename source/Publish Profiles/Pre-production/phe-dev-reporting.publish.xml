@@ -78,9 +78,6 @@
     <SqlCmdVariable Include="ETS">
       <Value>ETS</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="ETSLabbase">
-      <Value>LabBase2</Value>
-    </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>LabBase2</Value>
     </SqlCmdVariable>
