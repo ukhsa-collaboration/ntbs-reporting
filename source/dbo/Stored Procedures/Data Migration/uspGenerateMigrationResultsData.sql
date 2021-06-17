@@ -207,7 +207,7 @@ BEGIN TRY
 				END) AS								[Message] 
 	
 			FROM [$(NTBS)].[dbo].[LegacyImportNotificationLogMessage]
-			WHERE LegacyImportMigrationRunId = 6 
+			WHERE LegacyImportMigrationRunId = @MigrationRunID
 			AND [Message] NOT LIKE 'has % validation errors'
 			AND [Message] != 'User set as case manager for notification is not a case manager.') AS Q1 
 				ON Q1.OldNotificationId = li.OldNotificationId AND Q1.LegacyImportMigrationRunId = li.LegacyImportMigrationRunId
