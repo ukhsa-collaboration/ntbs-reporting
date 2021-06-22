@@ -8,8 +8,8 @@ AS
 		,MigrationMBovisUnpasteurisedMilkConsumptionViewCount
 		,MigrationSocialContextAddressViewCount
 		,MigrationSocialContextVenueViewCount
-		,MigrationTransferEventsViewCount
-		,MigrationTreatmentOutcomeEventsViewCount
+		,TransfersViewCount
+		,TreatmentOutcomesCount
 		,EtsNotificationsCount
 		,LtbrNotificationsCount
 		,ETS_NotificationCount
@@ -21,7 +21,7 @@ AS
 	)
 
 	SELECT
-		GETDATE() AS CountTime
+		GETUTCDATE() AS CountTime
 		,(SELECT COUNT(*)
 			FROM [$(migration)].dbo.MigrationNotificationsView
 		) AS MigrationNotificationsViewCount
@@ -44,11 +44,11 @@ AS
 			FROM [$(migration)].dbo.MigrationSocialContextVenueView
 		) AS MigrationSocialContextVenueViewCount
 		,(SELECT COUNT(*)
-			FROM [$(migration)].dbo.MigrationTransferEventsView
-		) AS MigrationTransferEventsViewCount
+			FROM [$(migration)].dbo.TransfersView
+		) AS TransfersViewCount
 		,(SELECT COUNT(*)
-			FROM [$(migration)].dbo.MigrationTreatmentOutcomeEventsView
-		) AS MigrationTreatmentOutcomeEventsViewCount
+			FROM [$(migration)].dbo.TreatmentOutcomes
+		) AS TreatmentOutcomesCount
 		,(SELECT COUNT(*)
 			FROM [$(migration)].dbo.EtsNotifications
 		) AS EtsNotificationsCount
