@@ -125,6 +125,8 @@
     <Folder Include="Publish Profiles" />
     <Folder Include="Publish Profiles\Production" />
     <Folder Include="Publish Profiles\Pre-production" />
+    <Folder Include="dbo\Tables\Monitoring" />
+    <Folder Include="dbo\Stored Procedures\Monitoring" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -297,6 +299,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwEtsLegacyExtract.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetHIVValue.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnUkBorn.sql" />
+    <Build Include="dbo\Tables\Monitoring\TableCounts.sql" />
+    <Build Include="dbo\Stored Procedures\Monitoring\uspUpdateTableCounts.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
