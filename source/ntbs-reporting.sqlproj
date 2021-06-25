@@ -301,6 +301,8 @@
     <Build Include="dbo\Functions\Power BI Reporting\ufnUkBorn.sql" />
     <Build Include="dbo\Tables\Monitoring\TableCounts.sql" />
     <Build Include="dbo\Stored Procedures\Monitoring\uspUpdateTableCounts.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwClusterTotalsByMonth.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwForestBuild.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
