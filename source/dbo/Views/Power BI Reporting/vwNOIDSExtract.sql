@@ -128,7 +128,9 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             WHEN cd.EthnicGroup LIKE '%Mixed%' THEN 'S'
             ELSE 'Z' 
         END AS Ethnicity,
-        pd.Postcode
+        pd.Postcode,
+        rr.NotificationId,
+        rr.SourceSystem
         FROM [dbo].RecordRegister rr
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
