@@ -148,6 +148,8 @@ BEGIN TRY
 	--and legacy data
 	EXEC [dbo].[uspGenerateReportingLegacyExtract]
 
+	--and multi system transfers
+	EXEC [dbo].[uspGenerateMultiSystemTransfers]
 
 
 END TRY
