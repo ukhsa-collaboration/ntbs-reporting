@@ -16,12 +16,12 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
        UNION
        SELECT 'Lymph nodes: Intra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
        UNION
-       SELECT 'Lymph nodes: Extra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
+	   SELECT 'Intra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
        UNION
        SELECT 'Pleural' AS SiteDescription, 'Pleural' AS SiteGroup
        UNION
        SELECT 'Other' AS SiteDescription, 'Other' AS SiteGroup
-
+    
     ),
 
     --get all sites of disease from both NTBS and ETS, and standardise on the NTBS names
@@ -57,6 +57,8 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
         WHERE Denotified = 0
     ),
 
+
+    
     --and now add a 1 for each site group which the notification has, otherwise a 0
     NotificationAllSites AS
     (
@@ -81,19 +83,20 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     SpecificityCode AS
     (SELECT NotificationId,
         CASE
-           WHEN PulmonaryMiliary = 1 AND Other = 1 THEN 6
            WHEN PulmonaryMiliary = 1 AND Meningitis = 1 THEN 5
+           WHEN PulmonaryMiliary = 1 AND Other = 1 THEN 6
            WHEN PulmonaryMiliary = 1 THEN 1
 
+           
+           --7 must have lymphnodes and must have cnsmeningitis and mustn't have pleural
+           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 AND Meningitis = 1 AND Pleural = 0  THEN 7
            --8 must have lymph nodes, mustn't have pleural and must have other
            WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 and Pleural = 0 and Other = 1 THEN 8
-		   --7 must have lymphnodes and must have cnsmeningitis and mustn't have pleural
-           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 AND Meningitis = 1 AND Pleural = 0  THEN 7
            WHEN PulmonaryMiliary = 0 AND (LymphNodes = 1 OR Pleural = 1) THEN 2
            WHEN Meningitis = 1 THEN 3
            WHEN Other = 1 THEN 4
            --error code which will be reported out in Power BI
-           ELSE 99
+           ELSE ''
           END
         AS Specificity_Code
     FROM PivotedSites)
