@@ -308,6 +308,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwAlert.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwAuditData.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNotifications.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwUnmatchedDuplicates.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
