@@ -84,8 +84,11 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
            WHEN PulmonaryMiliary = 1 AND Other = 1 THEN 6
            WHEN PulmonaryMiliary = 1 AND Meningitis = 1 THEN 5
            WHEN PulmonaryMiliary = 1 THEN 1
-           WHEN PulmonaryMiliary = 0 AND Pleural = 1 AND Other = 1 THEN 8
-           WHEN PulmonaryMiliary = 0 AND Pleural = 1 AND Meningitis = 1 THEN 7
+
+           --8 must have lymph nodes, mustn't have pleural and must have other
+           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 and Pleural = 0 and Other = 1 THEN 8
+		   --7 must have lymphnodes and must have cnsmeningitis and mustn't have pleural
+           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 AND Meningitis = 1 AND Pleural = 0  THEN 7
            WHEN PulmonaryMiliary = 0 AND (LymphNodes = 1 OR Pleural = 1) THEN 2
            WHEN Meningitis = 1 THEN 3
            WHEN Other = 1 THEN 4
