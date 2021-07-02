@@ -6,12 +6,13 @@ BEGIN TRY
 	-- transfers in NTBS to regions not yet on NTBS
 	INSERT INTO [dbo].[MultiSystemTransfers] ([NotificationID],
 		[NotificationDate],
+		[SourceSystem],
 		[ETSID],
 		[Requester],
 		[RequestedOrganisation],
 		[CreatedDate])
 
-	SELECT a.NotificationId, n.NotificationDate, n.ETSID, u.Username, tbs.Name, a.CreationDate
+	SELECT a.NotificationId, n.NotificationDate, 'NTBS', n.ETSID, u.Username, tbs.Name, a.CreationDate
 	
 	FROM [$(NTBS)].dbo.Alert a
 		LEFT JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = a.NotificationId
@@ -27,12 +28,13 @@ BEGIN TRY
 	-- transfers in ETS to regions already on NTBS
 	INSERT INTO [dbo].[MultiSystemTransfers] ([NotificationID],
 		[NotificationDate],
+		[SourceSystem],
 		[ETSID],
 		[Requester],
 		[RequestedOrganisation],
 		[CreatedDate])
 
-	SELECT n.LegacyId, n.NotificationDate, NULL, requester.Email, COALESCE(tbs.Name, userPhec.Name), transfer.AuditCreate
+	SELECT n.LegacyId, n.NotificationDate, 'ETS', NULL, requester.Email, COALESCE(tbs.Name, userPhec.Name), transfer.AuditCreate
 	
 	FROM [$(ETS)].dbo.Transfer transfer
 		LEFT JOIN [$(ETS)].dbo.Notification n ON n.Id = transfer.NotificationId
