@@ -143,5 +143,6 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
             INNER JOIN SpecificityCode s ON s.NotificationId = rr.NotificationId
-       WHERE rr.Denotified = 0 AND rr.ResidencePhecCode NOT IN ('PHECSCOT', 'PHECNI')
+       --coalesce residence phec code to ensure NULL entries (i.e. no fixed abode) are not dropped
+       WHERE rr.Denotified = 0 AND COALESCE(rr.ResidencePhecCode, 'NULL VALUE') NOT IN ('PHECSCOT', 'PHECNI')
 
