@@ -33,13 +33,15 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
             INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
             INNER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
-        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
+            INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
+        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2
         UNION
         SELECT rr.NotificationId, [Description]
         FROM RecordRegister rr
             INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
             INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
-        WHERE rr.SourceSystem = 'NTBS'
+            INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
+        WHERE rr.SourceSystem = 'NTBS' AND ny.Id > -2
        ),
     
     --then apply the appropriate group name to each notification site of disease
@@ -135,7 +137,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             ELSE 'Z' 
         END AS Ethnicity,
         pd.Postcode,
-        rr.NotificationId,
+        rr.NotificationDate,
         rr.SourceSystem
         FROM [dbo].RecordRegister rr
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
