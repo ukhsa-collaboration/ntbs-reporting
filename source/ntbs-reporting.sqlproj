@@ -304,6 +304,9 @@
     <Build Include="dbo\Views\Power BI Reporting\vwClusterTotalsByMonth.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwForestBuild.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNOIDSExtract.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwHangfireJobs.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwAlert.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwAuditData.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
