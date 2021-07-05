@@ -31,6 +31,22 @@ BEGIN TRY
 	(3, 'NotConsistentWithTb', 'Not consistent with TB'),
 	(4, 'Awaiting', 'Awaiting')
 
+	TRUNCATE TABLE [dbo].[NtbsTransitionDateLookup]
+	INSERT INTO [dbo].[NtbsTransitionDateLookup] (PHEC, TransitionDate)
+	VALUES
+	('E45000001', NULL),
+	('E45000005', NULL),
+	('E45000009', '2021-07-09'),
+	('E45000010', NULL),
+	('E45000016', NULL),
+	('E45000017', NULL),
+	('E45000018', NULL),
+	('E45000019', NULL),
+	('E45000020', NULL),
+	('PHECNI', NULL),
+	('PHECSCOT', NULL),
+	('PHECWAL', '2021-07-09')
+
 END TRY
 BEGIN CATCH
 	THROW
