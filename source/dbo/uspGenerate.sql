@@ -29,6 +29,8 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		-- Populate boilerplate report too (not much overhead, so might as well for demo purposes)
 
 		EXEC uspMigrationDubiousSpecimenMatches
+
+		EXEC dbo.uspGenerateNOIDSWeeklyCount
 		-- Save last refresh date to footer
 		EXEC dbo.uspGenerateFooter
 
