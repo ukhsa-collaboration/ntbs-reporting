@@ -15,7 +15,7 @@ WITH NtbsNotifications AS (
 		CONCAT_WS(', ', UPPER(p.FamilyName), p.GivenName) AS FullName,
 		COALESCE(tbs.[Name], h.[Name]) AS TbServiceName,
 		phec.[Name] AS PhecName,
-		REPLACE(p.NhsNumber, ' ', '') AS NhsNumber,
+		REPLACE(STUFF(p.NhsNumber, 1, PATINDEX('%[0-9]%', p.NhsNumber)-1, ''),' ','') AS NhsNumber,
 		COALESCE(u.EmailPrimary, u.Username) AS CaseManager
 	FROM [$(NTBS)].dbo.[Notification] n
 		INNER JOIN [$(NTBS)].dbo.Patients p ON n.NotificationId = p.NotificationId
@@ -50,7 +50,7 @@ EtsNotifications AS (
 		CONCAT_WS(', ', UPPER(p.Surname), p.Forename) AS FullName,
 		COALESCE(tbs.[Name], h.[Name]) AS TbServiceName,
 		phec.[Name] AS PhecName,
-		REPLACE(p.NhsNumber, ' ', '') AS NhsNumber,
+		REPLACE(STUFF(p.NhsNumber, 1, PATINDEX('%[0-9]%', p.NhsNumber)-1, ''),' ','') AS NhsNumber,
 		COALESCE(su.Email, su.Username) AS CaseManager
 	FROM [$(ETS)].dbo.[Notification] n
 		INNER JOIN [$(ETS)].dbo.Patient p ON n.PatientId = p.Id
