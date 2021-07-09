@@ -34,14 +34,14 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
             INNER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
             INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
-        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2
+        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2 AND rr.Denotified = 0
         UNION
         SELECT rr.NotificationId, [Description]
         FROM RecordRegister rr
             INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
             INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
             INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
-        WHERE rr.SourceSystem = 'NTBS' AND ny.Id > -2
+        WHERE rr.SourceSystem = 'NTBS' AND ny.Id > -2  AND rr.Denotified = 0
        ),
     
     --then apply the appropriate group name to each notification site of disease
@@ -55,8 +55,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     AllCombos AS
     (
         SELECT DISTINCT NotificationId, SiteGroup  
-        FROM [dbo].[RecordRegister], NOIDSSiteGroupings  
-        WHERE Denotified = 0
+        FROM NotificationSites, NOIDSSiteGroupings  
     ),
 
 
