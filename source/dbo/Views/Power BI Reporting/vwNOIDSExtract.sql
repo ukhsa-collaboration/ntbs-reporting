@@ -108,7 +108,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     --the download 
     SELECT 
         cd.Hospital AS hospital, 
-        cd.LocalAuthority AS Local_Authority, 
+        l.HPA_CD AS Local_Authority, 
         FORMAT(cd.SymptomOnsetDate, 'dd/MM/yyyy') AS Date_Symptomonset, 
         FORMAT(COALESCE(cd.FirstPresentationDate, cd.TbServicePresentationDate) , 'dd/MM/yyyy') AS Date_Consultation,
         FORMAT(rr.NotificationDate, 'dd/MM/yyyy') AS Date_Notified,
@@ -143,6 +143,8 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
             INNER JOIN SpecificityCode s ON s.NotificationId = rr.NotificationId
+            LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file p on p.Pcode = Replace(pd.Postcode,' ','')
+			LEFT JOIN NOIDSLALookup l on l.LocalAuthorityCode = p.LTLA_Code
        --coalesce residence phec code to ensure NULL entries (i.e. no fixed abode) are not dropped
        WHERE rr.Denotified = 0 AND COALESCE(rr.ResidencePhecCode, 'NULL VALUE') NOT IN ('PHECSCOT', 'PHECNI')
 
