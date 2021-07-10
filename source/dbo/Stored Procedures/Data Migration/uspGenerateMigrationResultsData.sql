@@ -17,7 +17,7 @@ BEGIN TRY
 	SET @MigrationRunID = (SELECT MAX(lmr.LegacyImportMigrationRunId) AS MigrationRunId
 	FROM
 	[$(NTBS)].[dbo].[LegacyImportMigrationRun] lmr 
-	WHERE lmr.LegacyImportMigrationRunId > (SELECT COALESCE(MAX(MigrationRunId), 1) FROM [dbo].[MigrationRun] WHERE ImportedDate IS NOT NULL))
+	WHERE lmr.LegacyImportMigrationRunId > (SELECT COALESCE(MAX(MigrationRunId), 0) FROM [dbo].[MigrationRun] WHERE ImportedDate IS NOT NULL))
 
 	
 	INSERT INTO [dbo].[MigrationRun](MigrationRunId, MigrationRunDate, MigrationRunName, AppVersion)
