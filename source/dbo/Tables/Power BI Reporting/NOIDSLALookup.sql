@@ -1,0 +1,6 @@
+﻿CREATE TABLE [dbo].[NOIDSLALookup]
+(
+	[LocalAuthorityCode] VARCHAR(10) NOT NULL,
+	[LTLA_Name] VARCHAR(50) NOT NULL,
+	[HPA_CD] VARCHAR(5) NOT NULL 
+)

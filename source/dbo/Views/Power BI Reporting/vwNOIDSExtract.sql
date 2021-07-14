@@ -16,12 +16,12 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
        UNION
        SELECT 'Lymph nodes: Intra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
        UNION
-       SELECT 'Lymph nodes: Extra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
+	   SELECT 'Intra-thoracic' AS SiteDescription, 'LymphNodes' AS SiteGroup
        UNION
        SELECT 'Pleural' AS SiteDescription, 'Pleural' AS SiteGroup
        UNION
        SELECT 'Other' AS SiteDescription, 'Other' AS SiteGroup
-
+    
     ),
 
     --get all sites of disease from both NTBS and ETS, and standardise on the NTBS names
@@ -33,13 +33,15 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
             INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
             INNER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
-        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
+            INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
+        WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2 AND rr.Denotified = 0
         UNION
         SELECT rr.NotificationId, [Description]
         FROM RecordRegister rr
             INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
             INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
-        WHERE rr.SourceSystem = 'NTBS'
+            INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
+        WHERE rr.SourceSystem = 'NTBS' AND ny.Id > -2  AND rr.Denotified = 0
        ),
     
     --then apply the appropriate group name to each notification site of disease
@@ -53,10 +55,11 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     AllCombos AS
     (
         SELECT DISTINCT NotificationId, SiteGroup  
-        FROM [dbo].[RecordRegister], NOIDSSiteGroupings  
-        WHERE Denotified = 0
+        FROM NotificationSites, NOIDSSiteGroupings  
     ),
 
+
+    
     --and now add a 1 for each site group which the notification has, otherwise a 0
     NotificationAllSites AS
     (
@@ -81,16 +84,20 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     SpecificityCode AS
     (SELECT NotificationId,
         CASE
-           WHEN PulmonaryMiliary = 1 AND Other = 1 THEN 6
            WHEN PulmonaryMiliary = 1 AND Meningitis = 1 THEN 5
+           WHEN PulmonaryMiliary = 1 AND Other = 1 THEN 6
            WHEN PulmonaryMiliary = 1 THEN 1
-           WHEN PulmonaryMiliary = 0 AND Pleural = 1 AND Other = 1 THEN 8
-           WHEN PulmonaryMiliary = 0 AND Pleural = 1 AND Meningitis = 1 THEN 7
+
+           
+           --7 must have lymphnodes and must have cnsmeningitis and mustn't have pleural
+           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 AND Meningitis = 1 AND Pleural = 0  THEN 7
+           --8 must have lymph nodes, mustn't have pleural and must have other
+           WHEN PulmonaryMiliary = 0 AND LymphNodes = 1 and Pleural = 0 and Other = 1 THEN 8
            WHEN PulmonaryMiliary = 0 AND (LymphNodes = 1 OR Pleural = 1) THEN 2
            WHEN Meningitis = 1 THEN 3
            WHEN Other = 1 THEN 4
            --error code which will be reported out in Power BI
-           ELSE 99
+           ELSE ''
           END
         AS Specificity_Code
     FROM PivotedSites)
@@ -100,7 +107,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     --the download 
     SELECT 
         cd.Hospital AS hospital, 
-        cd.LocalAuthority AS Local_Authority, 
+        l.HPA_CD AS Local_Authority, 
         FORMAT(cd.SymptomOnsetDate, 'dd/MM/yyyy') AS Date_Symptomonset, 
         FORMAT(COALESCE(cd.FirstPresentationDate, cd.TbServicePresentationDate) , 'dd/MM/yyyy') AS Date_Consultation,
         FORMAT(rr.NotificationDate, 'dd/MM/yyyy') AS Date_Notified,
@@ -128,10 +135,15 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             WHEN cd.EthnicGroup LIKE '%Mixed%' THEN 'S'
             ELSE 'Z' 
         END AS Ethnicity,
-        pd.Postcode
+        pd.Postcode,
+        rr.NotificationDate,
+        rr.SourceSystem
         FROM [dbo].RecordRegister rr
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
             INNER JOIN SpecificityCode s ON s.NotificationId = rr.NotificationId
-       WHERE rr.Denotified = 0 AND rr.ResidencePhecCode NOT IN ('PHECSCOT', 'PHECNI')
+            LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file p on p.Pcode = Replace(pd.Postcode,' ','')
+			LEFT JOIN NOIDSLALookup l on l.LocalAuthorityCode = p.LTLA_Code
+       --coalesce residence phec code to ensure NULL entries (i.e. no fixed abode) are not dropped
+       WHERE rr.Denotified = 0 AND COALESCE(rr.ResidencePhecCode, 'NULL VALUE') NOT IN ('PHECSCOT', 'PHECNI')
 
