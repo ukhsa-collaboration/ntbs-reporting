@@ -315,6 +315,8 @@
     <Build Include="dbo\Tables\Power BI Reporting\NOIDSWeeklyCount.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateNOIDSWeeklyCount.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\NOIDSLALookup.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwCaseManagerIssuesReport.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwNtbsUsers.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
