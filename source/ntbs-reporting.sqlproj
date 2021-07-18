@@ -317,6 +317,9 @@
     <Build Include="dbo\Tables\Power BI Reporting\NOIDSLALookup.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwCaseManagerIssuesReport.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNtbsUsers.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwRegionAndPermissions.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwAllTbService.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwMigrationUsersAndNotifications.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
