@@ -4,7 +4,7 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>uat-reporting</TargetDatabaseName>
     <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=ntbs-ops-dbs.uksouth.cloudapp.azure.com\NTBS;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetConnectionString>Data Source=ntbs-ops-dbs.northeurope.cloudapp.azure.com\NTBS;Persist Security Info=True;User ID=sqlAdmin;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
@@ -85,7 +85,7 @@
       <Value>LondonTBR</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>ntbs_migration</Value>
+      <Value>ntbs_migration_uat</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
       <Value>uat-ntbs</Value>
