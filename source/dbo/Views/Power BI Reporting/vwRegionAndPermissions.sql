@@ -10,9 +10,9 @@ CREATE VIEW [dbo].[vwRegionAndPermissions]
 	AS 
 	WITH RegionsAndPermissions AS
 (
-	SELECT p.Phec_Code, p.Phec_Name, Q1.Id
+	SELECT p.PHEC_Code, p.PHEC_Name, Q1.Id
 	FROM 
-	[$(NTBS_R1_Geography_Staging)].[dbo].[Phec] p
+	[$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p
 		INNER JOIN  
 		(
 			SELECT * 
@@ -21,7 +21,7 @@ CREATE VIEW [dbo].[vwRegionAndPermissions]
 		) 
 		--very ugly join on name of region being in name of permission, limited to only first 8 characters
 		--because the region is called Yorkshire and Humber but the permission is called Yorkshire and the Humber
-		AS Q1 ON CHARINDEX(LEFT(p.Phec_Name, 8), Q1.[NAME]) > 0
+		AS Q1 ON CHARINDEX(LEFT(p.PHEC_Name, 8), Q1.[NAME]) > 0
 ),
 
 PermissionHierarchy AS

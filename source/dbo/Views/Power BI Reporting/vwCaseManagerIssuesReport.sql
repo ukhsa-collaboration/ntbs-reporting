@@ -19,7 +19,7 @@ WITH PermissionAliases(ETSName, AliasName) AS (
 
 --get the permissions, map HPU up to Region and remove the first and last characters as these are (except for HPA) always square brackets
 ETSPermissions AS (
-	SELECT s.id,
+	SELECT s.Id,
 		LOWER(s.Username) AS Username,
 		LOWER(s.Email) AS Email,
 		[dbo].[ufnStripNonAlphaChars](s.Surname) AS Surname,
@@ -41,7 +41,7 @@ ETSPermissions AS (
 ),
 --overwrite the permission name
 AliasedPermissions AS (
-	SELECT ep.id,
+	SELECT ep.Id,
 		ep.Username,
 		ep.Email,
 		ep.Surname,
@@ -89,7 +89,7 @@ SELECT n.NotificationId,
 	EtsUserDetails.Membership AS EtsUserPermissionMembership,
 	EtsUserDetails.TBServicePHEC AS EtsUserPermissionTbServicePhec,
 	EtsUserDetails.MembershipCode AS EtsUserPermissionMembershipCode,
-	EtsUserDetails.id AS EtsUserId
+	EtsUserDetails.Id AS EtsUserId
 FROM [$(NTBS)].dbo.[Notification] n
 	INNER JOIN [$(NTBS)].dbo.HospitalDetails hd ON n.NotificationId = hd.NotificationId
 	INNER JOIN [$(NTBS)].dbo.[User] u ON hd.CaseManagerId = u.Id
