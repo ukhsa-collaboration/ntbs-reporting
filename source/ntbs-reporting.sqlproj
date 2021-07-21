@@ -320,6 +320,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwRegionAndPermissions.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwAllTbService.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMigrationUsersAndNotifications.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwLegacyLabExtract.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
