@@ -127,7 +127,10 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
-	WHERE mrr.MigrationRunId = @MigrationRunID;
+	WHERE mrr.MigrationRunId = @MigrationRunID
+	AND tr12.Submitted = 1
+	AND tr24.Submitted = 1
+	AND tr36.Submitted = 1;
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
 
@@ -150,13 +153,13 @@ BEGIN TRY
 		COALESCE
 		(FIRST_VALUE(ol.OutcomeDescription) 
 			OVER (PARTITION BY NotificationId 
-			ORDER BY EventDate DESC, OrderBy), 
+			ORDER BY EventDate DESC, OrderBy DESC), 
 		'No outcome recorded') AS 'OutcomeValue'
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
 		INNER JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = te.NotificationId AND mrr.MigrationRunId = @MigrationRunID
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
 		LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType
-		LEFT OUTER JOIN EventOrder ev ON ev.EventName = tro.TreatmentOutcomeType)
+		LEFT OUTER JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType)
 
 	UPDATE mrr
 		SET mrr.NTBSTreatmentOutcome = a.OutcomeValue
