@@ -221,7 +221,7 @@ BEGIN TRY
 
 	UPDATE mrr
 		SET 
-			mrr.MigrationNotes = ag.[Message]
+			mrr.MigrationNotes = COALESCE(ag.[Message], ag.[Notes])
 			,mrr.MigrationResult = 
 				CASE WHEN ag.SuccessfullyMigrated = 0 THEN 'Error'
 				WHEN ag.SuccessfullyMigrated = 1 AND ag.[Message] IS NOT NULL THEN 'Data Loss'
@@ -230,23 +230,6 @@ BEGIN TRY
 
 	FROM  [dbo].[MigrationRunResults] mrr
 		INNER JOIN AggregatedResults ag ON ag.LegacyImportMigrationRunId = mrr.MigrationRunId AND ag.OldNotificationId = mrr.MigrationNotificationId
-
-
-		
-	--and finally there may be a few rows where the record did not migrate because of an error on another record in its group
-	--so it has no error records itself
-
-	
-	UPDATE mrr
-		SET mrr.MigrationResult = 'Error',
-		mrr.MigrationNotes = li.[Notes]
-	FROM  [dbo].[MigrationRunResults] mrr
-		INNER JOIN 
-			[$(NTBS)].[dbo].[LegacyImportNotificationOutcome] li ON li.LegacyImportMigrationRunId = mrr.MigrationRunId AND li.OldNotificationId = mrr.MigrationNotificationId
-	WHERE mrr.MigrationRunId = @MigrationRunID
-	AND mrr.MigrationResult IS NULL
-	AND li.SuccessfullyMigrated = 0
-
 
 		-----------------------------------------------------------------------------------------------------------------------------
    --Insert migration Alerts into table Migration Alert then 
