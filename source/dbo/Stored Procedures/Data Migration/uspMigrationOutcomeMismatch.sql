@@ -19,20 +19,23 @@ AS
 		UNION
 		SELECT 'TreatmentOutcome' AS EventName, 6 AS 'OrderBy')
 
-	SELECT DISTINCT
+	SELECT
 		mrr.MigrationNotificationId		AS 'MigrationNotificationId',
 		mrr.LegacyETSId					AS 'EtsId',
 		mrr.NTBSNotificationId			AS 'NtbsId',
 		mrr.EtsTreatmentOutcome			AS 'EtsOutcome',
 		mrr.NTBSTreatmentOutcome		AS 'NtbsOutcome',
-		FIRST_VALUE(te.EventDate) OVER (PARTITION BY NotificationId ORDER BY EventDate DESC, OrderBy DESC)			AS 'FinalEventDate',
-		FIRST_VALUE(te.TreatmentEventType) OVER (PARTITION BY NotificationId ORDER BY EventDate DESC, OrderBy DESC)	AS 'FinalEventType'
+		te.EventDate					AS 'EventDate',
+		te.TreatmentEventType			AS 'EventType',
+		tout.TreatmentOutcomeType		AS 'EventOutcome'
 	FROM [dbo].[MigrationRunResults] mrr
-		INNER JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = mrr.NTBSNotificationId
-		LEFT OUTER JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType
+		LEFT JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = mrr.NTBSNotificationId
+		LEFT JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType
+		LEFT JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tout ON tout.TreatmentOutcomeId = te.TreatmentOutcomeId
 	WHERE EtsTreatmentOutcome != NTBSTreatmentOutcome
 		AND mrr.EtsTreatmentOutcome != mrr.NTBSTreatmentOutcome
 		AND NOT(mrr.EtsTreatmentOutcome = 'Not evaluated' AND mrr.NTBSTreatmentOutcome = 'No outcome recorded')
 		AND NOT(mrr.EtsTreatmentOutcome = 'Unknown' AND mrr.NTBSTreatmentOutcome = 'Not evaluated')
 		AND NOT(mrr.EtsTreatmentOutcome = 'Still on treatment' AND mrr.NTBSTreatmentOutcome = 'Not evaluated')
 		AND mrr.MigrationRunId = @MigrationRun
+	ORDER BY mrr.MigrationNotificationId, te.EventDate DESC, ev.OrderBy DESC

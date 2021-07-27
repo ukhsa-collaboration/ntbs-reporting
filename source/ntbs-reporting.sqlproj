@@ -244,7 +244,8 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationDubiousSpecimenMatches.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimensMatchesToReview.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimenMatchesToReviewByNotification.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimenMatchesToReviewBySpecimen.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationAlert.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationAlert.sql" />

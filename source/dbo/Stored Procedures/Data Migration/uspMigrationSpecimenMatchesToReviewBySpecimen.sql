@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspMirgationSpecimensMatchesToReview]
+﻿CREATE PROCEDURE [dbo].[uspMigrationSpecimenMatchesToReviewBySpecimen]
 	@MigrationRun INT = NULL
 AS
 	SELECT
