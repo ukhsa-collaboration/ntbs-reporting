@@ -231,7 +231,6 @@
     <Build Include="dbo\Tables\Data Migration\ServiceDirectoryRawData.sql" />
     <Build Include="dbo\Views\Data Migration\vwServiceDirContactDetails.sql" />
     <Build Include="dbo\Views\Data Migration\vwUsersInService.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationMisMatchedOutcomes.sql" />
     <Build Include="dbo\Views\Lab Results\vwEtsDuplicateMatches.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByLocalAuthority.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByTBService.sql" />

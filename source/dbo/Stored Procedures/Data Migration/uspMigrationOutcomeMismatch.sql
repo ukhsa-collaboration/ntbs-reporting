@@ -1,6 +1,13 @@
 ﻿/*
-	Note that we treat some outcomes as being equal even when they are actually different in NTBS and ETS.
-	For more details see uspMigrationMisMatchedOutcomes.sql.
+	Note that this stored procdure will exclude some expected mismatches (see below) to focus on
+	where there may be more complex data cleaning to do.
+
+	Expected mismatches:
+	ETS (reporting)		NTBS					Reason
+	=================================================================================
+	Not evaluated		No outcome recorded		'Not evaluated' is a real outcome value in NTBS, but wasn't in ETS so in the reporting service we would output it as 'Not evaluated'
+	Unknown				Not evaluated			Agreed mapping for this outcome
+	Still on treatment	Not evaluated			'Still on treatment' is a sub-type value in NTBS
 */
 
 CREATE PROCEDURE [dbo].[uspMigrationOutcomeMismatch]
