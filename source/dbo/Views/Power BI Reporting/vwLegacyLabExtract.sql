@@ -58,7 +58,7 @@ CREATE VIEW [dbo].[vwLegacyLabExtract]
         SELECT DISTINCT 
             lsr.ReferenceLaboratoryNumber, 
             lsr.AntibioticOutputName, 
-            FIRST_VALUE(LEFT(lsr.ResultOutputName, 1)) OVER (PARTITION BY lsr.ReferenceLaboratorynumber, lsr.AntibioticOutputName ORDER BY [Rank]) AS Result
+            FIRST_VALUE(LEFT(lsr.ResultOutputName, 1)) OVER (PARTITION BY lsr.ReferenceLaboratoryNumber, lsr.AntibioticOutputName ORDER BY [Rank]) AS Result
         FROM [$(NTBS_Specimen_Matching)].[dbo].[StandardisedLabbaseSusceptibilityResult] lsr
 	        INNER JOIN MatchedSpecimens ms ON ms.ReferenceLaboratoryNumber = lsr.ReferenceLaboratoryNumber
         WHERE lsr.ResultOutputName IN ('Sensitive', 'Resistant')
