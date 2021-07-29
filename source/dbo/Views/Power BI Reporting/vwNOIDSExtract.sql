@@ -31,8 +31,8 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
         SELECT n.LegacyId AS NotificationId, sites.NtbsLabel AS SiteName
         FROM RecordRegister rr
             INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
-            INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
-            INNER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
+            LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
+            LEFT OUTER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
             INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
         WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2 AND rr.Denotified = 0
         UNION
@@ -45,10 +45,18 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
        ),
     
     --then apply the appropriate group name to each notification site of disease
+    --this needs to allow for the few notifications in ETS which have no sites of disease at all. Ultimately the 
+    --specificity_code for these records should come out as null, not 4 (other)
     GroupedSites AS
     (
-        SELECT DISTINCT ns.NotificationId, COALESCE(g.SiteGroup, 'Other') AS SiteGroup FROM NotificationSites ns
-        LEFT OUTER JOIN NOIDSSiteGroupings g ON g.SiteDescription = ns.SiteName
+        SELECT DISTINCT 
+            ns.NotificationId, 
+            CASE 
+                WHEN g.SiteDescription IS NOT NULL THEN g.SiteGroup
+			    WHEN ns.SiteName IS NOT NULL THEN 'Other'
+			    ELSE NULL
+			END AS SiteGroup FROM NotificationSites ns
+                LEFT OUTER JOIN NOIDSSiteGroupings g ON g.SiteDescription = ns.SiteName
     ),
 
     --now generate a list with one row for every notification ID and site group combination
@@ -107,7 +115,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     --the download 
     SELECT 
         cd.Hospital AS hospital, 
-        l.HPA_CD AS Local_Authority, 
+        p.HPA_CD AS Local_Authority, 
         FORMAT(cd.SymptomOnsetDate, 'dd/MM/yyyy') AS Date_Symptomonset, 
         FORMAT(COALESCE(cd.FirstPresentationDate, cd.TbServicePresentationDate) , 'dd/MM/yyyy') AS Date_Consultation,
         FORMAT(rr.NotificationDate, 'dd/MM/yyyy') AS Date_Notified,
@@ -143,7 +151,6 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
             INNER JOIN SpecificityCode s ON s.NotificationId = rr.NotificationId
             LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file p on p.Pcode = Replace(pd.Postcode,' ','')
-			LEFT JOIN NOIDSLALookup l on l.LocalAuthorityCode = p.LTLA_Code
        --coalesce residence phec code to ensure NULL entries (i.e. no fixed abode) are not dropped
        WHERE rr.Denotified = 0 AND COALESCE(rr.ResidencePhecCode, 'NULL VALUE') NOT IN ('PHECSCOT', 'PHECNI')
 
