@@ -124,13 +124,10 @@ BEGIN TRY
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
-	WHERE mrr.MigrationRunId = @MigrationRunID
-	AND tr12.Submitted = 1
-	AND tr24.Submitted = 1
-	AND tr36.Submitted = 1;
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
+	WHERE mrr.MigrationRunId = @MigrationRunID;
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
 

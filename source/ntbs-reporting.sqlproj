@@ -231,7 +231,6 @@
     <Build Include="dbo\Tables\Data Migration\ServiceDirectoryRawData.sql" />
     <Build Include="dbo\Views\Data Migration\vwServiceDirContactDetails.sql" />
     <Build Include="dbo\Views\Data Migration\vwUsersInService.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationMisMatchedOutcomes.sql" />
     <Build Include="dbo\Views\Lab Results\vwEtsDuplicateMatches.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByLocalAuthority.sql" />
     <Build Include="dbo\Views\Notification Summary\vwNotificationsByTBService.sql" />
@@ -244,7 +243,8 @@
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationDubiousSpecimenMatches.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationDubiousSpecimenMatches.sql" />
-    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimensMatchesToReview.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimenMatchesToReviewByNotification.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationSpecimenMatchesToReviewBySpecimen.sql" />
     <Build Include="dbo\Tables\Data Migration\MigrationAlert.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationAlert.sql" />
     <Build Include="dbo\Views\Data Migration\vwMigrationAlert.sql" />
@@ -321,6 +321,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwAllTbService.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMigrationUsersAndNotifications.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwLegacyLabExtract.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDuplicateAlerts.sql" />
+    <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationOutcomeMismatch.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />

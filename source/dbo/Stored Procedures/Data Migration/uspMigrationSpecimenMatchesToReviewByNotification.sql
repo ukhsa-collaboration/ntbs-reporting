@@ -1,10 +1,8 @@
-﻿CREATE PROCEDURE [dbo].[uspMirgationSpecimensMatchesToReview]
+﻿CREATE PROCEDURE [dbo].[uspMigrationSpecimenMatchesToReviewByNotification]
 	@MigrationRun INT = NULL
 AS
 	SELECT 
-		[MigrationNotificationId]			AS 'MigrationNotificationId' 
-		--,[NotificationDate]					AS 'NotificationDate' 
-		--,DATEPART(YEAR, NotificationDate)	AS 'NotificationYear'
+		[MigrationNotificationId]			AS 'MigrationNotificationId'
 		,[LegacyETSId]						AS 'EtsId'
 		,d.MigrationNotes					AS 'Comments'
  
