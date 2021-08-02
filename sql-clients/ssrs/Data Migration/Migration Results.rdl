@@ -609,6 +609,10 @@ ORDER BY CountOfRecords DESC</CommandText>
           <DataField>DuplicateNotificationDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
+        <Field Name="DuplicateTbService">
+          <DataField>DuplicateTbService</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="DaysBetweenNotifications">
           <DataField>DaysBetweenNotifications</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
@@ -9457,6 +9461,9 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <Width>3.1473cm</Width>
                     </TablixColumn>
                     <TablixColumn>
+                      <Width>2.5cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
                       <Width>2.97625cm</Width>
                     </TablixColumn>
                   </TablixColumns>
@@ -9621,7 +9628,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Tb Service</Value>
+                                      <Value>TB Service</Value>
                                       <Style>
                                         <FontFamily>Arial</FontFamily>
                                         <FontWeight>Bold</FontWeight>
@@ -9709,6 +9716,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox103</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>#98002e</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox90">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Duplicate TB Service</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Bold</FontWeight>
+                                        <Color>White</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox90</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -10028,6 +10072,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="Textbox94">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!DuplicateTbService.Value</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Normal</FontWeight>
+                                        <Color>#333333</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox94</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>=IIF(RunningValue (Fields!MigrationNotificationId.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="DaysBetweenNotifications">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -10077,6 +10158,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
@@ -10098,7 +10180,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 <Top>0.84667cm</Top>
                 <Left>0.04843cm</Left>
                 <Height>1.80854cm</Height>
-                <Width>21.80042cm</Width>
+                <Width>24.30042cm</Width>
                 <Style>
                   <Border>
                     <Color>LightGrey</Color>
@@ -10143,7 +10225,7 @@ ORDER BY CountOfRecords DESC</CommandText>
             <Top>39.43796cm</Top>
             <Left>1.3462cm</Left>
             <Height>2.65521cm</Height>
-            <Width>21.84885cm</Width>
+            <Width>24.34885cm</Width>
             <ZIndex>13</ZIndex>
             <Visibility>
               <Hidden>=IIF(Count(Fields!MigrationNotificationId.Value, "DuplicateAlerts")=0, True, False)</Hidden>
