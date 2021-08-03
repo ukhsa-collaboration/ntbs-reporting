@@ -124,9 +124,9 @@ BEGIN TRY
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
+	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
 	WHERE mrr.MigrationRunId = @MigrationRunID;
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
@@ -150,13 +150,13 @@ BEGIN TRY
 		COALESCE
 		(FIRST_VALUE(ol.OutcomeDescription) 
 			OVER (PARTITION BY NotificationId 
-			ORDER BY EventDate DESC, OrderBy), 
+			ORDER BY EventDate DESC, OrderBy DESC), 
 		'No outcome recorded') AS 'OutcomeValue'
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
 		INNER JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = te.NotificationId AND mrr.MigrationRunId = @MigrationRunID
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
 		LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType
-		LEFT OUTER JOIN EventOrder ev ON ev.EventName = tro.TreatmentOutcomeType)
+		LEFT OUTER JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType)
 
 	UPDATE mrr
 		SET mrr.NTBSTreatmentOutcome = a.OutcomeValue
@@ -221,7 +221,7 @@ BEGIN TRY
 
 	UPDATE mrr
 		SET 
-			mrr.MigrationNotes = ag.[Message]
+			mrr.MigrationNotes = COALESCE(ag.[Message], ag.[Notes])
 			,mrr.MigrationResult = 
 				CASE WHEN ag.SuccessfullyMigrated = 0 THEN 'Error'
 				WHEN ag.SuccessfullyMigrated = 1 AND ag.[Message] IS NOT NULL THEN 'Data Loss'
@@ -230,23 +230,6 @@ BEGIN TRY
 
 	FROM  [dbo].[MigrationRunResults] mrr
 		INNER JOIN AggregatedResults ag ON ag.LegacyImportMigrationRunId = mrr.MigrationRunId AND ag.OldNotificationId = mrr.MigrationNotificationId
-
-
-		
-	--and finally there may be a few rows where the record did not migrate because of an error on another record in its group
-	--so it has no error records itself
-
-	
-	UPDATE mrr
-		SET mrr.MigrationResult = 'Error',
-		mrr.MigrationNotes = li.[Notes]
-	FROM  [dbo].[MigrationRunResults] mrr
-		INNER JOIN 
-			[$(NTBS)].[dbo].[LegacyImportNotificationOutcome] li ON li.LegacyImportMigrationRunId = mrr.MigrationRunId AND li.OldNotificationId = mrr.MigrationNotificationId
-	WHERE mrr.MigrationRunId = @MigrationRunID
-	AND mrr.MigrationResult IS NULL
-	AND li.SuccessfullyMigrated = 0
-
 
 		-----------------------------------------------------------------------------------------------------------------------------
    --Insert migration Alerts into table Migration Alert then 

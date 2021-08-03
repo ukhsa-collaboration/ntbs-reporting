@@ -24,7 +24,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		SET @NtbsLastRefreshed = (SELECT MAX([AuditDateTime])
 			FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
 			WHERE AuditDateTime > DATEADD(DAY, -7, GETUTCDATE())
-				AND EntityType = 'Notification'
+				AND RootEntity = 'Notification'
 				AND EventType != 'Read')
 		
 		-- When were the generated reusable tables last refreshed ?
