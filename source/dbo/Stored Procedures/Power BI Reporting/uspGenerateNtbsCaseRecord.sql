@@ -185,8 +185,7 @@ BEGIN TRY
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
 		,diseaseSites.[Description]								AS DiseaseSiteList
 		,dbo.ufnYesNo(cd.IsPostMortem)							AS PostMortemDiagnosis
-		--invert value as stored the wrong way round in the database
-		,dbo.ufnYesNo(~cd.DidNotStartTreatment)					AS StartedTreatment
+		,dbo.ufnYesNo(cd.StartedTreatment)						AS StartedTreatment
 		,trl.TreatmentRegimenDescription						AS TreatmentRegimen
 		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
