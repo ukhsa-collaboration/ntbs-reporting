@@ -1,16 +1,31 @@
 ﻿CREATE PROCEDURE [dbo].[uspMigrationSpecimenMatchesToReviewBySpecimen]
 	@MigrationRun INT = NULL
 AS
+	WITH DubiousMatchesFromMigration AS
+	(
+		SELECT mdsm.ReferenceLaboratoryNumber
+		FROM [dbo].[MigrationRunResults] mrr
+			INNER JOIN [dbo].[MigrationDubiousSpecimenMatches] mdsm ON mdsm.EtsId = mrr.LegacyETSId
+		WHERE MigrationRunId = @MigrationRun
+	)
+
 	SELECT
-		mrr.MigrationNotificationId							AS 'MigrationNotificationId',
-		mrr.LegacyETSId										AS 'EtsId',
-		mrr.NTBSNotificationId								AS 'NtbsId',
-		mdsm.ReferenceLaboratoryNumber						AS 'ReferenceLaboratoryNumber',
-		esm.SpecimenDate									AS 'SpecimenDate',
-		mrr.NotificationDate								AS 'NotificationDate',
-		dbo.ufnGetTreatmentEndDate(mrr.NTBSNotificationId)	AS 'TreatmentEndDate',
-		mdsm.MigrationNotes									AS 'MigrationNotes'
-	FROM [dbo].[MigrationRunResults] mrr
-		INNER JOIN [dbo].[MigrationDubiousSpecimenMatches] mdsm ON mdsm.EtsId = mrr.LegacyETSId
+		mrr.MigrationNotificationId								AS 'MigrationNotificationId',
+		etsn.LegacyId											AS 'EtsId',
+		CASE
+			WHEN etsn.DenotificationId IS NOT NULL THEN 'Denotified'
+			WHEN etsn.Submitted = 0 THEN 'Draft'
+			ELSE 'Notified'
+		END														AS 'EtsStatus',
+		COALESCE(mrr.NTBSNotificationId, ntbsn.NotificationId)	AS 'NtbsId',
+		mdsm.ReferenceLaboratoryNumber							AS 'ReferenceLaboratoryNumber',
+		esm.SpecimenDate										AS 'SpecimenDate',
+		COALESCE(mrr.NotificationDate, ntbsn.NotificationDate)	AS 'NotificationDate',
+		dbo.ufnGetTreatmentEndDate(COALESCE(mrr.NTBSNotificationId, ntbsn.NotificationId)) AS 'TreatmentEndDate',
+		mdsm.MigrationNotes										AS 'MigrationNotes'
+	FROM [dbo].[MigrationDubiousSpecimenMatches] mdsm
+		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mdsm.EtsId = mrr.LegacyETSId
+		LEFT JOIN [$(ETS)].[dbo].[Notification] etsn ON etsn.LegacyId = mdsm.EtsId
+		LEFT JOIN [$(NTBS)].[dbo].[Notification] ntbsn ON ntbsn.ETSID = mdsm.EtsId
 		INNER JOIN [$(NTBS_Specimen_Matching)].[dbo].[EtsSpecimenMatch] esm ON esm.LegacyId = mdsm.EtsId AND esm.ReferenceLaboratoryNumber = mdsm.ReferenceLaboratoryNumber
-	WHERE MigrationRunId = @MigrationRun
+	WHERE mdsm.ReferenceLaboratoryNumber IN (SELECT * FROM DubiousMatchesFromMigration)
