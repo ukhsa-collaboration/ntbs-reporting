@@ -4,41 +4,41 @@ AS
 	WITH DuplicatePairs AS
 	(
 		SELECT DISTINCT
-		CASE WHEN mrr.NotificationDate < duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'OriginalNotification',
-		CASE WHEN mrr.NotificationDate > duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'DuplicateNotification'
+		CASE WHEN mrr.NotificationDate <= duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'FirstNotification',
+		CASE WHEN mrr.NotificationDate >  duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'SecondNotification'
 		FROM [dbo].[MigrationRunResults] mrr
 			INNER JOIN [$(NTBS)].[dbo].[Alert] a on a.NotificationId = mrr.NTBSNotificationId
-			LEFT JOIN [$(NTBS)].[dbo].[Notification] duplicate on duplicate.NotificationId = a.DuplicateId
+			INNER JOIN [$(NTBS)].[dbo].[Notification] duplicate on duplicate.NotificationId = a.DuplicateId
 		WHERE AlertStatus = 'Open'
 			AND AlertType = 'DataQualityPotientialDuplicate'
 			AND mrr.MigrationRunId = @MigrationRun
 	) 
 	SELECT
 		mrr.MigrationNotificationId													AS 'MigrationNotificationId',
-		original.ETSID																AS 'EtsId',
-		original.NotificationId														AS 'NtbsId',
-		original.NotificationDate													AS 'NotificationDate',
-		originalTbService.[Name]													AS 'TbService',
-		duplicate.NotificationId													AS 'DuplicateNtbsId',
-		duplicate.ETSID																AS 'DuplicateEtsId',
-		duplicate.NotificationDate													AS 'DuplicateNotificationDate',
-		duplicateTbService.[Name]													AS 'DuplicateTbService',
-		ABS(DATEDIFF(day, original.NotificationDate, duplicate.NotificationDate))	AS 'DaysBetweenNotifications',
+		firstNot.ETSID																AS 'EtsId',
+		firstNot.NotificationId														AS 'NtbsId',
+		firstNot.NotificationDate													AS 'NotificationDate',
+		firstNotTbService.[Name]													AS 'TbService',
+		secondNot.NotificationId													AS 'DuplicateNtbsId',
+		secondNot.ETSID																AS 'DuplicateEtsId',
+		secondNot.NotificationDate													AS 'DuplicateNotificationDate',
+		secondNotTbService.[Name]													AS 'DuplicateTbService',
+		ABS(DATEDIFF(day, firstNot.NotificationDate, secondNot.NotificationDate))	AS 'DaysBetweenNotifications',
 		CASE
-			WHEN originalp.GivenName = duplicatep.GivenName
-				AND originalp.FamilyName = duplicatep.FamilyName
-				AND originalp.NhsNumber = duplicatep.NhsNumber
-				AND originalp.Dob = duplicatep.Dob
+			WHEN firstNotP.GivenName = secondNotP.GivenName
+				AND firstNotP.FamilyName = secondNotP.FamilyName
+				AND firstNotP.NhsNumber = secondNotP.NhsNumber
+				AND firstNotP.Dob = secondNotP.Dob
 				THEN 'Yes'
 			ELSE 'No'
 		END																			AS 'DemographicsMatch'
 	FROM DuplicatePairs pairs
-		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = pairs.OriginalNotification
-		LEFT JOIN [$(NTBS)].[dbo].[Notification] original on original.NotificationId = pairs.OriginalNotification
-		LEFT JOIN [$(NTBS)].[dbo].[Patients] originalp on originalp.NotificationId = original.NotificationId
-		LEFT JOIN [$(NTBS)].[dbo].[HospitalDetails] originalHd on originalHd.NotificationId = original.NotificationId
-		LEFT JOIN [$(NTBS)].[ReferenceData].[TbService] originalTbService on originalTbService.Code = originalHd.TBServiceCode
-		LEFT JOIN [$(NTBS)].[dbo].[Notification] duplicate on duplicate.NotificationId = pairs.DuplicateNotification
-		LEFT JOIN [$(NTBS)].[dbo].[Patients] duplicatep on duplicatep.NotificationId = duplicate.NotificationId
-		LEFT JOIN [$(NTBS)].[dbo].[HospitalDetails] duplicateHd on duplicateHd.NotificationId = duplicate.NotificationId
-		LEFT JOIN [$(NTBS)].[ReferenceData].[TbService] duplicateTbService on duplicateTbService.Code = duplicateHd.TBServiceCode
+		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = pairs.FirstNotification
+		LEFT JOIN [$(NTBS)].[dbo].[Notification] firstNot on firstNot.NotificationId = pairs.FirstNotification
+		LEFT JOIN [$(NTBS)].[dbo].[Patients] firstNotP on firstNotP.NotificationId = firstNot.NotificationId
+		LEFT JOIN [$(NTBS)].[dbo].[HospitalDetails] firstNotHd on firstNotHd.NotificationId = firstNot.NotificationId
+		LEFT JOIN [$(NTBS)].[ReferenceData].[TbService] firstNotTbService on firstNotTbService.Code = firstNotHd.TBServiceCode
+		LEFT JOIN [$(NTBS)].[dbo].[Notification] secondNot on secondNot.NotificationId = pairs.SecondNotification
+		LEFT JOIN [$(NTBS)].[dbo].[Patients] secondNotP on secondNotP.NotificationId = secondNot.NotificationId
+		LEFT JOIN [$(NTBS)].[dbo].[HospitalDetails] secondNotHd on secondNotHd.NotificationId = secondNot.NotificationId
+		LEFT JOIN [$(NTBS)].[ReferenceData].[TbService] secondNotTbService on secondNotTbService.Code = secondNotHd.TBServiceCode

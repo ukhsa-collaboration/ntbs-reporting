@@ -17,11 +17,11 @@ AS
 			WHEN etsn.Submitted = 0 THEN 'Draft'
 			ELSE 'Notified'
 		END														AS 'EtsStatus',
-		COALESCE(mrr.NTBSNotificationId, ntbsn.NotificationId)	AS 'NtbsId',
+		ntbsn.NotificationId									AS 'NtbsId',
 		mdsm.ReferenceLaboratoryNumber							AS 'ReferenceLaboratoryNumber',
 		esm.SpecimenDate										AS 'SpecimenDate',
-		COALESCE(mrr.NotificationDate, ntbsn.NotificationDate)	AS 'NotificationDate',
-		dbo.ufnGetTreatmentEndDate(COALESCE(mrr.NTBSNotificationId, ntbsn.NotificationId)) AS 'TreatmentEndDate',
+		ntbsn.NotificationDate									AS 'NotificationDate',
+		dbo.ufnGetTreatmentEndDate(ntbsn.NotificationId)		AS 'TreatmentEndDate',
 		mdsm.MigrationNotes										AS 'MigrationNotes'
 	FROM [dbo].[MigrationDubiousSpecimenMatches] mdsm
 		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mdsm.EtsId = mrr.LegacyETSId
