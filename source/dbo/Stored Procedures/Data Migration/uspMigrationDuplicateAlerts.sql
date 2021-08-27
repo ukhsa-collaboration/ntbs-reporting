@@ -4,11 +4,21 @@ AS
 	WITH DuplicatePairs AS
 	(
 		SELECT DISTINCT
-		CASE WHEN mrr.NotificationDate <= duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'FirstNotification',
-		CASE WHEN mrr.NotificationDate >  duplicate.NotificationDate THEN mrr.NTBSNotificationId ELSE duplicate.NotificationId END AS 'SecondNotification'
+		-- The 'first' notification should be the notification that is included in the migration, if both are included then order by notification date.
+		CASE
+			WHEN dupmrr.MigrationNotificationId IS NULL OR mrr.NotificationDate <= duplicate.NotificationDate
+			THEN mrr.NTBSNotificationId
+			ELSE duplicate.NotificationId
+		END AS 'FirstNotification',
+		CASE
+			WHEN dupmrr.MigrationNotificationId IS NULL OR mrr.NotificationDate <= duplicate.NotificationDate
+			THEN duplicate.NotificationId
+			ELSE mrr.NTBSNotificationId
+		END AS 'SecondNotification'
 		FROM [dbo].[MigrationRunResults] mrr
 			INNER JOIN [$(NTBS)].[dbo].[Alert] a on a.NotificationId = mrr.NTBSNotificationId
 			INNER JOIN [$(NTBS)].[dbo].[Notification] duplicate on duplicate.NotificationId = a.DuplicateId
+			LEFT JOIN [dbo].[MigrationRunResults] dupmrr ON dupmrr.LegacyETSId = duplicate.ETSID
 		WHERE AlertStatus = 'Open'
 			AND AlertType = 'DataQualityPotientialDuplicate'
 			AND mrr.MigrationRunId = @MigrationRun
