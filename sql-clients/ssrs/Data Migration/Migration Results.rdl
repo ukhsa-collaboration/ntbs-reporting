@@ -545,7 +545,11 @@ ORDER BY CountOfRecords DESC</CommandText>
         </Field>
         <Field Name="EtsId">
           <DataField>EtsId</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Int64</rd:TypeName>
+        </Field>
+        <Field Name="EtsStatus">
+          <DataField>EtsStatus</DataField>
+          <rd:UserDefined>true</rd:UserDefined>
         </Field>
         <Field Name="NtbsId">
           <DataField>NtbsId</DataField>
@@ -605,6 +609,10 @@ ORDER BY CountOfRecords DESC</CommandText>
           <DataField>DuplicateNtbsId</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
+        <Field Name="DuplicateEtsId">
+          <DataField>DuplicateEtsId</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="DuplicateNotificationDate">
           <DataField>DuplicateNotificationDate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
@@ -616,6 +624,10 @@ ORDER BY CountOfRecords DESC</CommandText>
         <Field Name="DaysBetweenNotifications">
           <DataField>DaysBetweenNotifications</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
+        </Field>
+        <Field Name="DemographicsMatch">
+          <DataField>DemographicsMatch</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -8751,12 +8763,6 @@ ORDER BY CountOfRecords DESC</CommandText>
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>4.66708cm</Width>
-                    </TablixColumn>
-                    <TablixColumn>
-                      <Width>2.5cm</Width>
-                    </TablixColumn>
-                    <TablixColumn>
                       <Width>2.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
@@ -8767,80 +8773,6 @@ ORDER BY CountOfRecords DESC</CommandText>
                     <TablixRow>
                       <Height>1.2cm</Height>
                       <TablixCells>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Textbox85">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>Reference Laboratory Number</Value>
-                                      <Style>
-                                        <FontFamily>Arial</FontFamily>
-                                        <FontWeight>Bold</FontWeight>
-                                        <Color>White</Color>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Left</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Textbox85</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
-                                <BackgroundColor>#98002e</BackgroundColor>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="Textbox87">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>Specimen Date</Value>
-                                      <Style>
-                                        <FontFamily>Arial</FontFamily>
-                                        <FontWeight>Bold</FontWeight>
-                                        <Color>White</Color>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Left</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>Textbox87</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
-                                <BackgroundColor>#98002e</BackgroundColor>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
                         <TablixCell>
                           <CellContents>
                             <Textbox Name="Textbox91">
@@ -8920,81 +8852,6 @@ ORDER BY CountOfRecords DESC</CommandText>
                     <TablixRow>
                       <Height>0.6cm</Height>
                       <TablixCells>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="ReferenceLaboratoryNumber1">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>=Fields!ReferenceLaboratoryNumber.Value</Value>
-                                      <Style>
-                                        <FontFamily>Arial</FontFamily>
-                                        <FontWeight>Normal</FontWeight>
-                                        <Color>#333333</Color>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Left</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>ReferenceLaboratoryNumber1</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
-                                <BackgroundColor>=IIF(RunningValue (Fields!ReferenceLaboratoryNumber.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
-                        <TablixCell>
-                          <CellContents>
-                            <Textbox Name="SpecimenDate1">
-                              <CanGrow>true</CanGrow>
-                              <KeepTogether>true</KeepTogether>
-                              <Paragraphs>
-                                <Paragraph>
-                                  <TextRuns>
-                                    <TextRun>
-                                      <Value>=Fields!SpecimenDate.Value</Value>
-                                      <Style>
-                                        <FontFamily>Arial</FontFamily>
-                                        <FontWeight>Normal</FontWeight>
-                                        <Format>dd MMM yyyy</Format>
-                                        <Color>#333333</Color>
-                                      </Style>
-                                    </TextRun>
-                                  </TextRuns>
-                                  <Style>
-                                    <TextAlign>Left</TextAlign>
-                                  </Style>
-                                </Paragraph>
-                              </Paragraphs>
-                              <rd:DefaultName>SpecimenDate1</rd:DefaultName>
-                              <Style>
-                                <Border>
-                                  <Color>LightGrey</Color>
-                                  <Style>Solid</Style>
-                                </Border>
-                                <BackgroundColor>=IIF(RunningValue (Fields!ReferenceLaboratoryNumber.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
-                                <PaddingLeft>2pt</PaddingLeft>
-                                <PaddingRight>2pt</PaddingRight>
-                                <PaddingTop>2pt</PaddingTop>
-                                <PaddingBottom>2pt</PaddingBottom>
-                              </Style>
-                            </Textbox>
-                          </CellContents>
-                        </TablixCell>
                         <TablixCell>
                           <CellContents>
                             <Textbox Name="NotificationDate1">
@@ -9079,15 +8936,13 @@ ORDER BY CountOfRecords DESC</CommandText>
                   <TablixMembers>
                     <TablixMember />
                     <TablixMember />
-                    <TablixMember />
-                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
                       <TablixHeader>
-                        <Size>3.02852cm</Size>
+                        <Size>4.69712cm</Size>
                         <CellContents>
                           <Textbox Name="Textbox104">
                             <CanGrow>true</CanGrow>
@@ -9096,7 +8951,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>Migration Notification Id</Value>
+                                    <Value>Reference Laboratory Number</Value>
                                     <Style>
                                       <FontFamily>Arial</FontFamily>
                                       <FontWeight>Bold</FontWeight>
@@ -9127,16 +8982,16 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.0339cm</Size>
                             <CellContents>
-                              <Textbox Name="Textbox102">
+                              <Textbox Name="Textbox157">
                                 <CanGrow>true</CanGrow>
                                 <KeepTogether>true</KeepTogether>
                                 <Paragraphs>
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>Ets Id</Value>
+                                        <Value>Specimen Date</Value>
                                         <Style>
                                           <FontFamily>Arial</FontFamily>
                                           <FontWeight>Bold</FontWeight>
@@ -9149,7 +9004,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                     </Style>
                                   </Paragraph>
                                 </Paragraphs>
-                                <rd:DefaultName>Textbox102</rd:DefaultName>
+                                <rd:DefaultName>Textbox157</rd:DefaultName>
                                 <Style>
                                   <Border>
                                     <Color>LightGrey</Color>
@@ -9167,16 +9022,16 @@ ORDER BY CountOfRecords DESC</CommandText>
                           <TablixMembers>
                             <TablixMember>
                               <TablixHeader>
-                                <Size>2.63229cm</Size>
+                                <Size>3.42235cm</Size>
                                 <CellContents>
-                                  <Textbox Name="Textbox99">
+                                  <Textbox Name="Textbox155">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>Ntbs Id</Value>
+                                            <Value>Migration Notification Id</Value>
                                             <Style>
                                               <FontFamily>Arial</FontFamily>
                                               <FontWeight>Bold</FontWeight>
@@ -9189,7 +9044,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>Textbox99</rd:DefaultName>
+                                    <rd:DefaultName>Textbox155</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Color>LightGrey</Color>
@@ -9205,7 +9060,133 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 </CellContents>
                               </TablixHeader>
                               <TablixMembers>
-                                <TablixMember />
+                                <TablixMember>
+                                  <TablixHeader>
+                                    <Size>2.5cm</Size>
+                                    <CellContents>
+                                      <Textbox Name="Textbox153">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>Ets Id</Value>
+                                                <Style>
+                                                  <FontFamily>Arial</FontFamily>
+                                                  <FontWeight>Bold</FontWeight>
+                                                  <Color>White</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>Textbox153</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Color>LightGrey</Color>
+                                            <Style>Solid</Style>
+                                          </Border>
+                                          <BackgroundColor>#98002e</BackgroundColor>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixHeader>
+                                  <TablixMembers>
+                                    <TablixMember>
+                                      <TablixHeader>
+                                        <Size>2.5cm</Size>
+                                        <CellContents>
+                                          <Textbox Name="Textbox100">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>Ets Status</Value>
+                                                    <Style>
+                                                      <FontFamily>Arial</FontFamily>
+                                                      <FontWeight>Bold</FontWeight>
+                                                      <Color>White</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>Textbox100</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                                <Style>Solid</Style>
+                                              </Border>
+                                              <BackgroundColor>#98002e</BackgroundColor>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixHeader>
+                                      <TablixMembers>
+                                        <TablixMember>
+                                          <TablixHeader>
+                                            <Size>2.63229cm</Size>
+                                            <CellContents>
+                                              <Textbox Name="Textbox99">
+                                                <CanGrow>true</CanGrow>
+                                                <KeepTogether>true</KeepTogether>
+                                                <Paragraphs>
+                                                  <Paragraph>
+                                                    <TextRuns>
+                                                      <TextRun>
+                                                        <Value>Ntbs Id</Value>
+                                                        <Style>
+                                                          <FontFamily>Arial</FontFamily>
+                                                          <FontWeight>Bold</FontWeight>
+                                                          <Color>White</Color>
+                                                        </Style>
+                                                      </TextRun>
+                                                    </TextRuns>
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
+                                                  </Paragraph>
+                                                </Paragraphs>
+                                                <rd:DefaultName>Textbox99</rd:DefaultName>
+                                                <Style>
+                                                  <Border>
+                                                    <Color>LightGrey</Color>
+                                                    <Style>Solid</Style>
+                                                  </Border>
+                                                  <BackgroundColor>#98002e</BackgroundColor>
+                                                  <PaddingLeft>2pt</PaddingLeft>
+                                                  <PaddingRight>2pt</PaddingRight>
+                                                  <PaddingTop>2pt</PaddingTop>
+                                                  <PaddingBottom>2pt</PaddingBottom>
+                                                </Style>
+                                              </Textbox>
+                                            </CellContents>
+                                          </TablixHeader>
+                                          <TablixMembers>
+                                            <TablixMember />
+                                          </TablixMembers>
+                                        </TablixMember>
+                                      </TablixMembers>
+                                    </TablixMember>
+                                  </TablixMembers>
+                                </TablixMember>
                               </TablixMembers>
                             </TablixMember>
                           </TablixMembers>
@@ -9214,29 +9195,28 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
                     <TablixMember>
-                      <Group Name="MigrationNotificationId">
+                      <Group Name="ReferenceLaboratoryNumber">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!MigrationNotificationId.Value</GroupExpression>
-                          <GroupExpression>=Fields!EtsId.Value</GroupExpression>
-                          <GroupExpression>=Fields!NtbsId.Value</GroupExpression>
+                          <GroupExpression>=Fields!ReferenceLaboratoryNumber.Value</GroupExpression>
+                          <GroupExpression>=Fields!SpecimenDate.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
                       <SortExpressions>
                         <SortExpression>
-                          <Value>=Fields!MigrationNotificationId.Value</Value>
+                          <Value>=Fields!ReferenceLaboratoryNumber.Value</Value>
                         </SortExpression>
                       </SortExpressions>
                       <TablixHeader>
-                        <Size>3.02852cm</Size>
+                        <Size>4.69712cm</Size>
                         <CellContents>
-                          <Textbox Name="MigrationNotificationId4">
+                          <Textbox Name="ReferenceLaboratoryNumber">
                             <CanGrow>true</CanGrow>
                             <KeepTogether>true</KeepTogether>
                             <Paragraphs>
                               <Paragraph>
                                 <TextRuns>
                                   <TextRun>
-                                    <Value>=Fields!MigrationNotificationId.Value</Value>
+                                    <Value>=Fields!ReferenceLaboratoryNumber.Value</Value>
                                     <Style>
                                       <FontFamily>Arial</FontFamily>
                                       <FontWeight>Normal</FontWeight>
@@ -9249,7 +9229,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 </Style>
                               </Paragraph>
                             </Paragraphs>
-                            <rd:DefaultName>MigrationNotificationId4</rd:DefaultName>
+                            <rd:DefaultName>ReferenceLaboratoryNumber</rd:DefaultName>
                             <Style>
                               <Border>
                                 <Color>LightGrey</Color>
@@ -9273,19 +9253,20 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <TablixMembers>
                         <TablixMember>
                           <TablixHeader>
-                            <Size>2.5cm</Size>
+                            <Size>3.0339cm</Size>
                             <CellContents>
-                              <Textbox Name="EtsId2">
+                              <Textbox Name="SpecimenDate1">
                                 <CanGrow>true</CanGrow>
                                 <KeepTogether>true</KeepTogether>
                                 <Paragraphs>
                                   <Paragraph>
                                     <TextRuns>
                                       <TextRun>
-                                        <Value>=Fields!EtsId.Value</Value>
+                                        <Value>=Fields!SpecimenDate.Value</Value>
                                         <Style>
                                           <FontFamily>Arial</FontFamily>
                                           <FontWeight>Normal</FontWeight>
+                                          <Format>dd MMM yyyy</Format>
                                           <Color>#333333</Color>
                                         </Style>
                                       </TextRun>
@@ -9295,7 +9276,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                     </Style>
                                   </Paragraph>
                                 </Paragraphs>
-                                <rd:DefaultName>EtsId2</rd:DefaultName>
+                                <rd:DefaultName>SpecimenDate1</rd:DefaultName>
                                 <Style>
                                   <Border>
                                     <Color>LightGrey</Color>
@@ -9318,17 +9299,18 @@ ORDER BY CountOfRecords DESC</CommandText>
                           </TablixHeader>
                           <TablixMembers>
                             <TablixMember>
+                              <Group Name="Detail14" />
                               <TablixHeader>
-                                <Size>2.63229cm</Size>
+                                <Size>3.42235cm</Size>
                                 <CellContents>
-                                  <Textbox Name="NtbsId1">
+                                  <Textbox Name="MigrationNotificationId5">
                                     <CanGrow>true</CanGrow>
                                     <KeepTogether>true</KeepTogether>
                                     <Paragraphs>
                                       <Paragraph>
                                         <TextRuns>
                                           <TextRun>
-                                            <Value>=Fields!NtbsId.Value</Value>
+                                            <Value>=Fields!MigrationNotificationId.Value</Value>
                                             <Style>
                                               <FontFamily>Arial</FontFamily>
                                               <FontWeight>Normal</FontWeight>
@@ -9341,7 +9323,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                                         </Style>
                                       </Paragraph>
                                     </Paragraphs>
-                                    <rd:DefaultName>NtbsId1</rd:DefaultName>
+                                    <rd:DefaultName>MigrationNotificationId5</rd:DefaultName>
                                     <Style>
                                       <Border>
                                         <Color>LightGrey</Color>
@@ -9364,7 +9346,149 @@ ORDER BY CountOfRecords DESC</CommandText>
                               </TablixHeader>
                               <TablixMembers>
                                 <TablixMember>
-                                  <Group Name="Details14" />
+                                  <TablixHeader>
+                                    <Size>2.5cm</Size>
+                                    <CellContents>
+                                      <Textbox Name="EtsId3">
+                                        <CanGrow>true</CanGrow>
+                                        <KeepTogether>true</KeepTogether>
+                                        <Paragraphs>
+                                          <Paragraph>
+                                            <TextRuns>
+                                              <TextRun>
+                                                <Value>=Fields!EtsId.Value</Value>
+                                                <Style>
+                                                  <FontFamily>Arial</FontFamily>
+                                                  <FontWeight>Normal</FontWeight>
+                                                  <Color>#333333</Color>
+                                                </Style>
+                                              </TextRun>
+                                            </TextRuns>
+                                            <Style>
+                                              <TextAlign>Left</TextAlign>
+                                            </Style>
+                                          </Paragraph>
+                                        </Paragraphs>
+                                        <rd:DefaultName>EtsId3</rd:DefaultName>
+                                        <Style>
+                                          <Border>
+                                            <Color>LightGrey</Color>
+                                            <Style>None</Style>
+                                          </Border>
+                                          <TopBorder>
+                                            <Style>Solid</Style>
+                                          </TopBorder>
+                                          <BottomBorder>
+                                            <Style>Solid</Style>
+                                          </BottomBorder>
+                                          <BackgroundColor>White</BackgroundColor>
+                                          <PaddingLeft>2pt</PaddingLeft>
+                                          <PaddingRight>2pt</PaddingRight>
+                                          <PaddingTop>2pt</PaddingTop>
+                                          <PaddingBottom>2pt</PaddingBottom>
+                                        </Style>
+                                      </Textbox>
+                                    </CellContents>
+                                  </TablixHeader>
+                                  <TablixMembers>
+                                    <TablixMember>
+                                      <TablixHeader>
+                                        <Size>2.5cm</Size>
+                                        <CellContents>
+                                          <Textbox Name="EtsStatus">
+                                            <CanGrow>true</CanGrow>
+                                            <KeepTogether>true</KeepTogether>
+                                            <Paragraphs>
+                                              <Paragraph>
+                                                <TextRuns>
+                                                  <TextRun>
+                                                    <Value>=Fields!EtsStatus.Value</Value>
+                                                    <Style>
+                                                      <FontFamily>Arial</FontFamily>
+                                                      <FontWeight>Normal</FontWeight>
+                                                      <Color>#333333</Color>
+                                                    </Style>
+                                                  </TextRun>
+                                                </TextRuns>
+                                                <Style>
+                                                  <TextAlign>Left</TextAlign>
+                                                </Style>
+                                              </Paragraph>
+                                            </Paragraphs>
+                                            <rd:DefaultName>EtsStatus</rd:DefaultName>
+                                            <Style>
+                                              <Border>
+                                                <Color>LightGrey</Color>
+                                                <Style>None</Style>
+                                              </Border>
+                                              <TopBorder>
+                                                <Style>Solid</Style>
+                                              </TopBorder>
+                                              <BottomBorder>
+                                                <Style>Solid</Style>
+                                              </BottomBorder>
+                                              <BackgroundColor>White</BackgroundColor>
+                                              <PaddingLeft>2pt</PaddingLeft>
+                                              <PaddingRight>2pt</PaddingRight>
+                                              <PaddingTop>2pt</PaddingTop>
+                                              <PaddingBottom>2pt</PaddingBottom>
+                                            </Style>
+                                          </Textbox>
+                                        </CellContents>
+                                      </TablixHeader>
+                                      <TablixMembers>
+                                        <TablixMember>
+                                          <TablixHeader>
+                                            <Size>2.63229cm</Size>
+                                            <CellContents>
+                                              <Textbox Name="NtbsId1">
+                                                <CanGrow>true</CanGrow>
+                                                <KeepTogether>true</KeepTogether>
+                                                <Paragraphs>
+                                                  <Paragraph>
+                                                    <TextRuns>
+                                                      <TextRun>
+                                                        <Value>=Fields!NtbsId.Value</Value>
+                                                        <Style>
+                                                          <FontFamily>Arial</FontFamily>
+                                                          <FontWeight>Normal</FontWeight>
+                                                          <Color>#333333</Color>
+                                                        </Style>
+                                                      </TextRun>
+                                                    </TextRuns>
+                                                    <Style>
+                                                      <TextAlign>Left</TextAlign>
+                                                    </Style>
+                                                  </Paragraph>
+                                                </Paragraphs>
+                                                <rd:DefaultName>NtbsId1</rd:DefaultName>
+                                                <Style>
+                                                  <Border>
+                                                    <Color>LightGrey</Color>
+                                                    <Style>None</Style>
+                                                  </Border>
+                                                  <TopBorder>
+                                                    <Style>Solid</Style>
+                                                  </TopBorder>
+                                                  <BottomBorder>
+                                                    <Style>Solid</Style>
+                                                  </BottomBorder>
+                                                  <BackgroundColor>White</BackgroundColor>
+                                                  <PaddingLeft>2pt</PaddingLeft>
+                                                  <PaddingRight>2pt</PaddingRight>
+                                                  <PaddingTop>2pt</PaddingTop>
+                                                  <PaddingBottom>2pt</PaddingBottom>
+                                                </Style>
+                                              </Textbox>
+                                            </CellContents>
+                                          </TablixHeader>
+                                          <TablixMembers>
+                                            <TablixMember />
+                                          </TablixMembers>
+                                        </TablixMember>
+                                      </TablixMembers>
+                                    </TablixMember>
+                                  </TablixMembers>
                                 </TablixMember>
                               </TablixMembers>
                             </TablixMember>
@@ -9378,7 +9502,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 <Top>1.10188cm</Top>
                 <Left>0.01606cm</Left>
                 <Height>1.8cm</Height>
-                <Width>20.32789cm</Width>
+                <Width>23.78566cm</Width>
                 <Style>
                   <Border>
                     <Color>LightGrey</Color>
@@ -9423,7 +9547,7 @@ ORDER BY CountOfRecords DESC</CommandText>
             <Top>36.26351cm</Top>
             <Left>1.43597cm</Left>
             <Height>2.90188cm</Height>
-            <Width>20.34396cm</Width>
+            <Width>33.26782cm</Width>
             <ZIndex>12</ZIndex>
             <Visibility>
               <Hidden>=IIF(Count(Fields!MigrationNotificationId.Value, "SpecimenMatchesToReviewBySpecimen")=0, True, False)</Hidden>
@@ -9458,7 +9582,13 @@ ORDER BY CountOfRecords DESC</CommandText>
                       <Width>2.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
+                      <Width>2.5cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
                       <Width>3.1473cm</Width>
+                    </TablixColumn>
+                    <TablixColumn>
+                      <Width>2.5cm</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>2.5cm</Width>
@@ -9695,6 +9825,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="Textbox108">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>Duplicate Ets Id</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Bold</FontWeight>
+                                        <Color>White</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox108</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>#98002e</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="Textbox103">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -9753,6 +9920,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                                 </Paragraph>
                               </Paragraphs>
                               <rd:DefaultName>Textbox90</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>#98002e</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox114">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>DemographicMatch</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Bold</FontWeight>
+                                        <Color>White</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox114</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -10034,6 +10238,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="DuplicateEtsId">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!DuplicateEtsId.Value</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Normal</FontWeight>
+                                        <Color>#333333</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>DuplicateEtsId</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>=IIF(RunningValue (Fields!MigrationNotificationId.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="DuplicateNotificationDate">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -10109,6 +10350,43 @@ ORDER BY CountOfRecords DESC</CommandText>
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
+                            <Textbox Name="DemographicsMatch">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!DemographicsMatch.Value</Value>
+                                      <Style>
+                                        <FontFamily>Arial</FontFamily>
+                                        <FontWeight>Normal</FontWeight>
+                                        <Color>#333333</Color>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>DemographicsMatch</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>Solid</Style>
+                                </Border>
+                                <BackgroundColor>=IIF(RunningValue (Fields!MigrationNotificationId.Value, Count, Nothing) Mod 2 = 1, "White", "#d9e3f2")</BackgroundColor>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
                             <Textbox Name="DaysBetweenNotifications">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
@@ -10159,6 +10437,8 @@ ORDER BY CountOfRecords DESC</CommandText>
                     <TablixMember />
                     <TablixMember />
                     <TablixMember />
+                    <TablixMember />
+                    <TablixMember />
                   </TablixMembers>
                 </TablixColumnHierarchy>
                 <TablixRowHierarchy>
@@ -10180,7 +10460,7 @@ ORDER BY CountOfRecords DESC</CommandText>
                 <Top>0.84667cm</Top>
                 <Left>0.04843cm</Left>
                 <Height>1.80854cm</Height>
-                <Width>24.30042cm</Width>
+                <Width>29.30042cm</Width>
                 <Style>
                   <Border>
                     <Color>LightGrey</Color>
@@ -10225,7 +10505,7 @@ ORDER BY CountOfRecords DESC</CommandText>
             <Top>39.43796cm</Top>
             <Left>1.3462cm</Left>
             <Height>2.65521cm</Height>
-            <Width>24.34885cm</Width>
+            <Width>29.34885cm</Width>
             <ZIndex>13</ZIndex>
             <Visibility>
               <Hidden>=IIF(Count(Fields!MigrationNotificationId.Value, "DuplicateAlerts")=0, True, False)</Hidden>
