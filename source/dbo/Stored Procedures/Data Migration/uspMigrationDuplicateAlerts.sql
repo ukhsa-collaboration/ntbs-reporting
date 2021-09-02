@@ -43,7 +43,7 @@ AS
 			ELSE 'No'
 		END																			AS 'DemographicsMatch'
 	FROM DuplicatePairs pairs
-		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = pairs.FirstNotification
+		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mrr.NTBSNotificationId = pairs.FirstNotification AND mrr.MigrationRunId = @MigrationRun
 		LEFT JOIN [$(NTBS)].[dbo].[Notification] firstNot on firstNot.NotificationId = pairs.FirstNotification
 		LEFT JOIN [$(NTBS)].[dbo].[Patients] firstNotP on firstNotP.NotificationId = firstNot.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].[HospitalDetails] firstNotHd on firstNotHd.NotificationId = firstNot.NotificationId
