@@ -10,8 +10,12 @@ AS
 
 	SELECT 
 		[MigrationNotificationId]			AS 'MigrationNotificationId' 
-		,[NotificationDate]					AS 'NotificationDate' 
-		,DATEPART(YEAR, NotificationDate)	AS 'NotificationYear'
+		,mrr.[NotificationDate]					AS 'NotificationDate' 
+		,DATEPART(YEAR, mrr.NotificationDate)	AS 'NotificationYear'
+		,CASE mn.IsDenotified
+			WHEN 0 THEN 'Notified'
+			ELSE 'Denotified'
+		END AS NotificationStatus
 		,[LegacyETSId]						AS 'EtsId'
 		,[LegacyLtbrNo]						AS 'LtbrNo'
 		,[SourceSystem]						AS 'Record sourced from'
@@ -31,6 +35,7 @@ AS
 
 		FROM [dbo].[MigrationRunResults] mrr
 			LEFT OUTER JOIN GroupedNotifications g ON g.GroupId = mrr.GroupId
+			LEFT OUTER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 		WHERE MigrationRunId = @MigrationRun
 		ORDER BY [NotificationDate] DESC
 
