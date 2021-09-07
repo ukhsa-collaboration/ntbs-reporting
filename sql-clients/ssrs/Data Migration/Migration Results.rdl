@@ -55,6 +55,10 @@
           <DataField>AppVersion</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="MigrationVersion">
+          <DataField>MigrationVersion</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
     </DataSet>
     <DataSet Name="MigrationRun">
@@ -11008,6 +11012,44 @@ ORDER BY CountOfRecords DESC</CommandText>
             <Height>0.84696cm</Height>
             <Width>6.70436cm</Width>
             <ZIndex>15</ZIndex>
+            <Style>
+              <Border>
+                <Style>None</Style>
+              </Border>
+              <PaddingLeft>2pt</PaddingLeft>
+              <PaddingRight>2pt</PaddingRight>
+              <PaddingTop>2pt</PaddingTop>
+              <PaddingBottom>2pt</PaddingBottom>
+            </Style>
+          </Textbox>
+          <Textbox Name="AppVersion2">
+            <CanGrow>true</CanGrow>
+            <KeepTogether>true</KeepTogether>
+            <Paragraphs>
+              <Paragraph>
+                <TextRuns>
+                  <TextRun>
+                    <Value>Migration database version: </Value>
+                    <Style>
+                      <Color>Gray</Color>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=First(Fields!MigrationVersion.value, "DatabaseVersion")</Value>
+                    <Style>
+                      <Color>Gray</Color>
+                    </Style>
+                  </TextRun>
+                </TextRuns>
+                <Style />
+              </Paragraph>
+            </Paragraphs>
+            <rd:DefaultName>AppVersion</rd:DefaultName>
+            <Top>3.65279cm</Top>
+            <Left>33.12983cm</Left>
+            <Height>0.6cm</Height>
+            <Width>13.34792cm</Width>
+            <ZIndex>16</ZIndex>
             <Style>
               <Border>
                 <Style>None</Style>
