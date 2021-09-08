@@ -5,7 +5,7 @@
 CREATE VIEW [dbo].[vwUserPermissions]
 	AS 
 	--create one row for each AD group the user is a member of
-	SELECT Username AS upn, COALESCE(t.Code, p.Code, A.[value]) AS 'Code'
+	SELECT Username AS upn, COALESCE(t.Code, p.Code, A.[value]) AS 'Code', COALESCE(p.Code, t.PHECCode) AS 'Region'
 	FROM [$(NTBS)].[dbo].[User]
 
 		CROSS APPLY STRING_SPLIT(AdGroups, ',') A
