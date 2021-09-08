@@ -20,8 +20,8 @@ BEGIN TRY
 	WHERE lmr.LegacyImportMigrationRunId > (SELECT COALESCE(MAX(MigrationRunId), 0) FROM [dbo].[MigrationRun] WHERE ImportedDate IS NOT NULL))
 
 	
-	INSERT INTO [dbo].[MigrationRun](MigrationRunId, MigrationRunDate, MigrationRunName, AppVersion)
-		SELECT lmr.LegacyImportMigrationRunId, lmr.StartTime, lmr.[Description], lmr.AppRelease
+	INSERT INTO [dbo].[MigrationRun](MigrationRunId, MigrationRunDate, MigrationRunName, AppVersion, MigrationVersion)
+		SELECT lmr.LegacyImportMigrationRunId, lmr.StartTime, lmr.[Description], lmr.AppRelease, (SELECT [Version] FROM [$(migration)].dbo.ReleaseVersion)
 		FROM [$(NTBS)].[dbo].[LegacyImportMigrationRun] lmr
 		WHERE lmr.LegacyImportMigrationRunId = @MigrationRunID
 
