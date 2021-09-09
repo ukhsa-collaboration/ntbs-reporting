@@ -39,7 +39,10 @@ AS
 		LEFT JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = mrr.NTBSNotificationId
 		LEFT JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType
 		LEFT JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tout ON tout.TreatmentOutcomeId = te.TreatmentOutcomeId
-	WHERE EtsTreatmentOutcome != NTBSTreatmentOutcome
+		LEFT JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = mrr.NTBSNotificationId
+	WHERE
+		n.NotificationStatus != 'Denotified'
+		AND EtsTreatmentOutcome != NTBSTreatmentOutcome
 		AND mrr.EtsTreatmentOutcome != mrr.NTBSTreatmentOutcome
 		AND NOT(mrr.EtsTreatmentOutcome = 'Not evaluated' AND mrr.NTBSTreatmentOutcome = 'No outcome recorded')
 		AND NOT(mrr.EtsTreatmentOutcome = 'Unknown' AND mrr.NTBSTreatmentOutcome = 'Not evaluated')
