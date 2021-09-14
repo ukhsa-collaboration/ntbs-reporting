@@ -7,5 +7,6 @@
     [EtsDate] DATE NULL, 
     [LtbrDate] DATE NULL, 
     [LabbaseDate] DATE NULL, 
-    [AppVersion] NVARCHAR(150) NULL
+    [AppVersion] NVARCHAR(150) NULL,
+    [MigrationVersion] NVARCHAR(150) NULL
 )

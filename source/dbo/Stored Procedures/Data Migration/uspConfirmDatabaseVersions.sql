@@ -3,7 +3,7 @@
 	
 AS
 
-	SELECT EtsDate, LabbaseDate, LtbrDate, AppVersion FROM
+	SELECT EtsDate, LabbaseDate, LtbrDate, AppVersion, MigrationVersion FROM
 		[dbo].[MigrationRun]
 	WHERE MigrationRunId = @MigrationRun
 RETURN 0

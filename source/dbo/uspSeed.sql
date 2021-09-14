@@ -107,7 +107,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}.
 			2. The data presented are provisional and are subject to change.
 			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies
-			Reporting database version: Release-{REPORTING_RELEASE_VERSION}-{REPORTING_RELEASE_DATE}')
+			Reporting version: Release-{REPORTING_RELEASE_VERSION}-{REPORTING_RELEASE_DATE}')
 
 
 		DELETE FROM [dbo].[OutcomeLookup]
