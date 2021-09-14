@@ -325,6 +325,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwMissingHospitalMappings.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMissingAntibioticMappings.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNewAntibioticCodes.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateSputumResult.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
