@@ -37,8 +37,8 @@ AS
 				'E3A89A3E-E80D-48D8-9823-76542228AC1C',
 				'44AE75D3-F654-49C2-8F93-DBA9EA74F164', 
 				'579C7E52-F824-4642-BC5D-167E4510BA10')
-		--TODO: exclude culture results?
-		--AND lr.LaboratoryCategoryId = '2D413D16-28E3-48DB-A661-8099226CB6A3'
+			--test types of microscopy and molecular amplification
+			AND lr.LaboratoryCategoryId IN ( '2D413D16-28E3-48DB-A661-8099226CB6A3', 'A26602F1-DC05-4E9F-AC48-445B62797D81')
 	),
 
 	NtbsSputumResults AS
@@ -48,7 +48,9 @@ AS
 			INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
 		WHERE mtr.SampleTypeId IN (4, 5)
-		--TODO: exclude culture results?
+		--test types of Smear and PCR
+		AND mtr.ManualTestTypeId IN (1, 5)
+		
 	),
 
 	AllSputumResults AS
