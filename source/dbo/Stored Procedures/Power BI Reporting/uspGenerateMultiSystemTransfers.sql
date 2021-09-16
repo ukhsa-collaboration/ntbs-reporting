@@ -9,15 +9,17 @@ BEGIN TRY
 		[SourceSystem],
 		[ETSID],
 		[Requester],
+		[RequestedCaseManager],
 		[RequestedOrganisation],
 		[CreatedDate])
 
-	SELECT a.NotificationId, n.NotificationDate, 'NTBS', n.ETSID, u.Username, tbs.Name, a.CreationDate
+	SELECT a.NotificationId, n.NotificationDate, 'NTBS', n.ETSID, requester.Username, requested.Username, tbs.Name, a.CreationDate
 	
 	FROM [$(NTBS)].dbo.Alert a
 		LEFT JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = a.NotificationId
 		LEFT JOIN [$(NTBS)].dbo.HospitalDetails h ON n.NotificationId = h.NotificationId
-		LEFT JOIN [$(NTBS)].dbo.[User] u ON u.Id = h.CaseManagerId
+		LEFT JOIN [$(NTBS)].dbo.[User] requester ON requester.Id = h.CaseManagerId
+		LEFT JOIN [$(NTBS)].dbo.[User] requested ON requested.Id = a.CaseManagerId
 		LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = a.TbServiceCode
 		LEFT JOIN [dbo].NtbsTransitionDateLookup transition ON transition.PHEC = tbs.PHECCode
 	WHERE
@@ -31,10 +33,11 @@ BEGIN TRY
 		[SourceSystem],
 		[ETSID],
 		[Requester],
+		[RequestedCaseManager],
 		[RequestedOrganisation],
 		[CreatedDate])
 
-	SELECT n.LegacyId, n.NotificationDate, 'ETS', NULL, requester.Email, COALESCE(tbs.Name, userPhec.Name), transfer.AuditCreate
+	SELECT n.LegacyId, n.NotificationDate, 'ETS', NULL, requester.Email, recipient.Email, COALESCE(tbs.Name, userPhec.Name), transfer.AuditCreate
 	
 	FROM [$(ETS)].dbo.Transfer transfer
 		LEFT JOIN [$(ETS)].dbo.Notification n ON n.Id = transfer.NotificationId
