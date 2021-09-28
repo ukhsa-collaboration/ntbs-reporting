@@ -180,7 +180,8 @@ BEGIN TRY
 
 		-- Treatment
 		,dbo.ufnYesNo(te.PostMortemDiagnosis)							AS PostMortemDiagnosis
-		,dbo.ufnYesNo(~te.DidNotStartTreatment)							AS StartedTreatment
+		,CASE WHEN te.StartOfTreatment IS NOT NULL THEN 'Yes'
+			ELSE dbo.ufnYesNo(~te.DidNotStartTreatment) END				AS StartedTreatment
 		,NULL															AS TreatmentRegimen
 		,CONVERT(DATE, tp.MDRTreatmentDate)								AS MdrTreatmentDate
 		,dl.DOTOffered													AS DOTOffered
