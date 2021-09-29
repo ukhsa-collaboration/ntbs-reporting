@@ -18,13 +18,6 @@ AS
 	BEGIN
 		DECLARE @ReturnValue AS DATE = NULL
 
-		-- 1. No treatment outcome records for notification
-		IF (@EndOfTreatmentDate12 IS NULL AND @EndOfTreatmentDate24 IS NULL AND @EndOfTreatmentDate36 IS NULL)
-		-- Leave NULL, cos DATE column can not be ''
-
-		-- 2. All treatment end dates are null
-		-- Same SQL condition as in no 1, so nothing to do here!
-
 		-- 3. TreatmentOutcome36Month.EndOfTreatmentDate is not null
 		IF (@ReturnValue IS NULL)
 		BEGIN
