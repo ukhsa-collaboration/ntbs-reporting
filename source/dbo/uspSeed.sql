@@ -158,6 +158,26 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 
+		DELETE FROM [dbo].[DiseaseSiteOrdering]
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('4F9E87C6-2060-4302-9F38-0B4F0650DBF8',1,1)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('C00A9428-B7A5-4C8D-B9B3-30809786AE91',12,2)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('C2678A36-8712-4D8A-B0B1-01308DBB93F9',13,3)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('B03A2490-45C8-4389-8EC9-2C08D8780E1C',2,4)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('3D4E4B31-F9D2-4A78-8060-672D088EF0DF',3,5)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('9D4D12CD-CB57-4E55-B70B-ED4621B89539',4,6)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('B524C946-4321-439F-BF9B-C57AE8E8CC1D',5,7)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('4FA3B96D-7311-4A13-B107-CFE55A04C8AA',10,8)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('B7E2587D-DE83-41CB-A2CE-64EB1337D911',11,9)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('212A49F6-3C7C-47F6-8D7D-F730F60E554A',7,10)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('0788EDA5-2E3E-4197-B257-D28261999A34',8,11)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('4E47A0C7-E6EA-4C7E-B625-7AB6DA3729B4',9,12)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES (NULL,6,13)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('93672FBD-9B6E-4BFB-AB76-ADDD379A6B5F',14,14)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES (NULL,15,15)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES (NULL,16,16)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('D0A434D9-EE6E-4955-9675-B0C11517336C',17,17)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('21CF563F-149B-4C94-96A6-FC7A04E83430',NULL,18)
+		INSERT [dbo].DiseaseSiteOrdering (EtsID, NtbsId, OrderIndex) VALUES ('702317B2-6A48-4C2C-BEC4-CB8257CE0D05',NULL,19)
 
 
 		-- Enable all foreign keys again
