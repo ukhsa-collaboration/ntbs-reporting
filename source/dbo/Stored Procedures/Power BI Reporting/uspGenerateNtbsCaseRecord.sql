@@ -8,10 +8,11 @@ BEGIN TRY
 	);
 
 	INSERT INTO @TempDiseaseSites
-	SELECT rr.NotificationId, [Description] = STRING_AGG([Description], N', ')
+	SELECT rr.NotificationId, STRING_AGG([Description], N', ') WITHIN GROUP (ORDER BY ord.OrderIndex) AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
+			LEFT JOIN DiseaseSiteOrdering ord ON ord.NtbsId = sites.SiteId
 		WHERE rr.SourceSystem = 'NTBS'
 		GROUP BY rr.NotificationId;
 
