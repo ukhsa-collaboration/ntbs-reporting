@@ -13,7 +13,8 @@ BEGIN TRY
 			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
 			INNER JOIN [$(ETS)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
-			LEFT JOIN DiseaseSiteOrdering ord ON ord.EtsID = sites.Id
+			LEFT JOIN [$(migration)].dbo.DiseaseSiteMapping dsm ON dsm.EtsID = sites.Id
+			LEFT JOIN [$(NTBS)].ReferenceData.Site ord ON ord.SiteId = dsm.NtbsId
 		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
 		GROUP BY n.TuberculosisEpisodeId;
 
