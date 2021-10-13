@@ -159,7 +159,6 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 
 
-
 		-- Enable all foreign keys again
 		DECLARE @SqlCheck NVARCHAR(MAX) = '';
 		;WITH x AS

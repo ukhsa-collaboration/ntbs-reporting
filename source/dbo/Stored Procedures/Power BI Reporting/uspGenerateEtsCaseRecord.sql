@@ -8,11 +8,13 @@ BEGIN TRY
 	);
 
 	INSERT INTO @TempDiseaseSites
-	SELECT n.TuberculosisEpisodeId, [Description] = STRING_AGG(sites.[Name], N', ')
+	SELECT n.TuberculosisEpisodeId, STRING_AGG(sites.[Name], N', ') WITHIN GROUP (ORDER BY ord.OrderIndex) AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
 			INNER JOIN [$(ETS)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
+			LEFT JOIN [$(migration)].dbo.DiseaseSiteMapping dsm ON dsm.EtsID = sites.Id
+			LEFT JOIN [$(NTBS)].ReferenceData.Site ord ON ord.SiteId = dsm.NtbsId
 		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
 		GROUP BY n.TuberculosisEpisodeId;
 
@@ -180,7 +182,8 @@ BEGIN TRY
 
 		-- Treatment
 		,dbo.ufnYesNo(te.PostMortemDiagnosis)							AS PostMortemDiagnosis
-		,dbo.ufnYesNo(~te.DidNotStartTreatment)							AS StartedTreatment
+		,CASE WHEN te.StartOfTreatment IS NOT NULL THEN 'Yes'
+			ELSE dbo.ufnYesNo(~te.DidNotStartTreatment) END				AS StartedTreatment
 		,NULL															AS TreatmentRegimen
 		,CONVERT(DATE, tp.MDRTreatmentDate)								AS MdrTreatmentDate
 		,dl.DOTOffered													AS DOTOffered
