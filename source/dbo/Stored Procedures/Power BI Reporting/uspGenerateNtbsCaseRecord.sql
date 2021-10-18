@@ -170,7 +170,6 @@ BEGIN TRY
 		,[SmearSummary]
 		,[CultureSummary]
 		,[HistologySummary]
-		,[ChestXRaySummary]
 		,[PCRSummary]
 		,[LineProbeAssaySummary]
 		,[MDRExposureToKnownCase]
@@ -358,9 +357,6 @@ BEGIN TRY
 		,COALESCE(
 			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
 			, 'No result')										AS HistologySummary
-		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 4)
-			, 'No result')										AS ChestXRaySummary
 		,COALESCE(
 			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
 			, 'No result')										AS PCRSummary

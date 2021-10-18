@@ -152,7 +152,6 @@
 	[SmearSummary] [varchar] (30) NULL,
 	[CultureSummary] [varchar] (30) NULL,
 	[HistologySummary] [varchar] (30) NULL,
-	[ChestXRaySummary] [varchar] (30) NULL,
 	[PCRSummary] [varchar] (30) NULL,
 	[LineProbeAssaySummary] [varchar] (30) NULL,
 

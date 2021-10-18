@@ -7,6 +7,30 @@ BEGIN TRY
 		[Description] nvarchar(2000)
 	);
 
+	DECLARE @TempManualTestResult TABLE
+	(
+		NotificationId int,
+		ManualTestTypeId int,
+		[Result] nvarchar(50)
+	);
+
+	DECLARE @TempSocialContextVenues TABLE
+	(
+		NotificationId int,
+		[VenueCount] int,
+		[Description] nvarchar(2000)
+	);
+
+	DECLARE @TempMBovDetails TABLE
+	(
+		NotificationId int,
+		[IsMBovis] bit,
+		[HasAnimalExposure] varchar(10),
+		[HasUnpMilkConsumption] varchar(10),
+		[HasExposureToKnownCase] varchar(10),
+		[HasOccupationExposure] varchar(10)
+	);
+
 	INSERT INTO @TempDiseaseSites
 	SELECT n.TuberculosisEpisodeId, STRING_AGG(sites.[Name], N', ') WITHIN GROUP (ORDER BY ord.OrderIndex) AS [Description]
 		FROM RecordRegister rr
@@ -17,6 +41,55 @@ BEGIN TRY
 			LEFT JOIN [$(NTBS)].ReferenceData.Site ord ON ord.SiteId = dsm.NtbsId
 		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
 		GROUP BY n.TuberculosisEpisodeId;
+
+	INSERT INTO @TempManualTestResult
+	SELECT DISTINCT rr.NotificationId, mttm.NtbsId AS ManualTestTypeId,
+		FIRST_VALUE(CASE lr.Result
+				WHEN 0 THEN 'Negative'
+				WHEN 1 THEN 'Positive'
+				WHEN 2 THEN 'Awaiting'
+				WHEN 3 THEN 'Awaiting'
+				ELSE 'No result'
+			END) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY
+			CASE lr.Result
+				WHEN 0 THEN 2
+				WHEN 1 THEN 1
+				WHEN 2 THEN 3
+				WHEN 3 THEN 3
+				ELSE 4
+			END) AS [Result]
+		FROM RecordRegister rr
+			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
+			INNER JOIN [$(migration)].dbo.ManualTestTypeMapping mttm ON mttm.EtsId = lr.LaboratoryCategoryId
+		WHERE rr.SourceSystem = 'ETS';
+
+	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, vm.NtbsLabel AS [Description]
+		FROM RecordRegister rr
+			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ETS)].[dbo].SocialContextsVenues scv ON scv.NotificationId = n.Id
+			INNER JOIN [$(migration)].dbo.VenueTypeMapping vm ON vm.EtsID = scv.VenueTypeId
+		WHERE rr.SourceSystem = 'ETS'
+		GROUP BY rr.NotificationId, vm.NtbsLabel)
+	INSERT INTO @TempSocialContextVenues
+	SELECT NotificationId, SUM(NumberOfVenues), STRING_AGG(Description, ', ') AS [Description]
+		FROM venues
+		GROUP BY NotificationId;
+
+	INSERT INTO @TempMBovDetails
+	SELECT DISTINCT rr.NotificationId
+		,CASE WHEN COALESCE(mBovAnimal.Oldnotificationid, mBovMilk.Oldnotificationid, mBovOccupation.Oldnotificationid, mBovKnownCase.Oldnotificationid) IS NOT NULL THEN 1 ELSE 0 END AS [IsMBovis]
+		,CASE WHEN mBovAnimal.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasAnimalExposure]
+		,CASE WHEN mBovMilk.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasUnpMilkExposure]
+		,CASE WHEN mBovOccupation.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasOccupationExposure]
+		,CASE WHEN mBovKnownCase.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasExposureToKnownCase]
+		FROM RecordRegister rr
+			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			LEFT JOIN [$(migration)].dbo.EtsMBovisAnimalExposure mBovAnimal on mBovAnimal.OldNotificationId = n.LegacyId
+			LEFT JOIN [$(migration)].dbo.EtsMBovisUnpasteurisedMilkConsumption mBovMilk on mBovMilk.OldNotificationId = n.LegacyId
+			LEFT JOIN [$(migration)].dbo.EtsMBovisOccupationExposures mBovOccupation on mBovOccupation.OldNotificationId = n.LegacyId
+			LEFT JOIN [$(migration)].dbo.EtsMBovisExposureToKnownCase mBovKnownCase on mBovKnownCase.OldNotificationId = n.LegacyId
+		WHERE rr.SourceSystem = 'ETS';
 
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
@@ -126,6 +199,20 @@ BEGIN TRY
 		,[BiologicalTherapy]
 		,[Transplantation]
 		,[OtherImmunoSuppression]
+		,[SmearSummary]
+		,[CultureSummary]
+		,[HistologySummary]
+		,[PCRSummary]
+		,[LineProbeAssaySummary]
+		,[MDRExposureToKnownCase]
+		,[MDRRelationshipToCase]
+		,[MDRRelatedNotificationId]
+		,[MBovAnimalExposure]
+		,[MBovKnownCaseExposure]
+		,[MBovOccupationalExposure]
+		,[MBovUnpasteurisedMilkConsumption]
+		,[SocialContextVenueCount]
+		,[SocialContextVenueTypeList]
 		,[DataRefreshedAt])
 	SELECT
 
@@ -353,6 +440,32 @@ BEGIN TRY
 		,NULL															AS BiologicalTherapy
 		,NULL															AS Transplantation
 		,NULL															AS OtherImmunoSuppression
+		-- manual test result summary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
+			, 'No result')												AS SmearSummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
+			, 'No result')												AS CultureSummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
+			, 'No result')												AS HistologySummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
+			, 'No result')												AS PCRSummary
+		,NULL															AS LineProbeAssaySummary
+		--mdr details
+		,mdr.ExposureToKnownTbCase										AS MDRExposureToKnownCase
+		,mdr.RelationshipToCase											AS MDRRelationshipToCase
+		,mdr.RelatedNotificationId										AS MDRRelatedNotificationId
+		-- mbovis details
+		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasAnimalExposure ELSE NULL END			AS MBovAnimalExposure
+		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasExposureToKnownCase ELSE NULL END		AS MBovKnownCaseExposure
+		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasOccupationExposure ELSE NULL END		AS MBovOccupationalExposure
+		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasUnpMilkConsumption ELSE NULL END		AS MBovUnpasteurisedMilkConsumption
+		--social context venues
+		,socialVenues.VenueCount										AS SocialContextVenueCount
+		,socialVenues.Description										AS SocialContextVenueTypeList
 		,GETUTCDATE()													AS DataRefreshedAt
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
@@ -370,8 +483,11 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
+		LEFT OUTER JOIN [$(migration)].dbo.MdrDetails mdr ON mdr.OldNotificationId = n.LegacyId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
 		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
+		LEFT OUTER JOIN @TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.LegacyId
+		LEFT OUTER JOIN @TempMBovDetails mbov ON mbov.NotificationId = n.LegacyId
 	WHERE rr.SourceSystem = 'ETS'
 
 	EXEC [dbo].[uspGenerateEtsImmunosuppression]
