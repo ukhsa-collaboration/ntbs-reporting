@@ -7,11 +7,44 @@ BEGIN TRY
 		[Description] nvarchar(2000)
 	);
 
+	DECLARE @TempManualTestResult TABLE
+	(
+		NotificationId int,
+		ManualTestTypeId int,
+		[Result] nvarchar(50)
+	);
+
+	DECLARE @TempSocialContextVenues TABLE
+	(
+		NotificationId int,
+		[VenueCount] int,
+		[Description] nvarchar(2000)
+	);
+
 	INSERT INTO @TempDiseaseSites
 	SELECT rr.NotificationId, STRING_AGG([Description], N', ') WITHIN GROUP (ORDER BY sites.OrderIndex) AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
+		WHERE rr.SourceSystem = 'NTBS'
+		GROUP BY rr.NotificationId;
+
+	INSERT INTO @TempManualTestResult
+	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
+		FIRST_VALUE(Result) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
+			CASE WHEN Result = 'Positive' OR Result = 'ConsistentWithTbCavities' THEN 1
+				WHEN Result = 'ConsistentWithTbOther' THEN 2
+				WHEN Result = 'Negative' OR Result = 'NotConsistentWithTb' THEN 3
+				WHEN Result = 'Awaiting' THEN 4 END) AS Result
+		FROM RecordRegister rr
+			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
+		WHERE rr.SourceSystem = 'NTBS';
+
+	INSERT INTO @TempSocialContextVenues
+	SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS [VenueCount], STRING_AGG(venues.[Name], N', ') AS [Description]
+		FROM RecordRegister rr
+			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
+			INNER JOIN [$(NTBS)].[ReferenceData].[VenueType] venues ON scv.VenueTypeId = venues.VenueTypeId
 		WHERE rr.SourceSystem = 'NTBS'
 		GROUP BY rr.NotificationId;
 
@@ -52,10 +85,13 @@ BEGIN TRY
 		,[MdrTreatmentDate]
 		,[EnhancedCaseManagement]
 		,[EnhancedCaseManagementLevel]
+		,[FirstPresentationSetting]
 		,[DOTOffered]
 		,[DOTReceived]
 		,[TestPerformed]
 		,[ChestXRayResult]
+		,[HomeVisitCarriedOut]
+		,[HomeVisitDate]
 		,[TreatmentOutcome12months]
 		,[TreatmentOutcome24months]
 		,[TreatmentOutcome36months]
@@ -131,6 +167,21 @@ BEGIN TRY
 		,[BiologicalTherapy]
 		,[Transplantation]
 		,[OtherImmunoSuppression]
+		,[SmearSummary]
+		,[CultureSummary]
+		,[HistologySummary]
+		,[ChestXRaySummary]
+		,[PCRSummary]
+		,[LineProbeAssaySummary]
+		,[MDRExposureToKnownCase]
+		,[MDRRelationshipToCase]
+		,[MDRRelatedNotificationId]
+		,[MBovAnimalExposure]
+		,[MBovKnownCaseExposure]
+		,[MBovOccupationalExposure]
+		,[MBovUnpasteurisedMilkConsumption]
+		,[SocialContextVenueCount]
+		,[SocialContextVenueTypeList]
 		,[DataRefreshedAt])
 	SELECT
 		rr.NotificationId										AS NotificationId
@@ -190,10 +241,19 @@ BEGIN TRY
 		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
+		,CASE
+			WHEN cd.HealthcareSetting = 'AccidentAndEmergency' THEN 'A&E'
+			WHEN cd.HealthcareSetting = 'ContactTracing' THEN 'Contact tracing'
+			WHEN cd.HealthcareSetting = 'FindAndTreat' THEN 'Find and treat'
+			WHEN cd.HealthcareSetting = 'Other' THEN 'Other - ' + cd.HealthcareDescription
+			ELSE cd.HealthcareSetting
+		END														AS FirstPresentationSetting
 		,cd.IsDotOffered										AS DOTOffered
 		,dl.DOTReceived											AS DOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
 		,ChestXRayResult										AS ChestXRayResult
+		,cd.HomeVisitCarriedOut									AS HomeVisitCarriedOut
+		,cd.FirstHomeVisitDate									AS HomeVisitDate
 		--Outcomes are done in a separate function later on
 		,NULL													AS TreatmentOutcome12months
 		,NULL													AS TreatmentOutcome24months
@@ -288,6 +348,37 @@ BEGIN TRY
 		,dbo.ufnYesNo(id.HasBioTherapy)							AS BiologicalTherapy
 		,dbo.ufnYesNo(id.HasTransplantation)					AS Transplantation
 		,dbo.ufnYesNo(id.HasOther)								AS OtherImmunoSuppression
+		-- manual test result summary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
+			, 'No result')										AS SmearSummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
+			, 'No result')										AS CultureSummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
+			, 'No result')										AS HistologySummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 4)
+			, 'No result')										AS ChestXRaySummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
+			, 'No result')										AS PCRSummary
+		,COALESCE(
+			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 6)
+			, 'No result')										AS LineProbeAssaySummary
+		--mdr details
+		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
+		,mdr.RelationshipToCase									AS MDRRelationshipToCase
+		,mdr.RelatedNotificationId								AS MDRRelatedNotificationId
+		-- mbovis details
+		,mbov.AnimalExposureStatus								AS MBovAnimalExposure
+		,mbov.ExposureToKnownCasesStatus						AS MBovKnownCaseExposure
+		,mbov.OccupationExposureStatus							AS MBovOccupationalExposure
+		,mbov.UnpasteurisedMilkConsumptionStatus				AS MBovUnpasteurisedMilkConsumption
+		--social context venues
+		,socialVenues.VenueCount								AS SocialContextVenueCount
+		,socialVenues.Description								AS SocialContextVenueTypeList
 		,GETUTCDATE()											AS DataRefreshedAt
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rr.NotificationId
@@ -311,9 +402,12 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ComorbidityDetails] cod ON cod.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ImmunosuppressionDetails] id ON id.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[TestData] ted ON ted.NotificationId = n.NotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[MDRDetails] mdr ON mdr.NotificationId = n.NotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[MBovisDetails] mbov ON mbov.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
+		LEFT OUTER JOIN @TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
 	WHERE rr.SourceSystem = 'NTBS'
 
