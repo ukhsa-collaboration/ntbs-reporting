@@ -91,6 +91,7 @@ BEGIN TRY
 		,NhsNumberToLookup
 		,GivenName
 		,FamilyName
+		,Initials
 		,DateOfBirth
 		,PostcodeToLookup
 		,Postcode)
@@ -100,6 +101,7 @@ BEGIN TRY
 		,p.NhsNumber										AS NhsNumberToLookup --this will later be reformatted if valid
 		,p.GivenName										AS Forename
 		,p.FamilyName										AS Surname
+		,LEFT(p.GivenName,1)+'.'+LEFT(p.FamilyName,1)+'.'   AS Initials
 		,CONVERT(DATE, p.Dob)								AS DateOfBirth
 		,p.PostcodeToLookup									AS PostcodeToLookup
 		,p.Postcode											AS Postcode --this will replaced with a reformatted PostcodeToLookup if valid
@@ -116,6 +118,7 @@ BEGIN TRY
 		,NhsNumberToLookup
 		,GivenName
 		,FamilyName
+		,Initials
 		,DateOfBirth
 		,PostcodeToLookup
 		,Postcode)
@@ -125,6 +128,7 @@ BEGIN TRY
 		,p.NhsNumber										AS NhsNumberToLookup --this will later be reformatted if valid
 		,p.Forename											AS GivenName
 		,p.Surname											AS FamilyName
+		,LEFT(p.Forename,1)+'.'+LEFT(p.Surname,1)+'.'		AS Initials
 		,CONVERT(DATE, p.DateOfBirth)						AS DateOfBirth
 		,REPLACE(po.Pcd2, ' ', '')							AS PostcodeToLookup
 		,po.Pcd2											AS Postcode --this will later be reformatted if valid

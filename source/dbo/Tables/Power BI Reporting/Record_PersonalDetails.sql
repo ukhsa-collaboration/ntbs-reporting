@@ -8,6 +8,7 @@
 	[NhsNumberToLookup] [nvarchar](20) NULL,
 	[GivenName] [nvarchar](50) NULL,
 	[FamilyName] [nvarchar](50) NULL,
+	[Initials] [nvarchar] (5) NULL,
 	[DateOfBirth] [date] NULL,
 	[Postcode] [nvarchar](20) null,
 	
