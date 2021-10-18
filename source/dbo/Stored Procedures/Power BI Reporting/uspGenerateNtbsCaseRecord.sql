@@ -32,13 +32,13 @@ BEGIN TRY
 	INSERT INTO @TempManualTestResult
 	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
 		FIRST_VALUE(Result) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
-			CASE WHEN Result = 'Positive' OR Result = 'ConsistentWithTbCavities' THEN 1
+			CASE WHEN Result = 'Positive' THEN 1
 				WHEN Result = 'ConsistentWithTbOther' THEN 2
-				WHEN Result = 'Negative' OR Result = 'NotConsistentWithTb' THEN 3
+				WHEN Result = 'Negative' THEN 3
 				WHEN Result = 'Awaiting' THEN 4 END) AS Result
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
-		WHERE rr.SourceSystem = 'NTBS';
+		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7);
 
 	INSERT INTO @TempSocialContextVenues
 	SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS [VenueCount], STRING_AGG(venues.[Name], N', ') AS [Description]

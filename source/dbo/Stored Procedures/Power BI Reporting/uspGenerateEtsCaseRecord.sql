@@ -62,14 +62,14 @@ BEGIN TRY
 			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
 			INNER JOIN [$(migration)].dbo.ManualTestTypeMapping mttm ON mttm.EtsId = lr.LaboratoryCategoryId
-		WHERE rr.SourceSystem = 'ETS';
+		WHERE rr.SourceSystem = 'ETS' AND lr.OpieId IS NULL AND lr.AuditDelete IS NULL;
 
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, vm.NtbsLabel AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].[dbo].SocialContextsVenues scv ON scv.NotificationId = n.Id
 			INNER JOIN [$(migration)].dbo.VenueTypeMapping vm ON vm.EtsID = scv.VenueTypeId
-		WHERE rr.SourceSystem = 'ETS'
+		WHERE rr.SourceSystem = 'ETS' AND scv.AuditDelete IS NULL
 		GROUP BY rr.NotificationId, vm.NtbsLabel)
 	INSERT INTO @TempSocialContextVenues
 	SELECT NotificationId, SUM(NumberOfVenues), STRING_AGG(Description, ', ') AS [Description]

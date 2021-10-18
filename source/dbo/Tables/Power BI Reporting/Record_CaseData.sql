@@ -52,7 +52,7 @@
 	[MdrTreatmentDate] date NULL,
 	[EnhancedCaseManagement] [varchar] (10) NULL,
 	[EnhancedCaseManagementLevel] [nvarchar] (10) NULL,
-	[FirstPresentationSetting] [nvarchar] (25) NULL,
+	[FirstPresentationSetting] [nvarchar] (110) NULL,
 	[DOTOffered] [varchar] (10) NULL,
 	[DOTReceived] [varchar] (20) NULL,
 	[TestPerformed] [varchar] (10) NULL,
