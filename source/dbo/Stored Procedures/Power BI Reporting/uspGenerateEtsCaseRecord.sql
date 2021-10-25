@@ -44,24 +44,12 @@ BEGIN TRY
 
 	INSERT INTO @TempManualTestResult
 	SELECT DISTINCT rr.NotificationId, mttm.NtbsId AS ManualTestTypeId,
-		FIRST_VALUE(CASE lr.Result
-				WHEN 0 THEN 'Negative'
-				WHEN 1 THEN 'Positive'
-				WHEN 2 THEN 'Awaiting'
-				WHEN 3 THEN 'Awaiting'
-				ELSE 'No result'
-			END) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY
-			CASE lr.Result
-				WHEN 0 THEN 2
-				WHEN 1 THEN 1
-				WHEN 2 THEN 3
-				WHEN 3 THEN 3
-				ELSE 4
-			END) AS [Result]
+		FIRST_VALUE(trl.ResultString) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY trl.ranking) AS [Result]
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
 			INNER JOIN [$(migration)].dbo.ManualTestTypeMapping mttm ON mttm.EtsId = lr.LaboratoryCategoryId
+			INNER JOIN EtsManualTestResultLookup trl ON trl.EtsResult = lr.Result
 		WHERE rr.SourceSystem = 'ETS' AND lr.OpieId IS NULL AND lr.AuditDelete IS NULL;
 
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, vm.NtbsLabel AS [Description]
