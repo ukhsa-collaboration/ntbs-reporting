@@ -1,47 +1,28 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateNtbsCaseRecord]
 AS
 BEGIN TRY
-	DECLARE @TempDiseaseSites TABLE
-	(
-		NotificationId int,
-		[Description] nvarchar(2000)
-	);
 
-	DECLARE @TempManualTestResult TABLE
-	(
-		NotificationId int,
-		ManualTestTypeId int,
-		[Result] nvarchar(50)
-	);
-
-	DECLARE @TempSocialContextVenues TABLE
-	(
-		NotificationId int,
-		[VenueCount] int,
-		[Description] nvarchar(2000)
-	);
-
-	INSERT INTO @TempDiseaseSites
 	SELECT rr.NotificationId, STRING_AGG([Description], N', ') WITHIN GROUP (ORDER BY sites.OrderIndex) AS [Description]
+	INTO #TempDiseaseSites
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[NotificationSite] notificationSite ON rr.NotificationId = notificationSite.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[Site] sites ON notificationSite.SiteId = sites.SiteId
 		WHERE rr.SourceSystem = 'NTBS'
 		GROUP BY rr.NotificationId;
 
-	INSERT INTO @TempManualTestResult
 	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
 		FIRST_VALUE(Result) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
 			CASE WHEN Result = 'Positive' THEN 1
 				WHEN Result = 'ConsistentWithTbOther' THEN 2
 				WHEN Result = 'Negative' THEN 3
 				WHEN Result = 'Awaiting' THEN 4 END) AS Result
+	INTO #TempManualTestResult
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
 		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7);
 
-	INSERT INTO @TempSocialContextVenues
 	SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS [VenueCount], STRING_AGG(venues.[Name], N', ') AS [Description]
+	INTO #TempSocialContextVenues
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[VenueType] venues ON scv.VenueTypeId = venues.VenueTypeId
@@ -349,19 +330,19 @@ BEGIN TRY
 		,dbo.ufnYesNo(id.HasOther)								AS OtherImmunoSuppression
 		-- manual test result summary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
 			, 'No result')										AS SmearSummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
 			, 'No result')										AS CultureSummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
 			, 'No result')										AS HistologySummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
 			, 'No result')										AS PCRSummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 6)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 6)
 			, 'No result')										AS LineProbeAssaySummary
 		--mdr details
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
@@ -402,10 +383,14 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[MBovisDetails] mbov ON mbov.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
-		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
-		LEFT OUTER JOIN @TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
+		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
+		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
 	WHERE rr.SourceSystem = 'NTBS'
+
+	DROP TABLE #TempDiseaseSites
+	DROP TABLE #TempManualTestResult
+	DROP TABLE #TempSocialContextVenues
 
 	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
 	UPDATE cd
