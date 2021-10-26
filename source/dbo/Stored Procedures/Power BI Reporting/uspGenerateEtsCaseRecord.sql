@@ -1,38 +1,9 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateEtsCaseRecord]
 AS
 BEGIN TRY
-	DECLARE @TempDiseaseSites TABLE
-	(
-		TuberculosisEpisodeId uniqueidentifier,
-		[Description] nvarchar(2000)
-	);
 
-	DECLARE @TempManualTestResult TABLE
-	(
-		NotificationId int,
-		ManualTestTypeId int,
-		[Result] nvarchar(50)
-	);
-
-	DECLARE @TempSocialContextVenues TABLE
-	(
-		NotificationId int,
-		[VenueCount] int,
-		[Description] nvarchar(2000)
-	);
-
-	DECLARE @TempMBovDetails TABLE
-	(
-		NotificationId int,
-		[IsMBovis] bit,
-		[HasAnimalExposure] varchar(10),
-		[HasUnpMilkConsumption] varchar(10),
-		[HasExposureToKnownCase] varchar(10),
-		[HasOccupationExposure] varchar(10)
-	);
-
-	INSERT INTO @TempDiseaseSites
 	SELECT n.TuberculosisEpisodeId, STRING_AGG(sites.[Name], N', ') WITHIN GROUP (ORDER BY ord.OrderIndex) AS [Description]
+	INTO #TempDiseaseSites
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
@@ -42,9 +13,9 @@ BEGIN TRY
 		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
 		GROUP BY n.TuberculosisEpisodeId;
 
-	INSERT INTO @TempManualTestResult
 	SELECT DISTINCT rr.NotificationId, mttm.NtbsId AS ManualTestTypeId,
 		FIRST_VALUE(trl.ResultString) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY trl.ranking) AS [Result]
+	INTO #TempManualTestResult
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
@@ -59,18 +30,18 @@ BEGIN TRY
 			INNER JOIN [$(migration)].dbo.VenueTypeMapping vm ON vm.EtsID = scv.VenueTypeId
 		WHERE rr.SourceSystem = 'ETS' AND scv.AuditDelete IS NULL
 		GROUP BY rr.NotificationId, vm.NtbsLabel)
-	INSERT INTO @TempSocialContextVenues
-	SELECT NotificationId, SUM(NumberOfVenues), STRING_AGG(Description, ', ') AS [Description]
+	SELECT NotificationId, SUM(NumberOfVenues) AS [VenueCount], STRING_AGG(Description, ', ') AS [Description]
+	INTO #TempSocialContextVenues
 		FROM venues
 		GROUP BY NotificationId;
 
-	INSERT INTO @TempMBovDetails
 	SELECT DISTINCT rr.NotificationId
 		,CASE WHEN COALESCE(mBovAnimal.Oldnotificationid, mBovMilk.Oldnotificationid, mBovOccupation.Oldnotificationid, mBovKnownCase.Oldnotificationid) IS NOT NULL THEN 1 ELSE 0 END AS [IsMBovis]
 		,CASE WHEN mBovAnimal.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasAnimalExposure]
 		,CASE WHEN mBovMilk.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasUnpMilkExposure]
 		,CASE WHEN mBovOccupation.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasOccupationExposure]
 		,CASE WHEN mBovKnownCase.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasExposureToKnownCase]
+	INTO #TempMBovDetails
 		FROM RecordRegister rr
 			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			LEFT JOIN [$(migration)].dbo.EtsMBovisAnimalExposure mBovAnimal on mBovAnimal.OldNotificationId = n.LegacyId
@@ -430,16 +401,16 @@ BEGIN TRY
 		,NULL															AS OtherImmunoSuppression
 		-- manual test result summary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
 			, 'No result')												AS SmearSummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
 			, 'No result')												AS CultureSummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
 			, 'No result')												AS HistologySummary
 		,COALESCE(
-			(SELECT Result FROM @TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
+			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
 			, 'No result')												AS PCRSummary
 		,NULL															AS LineProbeAssaySummary
 		--mdr details
@@ -450,7 +421,7 @@ BEGIN TRY
 		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasAnimalExposure ELSE NULL END			AS MBovAnimalExposure
 		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasExposureToKnownCase ELSE NULL END		AS MBovKnownCaseExposure
 		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasOccupationExposure ELSE NULL END		AS MBovOccupationalExposure
-		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasUnpMilkConsumption ELSE NULL END		AS MBovUnpasteurisedMilkConsumption
+		,CASE WHEN mbov.IsMBovis = 1 THEN mbov.HasUnpMilkExposure ELSE NULL END			AS MBovUnpasteurisedMilkConsumption
 		--social context venues
 		,socialVenues.VenueCount										AS SocialContextVenueCount
 		,socialVenues.Description										AS SocialContextVenueTypeList
@@ -473,10 +444,15 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 		LEFT OUTER JOIN [$(migration)].dbo.MdrDetails mdr ON mdr.OldNotificationId = n.LegacyId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
-		LEFT OUTER JOIN @TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
-		LEFT OUTER JOIN @TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.LegacyId
-		LEFT OUTER JOIN @TempMBovDetails mbov ON mbov.NotificationId = n.LegacyId
+		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
+		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.LegacyId
+		LEFT OUTER JOIN #TempMBovDetails mbov ON mbov.NotificationId = n.LegacyId
 	WHERE rr.SourceSystem = 'ETS'
+
+	DROP TABLE #TempDiseaseSites
+	DROP TABLE #TempManualTestResult
+	DROP TABLE #TempMBovDetails
+	DROP TABLE #TempSocialContextVenues
 
 	EXEC [dbo].[uspGenerateEtsImmunosuppression]
 
