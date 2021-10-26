@@ -46,6 +46,10 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
 
+	UPDATE pd
+	SET Initials = LEFT(pd.GivenName,1) + LEFT(pd.FamilyName,1)
+	FROM [dbo].Record_PersonalDetails pd
+
 	--now add the list of linked notifications
 	EXEC [dbo].[uspGenerateLinkedNotifications]
 END TRY
