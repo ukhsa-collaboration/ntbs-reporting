@@ -47,7 +47,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
 
 	UPDATE pd
-	SET Initials = LEFT(pd.GivenName,1) + ' ' + LEFT(pd.FamilyName,1)
+	SET Initials = LEFT(pd.GivenName,1) + LEFT(pd.FamilyName,1)
 	FROM [dbo].Record_PersonalDetails pd
 
 	--now add the list of linked notifications
