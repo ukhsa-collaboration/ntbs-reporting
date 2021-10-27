@@ -156,6 +156,12 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('MdrTreatment', 'RR/MDR/XDR treatment')
 		INSERT [dbo].[TreatmentRegimenLookup] (TreatmentRegimenCode, TreatmentRegimenDescription) VALUES ('Other', 'Other')
 
+		DELETE FROM [dbo].EtsManualTestResultLookup
+		INSERT [dbo].EtsManualTestResultLookup (EtsResult, ResultString, Ranking) VALUES (0, 'Negative', 2)
+		INSERT [dbo].EtsManualTestResultLookup (EtsResult, ResultString, Ranking) VALUES (1, 'Positive', 1)
+		INSERT [dbo].EtsManualTestResultLookup (EtsResult, ResultString, Ranking) VALUES (2, 'Awaiting', 3)
+		INSERT [dbo].EtsManualTestResultLookup (EtsResult, ResultString, Ranking) VALUES (3, 'Awaiting', 3)
+
 		EXEC [dbo].[uspSeedHospitalLookupValues]
 
 

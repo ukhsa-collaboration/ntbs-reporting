@@ -52,12 +52,15 @@
 	[MdrTreatmentDate] date NULL,
 	[EnhancedCaseManagement] [varchar] (10) NULL,
 	[EnhancedCaseManagementLevel] [nvarchar] (10) NULL,
+	[FirstPresentationSetting] [nvarchar] (110) NULL,
 	[DOTOffered] [varchar] (10) NULL,
 	[DOTReceived] [varchar] (20) NULL,
 	[TestPerformed] [varchar] (10) NULL,
 	[SampleTaken] [varchar] (10) NULL,
 	[SputumResult] [varchar] (20) NULL,
 	[ChestXRayResult] [nvarchar] (100) NULL,
+	[HomeVisitCarriedOut] [varchar] (10) NULL,
+	[HomeVisitDate] date NULL,
 
 	--outcomes
 	[TreatmentOutcome12months] [varchar](30) NULL,
@@ -145,7 +148,27 @@
 	[Transplantation] [varchar](10)  NULL,
 	[OtherImmunoSuppression] [varchar](30) NULL,
 
+	-- manual test result summary
+	[SmearSummary] [varchar] (30) NULL,
+	[CultureSummary] [varchar] (30) NULL,
+	[HistologySummary] [varchar] (30) NULL,
+	[PCRSummary] [varchar] (30) NULL,
+	[LineProbeAssaySummary] [varchar] (30) NULL,
 
+	--mdr details
+	[MDRExposureToKnownCase] [varchar] (10) NULL,
+	[MDRRelationshipToCase] [nvarchar] (100) NULL,
+	[MDRRelatedNotificationId] [int] NULL,
+
+	-- mbovis details
+	[MBovAnimalExposure] [varchar] (10) NULL,
+	[MBovKnownCaseExposure] [varchar] (10) NULL,
+	[MBovOccupationalExposure] [varchar] (10) NULL,
+	[MBovUnpasteurisedMilkConsumption] [varchar] (10) NULL,
+
+	--social context venues
+	[SocialContextVenueCount] [int] NULL,
+	[SocialContextVenueTypeList] [nvarchar] (2000) NULL,
 
 
 	[DataRefreshedAt] [datetime] NOT NULL
