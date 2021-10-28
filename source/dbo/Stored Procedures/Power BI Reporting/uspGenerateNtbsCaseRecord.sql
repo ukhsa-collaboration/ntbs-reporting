@@ -21,13 +21,16 @@ BEGIN TRY
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
 		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7);
 
-	SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS [VenueCount], STRING_AGG(venues.[Name], N', ') AS [Description]
-	INTO #TempSocialContextVenues
+	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, venues.[Name] AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[VenueType] venues ON scv.VenueTypeId = venues.VenueTypeId
 		WHERE rr.SourceSystem = 'NTBS'
-		GROUP BY rr.NotificationId;
+		GROUP BY rr.NotificationId, venues.[Name])
+	SELECT NotificationId, SUM(NumberOfVenues) AS [VenueCount], STRING_AGG(Description, ', ') AS [Description]
+	INTO #TempSocialContextVenues
+		FROM venues
+		GROUP BY NotificationId;
 
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
