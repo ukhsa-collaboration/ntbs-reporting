@@ -50,6 +50,7 @@
 	[StartedTreatment] [varchar](10) NULL,
 	[TreatmentRegimen] [nvarchar](30) NULL,
 	[MdrTreatmentDate] date NULL,
+	[MdrExpectedDuration] [varchar] (10) NULL,
 	[EnhancedCaseManagement] [varchar] (10) NULL,
 	[EnhancedCaseManagementLevel] [nvarchar] (10) NULL,
 	[FirstPresentationSetting] [nvarchar] (110) NULL,
@@ -59,6 +60,7 @@
 	[SampleTaken] [varchar] (10) NULL,
 	[SputumResult] [varchar] (20) NULL,
 	[ChestXRayResult] [nvarchar] (100) NULL,
+	[ChestCTResult] [nvarchar] (100) NULL,
 	[HomeVisitCarriedOut] [varchar] (10) NULL,
 	[HomeVisitDate] date NULL,
 
@@ -159,6 +161,7 @@
 	[MDRExposureToKnownCase] [varchar] (10) NULL,
 	[MDRRelationshipToCase] [nvarchar] (100) NULL,
 	[MDRRelatedNotificationId] [int] NULL,
+	[MDRDiscussedAtForum] [varchar] (10) NULL,
 
 	-- mbovis details
 	[MBovAnimalExposure] [varchar] (10) NULL,
