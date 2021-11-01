@@ -365,11 +365,6 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
-      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
-    </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\NTBS.dacpac">
       <HintPath>..\data\DACPAC\NTBS.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
@@ -395,11 +390,17 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
     </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
+      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
+      <ServerSqlCmdVariable>OtherServer</ServerSqlCmdVariable>
+    </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
       <DefaultValue>ETS</DefaultValue>
-      <Value>$(SqlCmdVar__16)</Value>
+      <Value>$(SqlCmdVar__22)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <DefaultValue>Labbase2</DefaultValue>
@@ -436,6 +437,10 @@
     <SqlCmdVariable Include="$(ReportServer)">
       <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="OtherServer">
+      <DefaultValue>OtherServer</DefaultValue>
+      <Value>$(SqlCmdVar__23)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <DefaultValue>ReportServer</DefaultValue>

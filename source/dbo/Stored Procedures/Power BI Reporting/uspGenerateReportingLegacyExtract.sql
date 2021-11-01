@@ -73,12 +73,12 @@ BEGIN TRY
 				LEFT OUTER JOIN [$(NTBS)].[dbo].[DenotificationDetails] dn ON dn.NotificationId = rr.NotificationId
 				LEFT OUTER JOIN [dbo].[DenotificationReasonMapping] drm ON drm.Reason = dn.Reason
 				LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = p.PostcodeToLookup
-				LEFT OUTER JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
-				LEFT OUTER JOIN [$(ETS)].[dbo].[Hospital] h ON h.Id = cd.HospitalId
-				LEFT OUTER JOIN [$(ETS)].[dbo].[LocalAuthority] la ON la.Code = h.LocalAuthorityCode
+				LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
+				LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Hospital] h ON h.Id = cd.HospitalId
+				LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[LocalAuthority] la ON la.Code = h.LocalAuthorityCode
 				INNER JOIN [$(NTBS)].[ReferenceData].Country c ON c.CountryId = p.CountryId
-				LEFT OUTER JOIN [$(ETS)].[dbo].[Country] c2 ON c2.IsoCode = c.IsoCode
-				LEFT OUTER JOIN [$(ETS)].[dbo].[Continent] continent ON continent.Id = c2.ContinentId
+				LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Country] c2 ON c2.IsoCode = c.IsoCode
+				LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Continent] continent ON continent.Id = c2.ContinentId
 				LEFT OUTER JOIN [dbo].[LegacyExtractHospitalLookupValues] hv ON hv.HospitalId = cd.HospitalId
 		WHERE rr.SourceSystem = 'NTBS'
 

@@ -25,7 +25,7 @@ AS
 		mdsm.MigrationNotes										AS 'MigrationNotes'
 	FROM [dbo].[MigrationDubiousSpecimenMatches] mdsm
 		LEFT JOIN [dbo].[MigrationRunResults] mrr ON mdsm.EtsId = mrr.LegacyETSId AND mrr.MigrationRunId = @MigrationRun
-		LEFT JOIN [$(ETS)].[dbo].[Notification] etsn ON etsn.LegacyId = mdsm.EtsId
+		LEFT JOIN [$(OtherServer)].[$(ETS)].[dbo].[Notification] etsn ON etsn.LegacyId = mdsm.EtsId
 		LEFT JOIN [$(NTBS)].[dbo].[Notification] ntbsn ON ntbsn.ETSID = mdsm.EtsId
 		INNER JOIN [$(NTBS_Specimen_Matching)].[dbo].[EtsSpecimenMatch] esm ON esm.LegacyId = mdsm.EtsId AND esm.ReferenceLaboratoryNumber = mdsm.ReferenceLaboratoryNumber
 	WHERE mdsm.ReferenceLaboratoryNumber IN (SELECT * FROM DubiousMatchesFromMigration)

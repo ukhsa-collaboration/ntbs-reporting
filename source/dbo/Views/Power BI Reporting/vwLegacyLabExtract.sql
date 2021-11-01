@@ -235,5 +235,5 @@ CREATE VIEW [dbo].[vwLegacyLabExtract]
 		,NULL AS Comments
 		,dl.MatchType
     FROM [dbo].[RecordRegister] rr
-		INNER JOIN [$(ETS)].[dbo].[DataExportLaboratoryTable] dl ON dl.ID = rr.NotificationId
+		INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[DataExportLaboratoryTable] dl ON dl.ID = rr.NotificationId
 	WHERE rr.SourceSystem = 'ETS' AND dl.[Source] = 'ETS'

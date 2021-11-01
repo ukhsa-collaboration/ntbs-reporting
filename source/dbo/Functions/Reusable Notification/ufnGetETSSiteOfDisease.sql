@@ -25,8 +25,8 @@ AS
 									WHEN d.LegacyId = 12 THEN 'Pulmonary'
 									ELSE 'Extra-pulmonary' -- All records that are not "Pulmonary" or "Unknown" are set to be "Extra-pulmonary"
 								END) AS SiteOfDisease
-							FROM [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite t
-								INNER JOIN [$(ETS)].dbo.DiseaseSite d ON d.Id = t.DiseaseSiteId
+							FROM [$(OtherServer)].[$(ETS)].dbo.TuberculosisEpisodeDiseaseSite t
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.DiseaseSite d ON d.Id = t.DiseaseSiteId
 							WHERE t.AuditDelete IS NULL
 								AND d.LegacyId != 16 -- Set to Unknown in all other cases (see below)
 								AND t.TuberculosisEpisodeId = @TuberculosisEpisodeId

@@ -34,7 +34,7 @@ ETSPermissions AS (
 			WHEN eth.Tier = 1 THEN 'National'
 			ELSE 'Regional'
 		END AS UserType
-	FROM [$(ETS)].[dbo].[SystemUser] s
+	FROM [$(OtherServer)].[$(ETS)].[dbo].[SystemUser] s
 		LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth ON eth.Id = s.PermissionId
 		LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth2 ON eth2.Id = eth.ParentId
 	WHERE s.AuditDelete IS NULL
@@ -99,6 +99,6 @@ FROM [$(NTBS)].dbo.[Notification] n
 
 	LEFT JOIN [$(NTBS)].dbo.CaseManagerTbService cmtbs ON cmtbs.CaseManagerId = u.Id AND cmtbs.TbServiceCode = tbs.[Code]
 
-	INNER JOIN [$(ETS)].dbo.[Notification] en ON en.LegacyId = n.ETSID
-	LEFT OUTER JOIN [$(ETS)].dbo.SystemUser su ON su.Id = en.OwnerUserId
+	INNER JOIN [$(OtherServer)].[$(ETS)].dbo.[Notification] en ON en.LegacyId = n.ETSID
+	LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].dbo.SystemUser su ON su.Id = en.OwnerUserId
 	LEFT OUTER JOIN EtsUserDetails ON EtsUserDetails.Id = su.Id

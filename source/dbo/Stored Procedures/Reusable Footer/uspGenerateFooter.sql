@@ -31,7 +31,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		Set @ReportingLastRefreshed = (select top 1 DataRefreshedAt from ReusableNotification n order by DataRefreshedAt desc)
 
 		-- When was ETS last loaded ?
-		Set @EtsLastRefreshed = (SELECT top 1 AuditAlter FROM [$(ETS)].[dbo].[Notification] order by AuditAlter desc)
+		Set @EtsLastRefreshed = (SELECT top 1 AuditAlter FROM [$(OtherServer)].[$(ETS)].[dbo].[Notification] order by AuditAlter desc)
 		--This is not correct but is the best approximation that can be obtained.
 
 		Set @ReportingVersionDate = (SELECT [Date] FROM ReleaseVersion)

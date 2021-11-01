@@ -99,6 +99,9 @@
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>NTBS_Specimen_Matching_UAT</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="OtherServer">
+      <Value>SQLClusColStudy\Study</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>NTBS_ReportServer_UAT</Value>
     </SqlCmdVariable>

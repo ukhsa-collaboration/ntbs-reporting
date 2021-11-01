@@ -22,8 +22,8 @@ AS
 		-- 1. The set of records contains a record which corresponds to the Drug Use Status of 1 (Current drug use)
 		IF (@ProblemUse = 1)
 			SET @ReturnValue = (SELECT 'Yes'
-								FROM [$(ETS)].dbo.RiskFactorDrugUseStatus r
-									INNER JOIN [$(ETS)].dbo.TuberculosisHistoryDrugUseStatus th ON th.DrugUseStatusId = r.Id
+								FROM [$(OtherServer)].[$(ETS)].dbo.RiskFactorDrugUseStatus r
+									INNER JOIN [$(OtherServer)].[$(ETS)].dbo.TuberculosisHistoryDrugUseStatus th ON th.DrugUseStatusId = r.Id
 								WHERE th.TuberculosisHistoryId = @TuberculosisHistoryId
 									AND r.LegacyId = @DrugUseStatusId)
 

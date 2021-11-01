@@ -12,7 +12,7 @@
 		1 AS LegacyId, 
 		n.NotificationDate, 
 		p.PHEC_Code AS TreatmentPhec
-	FROM [$(ETS)].[dbo].[SystemUser] su
+	FROM [$(OtherServer)].[$(ETS)].[dbo].[SystemUser] su
 		--inner join with the ETS_Notifications view in the migration database, so we only consider migratable notifications
 		INNER JOIN [$(migration)].[dbo].[ETS_Notification] n ON n.OwnerUserId = su.Id
 		INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON H.HospitalId = n.HospitalId

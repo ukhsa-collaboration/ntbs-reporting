@@ -17,10 +17,10 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-								FROM [$(ETS)].dbo.Notification n
-								INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
-								INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
-								INNER JOIN [$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
+								FROM [$(OtherServer)].[$(ETS)].dbo.Notification n
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
 								WHERE ims.Name = 'Biological therapy (e.g. Anti-TNF-Alpha-Treatment)')
 	AND rr.SourceSystem = 'ETS'
 
@@ -32,10 +32,10 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-								FROM [$(ETS)].dbo.Notification n
-								INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
-								INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
-								INNER JOIN [$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
+								FROM [$(OtherServer)].[$(ETS)].dbo.Notification n
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
 								WHERE ims.Name = 'Transplantation')
 	AND rr.SourceSystem = 'ETS'
 
@@ -46,10 +46,10 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-								FROM [$(ETS)].dbo.Notification n
-								INNER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
-								INNER JOIN [$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
-								INNER JOIN [$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
+								FROM [$(OtherServer)].[$(ETS)].dbo.Notification n
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.ComorbiditiesImmunoStatus cim ON cim.ComorbiditiesId = co.Id
+								INNER JOIN [$(OtherServer)].[$(ETS)].dbo.Immunosupressionstatus ims ON ims.Id  = cim.ImmunosuppressionStatusId
 								WHERE ims.Name = 'Other')
 	AND rr.SourceSystem = 'ETS'
 

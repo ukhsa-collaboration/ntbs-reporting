@@ -8,9 +8,9 @@ CREATE VIEW [dbo].[vwEtsDuplicateMatches]
 	AS 
   WITH EtsNotificationSpecimenMatch AS
   (SELECT DISTINCT n.LegacyId, a.ReferenceLaboratoryNumber, n.NotificationDate
-   FROM [$(ETS)].[dbo].[LaboratoryResult] lr
+   FROM [$(OtherServer)].[$(ETS)].[dbo].[LaboratoryResult] lr
 	INNER JOIN [$(Labbase2)].[dbo].[Anonymised] a ON a.OpieId = lr.OpieId
-	INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.Id = lr.NotificationId
+	INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Notification] n ON n.Id = lr.NotificationId
    WHERE lr.OpieId IS NOT NULL
 	AND lr.AuditDelete IS NULL
 	AND n.NotificationDate > '2010-01-01'

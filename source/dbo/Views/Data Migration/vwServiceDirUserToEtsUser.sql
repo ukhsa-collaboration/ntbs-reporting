@@ -14,6 +14,6 @@ SELECT DISTINCT ETS_username
 FROM [dbo].[ServiceDirectoryRawData]
 UNION
 SELECT DISTINCT Username
-FROM [$(ETS)].[dbo].[SystemUser] su WHERE su.AuditDelete IS NULL and su.AuditSuspended IS NULL
+FROM [$(OtherServer)].[$(ETS)].[dbo].[SystemUser] su WHERE su.AuditDelete IS NULL and su.AuditSuspended IS NULL
 ) AS Q1 LEFT OUTER JOIN [dbo].[ServiceDirectoryRawData] rd ON rd.ETS_username = Q1.ETS_username
-LEFT OUTER JOIN [$(ETS)].[dbo].[SystemUser] su2 ON su2.Username = Q1.ETS_username
+LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[SystemUser] su2 ON su2.Username = Q1.ETS_username

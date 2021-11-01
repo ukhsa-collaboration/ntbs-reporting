@@ -29,10 +29,10 @@ BEGIN TRY
 			,CASE WHEN n.DenotificationId IS NOT NULL THEN 1 ELSE 0 END	AS Denotified
 			,tbh.TB_Service_Code										AS TBServiceCode
 			,REPLACE(po.Pcd2, ' ', '')									AS Postcode
-		FROM  [$(ETS)].dbo.[Notification] n
-			LEFT OUTER JOIN [$(ETS)].dbo.Patient p ON p.Id = n.PatientId
-			LEFT OUTER JOIN [$(ETS)].dbo.[Address] a ON a.Id = n.AddressId
-			LEFT OUTER JOIN [$(ETS)].dbo.Postcode po ON po.Id = a.PostcodeId
+		FROM  [$(OtherServer)].[$(ETS)].dbo.[Notification] n
+			LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].dbo.Patient p ON p.Id = n.PatientId
+			LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].dbo.[Address] a ON a.Id = n.AddressId
+			LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].dbo.Postcode po ON po.Id = a.PostcodeId
 			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = n.HospitalId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = n.LegacyId
 		WHERE n.Submitted = 1
@@ -130,10 +130,10 @@ BEGIN TRY
 		,po.Pcd2											AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
-		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
-		INNER JOIN [$(ETS)].[dbo].[Patient] p ON p.Id = n.PatientId
-		LEFT OUTER JOIN [$(ETS)].[dbo].[Address] a ON a.Id = n.AddressId
-		LEFT OUTER JOIN [$(ETS)].[dbo].[Postcode] po ON po.Id = a.PostcodeId
+		INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
+		INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Patient] p ON p.Id = n.PatientId
+		LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Address] a ON a.Id = n.AddressId
+		LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].[dbo].[Postcode] po ON po.Id = a.PostcodeId
 	WHERE rr.SourceSystem = 'ETS'
 
 	--now create a standardised nhsnumber when possible

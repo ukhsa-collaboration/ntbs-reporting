@@ -201,5 +201,5 @@
 		,rr.ResidencePhecCode
 		,rr.TreatmentPhecCode
 	
-	FROM [$(ETS)].[dbo].[DataExportMainTable] dem
+	FROM [$(OtherServer)].[$(ETS)].[dbo].[DataExportMainTable] dem
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = dem.Id AND rr.SourceSystem = 'ETS'

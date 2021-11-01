@@ -32,7 +32,7 @@ SELECT s.Id AS UserId,
 		WHEN eth.Tier = 1 THEN 'National'
 		ELSE 'Regional'
 	END AS UserType
-FROM [$(ETS)].[dbo].[SystemUser] s
+FROM [$(OtherServer)].[$(ETS)].[dbo].[SystemUser] s
 	INNER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth ON eth.Id = s.PermissionId
 	LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth2 ON eth2.Id = eth.ParentId
 WHERE s.AuditDelete IS NULL AND AuditSuspended IS NULL),

@@ -26,10 +26,10 @@ AS
 	(
 		SELECT DISTINCT rr.NotificationId, rr.SourceSystem, FIRST_VALUE(lrc.[Name]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank]) AS ResultName
 		FROM
-			[$(ETS)].[dbo].[Notification] n
+			[$(OtherServer)].[$(ETS)].[dbo].[Notification] n
 				INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = n.LegacyId AND rr.SourceSystem = 'ETS'
-				INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
-				INNER JOIN [$(ETS)].[dbo].[LaboratoryResultCode] lrc ON lrc.LegacyId = lr.Result
+				INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
+				INNER JOIN [$(OtherServer)].[$(ETS)].[dbo].[LaboratoryResultCode] lrc ON lrc.LegacyId = lr.Result
 				INNER JOIN ResultRanking rra ON rra.ResultName = lrc.[Name]
 			WHERE lr.OpieId IS NULL AND lr.AuditDelete IS NULL
 			AND lr.SpecimenTypeId IN 

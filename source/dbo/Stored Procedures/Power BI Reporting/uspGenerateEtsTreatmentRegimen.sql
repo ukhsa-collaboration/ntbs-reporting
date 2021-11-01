@@ -37,8 +37,8 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-							 FROM [$(ETS)].dbo.[Notification] n
-								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
+							 FROM [$(OtherServer)].[$(ETS)].dbo.[Notification] n
+								 INNER JOIN [$(OtherServer)].[$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE tp.ShortCourseTreatment = 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
 	AND rr.SourceSystem = 'ETS'
 		
@@ -50,8 +50,8 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-							 FROM [$(ETS)].dbo.[Notification] n
-								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
+							 FROM [$(OtherServer)].[$(ETS)].dbo.[Notification] n
+								 INNER JOIN [$(OtherServer)].[$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND tp.MDRTreatment = 1)
 	AND rr.SourceSystem = 'ETS'
 
@@ -63,8 +63,8 @@ BEGIN TRY
 		dbo.Record_CaseData cd
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
 	WHERE rr.NotificationId IN (SELECT n.LegacyId
-							 FROM [$(ETS)].dbo.Notification n
-								 INNER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
+							 FROM [$(OtherServer)].[$(ETS)].dbo.Notification n
+								 INNER JOIN [$(OtherServer)].[$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
 							 WHERE (COALESCE(tp.ShortCourseTreatment, 0) <> 1 AND COALESCE(tp.MDRTreatment, 0) <> 1)
 								OR (tp.ShortCourseTreatment  = 1 AND tp.MDRTreatment  = 1))
 	AND rr.SourceSystem = 'ETS'

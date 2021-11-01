@@ -49,7 +49,7 @@ SELECT CAST(n.LegacyId AS NVARCHAR(50)) AS OldNotificationId,
 	treatmentPhec.[Name] AS TreatmentRegion
 FROM [$(migration)].dbo.ETS_Notification n
 	INNER JOIN [$(migration)].dbo.EtsAddresses a ON n.LegacyId = a.OldNotificationId
-	LEFT JOIN [$(ETS)].dbo.Hospital h ON n.HospitalId = h.Id
+	LEFT JOIN [$(OtherServer)].[$(ETS)].dbo.Hospital h ON n.HospitalId = h.Id
 	LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file rpcd ON rpcd.Pcode = a.Postcode
 	LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.LA_to_PHEC residenceLA ON residenceLA.LA_Code = rpcd.LA_Code
 	LEFT JOIN [$(NTBS)].ReferenceData.PHEC residencePhec ON residenceLA.PHEC_Code = residencePhec.Code

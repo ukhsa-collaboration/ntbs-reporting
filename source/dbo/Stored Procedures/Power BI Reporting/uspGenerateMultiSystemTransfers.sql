@@ -39,10 +39,10 @@ BEGIN TRY
 
 	SELECT n.LegacyId, n.NotificationDate, 'ETS', NULL, requester.Email, recipient.Email, COALESCE(tbs.Name, userPhec.Name), transfer.AuditCreate
 	
-	FROM [$(ETS)].dbo.Transfer transfer
-		LEFT JOIN [$(ETS)].dbo.Notification n ON n.Id = transfer.NotificationId
-		LEFT JOIN [$(ETS)].dbo.SystemUser recipient ON recipient.Id = transfer.RecipientId
-		LEFT JOIN [$(ETS)].dbo.SystemUser requester ON requester.Id = transfer.AuditUserId
+	FROM [$(OtherServer)].[$(ETS)].dbo.Transfer transfer
+		LEFT JOIN [$(OtherServer)].[$(ETS)].dbo.Notification n ON n.Id = transfer.NotificationId
+		LEFT JOIN [$(OtherServer)].[$(ETS)].dbo.SystemUser recipient ON recipient.Id = transfer.RecipientId
+		LEFT JOIN [$(OtherServer)].[$(ETS)].dbo.SystemUser requester ON requester.Id = transfer.AuditUserId
 		LEFT JOIN [dbo].vwEtsUserPermissionMembership etsPerm ON etsPerm.Username = recipient.Username
 		LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = etsPerm.MembershipCode
 		LEFT JOIN [$(NTBS)].ReferenceData.PHEC userPhec ON userPhec.Code = etsPerm.MembershipCode

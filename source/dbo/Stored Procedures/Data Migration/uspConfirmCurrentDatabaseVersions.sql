@@ -5,7 +5,7 @@ AS
 	--this should also confirm when the migration database was last regenerated, but the field doesn't exist yet
 	
 	WITH EtsDate AS
-	(SELECT CONVERT(DATE, MAX(NotificationDate)) AS EtsDate FROM [$(ETS)].[dbo].[Notification]),
+	(SELECT CONVERT(DATE, MAX(NotificationDate)) AS EtsDate FROM [$(OtherServer)].[$(ETS)].[dbo].[Notification]),
 	LtbrDate AS
 	(SELECT CONVERT(DATE, MAX(dp_NotifiedDate)) AS LtbrDate FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod]),
 	LabbaseDate AS

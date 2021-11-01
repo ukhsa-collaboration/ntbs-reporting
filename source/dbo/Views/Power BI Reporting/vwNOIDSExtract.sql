@@ -30,8 +30,8 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     (
         SELECT n.LegacyId AS NotificationId, sites.NtbsLabel AS SiteName
         FROM RecordRegister rr
-            INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
-            LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
+            INNER JOIN [$(OtherServer)].[$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
+            LEFT OUTER JOIN [$(OtherServer)].[$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
             LEFT OUTER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
             INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
         WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2 AND rr.Denotified = 0
