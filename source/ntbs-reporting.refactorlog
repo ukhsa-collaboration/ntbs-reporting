@@ -147,4 +147,18 @@
     <Property Name="ParentElementType" Value="SqlSchema" />
     <Property Name="NewName" Value="[ReusableNotification-delete]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="dcbfedac-0a9b-4004-81ed-334a43965051" ChangeDateTime="11/01/2021 16:52:03">
+    <Property Name="ElementName" Value="[dbo].[ufnGetCaseRecordChestXrayResults]" />
+    <Property Name="ElementType" Value="SqlInlineTableValuedFunction" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ufnGetCaseRecordChestTestResults]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f89364b3-4087-4230-afb9-cea224a3aaf8" ChangeDateTime="11/01/2021 16:53:27">
+    <Property Name="ElementName" Value="[dbo].[ChestXrayResultLookup]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[ChestTestResultLookup]" />
+  </Operation>
 </Operations>

@@ -67,6 +67,7 @@ BEGIN TRY
 		,[StartedTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
+		,[MdrExpectedDuration]
 		,[EnhancedCaseManagement]
 		,[EnhancedCaseManagementLevel]
 		,[FirstPresentationSetting]
@@ -74,6 +75,7 @@ BEGIN TRY
 		,[DOTReceived]
 		,[TestPerformed]
 		,[ChestXRayResult]
+		,[ChestCTResult]
 		,[HomeVisitCarriedOut]
 		,[HomeVisitDate]
 		,[TreatmentOutcome12months]
@@ -159,6 +161,7 @@ BEGIN TRY
 		,[MDRExposureToKnownCase]
 		,[MDRRelationshipToCase]
 		,[MDRRelatedNotificationId]
+		,[MDRDiscussedAtForum]
 		,[MBovAnimalExposure]
 		,[MBovKnownCaseExposure]
 		,[MBovOccupationalExposure]
@@ -222,6 +225,7 @@ BEGIN TRY
 		,dbo.ufnYesNo(cd.StartedTreatment)						AS StartedTreatment
 		,trl.TreatmentRegimenDescription						AS TreatmentRegimen
 		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
+		,cd.MDRExpectedTreatmentDurationInMonths				AS MdrExpectedDuration
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
 		,CASE
@@ -234,7 +238,8 @@ BEGIN TRY
 		,cd.IsDotOffered										AS DOTOffered
 		,dl.DOTReceived											AS DOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
-		,ChestXRayResult										AS ChestXRayResult
+		,ChestXRayResult.ChestTestResult						AS ChestXRayResult
+		,ChestCTResult.ChestTestResult							AS ChestCTResult
 		,cd.HomeVisitCarriedOut									AS HomeVisitCarriedOut
 		,cd.FirstHomeVisitDate									AS HomeVisitDate
 		--Outcomes are done in a separate function later on
@@ -351,6 +356,7 @@ BEGIN TRY
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
 		,mdr.RelatedNotificationId								AS MDRRelatedNotificationId
+		,dbo.ufnYesNo(mdr.DiscussedAtMDRForum)					AS MDRDiscussedAtForum
 		-- mbovis details
 		,mbov.AnimalExposureStatus								AS MBovAnimalExposure
 		,mbov.ExposureToKnownCasesStatus						AS MBovKnownCaseExposure
@@ -388,7 +394,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
-		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 4, cd.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 7, cd.DiagnosisDate) ChestCTResult
 	WHERE rr.SourceSystem = 'NTBS'
 
 	DROP TABLE #TempDiseaseSites
