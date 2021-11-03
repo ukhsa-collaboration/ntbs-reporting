@@ -356,7 +356,7 @@ BEGIN TRY
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
 		,mdr.RelatedNotificationId								AS MDRRelatedNotificationId
-		,dbo.ufnYesNo(mdr.DiscussedAtMDRForum)					AS MDRDiscussedAtForum
+		,dbo.ufnYesNoUnknown(mdr.DiscussedAtMDRForum)			AS MDRDiscussedAtForum
 		-- mbovis details
 		,mbov.AnimalExposureStatus								AS MBovAnimalExposure
 		,mbov.ExposureToKnownCasesStatus						AS MBovKnownCaseExposure
