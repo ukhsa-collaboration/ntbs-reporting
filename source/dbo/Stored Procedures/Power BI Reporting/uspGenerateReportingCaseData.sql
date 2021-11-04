@@ -35,6 +35,7 @@ BEGIN TRY
 				WHEN TreatmentOutcome12months IS NOT NULL AND TreatmentOutcome12months != '' AND TreatmentOutcome12months != 'Error: invalid value' THEN TreatmentOutcome12months
 			END
 		,ChestXRayResult = COALESCE(ChestXRayResult, 'No result')
+		,ChestCTResult = COALESCE(ChestCTResult, 'No result')
 	FROM [dbo].[Record_CaseData] cd
 		INNER JOIN [dbo].[Record_PersonalDetails] pd ON pd.NotificationId = cd.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
