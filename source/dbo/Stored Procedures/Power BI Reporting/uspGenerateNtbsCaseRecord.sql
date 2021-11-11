@@ -68,6 +68,7 @@ BEGIN TRY
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
 		,[MdrExpectedDuration]
+		,[HPTReferenceNumber]
 		,[EnhancedCaseManagement]
 		,[EnhancedCaseManagementLevel]
 		,[FirstPresentationSetting]
@@ -224,8 +225,9 @@ BEGIN TRY
 		,dbo.ufnYesNo(cd.IsPostMortem)							AS PostMortemDiagnosis
 		,dbo.ufnYesNo(cd.StartedTreatment)						AS StartedTreatment
 		,trl.TreatmentRegimenDescription						AS TreatmentRegimen
-		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
-		,cd.MDRExpectedTreatmentDurationInMonths				AS MdrExpectedDuration
+		,mdr.MDRTreatmentStartDate								AS MdrTreatmentDate
+		,mdr.ExpectedTreatmentDurationInMonths					AS MdrExpectedDuration
+		,cd.HealthProtectionTeamReferenceNumber					AS HPTReferenceNumber
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
 		,CASE
