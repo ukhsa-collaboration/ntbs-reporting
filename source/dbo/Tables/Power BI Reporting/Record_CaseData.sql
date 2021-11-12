@@ -63,6 +63,7 @@
 	[ChestCTResult] [nvarchar] (100) NULL,
 	[HomeVisitCarriedOut] [varchar] (10) NULL,
 	[HomeVisitDate] date NULL,
+	[HPTReferenceNumber] VARCHAR(40) NULL,
 
 	--outcomes
 	[TreatmentOutcome12months] [varchar](30) NULL,
