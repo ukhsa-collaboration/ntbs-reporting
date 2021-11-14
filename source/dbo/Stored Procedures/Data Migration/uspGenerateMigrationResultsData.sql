@@ -127,7 +127,16 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
-	WHERE mrr.MigrationRunId = @MigrationRunID;
+	WHERE mrr.MigrationRunId = @MigrationRunID AND mn.PrimarySource = 'ETS';
+
+	--use LTBR as the source of the previous outcome, rather than ETS
+	UPDATE mrr
+		SET EtsTreatmentOutcome = tout.to_OutcomeDescription
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN [$(LTBR)].[dbo].[dbt_DiseasePeriod] dp ON dp.dp_PatientID = mn.LtbrPatientId AND dp.dp_DiseasePeriod = RIGHT(mrr.MigrationNotificationId, 1)
+	LEFT OUTER JOIN [$(LTBR)].[dbo].[sbt_TreatmentOutcomes] tout ON tout.to_TreatmentOutcomeID = dp.dp_TreatmentOutcome
+
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
 

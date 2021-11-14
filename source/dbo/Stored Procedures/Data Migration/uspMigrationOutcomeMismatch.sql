@@ -42,7 +42,6 @@ AS
 		LEFT JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = mrr.NTBSNotificationId
 	WHERE
 		n.NotificationStatus != 'Denotified'
-		AND EtsTreatmentOutcome != NTBSTreatmentOutcome
 		AND mrr.EtsTreatmentOutcome != mrr.NTBSTreatmentOutcome
 		AND NOT(mrr.EtsTreatmentOutcome = 'Not evaluated' AND mrr.NTBSTreatmentOutcome = 'No outcome recorded')
 		AND NOT(mrr.EtsTreatmentOutcome = 'Unknown' AND mrr.NTBSTreatmentOutcome = 'Not evaluated')
