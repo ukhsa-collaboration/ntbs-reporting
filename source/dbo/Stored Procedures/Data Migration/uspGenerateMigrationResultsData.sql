@@ -136,6 +136,7 @@ BEGIN TRY
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
 	LEFT OUTER JOIN [$(LTBR)].[dbo].[dbt_DiseasePeriod] dp ON dp.dp_PatientID = mn.LtbrPatientId AND dp.dp_DiseasePeriod = RIGHT(mrr.MigrationNotificationId, 1)
 	LEFT OUTER JOIN [$(LTBR)].[dbo].[sbt_TreatmentOutcomes] tout ON tout.to_TreatmentOutcomeID = dp.dp_TreatmentOutcome
+	WHERE mrr.MigrationRunId = @MigrationRunID AND mn.PrimarySource = 'LTBR';
 
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
