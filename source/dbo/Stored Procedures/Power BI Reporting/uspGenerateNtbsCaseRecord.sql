@@ -21,13 +21,16 @@ BEGIN TRY
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
 		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7);
 
-	SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS [VenueCount], STRING_AGG(venues.[Name], N', ') AS [Description]
-	INTO #TempSocialContextVenues
+	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, venues.[Name] AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
 			INNER JOIN [$(NTBS)].[ReferenceData].[VenueType] venues ON scv.VenueTypeId = venues.VenueTypeId
 		WHERE rr.SourceSystem = 'NTBS'
-		GROUP BY rr.NotificationId;
+		GROUP BY rr.NotificationId, venues.[Name])
+	SELECT NotificationId, SUM(NumberOfVenues) AS [VenueCount], STRING_AGG(Description, ', ') AS [Description]
+	INTO #TempSocialContextVenues
+		FROM venues
+		GROUP BY NotificationId;
 
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
@@ -64,6 +67,8 @@ BEGIN TRY
 		,[StartedTreatment]
 		,[TreatmentRegimen]
 		,[MdrTreatmentDate]
+		,[MdrExpectedDuration]
+		,[HPTReferenceNumber]
 		,[EnhancedCaseManagement]
 		,[EnhancedCaseManagementLevel]
 		,[FirstPresentationSetting]
@@ -71,6 +76,7 @@ BEGIN TRY
 		,[DOTReceived]
 		,[TestPerformed]
 		,[ChestXRayResult]
+		,[ChestCTResult]
 		,[HomeVisitCarriedOut]
 		,[HomeVisitDate]
 		,[TreatmentOutcome12months]
@@ -156,6 +162,7 @@ BEGIN TRY
 		,[MDRExposureToKnownCase]
 		,[MDRRelationshipToCase]
 		,[MDRRelatedNotificationId]
+		,[MDRDiscussedAtForum]
 		,[MBovAnimalExposure]
 		,[MBovKnownCaseExposure]
 		,[MBovOccupationalExposure]
@@ -218,7 +225,9 @@ BEGIN TRY
 		,dbo.ufnYesNo(cd.IsPostMortem)							AS PostMortemDiagnosis
 		,dbo.ufnYesNo(cd.StartedTreatment)						AS StartedTreatment
 		,trl.TreatmentRegimenDescription						AS TreatmentRegimen
-		,cd.MDRTreatmentStartDate								AS MdrTreatmentDate
+		,mdr.MDRTreatmentStartDate								AS MdrTreatmentDate
+		,mdr.ExpectedTreatmentDurationInMonths					AS MdrExpectedDuration
+		,cd.HealthProtectionTeamReferenceNumber					AS HPTReferenceNumber
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
 		,CASE
@@ -231,7 +240,8 @@ BEGIN TRY
 		,cd.IsDotOffered										AS DOTOffered
 		,dl.DOTReceived											AS DOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
-		,ChestXRayResult										AS ChestXRayResult
+		,ChestXRayResult.ChestTestResult						AS ChestXRayResult
+		,ChestCTResult.ChestTestResult							AS ChestCTResult
 		,cd.HomeVisitCarriedOut									AS HomeVisitCarriedOut
 		,cd.FirstHomeVisitDate									AS HomeVisitDate
 		--Outcomes are done in a separate function later on
@@ -348,6 +358,7 @@ BEGIN TRY
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
 		,mdr.RelatedNotificationId								AS MDRRelatedNotificationId
+		,dbo.ufnYesNoUnknown(mdr.DiscussedAtMDRForum)			AS MDRDiscussedAtForum
 		-- mbovis details
 		,mbov.AnimalExposureStatus								AS MBovAnimalExposure
 		,mbov.ExposureToKnownCasesStatus						AS MBovKnownCaseExposure
@@ -385,7 +396,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
-		OUTER APPLY [dbo].[ufnGetCaseRecordChestXrayResults](rr.NotificationId, cd.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 4, cd.DiagnosisDate) ChestXRayResult
+		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 7, cd.DiagnosisDate) ChestCTResult
 	WHERE rr.SourceSystem = 'NTBS'
 
 	DROP TABLE #TempDiseaseSites

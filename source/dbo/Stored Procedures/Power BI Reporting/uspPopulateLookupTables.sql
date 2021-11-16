@@ -22,8 +22,8 @@ BEGIN TRY
 	('DotRefused', NULL, 'DOT refused'),
 	('Unknown', NULL, 'Unknown')
 
-	TRUNCATE TABLE [dbo].[ChestXrayResultLookup]
-	INSERT INTO [dbo].[ChestXrayResultLookup](Ranking, Result, FormattedResult)
+	TRUNCATE TABLE [dbo].[ChestTestResultLookup]
+	INSERT INTO [dbo].[ChestTestResultLookup](Ranking, Result, FormattedResult)
 	VALUES
 	--NTBS values
 	(1, 'ConsistentWithTbCavities', 'Consistent with TB - cavities'),

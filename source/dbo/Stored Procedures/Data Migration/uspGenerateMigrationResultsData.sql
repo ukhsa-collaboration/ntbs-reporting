@@ -127,7 +127,36 @@ BEGIN TRY
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
 	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
-	WHERE mrr.MigrationRunId = @MigrationRunID;
+	WHERE mrr.MigrationRunId = @MigrationRunID AND mn.PrimarySource = 'ETS';
+
+	--use LTBR as the source of the previous outcome, rather than ETS
+
+	WITH EpisodicOutcome AS
+	(
+		SELECT DISTINCT CONCAT(pe_patientId, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
+		FIRST_VALUE(pe_TreatmentOutcome) OVER (PARTITION BY pe_PatientID, pe_DiseasePeriod ORDER BY pe_StartDate DESC) AS EpisodeOutcome
+		FROM [$(LTBR)].[dbo].[dbt_PatientEpisode]
+	),
+	DiseasePeriodOutcome AS
+	(
+
+		SELECT CONCAT(dp_patientId, '-', dp_DiseasePeriod) AS 'OldNotificationId',
+		COALESCE(dp.dp_Outcome3Years, dp_Outcome2Years, dp_Outcome1Year, dp_TreatmentOutcome) AS DiseasePeriodOutcome
+		FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod] dp
+
+	)
+
+	UPDATE mrr
+		SET 
+			LegacyOutcomeId = tout.to_TreatmentOutcomeID
+			,EtsTreatmentOutcome = COALESCE(tout.to_OutcomeDescription, 'No outcome recorded')
+	FROM  [dbo].[MigrationRunResults] mrr
+	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN EpisodicOutcome ep ON ep.OldNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN DiseasePeriodOutcome dp ON dp.OldNotificationId = mrr.MigrationNotificationId
+	LEFT OUTER JOIN [$(LTBR)].[dbo].[sbt_TreatmentOutcomes] tout ON tout.to_TreatmentOutcomeID = COALESCE(ep.EpisodeOutcome, dp.DiseasePeriodOutcome)
+	WHERE mrr.MigrationRunId = @MigrationRunID AND mn.PrimarySource = 'LTBR';
+
 
 	--then update the NTBS outcome, this is a bit more complicated due to the need to parse events happening on the same day
 
@@ -147,6 +176,9 @@ BEGIN TRY
 	(SELECT DISTINCT 
 		NotificationId,
 		--get the most recent event for each notification
+		FIRST_VALUE(te.TreatmentOutcomeId)
+		OVER (PARTITION BY NotificationId 
+			ORDER BY EventDate DESC, OrderBy DESC) AS TreatmentOutcomeId,
 		COALESCE
 		(FIRST_VALUE(ol.OutcomeDescription) 
 			OVER (PARTITION BY NotificationId 
@@ -159,7 +191,7 @@ BEGIN TRY
 		LEFT OUTER JOIN EventOrder ev ON ev.EventName = te.TreatmentEventType)
 
 	UPDATE mrr
-		SET mrr.NTBSTreatmentOutcome = a.OutcomeValue
+		SET mrr.NTBSTreatmentOutcome = a.OutcomeValue, mrr.NTBSOutcomeId = a.TreatmentOutcomeId
 		FROM  [dbo].[MigrationRunResults] mrr
 			INNER JOIN AllEvents a ON a.NotificationId = mrr.NTBSNotificationId
 		WHERE mrr.MigrationRunId = @MigrationRunID
