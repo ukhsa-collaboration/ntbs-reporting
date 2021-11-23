@@ -134,7 +134,7 @@ BEGIN TRY
 	WITH EpisodicOutcome AS
 	(
 		SELECT DISTINCT CONCAT(pe_patientId, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
-		FIRST_VALUE(pe_TreatmentOutcome) OVER (PARTITION BY pe_PatientID, pe_DiseasePeriod ORDER BY pe_StartDate DESC) AS EpisodeOutcome
+		FIRST_VALUE(pe_TreatmentOutcome) OVER (PARTITION BY pe_PatientID, pe_DiseasePeriod ORDER BY pe_EndDate DESC) AS EpisodeOutcome
 		FROM [$(LTBR)].[dbo].[dbt_PatientEpisode]
 	),
 	DiseasePeriodOutcome AS
