@@ -67,7 +67,7 @@
 	[TOMTreatmentRegimen24mth] [nvarchar](150) NULL,
 	[TOMNonTuberculousMycobacteria24mth] [nvarchar](500) NULL,
 	[TOMConversion24mth] [nvarchar](24) NULL,
-	[TOMComment24mth] [nvarchar](500) NULL,
+	[TOMComment24mth] [nvarchar](1000) NULL,
 	[TOMReported24mth] [nvarchar](10) NULL,
 	
 	[TreatmentHPU] [nvarchar](255) NULL,
@@ -93,7 +93,7 @@
 	[TOMTreatmentRegimen36mth] [nvarchar](150) NULL,
 	[TOMNonTuberculousMycobacteria36mth] [nvarchar](500) NULL,
 	[TOMConversion36mth] [nvarchar](36) NULL,
-	[TOMComment36mth] [nvarchar](500) NULL,
+	[TOMComment36mth] [nvarchar](1000) NULL,
 	[TOMReported36mth] [nvarchar](10) NULL,
 	[TOMReasonExceeds24mths] [nvarchar](50) NULL,
 	[WorldRegionName] [nvarchar](50) NULL, 
