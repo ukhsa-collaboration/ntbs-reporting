@@ -34,7 +34,7 @@ BEGIN TRY
 	TRUNCATE TABLE [dbo].[NtbsTransitionDateLookup]
 	INSERT INTO [dbo].[NtbsTransitionDateLookup] (PHEC, TransitionDate)
 	VALUES
-	('E45000001', NULL),
+	('E45000001', '2021-11-29'),
 	('E45000005', NULL),
 	('E45000009', '2021-07-09'),
 	('E45000010', '2021-09-27'),
