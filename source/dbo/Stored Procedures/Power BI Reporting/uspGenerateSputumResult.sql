@@ -20,6 +20,8 @@ AS
 		SELECT 3 AS [Rank], 'Awaiting' AS ResultName
 		UNION
 		SELECT 4 AS [Rank], 'Not known' AS ResultName
+		UNION
+		SELECT 5 AS [Rank], 'NoResult' AS ResultName
 	),
 
 	EtsSputumResults AS
