@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwMissingCohortReviewItems]
 	AS
 		
-	SELECT
+	WITH MissingItems AS (SELECT
 	cd.NotificationId, 
 	n.NotificationDate,
 	cd.TbService,
@@ -24,11 +24,20 @@
 		OR (cd.DOTOffered = 'Yes' AND cd.DOTReceived IS NULL) THEN 'Yes' END AS DOT,
 	CASE WHEN cd.LastRecordedTreatmentOutcome IS NULL THEN 'Yes' END AS OutcomeRecorded,
 	CASE WHEN cd.ChildContactsIdentified IS NULL AND cd.AdultContactsIdentified IS NULL THEN 'Yes' END AS ContactsIdentified,
-	CASE WHEN cd.ChildContactsAssessed IS NULL AND cd.AdultContactsAssessed IS NULL THEN 'Yes' END AS ContactScreened,
+	CASE WHEN cd.ChildContactsAssessed IS NULL AND cd.AdultContactsAssessed IS NULL THEN 'Yes' END AS ContactsScreened,
 	CASE WHEN cd.ChildContactsLTBI IS NULL AND cd.AdultContactsLTBI IS NULL THEN 'Yes' END AS ContactsLTBI,
 	CASE WHEN cd.ChildContactsLTBITreat IS NULL AND cd.AdultContactsLTBITreat IS NULL THEN 'Yes' END AS ContactsLTBIStartedTreatment,
 	CASE WHEN cd.ChildContactsLTBITreatComplete IS NULL AND cd.AdultContactsLTBITreatComplete IS NULL THEN 'Yes' END AS ContactsLTBICompletedTreatment 
 	
 	FROM [Record_CaseData] cd
 	LEFT JOIN Record_CultureAndResistance car ON car.NotificationId = cd.NotificationId
-	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId
+	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId)
+
+	SELECT * FROM MissingItems
+	WHERE NOT (
+		Sex IS NULL AND EthnicGroup IS NULL AND CountryOfBirth IS NULL AND
+		SputumResult IS NULL AND CultureResult IS NULL AND AntibioticSensitivity IS NULL AND
+		FirstPresentation IS NULL AND ECM IS NULL AND HIV IS NULL AND DOT IS NULL AND
+		OutcomeRecorded IS NULL AND ContactsIdentified IS NULL AND ContactsScreened IS NULL AND
+		ContactsLTBI IS NULL AND ContactsLTBIStartedTreatment IS NULL AND ContactsLTBICompletedTreatment IS NULL
+	)
