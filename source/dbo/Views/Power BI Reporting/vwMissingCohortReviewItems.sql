@@ -5,6 +5,8 @@
 	cd.NotificationId, 
 	n.NotificationDate,
 	cd.TbService,
+	tbs.Code AS TbServiceCode,
+	tbs.PHECCode AS RegionCode,
 	cd.CaseManager,
 
 	CASE WHEN cd.Sex = 'Unknown' THEN 'Yes' END AS Sex,
@@ -31,7 +33,9 @@
 	
 	FROM [Record_CaseData] cd
 	LEFT JOIN Record_CultureAndResistance car ON car.NotificationId = cd.NotificationId
-	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId)
+	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId
+	LEFT JOIN [$(NTBS)].dbo.HospitalDetails hosp ON hosp.NotificationId = n.NotificationId
+	LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hosp.TBServiceCode)
 
 	SELECT * FROM MissingItems
 	WHERE NOT (
