@@ -21,7 +21,7 @@ AS
 		UNION
 		SELECT 4 AS [Rank], 'Not known' AS ResultName
 		UNION
-		SELECT 5 AS [Rank], 'NoResult' AS ResultName
+		SELECT 5 AS [Rank], 'NoResultAvailable' AS ResultName
 	),
 
 	EtsSputumResults AS
