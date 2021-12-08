@@ -103,7 +103,10 @@ CREATE VIEW [dbo].[vwLegacyLabExtract]
 	    END								    AS 'LaboratoryTestType'
         ,st.[Description]				    AS 'Specimen'
         ,mtr.[TestDate]					    AS 'SpecimenDate'
-        ,mtr.[Result]
+        ,CASE
+            WHEN mtr.[Result] = 'NoResultAvailable' THEN 'No result'
+            ELSE mtr.[Result]
+         END                                AS 'Result'
         ,NULL								AS 'Species'
         ,NULL								AS 'SourceLabName'
         ,NULL								AS 'PatientId' 
