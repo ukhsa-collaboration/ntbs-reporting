@@ -2,12 +2,7 @@
 	AS
 		
 	WITH MissingItems AS (SELECT
-	cd.NotificationId, 
-	n.NotificationDate,
-	cd.TbService,
-	tbs.Code AS TbServiceCode,
-	tbs.PHECCode AS RegionCode,
-	cd.CaseManager,
+	cd.NotificationId,
 
 	CASE WHEN cd.Sex = 'Unknown' THEN 'Yes' END AS Sex,
 	CASE WHEN cd.EthnicGroup = 'Not stated' THEN 'Yes' END AS EthnicGroup,
@@ -33,9 +28,7 @@
 	
 	FROM [Record_CaseData] cd
 	LEFT JOIN Record_CultureAndResistance car ON car.NotificationId = cd.NotificationId
-	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId
-	LEFT JOIN [$(NTBS)].dbo.HospitalDetails hosp ON hosp.NotificationId = n.NotificationId
-	LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hosp.TBServiceCode)
+	JOIN [$(NTBS)].dbo.Notification n ON n.NotificationId = cd.NotificationId)
 
 	SELECT * FROM MissingItems
 	WHERE NOT (
