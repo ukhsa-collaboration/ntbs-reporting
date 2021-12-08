@@ -103,7 +103,10 @@ CREATE VIEW [dbo].[vwLegacyLabExtract]
 	    END								    AS 'LaboratoryTestType'
         ,st.[Description]				    AS 'Specimen'
         ,mtr.[TestDate]					    AS 'SpecimenDate'
-        ,mtr.[Result]
+        ,CASE
+            WHEN mtr.[Result] = 'NoResultAvailable' THEN 'No result'
+            ELSE mtr.[Result]
+         END                                AS 'Result'
         ,NULL								AS 'Species'
         ,NULL								AS 'SourceLabName'
         ,NULL								AS 'PatientId' 
@@ -139,7 +142,7 @@ CREATE VIEW [dbo].[vwLegacyLabExtract]
         INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = rr.NotificationId
         LEFT OUTER JOIN [$(NTBS)].[ReferenceData].ManualTestType tt ON tt.ManualTestTypeId = mtr.ManualTestTypeId
         LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[SampleType] st ON st.SampleTypeId = mtr.SampleTypeId
-    WHERE mtr.ManualTestTypeId != 4 --exclude chest x-ray results
+    WHERE mtr.ManualTestTypeId NOT IN ( 4, 7 ) --exclude chest x-ray/CT results
 
     UNION
     
