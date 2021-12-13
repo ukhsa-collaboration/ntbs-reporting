@@ -318,7 +318,6 @@
     <Build Include="dbo\Views\Power BI Reporting\vwNtbsUsers.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwRegionAndPermissions.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwAllTbService.sql" />
-    <Build Include="dbo\Views\Power BI Reporting\vwMigrationUsersAndNotifications.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwLegacyLabExtract.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationDuplicateAlerts.sql" />
     <Build Include="dbo\Stored Procedures\Data Migration\uspMigrationOutcomeMismatch.sql" />
