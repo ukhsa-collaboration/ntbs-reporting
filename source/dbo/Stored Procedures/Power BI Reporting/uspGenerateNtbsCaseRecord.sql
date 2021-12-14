@@ -19,7 +19,7 @@ BEGIN TRY
 	INTO #TempManualTestResult
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
-		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7);
+		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7) AND Result <> 'NoResultAvailable';
 
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, venues.[Name] AS [Description]
 		FROM RecordRegister rr
