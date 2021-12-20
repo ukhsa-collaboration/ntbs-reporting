@@ -32,6 +32,16 @@ BEGIN TRY
 		FROM venues
 		GROUP BY NotificationId;
 
+	WITH firstTransferOut AS
+	(SELECT t.NotificationId, TbServiceCode, tbs.[Name]
+		FROM (SELECT DISTINCT NotificationId FROM [$(NTBS)].dbo.TreatmentEvent) te
+		CROSS APPLY (SELECT TOP 1 *
+			FROM [$(NTBS)].dbo.TreatmentEvent te2
+			WHERE te2.NotificationId = te.NotificationId AND TreatmentEventType = 'TransferOut'
+			ORDER BY EventDate) t
+		JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = t.TbServiceCode)
+	SELECT * INTO #TempTransfers FROM firstTransferOut;
+
 	INSERT INTO [dbo].[Record_CaseData](
 		[NotificationId]
 		,[EtsId]
@@ -40,6 +50,9 @@ BEGIN TRY
 		,[CaseManager]
 		,[Consultant]
 		,[HospitalId]
+		,[TbService]
+		,[NotifyingTbService]
+		,[NotifyingTbServiceCode]
 		,[Age]
 		,[Sex]
 		,[UkBorn]
@@ -178,6 +191,15 @@ BEGIN TRY
 		,u.DisplayName											AS CaseManager
 		,hd.Consultant											AS Consultant
 		,hd.HospitalId											AS HospitalID
+		,tbs.[Name]												AS TbService
+		,CASE
+			WHEN transferOut.NotificationId IS NULL THEN tbs.[Name]
+			ELSE transferOut.[Name]
+		END														AS NotifyingTbService
+		,CASE
+			WHEN transferOut.NotificationId IS NULL THEN hd.TBServiceCode
+			ELSE transferOut.[TbServiceCode]
+		END														AS NotifyingTbServiceCode
 		,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)			AS Age
 		,s.[Label]												AS Sex
 		,dbo.ufnUkBorn(p.CountryId)								AS UKBorn
@@ -371,6 +393,7 @@ BEGIN TRY
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rr.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].TbService tbs ON tbs.Code = hd.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hd.CaseManagerId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].Occupation occ ON occ.OccupationId = p.OccupationId
@@ -396,6 +419,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
+		LEFT OUTER JOIN #TempTransfers transferOut ON transferOut.NotificationId = n.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 4, cd.DiagnosisDate) ChestXRayResult
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 7, cd.DiagnosisDate) ChestCTResult
 	WHERE rr.SourceSystem = 'NTBS'

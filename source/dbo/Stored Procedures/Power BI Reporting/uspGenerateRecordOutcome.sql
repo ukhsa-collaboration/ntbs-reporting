@@ -26,12 +26,12 @@ BEGIN TRY
 		[dbo].[Outcome] o
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = o.NotificationId
 		INNER JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = o.NotificationId
-	WHERE te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade'
+	WHERE te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade' OR te.TreatmentEventType IS NULL
 		
 	--Call the stored proc for each outcome period: 1, 2 and 3 (12 month, 24 month, 36 month)
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 1
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 2
-	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 3
+	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 3;
 
 
 --WRAP-UP STEPS
@@ -40,12 +40,37 @@ BEGIN TRY
 	--if it can be found in the Periodic Outcome table, use this
 	--if not, set it to an empty string
 		
+	WITH transfersOut AS
+	(SELECT te.NotificationId, EventDate, TbServiceCode, tbs.[Name]
+		FROM [$(NTBS)].dbo.TreatmentEvent te
+			JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = te.TbServiceCode
+		WHERE TreatmentEventType = 'TransferOut')
 
 	UPDATE cd
 	SET
 		TreatmentOutcome12months = po1.OutcomeValue, 
 		TreatmentOutcome24months = po2.OutcomeValue, 
-		TreatmentOutcome36months = po3.OutcomeValue
+		TreatmentOutcome36months = po3.OutcomeValue,
+		TbServiceResponsible12Months =
+		CASE
+			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 1, o.TreatmentStartDate)))
+				THEN (SELECT TOP 1 tout.[Name] FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 1, o.TreatmentStartDate)) ORDER BY EventDate)
+			ELSE cd.TbService
+		END,
+		TbServiceResponsible24Months =
+		CASE
+			WHEN DATEADD(DAY, -1, DATEADD(YEAR, 2, o.TreatmentStartDate)) > GETUTCDATE() OR po1.IsFinal = 1 THEN NULL
+			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 2, o.TreatmentStartDate)))
+				THEN (SELECT TOP 1 tout.[Name] FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 2, o.TreatmentStartDate)) ORDER BY EventDate)
+			ELSE cd.TbService
+		END,
+		TbServiceResponsible36Months =
+		CASE
+			WHEN DATEADD(DAY, -1, DATEADD(YEAR, 3, o.TreatmentStartDate)) > GETUTCDATE() OR po1.IsFinal = 1 OR po2.IsFinal = 1 THEN NULL
+			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 3, o.TreatmentStartDate)))
+				THEN (SELECT TOP 1 tout.[Name] FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 3, o.TreatmentStartDate)) ORDER BY EventDate)
+			ELSE cd.TbService
+		END
 	FROM [dbo].[Record_CaseData] cd
 		INNER JOIN [dbo].[Outcome] o ON o.NotificationId = cd.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = o.NotificationId
