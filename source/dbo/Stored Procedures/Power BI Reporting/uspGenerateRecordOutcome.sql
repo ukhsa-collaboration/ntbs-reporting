@@ -25,8 +25,8 @@ BEGIN TRY
 	FROM
 		[dbo].[Outcome] o
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = o.NotificationId
-		INNER JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = o.NotificationId
-	WHERE te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade' OR te.TreatmentEventType IS NULL
+		LEFT JOIN [$(NTBS)].[dbo].[TreatmentEvent] te ON te.NotificationId = o.NotificationId
+			AND (te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade')
 		
 	--Call the stored proc for each outcome period: 1, 2 and 3 (12 month, 24 month, 36 month)
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 1
