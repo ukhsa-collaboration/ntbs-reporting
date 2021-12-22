@@ -29,8 +29,8 @@ BEGIN TRY
 			AND (te.TreatmentEventType = 'TreatmentStart' OR te.TreatmentEventType = 'DiagnosisMade')
 		
 	--Call the stored proc for each outcome period: 1, 2 and 3 (12 month, 24 month, 36 month)
-	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 1
-	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 2
+	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 1;
+	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 2;
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 3;
 
 
@@ -51,6 +51,18 @@ BEGIN TRY
 		TreatmentOutcome12months = po1.OutcomeValue, 
 		TreatmentOutcome24months = po2.OutcomeValue, 
 		TreatmentOutcome36months = po3.OutcomeValue,
+		NotifyingTbService =
+		CASE
+			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut)
+				THEN (SELECT TOP 1 tout.[Name] FROM transfersOut tout ORDER BY EventDate)
+			ELSE cd.TbService
+		END,
+		NotifyingTbServiceCode =
+		CASE
+			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut)
+				THEN (SELECT TOP 1 tout.[TbServiceCode] FROM transfersOut tout ORDER BY EventDate)
+			ELSE h.TBServiceCode
+		END,
 		TbServiceResponsible12Months =
 		CASE
 			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut tout WHERE tout.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, 1, o.TreatmentStartDate)))
@@ -74,6 +86,7 @@ BEGIN TRY
 	FROM [dbo].[Record_CaseData] cd
 		INNER JOIN [dbo].[Outcome] o ON o.NotificationId = cd.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = o.NotificationId
+		INNER JOIN [$(NTBS)].ReferenceData.Hospital h ON h.HospitalId = cd.HospitalId
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po1 ON po1.NotificationId = o.NotificationId AND po1.TimePeriod = 1
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po2 ON po2.NotificationId = o.NotificationId AND po2.TimePeriod = 2
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po3 ON po3.NotificationId = o.NotificationId AND po3.TimePeriod = 3
