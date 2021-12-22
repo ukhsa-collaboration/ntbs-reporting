@@ -34,6 +34,27 @@ SELECT TOP(1)
 		WHEN te.TreatmentEventType = 'TreatmentOutcome' THEN 6
 		ELSE 7
 		END) AS EventOrder,
+	--ensure that if the conditions are met from NTBS-2905, the outcome is recorded as death
+	(CASE
+		WHEN cd.IsPostMortem = 1
+			AND te.TreatmentEventType = 'TreatmentOutcome'
+			AND te.TreatmentOutcomeId IN (7, 8, 9, 10)
+			AND
+			(
+				(
+					(SELECT COUNT(*) FROM [$(NTBS)].dbo.TreatmentEvent te2 WHERE te2.NotificationId = te.NotificationId) = 1
+				)
+				OR
+				(
+					(SELECT COUNT(*) FROM [$(NTBS)].dbo.TreatmentEvent te2 WHERE te2.NotificationId = te.NotificationId) = 2
+					AND
+					((SELECT COUNT(*) FROM [$(NTBS)].dbo.TreatmentEvent te2
+						WHERE te2.NotificationId = te.NotificationId AND te2.TreatmentEventType = 'DiagnosisMade' AND te2.EventDate >= te.EventDate) = 1)
+				)
+			)
+		THEN 1
+		ELSE 0
+		END) AS IsPostMortemDeathEvent,
 	--calculate whether the event is an ending one or not
 	(CASE 
 		WHEN tro.TreatmentOutcomeType != 'NotEvaluated' THEN 1 
@@ -45,6 +66,7 @@ SELECT TOP(1)
 	 te.EventDate,
 	 te.Note
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
+	JOIN [$(NTBS)].[dbo].[ClinicalDetails] cd ON cd.NotificationId = te.NotificationId
 	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
 	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType 
 	INNER JOIN [dbo].[Outcome] o ON o.NotificationId = te.NotificationId
@@ -54,5 +76,5 @@ SELECT TOP(1)
 		AND te.EventDate < DATEADD(YEAR, @TimePeriod, o.TreatmentStartDate)
 		AND te.NotificationId = @NotificationId
 
-	ORDER BY te.EventDate DESC, EventOrder DESC
+	ORDER BY IsPostMortemDeathEvent DESC, te.EventDate DESC, EventOrder DESC
 	
