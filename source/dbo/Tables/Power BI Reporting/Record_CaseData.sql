@@ -13,6 +13,8 @@
 	[HospitalId] [varchar](36) NULL,
 	[Hospital] [nvarchar](255) NULL,
 	[TbService] [nvarchar](150) NULL,
+	[NotifyingTbService] [nvarchar](150) NULL,
+	[NotifyingTbServiceCode] [nvarchar](15) NULL,
 	[Age] [tinyint] NULL,
 	[Sex] [varchar](10) NULL,
 	[UkBorn] [varchar](10) null,
@@ -72,6 +74,9 @@
 	[LastRecordedTreatmentOutcome] [varchar](30) NULL,
 	[DateOfDeath] DATE NULL,
 	[TreatmentEndDate] date NULL,
+	[TbServiceResponsible12Months] [nvarchar](150) NULL,
+	[TbServiceResponsible24Months] [nvarchar](150) NULL,
+	[TbServiceResponsible36Months] [nvarchar](150) NULL,
 
 
 	--contact tracing

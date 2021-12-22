@@ -40,6 +40,7 @@ BEGIN TRY
 		,[CaseManager]
 		,[Consultant]
 		,[HospitalId]
+		,[TbService]
 		,[Age]
 		,[Sex]
 		,[UkBorn]
@@ -178,6 +179,7 @@ BEGIN TRY
 		,u.DisplayName											AS CaseManager
 		,hd.Consultant											AS Consultant
 		,hd.HospitalId											AS HospitalID
+		,tbs.[Name]												AS TbService
 		,dbo.ufnGetAgefrom(p.Dob,n.NotificationDate)			AS Age
 		,s.[Label]												AS Sex
 		,dbo.ufnUkBorn(p.CountryId)								AS UKBorn
@@ -371,6 +373,7 @@ BEGIN TRY
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rr.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].TbService tbs ON tbs.Code = hd.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hd.CaseManagerId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].Occupation occ ON occ.OccupationId = p.OccupationId
