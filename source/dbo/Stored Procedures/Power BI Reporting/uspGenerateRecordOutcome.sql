@@ -21,7 +21,7 @@ BEGIN TRY
 
 	UPDATE o
 	SET 
-		TreatmentStartDate = COALESCE(te.EventDate, n.NotificationDate)
+		NotificationStartDate = COALESCE(te.EventDate, n.NotificationDate)
 	FROM
 		[dbo].[Outcome] o
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = o.NotificationId
@@ -41,12 +41,18 @@ BEGIN TRY
 	--if it can be found in the Periodic Outcome table, use this
 	--if not, set it to an empty string
 		
-	TRUNCATE TABLE [dbo].[AllTransfers]
-	INSERT INTO [dbo].[AllTransfers]
-		SELECT te.NotificationId, EventDate, TbServiceCode, tbs.[Name] AS TbServiceName, te.TreatmentEventType AS TransferType
+	TRUNCATE TABLE [dbo].[TransfersOut]
+	INSERT INTO [dbo].[TransfersOut]
+		SELECT te.NotificationId, EventDate, TbServiceCode, tbs.[Name] AS TbServiceName
 		FROM [$(NTBS)].dbo.TreatmentEvent te
 			JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = te.TbServiceCode
-		WHERE TreatmentEventType = 'TransferOut' OR TreatmentEventType = 'TransferIn'
+		WHERE TreatmentEventType = 'TransferOut';
+
+	WITH NotifyingServiceAndCode AS 
+	(SELECT DISTINCT NotificationId,
+		FIRST_VALUE(TbServiceCode) OVER (PARTITION BY NotificationId ORDER BY EventDate) AS TbServiceCode,
+		FIRST_VALUE(TbServiceName) OVER (PARTITION BY NotificationId ORDER BY EventDate) AS TbServiceName
+	FROM TransfersOut)
 
 	UPDATE cd
 	SET
@@ -56,31 +62,24 @@ BEGIN TRY
 		TreatmentOutcome12monthsDescriptive = po1.DescriptiveOutcome,
 		TreatmentOutcome24monthsDescriptive = po2.DescriptiveOutcome,
 		TreatmentOutcome36monthsDescriptive = po3.DescriptiveOutcome,
-		NotifyingTbService =
-		COALESCE(
-			(SELECT TOP 1 trans.TbServiceName FROM AllTransfers trans WHERE trans.NotificationId = cd.NotificationId AND trans.TransferType = 'TransferOut' ORDER BY EventDate)
-			,cd.TbService
-		),
-		NotifyingTbServiceCode =
-		COALESCE(
-			(SELECT TOP 1 trans.TbServiceCode FROM AllTransfers trans WHERE trans.NotificationId = cd.NotificationId AND trans.TransferType = 'TransferOut' ORDER BY EventDate)
-			,h.TBServiceCode
-		),
-		TbServiceResponsible12Months = [dbo].ufnGetServiceResponsible(1, cd.NotificationId, o.TreatmentStartDate, cd.TbService),
+		NotifyingTbService = COALESCE(nots.TbServiceName ,cd.TbService),
+		NotifyingTbServiceCode = COALESCE(nots.TbServiceCode ,h.TBServiceCode),
+		TbServiceResponsible12Months = [dbo].ufnGetServiceResponsible(1, cd.NotificationId, o.NotificationStartDate, cd.TbService),
 		TbServiceResponsible24Months =
 		CASE
 			WHEN po2.OutcomeValue IS NULL THEN NULL
-			ELSE [dbo].ufnGetServiceResponsible(2, cd.NotificationId, o.TreatmentStartDate, cd.TbService)
+			ELSE [dbo].ufnGetServiceResponsible(2, cd.NotificationId, o.NotificationStartDate, cd.TbService)
 		END,
 		TbServiceResponsible36Months =
 		CASE
 			WHEN po3.OutcomeValue IS NULL THEN NULL
-			ELSE [dbo].ufnGetServiceResponsible(3, cd.NotificationId, o.TreatmentStartDate, cd.TbService)
+			ELSE [dbo].ufnGetServiceResponsible(3, cd.NotificationId, o.NotificationStartDate, cd.TbService)
 		END
 	FROM [dbo].[Record_CaseData] cd
 		INNER JOIN [dbo].[Outcome] o ON o.NotificationId = cd.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = o.NotificationId
 		INNER JOIN [$(NTBS)].ReferenceData.Hospital h ON h.HospitalId = cd.HospitalId
+		LEFT OUTER JOIN NotifyingServiceAndCode nots ON nots.NotificationId = cd.NotificationId
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po1 ON po1.NotificationId = o.NotificationId AND po1.TimePeriod = 1
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po2 ON po2.NotificationId = o.NotificationId AND po2.TimePeriod = 2
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po3 ON po3.NotificationId = o.NotificationId AND po3.TimePeriod = 3

@@ -1,6 +1,6 @@
 ﻿CREATE FUNCTION [dbo].[ufnGetServiceResponsible]
 (
-	@TimePeriod int,
+	@NumberOfYears int,
 	@NotificationId int,
 	@StartDate DATETIME,
 	@DefaultService NVARCHAR(150)
@@ -13,19 +13,10 @@ BEGIN
 	SET @ReturnValue = 
 		COALESCE (
 			(
-			SELECT TOP 1 trans.TbServiceName
-			FROM AllTransfers trans
-			WHERE trans.NotificationId = @NotificationId
-				AND trans.EventDate = DATEADD(DAY, -1, DATEADD(YEAR, @TimePeriod, @StartDate))
-				AND trans.TransferType = 'TransferIn'
-			ORDER BY EventDate DESC
-			),
-			(
-			SELECT TOP 1 trans.TbServiceName
-			FROM AllTransfers trans
-			WHERE trans.NotificationId = @NotificationId
-				AND trans.EventDate >= DATEADD(DAY, -1, DATEADD(YEAR, @TimePeriod, @StartDate))
-				AND trans.TransferType = 'TransferOut'
+			SELECT TOP 1 tout.TbServiceName
+			FROM TransfersOut tout
+			WHERE tout.NotificationId = @NotificationId
+				AND tout.EventDate > DATEADD(DAY, -1, DATEADD(YEAR, @NumberOfYears, @StartDate))
 			ORDER BY EventDate
 			),
 			@DefaultService
