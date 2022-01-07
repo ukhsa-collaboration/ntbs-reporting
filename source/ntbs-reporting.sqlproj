@@ -439,6 +439,10 @@
       <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NumberOfReportingYears">
+      <DefaultValue>5</DefaultValue>
+      <Value>$(SqlCmdVar__22)</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <DefaultValue>ReportServer</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
