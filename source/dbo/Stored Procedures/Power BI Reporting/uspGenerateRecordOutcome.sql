@@ -30,6 +30,7 @@ BEGIN TRY
 		
 	--Call the stored proc for each outcome period: 1, 2 and 3 (12 month, 24 month, 36 month)
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 1;
+	EXEC [dbo].[uspUpdateOutcomesForPostMortemCases];
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 2;
 	EXEC [dbo].[uspGenerateReusableOutcomePeriodic] 3;
 
