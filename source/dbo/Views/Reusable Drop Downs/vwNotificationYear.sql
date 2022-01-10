@@ -34,4 +34,5 @@ CREATE VIEW [dbo].[vwNotificationYear] AS
 				-4 AS Id,
 				YEAR(DATEADD(YEAR, DATEDIFF(YEAR, 0, GETDATE()) -4, 0)) AS NotificationYear
 		) NotificationYear
+	WHERE Id > CONVERT(INT, '-$(NumberOfReportingYears)')
 	ORDER BY NotificationYear DESC
