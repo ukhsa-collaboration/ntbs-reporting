@@ -99,6 +99,9 @@
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>NTBS_Specimen_Matching</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NumberOfReportingYears">
+      <Value>5</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>ReportServer</Value>
     </SqlCmdVariable>

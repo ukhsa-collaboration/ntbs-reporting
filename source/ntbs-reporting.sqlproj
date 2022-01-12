@@ -329,6 +329,7 @@
     <Build Include="dbo\Tables\Power BI Reporting\EtsManualTestResultLookup.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMissingCohortReviewItems.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwDrugResistanceProfiles.sql" />
+    <Build Include="dbo\Stored Procedures\SSRS Reporting\uspUpdateOutcomesForPostMortemCases.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -437,6 +438,10 @@
     <SqlCmdVariable Include="$(ReportServer)">
       <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NumberOfReportingYears">
+      <DefaultValue>5</DefaultValue>
+      <Value>$(SqlCmdVar__22)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <DefaultValue>ReportServer</DefaultValue>
