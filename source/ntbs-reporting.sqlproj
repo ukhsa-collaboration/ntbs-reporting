@@ -330,6 +330,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwMissingCohortReviewItems.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwDrugResistanceProfiles.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspUpdateOutcomesForPostMortemCases.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwServiceDirectory.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
