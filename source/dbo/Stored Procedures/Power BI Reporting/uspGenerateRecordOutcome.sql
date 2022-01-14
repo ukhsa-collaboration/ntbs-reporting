@@ -49,11 +49,12 @@ BEGIN TRY
 		WHERE TreatmentEventType = 'TransferOut';
 
 	WITH NotifyingServiceAndCodeFromInitialEvent AS
-	(SELECT DISTINCT NotificationId,
+	(SELECT NotificationId,
 		TbServiceCode AS TbServiceCode,
 		tbs.Name AS TbServiceName
 	FROM [$(NTBS)].dbo.TreatmentEvent te
 		JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = te.TbServiceCode
+	-- Each notification will have only one of these types of event, never both
 	WHERE te.TreatmentEventType IN ('DiagnosisMade', 'TreatmentStart')),
 
 	NotifyingServiceAndCodeFromTransfer AS
