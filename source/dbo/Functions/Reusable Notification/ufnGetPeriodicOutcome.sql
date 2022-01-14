@@ -36,8 +36,7 @@ SELECT TOP(1)
 		END) AS EventOrder,
 	--calculate whether the event is an ending one or not
 	(CASE 
-		WHEN tro.TreatmentOutcomeType != 'NotEvaluated' THEN 1 
-		WHEN tro.TreatmentOutcomeType = 'NotEvaluated' AND tro.TreatmentOutcomeSubType = 'TransferredAbroad' THEN 1
+		WHEN tro.TreatmentOutcomeSubType <> 'StillOnTreatment' THEN 1
 		ELSE 0
 		END) AS EndingEvent,
 	 COALESCE(ol.OutcomeDescription, 'No outcome recorded') AS 'OutcomeValue',
