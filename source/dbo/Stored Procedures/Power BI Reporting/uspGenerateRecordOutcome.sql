@@ -52,6 +52,9 @@ BEGIN TRY
 		TreatmentOutcome12months = po1.OutcomeValue, 
 		TreatmentOutcome24months = po2.OutcomeValue, 
 		TreatmentOutcome36months = po3.OutcomeValue,
+		TreatmentOutcome12monthsDescriptive = po1.DescriptiveOutcome,
+		TreatmentOutcome24monthsDescriptive = po2.DescriptiveOutcome,
+		TreatmentOutcome36monthsDescriptive = po3.DescriptiveOutcome,
 		NotifyingTbService =
 		CASE
 			WHEN cd.NotificationId IN (SELECT NotificationId FROM transfersOut)

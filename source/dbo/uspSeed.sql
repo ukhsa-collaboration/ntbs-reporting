@@ -118,6 +118,21 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('NotEvaluated', 'Not evaluated')
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TreatmentStopped', 'Treatment stopped')
 		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Failed', 'Failed')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('AdditionalResistance', 'Additional resistance')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('AdverseReaction', 'Adverse reaction')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('CulturePositive', 'Culture positive')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('MdrRegimen', 'Multi-drug resistant regimen')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Other', 'Other')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('PatientLeftUk', 'Patient left UK')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('PatientNotLeftUk', 'Patient has not left UK')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('StandardTherapy', 'Standard therapy')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('StillOnTreatment', 'Still on treatment')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TbCausedDeath', 'TB caused death')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TbContributedToDeath', 'TB contributed to death')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TbIncidentalToDeath', 'TB was incidental to death')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('TransferredAbroad', 'Transferred abroad')
+		INSERT [dbo].[OutcomeLookup] (OutcomeCode, OutcomeDescription) VALUES ('Unknown', 'Unknown')
+
 
 		DELETE FROM [dbo].[DenotificationReasonMapping]
 		INSERT [dbo].[DenotificationReasonMapping] (Reason, ReasonOutputName) VALUES ('DuplicateEntry', 'Duplicate entry')

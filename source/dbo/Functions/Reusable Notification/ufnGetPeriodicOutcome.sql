@@ -42,11 +42,17 @@ SELECT TOP(1)
 		END) AS EndingEvent,
 	 COALESCE(ol.OutcomeDescription, 'No outcome recorded') AS 'OutcomeValue',
 	 tro.TreatmentOutcomeSubType,
+	 CASE 
+		WHEN subtype.OutcomeDescription IS NOT NULL THEN CONCAT(ol.OutcomeDescription, ' - ', subtype.OutcomeDescription)
+		ELSE COALESCE(ol.OutcomeDescription, 'No outcome recorded')
+		END
+	 AS 'DescriptiveOutcome',
 	 te.EventDate,
 	 te.Note
 	FROM [$(NTBS)].[dbo].[TreatmentEvent] te 
 	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TreatmentOutcome] tro ON tro.TreatmentOutcomeId = te.TreatmentOutcomeId
-	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType 
+	LEFT OUTER JOIN [dbo].[OutcomeLookup] ol ON ol.OutcomeCode = tro.TreatmentOutcomeType
+	LEFT OUTER JOIN [dbo].[OutcomeLookup] subtype ON subtype.OutcomeCode = tro.TreatmentOutcomeSubType
 	INNER JOIN [dbo].[Outcome] o ON o.NotificationId = te.NotificationId
 	--look for records which are on or after the start of the period
 	WHERE te.EventDate >= DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate)
