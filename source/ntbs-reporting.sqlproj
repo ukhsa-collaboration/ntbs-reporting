@@ -331,6 +331,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwDrugResistanceProfiles.sql" />
     <Build Include="dbo\Stored Procedures\SSRS Reporting\uspUpdateOutcomesForPostMortemCases.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwServiceDirectory.sql" />
+    <Build Include="dbo\Tables\Reusable Notification\TransfersOut.sql" />
+    <Build Include="dbo\Functions\Reusable Notification\ufnGetServiceResponsible.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />

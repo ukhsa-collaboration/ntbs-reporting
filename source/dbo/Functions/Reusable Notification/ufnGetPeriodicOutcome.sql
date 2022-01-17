@@ -54,9 +54,9 @@ SELECT TOP(1)
 	LEFT OUTER JOIN [dbo].[OutcomeLookup] subtype ON subtype.OutcomeCode = tro.TreatmentOutcomeSubType
 	INNER JOIN [dbo].[Outcome] o ON o.NotificationId = te.NotificationId
 	--look for records which are on or after the start of the period
-	WHERE te.EventDate >= DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate)
+	WHERE te.EventDate >= DATEADD(YEAR, @TimePeriod-1, o.NotificationStartDate)
 		--and before the end of the period.  Adding a year in this way deals with the problem of leap days
-		AND te.EventDate < DATEADD(YEAR, @TimePeriod, o.TreatmentStartDate)
+		AND te.EventDate < DATEADD(YEAR, @TimePeriod, o.NotificationStartDate)
 		AND te.NotificationId = @NotificationId
 
 	ORDER BY te.EventDate DESC, EventOrder DESC
