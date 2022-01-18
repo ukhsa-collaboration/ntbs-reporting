@@ -15,6 +15,7 @@
 	[TbService] [nvarchar](150) NULL,
 	[NotifyingTbService] [nvarchar](150) NULL,
 	[NotifyingTbServiceCode] [nvarchar](15) NULL,
+	[NotifyingRegionCode] [nvarchar](15) NULL,
 	[Age] [tinyint] NULL,
 	[Sex] [varchar](10) NULL,
 	[UkBorn] [varchar](10) null,
