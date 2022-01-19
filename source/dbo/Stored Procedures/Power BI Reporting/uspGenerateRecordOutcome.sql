@@ -95,6 +95,14 @@ BEGIN TRY
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po3 ON po3.NotificationId = o.NotificationId AND po3.TimePeriod = 3
 	WHERE rr.SourceSystem = 'NTBS'
 
+	--finally update the notifying region
+
+	UPDATE cd
+	SET
+		NotifyingRegionCode = tbs.PHECCode
+	FROM [dbo].[Record_CaseData] cd
+		INNER JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = cd.NotifyingTbServiceCode
+
 
 	--finally delete this table. TODO: Leave commented out for now for debugging
 	--DELETE FROM [dbo].[Outcome]
