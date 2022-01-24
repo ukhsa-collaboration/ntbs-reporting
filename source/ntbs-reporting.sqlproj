@@ -117,8 +117,8 @@
     <Folder Include="dbo\Views\Authorization" />
     <Folder Include="dbo\Views\Reference Data" />
     <Folder Include="dbo\Tables\Power BI Reporting" />
-    <Folder Include="dbo\Views\Power BI Reporting" />
     <Folder Include="dbo\Stored Procedures\Power BI Reporting" />
+    <Folder Include="dbo\Views\Power BI Reporting" />
     <Folder Include="dbo\Functions\Power BI Reporting" />
     <Folder Include="dbo\Stored Procedures\SSRS Reporting" />
     <Folder Include="dbo\Stored Procedures\Report LegacyExtract\" />
@@ -270,6 +270,7 @@
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacySitesOfDisease.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTOMFields.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyPeriodicTOMFields.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingLegacyTreatmentRegimen.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNotifiedRecords.sql" />
     <Build Include="dbo\Functions\Power BI Reporting\ufnMapEtsVisitorDurationToMonths.sql" />
     <Build Include="dbo\Views\Power BI Reporting\ReusableNotification.sql" />
