@@ -9,6 +9,7 @@ BEGIN TRY
 	--finally do stuff that makes sense just to do for all records, like the last recorded treatment outcome 
 
 	EXEC [dbo].[uspGenerateSputumResult]
+    EXEC [dbo].[uspGenerateInitialSputumResults]
 
 	UPDATE cd 
 	SET AnySocialRiskFactor = CASE 

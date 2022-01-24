@@ -117,7 +117,6 @@
     <Folder Include="dbo\Views\Authorization" />
     <Folder Include="dbo\Views\Reference Data" />
     <Folder Include="dbo\Tables\Power BI Reporting" />
-    <Folder Include="dbo\Stored Procedures\Power BI Reporting" />
     <Folder Include="dbo\Views\Power BI Reporting" />
     <Folder Include="dbo\Functions\Power BI Reporting" />
     <Folder Include="dbo\Stored Procedures\SSRS Reporting" />
@@ -325,6 +324,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwMissingAntibioticMappings.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNewAntibioticCodes.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateSputumResult.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateInitialSputumResults.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\DiseaseSiteOrdering.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\EtsManualTestResultLookup.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMissingCohortReviewItems.sql" />
@@ -456,5 +456,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\PostDeploy.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateInitialSputumResults.sql" />
   </ItemGroup>
 </Project>
