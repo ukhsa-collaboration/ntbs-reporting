@@ -5,21 +5,21 @@ AS
 
 	ResultRanking AS
 	(
-		SELECT 1 AS Rank, 1 AS SubRank, 'Positive' AS ResultName
+		SELECT 1 AS Rank, 1 AS SubRank, 'Positive' AS ResultName, 'Positive' AS DisplayName
 		UNION
-		SELECT 1 AS Rank, 2 AS SubRank, 'Negative' AS ResultName
+		SELECT 1 AS Rank, 2 AS SubRank, 'Negative' AS ResultName, 'Negative' AS ResultName
 		UNION
-		SELECT 2 AS Rank, NULL AS SubRank, 'NoResultAvailable' AS ResultName
+		SELECT 2 AS Rank, NULL AS SubRank, 'NoResultAvailable' AS ResultName, 'No result available' AS ResultName
 		UNION
-		SELECT 3 AS Rank, NULL AS SubRank, 'Awaiting' AS ResultName
+		SELECT 3 AS Rank, NULL AS SubRank, 'Awaiting' AS ResultName, 'Awaiting' AS ResultName
 	),
 
 	NtbsInitialSputumSmearResults AS 
 	(
 		SELECT DISTINCT 
-           		rr.NotificationId, 
-            		rr.SourceSystem, 
-           		FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
+           	rr.NotificationId, 
+            	rr.SourceSystem, 
+           	FIRST_VALUE(rra.[DisplayName]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
 		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
@@ -31,9 +31,9 @@ AS
 	NtbsInitialSputumPCRResults AS
 	(
 		SELECT DISTINCT 
-           		rr.NotificationId,
+           	rr.NotificationId,
 	  		rr.SourceSystem, 
-           		FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
+           	FIRST_VALUE(rra.[DisplayName]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
 		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
@@ -44,19 +44,13 @@ AS
 
     UPDATE cd
     SET cd.InitialSputumSmearResult =
-            (CASE sr.InitialSputumSmearResult
-                WHEN 'Positive' THEN 'Positive'
-                WHEN 'Negative' THEN 'Negative'
-                WHEN 'NoResultAvailable' THEN 'No result available'
-                WHEN 'Awaiting' THEN 'Awaiting'
+            (CASE
+                WHEN sr.InitialSputumSmearResult IS NOT NULL THEN sr.InitialSputumSmearResult
                 ELSE 'No result'
                 END),
         cd.InitialSputumPCRResult =
-            (CASE pr.InitialSputumPCRResult
-                WHEN 'Positive' THEN 'Positive'
-                WHEN 'Negative' THEN 'Negative'
-                WHEN 'NoResultAvailable' THEN 'No result available'
-                WHEN 'Awaiting' THEN 'Awaiting'
+            (CASE
+                WHEN pr.InitialSputumPCRResult IS NOT NULL THEN pr.InitialSputumPCRResult
                 ELSE 'No result'
                 END)
     FROM [dbo].[Record_CaseData] cd
