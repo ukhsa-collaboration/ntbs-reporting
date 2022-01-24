@@ -61,6 +61,8 @@
 	[DOTReceived] [varchar] (20) NULL,
 	[TestPerformed] [varchar] (10) NULL,
 	[SampleTaken] [varchar] (10) NULL,
+	[InitialSputumSmearResult] [varchar] (20) NULL,
+	[InitialSputumPCRResult] [varchar] (20) NULL,
 	[SputumResult] [varchar] (20) NULL,
 	[ChestXRayResult] [nvarchar] (100) NULL,
 	[ChestCTResult] [nvarchar] (100) NULL,

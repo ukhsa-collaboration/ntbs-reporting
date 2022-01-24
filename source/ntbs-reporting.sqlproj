@@ -325,6 +325,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwMissingAntibioticMappings.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwNewAntibioticCodes.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateSputumResult.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateInitialSputumResults.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\DiseaseSiteOrdering.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\EtsManualTestResultLookup.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwMissingCohortReviewItems.sql" />
