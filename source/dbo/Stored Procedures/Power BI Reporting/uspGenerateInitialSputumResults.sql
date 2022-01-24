@@ -17,9 +17,9 @@ AS
 	NtbsInitialSputumSmearResults AS 
 	(
 		SELECT DISTINCT 
-            rr.NotificationId, 
-            rr.SourceSystem, 
-            FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
+           		rr.NotificationId, 
+            		rr.SourceSystem, 
+           		FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
 		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
@@ -31,9 +31,9 @@ AS
 	NtbsInitialSputumPCRResults AS
 	(
 		SELECT DISTINCT 
-            rr.NotificationId, 
-            rr.SourceSystem, 
-            FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
+           		rr.NotificationId,
+	  		rr.SourceSystem, 
+           		FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
 		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
@@ -45,19 +45,19 @@ AS
     UPDATE cd
     SET cd.InitialSputumSmearResult =
             (CASE sr.InitialSputumSmearResult
-                 WHEN 'Positive' THEN 'Positive'
-                 WHEN 'Negative' THEN 'Negative'
-                 WHEN 'NoResultAvailable' THEN 'No result available'
-                 WHEN 'Awaiting' THEN 'Awaiting'
-                 ELSE 'No result'
+                WHEN 'Positive' THEN 'Positive'
+                WHEN 'Negative' THEN 'Negative'
+                WHEN 'NoResultAvailable' THEN 'No result available'
+                WHEN 'Awaiting' THEN 'Awaiting'
+                ELSE 'No result'
                 END),
         cd.InitialSputumPCRResult =
             (CASE pr.InitialSputumPCRResult
-                 WHEN 'Positive' THEN 'Positive'
-                 WHEN 'Negative' THEN 'Negative'
-                 WHEN 'NoResultAvailable' THEN 'No result available'
-                 WHEN 'Awaiting' THEN 'Awaiting'
-                 ELSE 'No result'
+                WHEN 'Positive' THEN 'Positive'
+                WHEN 'Negative' THEN 'Negative'
+                WHEN 'NoResultAvailable' THEN 'No result available'
+                WHEN 'Awaiting' THEN 'Awaiting'
+                ELSE 'No result'
                 END)
     FROM [dbo].[Record_CaseData] cd
         INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
