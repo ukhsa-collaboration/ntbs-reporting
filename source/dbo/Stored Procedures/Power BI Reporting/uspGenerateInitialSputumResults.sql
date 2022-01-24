@@ -32,7 +32,7 @@ AS
 	(
 		SELECT DISTINCT 
            	rr.NotificationId,
-	  		rr.SourceSystem, 
+	  	rr.SourceSystem, 
            	FIRST_VALUE(rra.[DisplayName]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
 		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
