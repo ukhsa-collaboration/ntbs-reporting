@@ -1,22 +1,3 @@
-/*
-Populate the InitialSputumSmearResult and InitialSputumPCRResult fields for each case
-Note: in all cases ‘sputum’ includes both sample types sputum - induced and sputum - spontaneous
-Calculated as follows for both smear and pcr:
-	If (any Positive or Negative results): 
-		Find results r from earliest date
-		if (r only contains negative results):
-			'Negative'
-		else:
-			'Positive'
-	Else if (any results are 'No result available'):
-		'No Result available'
-	Else if (any results 'Awaiting'):
-		'Awaiting'
-	Else (no results):
-		'No result'
-*/
-
-
 CREATE PROCEDURE [dbo].[uspGenerateInitialSputumResults]
 
 AS
@@ -24,19 +5,22 @@ AS
 
 	ResultRanking AS
 	(
-		SELECT 1 AS [Rank], 1 AS [SubRank], 'Positive' AS ResultName
+		SELECT 1 AS Rank, 1 AS SubRank, 'Positive' AS ResultName
 		UNION
-		SELECT 1 AS [Rank], 2 AS [SubRank], 'Negative' AS ResultName
+		SELECT 1 AS Rank, 2 AS SubRank, 'Negative' AS ResultName
 		UNION
-		SELECT 2 AS [Rank], NULL AS [SubRank], 'NoResultAvailable' AS ResultName
+		SELECT 2 AS Rank, NULL AS SubRank, 'NoResultAvailable' AS ResultName
 		UNION
-		SELECT 3 AS [Rank], NULL AS [SubRank], 'Awaiting' AS ResultName
+		SELECT 3 AS Rank, NULL AS SubRank, 'Awaiting' AS ResultName
 	),
 
 	NtbsInitialSputumSmearResults AS 
 	(
-		SELECT DISTINCT rr.NotificationId, rr.SourceSystem, FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
-		FROM [test-ntbs].[dbo].[ManualTestResult] mtr
+		SELECT DISTINCT 
+            rr.NotificationId, 
+            rr.SourceSystem, 
+            FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumSmearResult
+		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
 		WHERE mtr.ManualTestTypeId=1 
@@ -46,8 +30,11 @@ AS
 
 	NtbsInitialSputumPCRResults AS
 	(
-		SELECT DISTINCT rr.NotificationId, rr.SourceSystem, FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
-		FROM [test-ntbs].[dbo].[ManualTestResult] mtr
+		SELECT DISTINCT 
+            rr.NotificationId, 
+            rr.SourceSystem, 
+            FIRST_VALUE(mtr.[Result]) OVER (PARTITION BY rr.NotificationId ORDER BY rra.[Rank], mtr.TestDate, rra.[SubRank]) AS InitialSputumPCRResult
+		FROM [$(NTBS)].[dbo].[ManualTestResult] mtr
 			JOIN [dbo].[RecordRegister] rr on rr.NotificationId = mtr.NotificationId
 			INNER JOIN ResultRanking rra ON rra.ResultName = mtr.Result
 		WHERE mtr.ManualTestTypeId=5 
