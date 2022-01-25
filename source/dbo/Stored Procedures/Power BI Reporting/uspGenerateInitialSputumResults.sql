@@ -45,11 +45,13 @@ AS
     UPDATE cd
     SET cd.InitialSputumSmearResult =
             (CASE
+				WHEN rr.SourceSystem <> 'NTBS' THEN NULL
                 WHEN sr.InitialSputumSmearResult IS NOT NULL THEN sr.InitialSputumSmearResult
                 ELSE 'No result'
                 END),
         cd.InitialSputumPCRResult =
             (CASE
+				WHEN rr.SourceSystem <> 'NTBS' THEN NULL
                 WHEN pr.InitialSputumPCRResult IS NOT NULL THEN pr.InitialSputumPCRResult
                 ELSE 'No result'
                 END)
