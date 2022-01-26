@@ -9,6 +9,7 @@ BEGIN TRY
 	--finally do stuff that makes sense just to do for all records, like the last recorded treatment outcome 
 
 	EXEC [dbo].[uspGenerateSputumResult]
+    	EXEC [dbo].[uspGenerateInitialSputumResults]
 
 	UPDATE cd 
 	SET AnySocialRiskFactor = CASE 
@@ -34,6 +35,7 @@ BEGIN TRY
 				WHEN TreatmentOutcome24months IS NOT NULL AND TreatmentOutcome24months != '' AND TreatmentOutcome24months != 'Error: invalid value' THEN TreatmentOutcome24months
 				WHEN TreatmentOutcome12months IS NOT NULL AND TreatmentOutcome12months != '' AND TreatmentOutcome12months != 'Error: invalid value' THEN TreatmentOutcome12months
 			END
+		,LastRecordedTreatmentOutcomeDescriptive = COALESCE(TreatmentOutcome36monthsDescriptive, TreatmentOutcome24monthsDescriptive, TreatmentOutcome12monthsDescriptive)
 		,ChestXRayResult = COALESCE(ChestXRayResult, 'No result')
 		,ChestCTResult = COALESCE(ChestCTResult, 'No result')
 	FROM [dbo].[Record_CaseData] cd

@@ -26,8 +26,8 @@ CREATE PROCEDURE [dbo].[uspGenerateReusableOutcomePeriodic]
 AS
 	
 	--first insert a record into PeriodicOutcome where one exists for the notification in the time period
-	INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, IsFinal)
-		SELECT o.NotificationId, @TimePeriod, po.OutcomeValue, po.EndingEvent from [dbo].Outcome o
+	INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, DescriptiveOutcome, IsFinal)
+		SELECT o.NotificationId, @TimePeriod, po.OutcomeValue, po.DescriptiveOutcome, po.EndingEvent from [dbo].Outcome o
 		CROSS APPLY ufnGetPeriodicOutcome(@TimePeriod, o.NotificationId) po
 
 	--then add a record with 'No outcome recorded' if an outcome was expected but does not exist
@@ -35,10 +35,10 @@ AS
 	--for period 1, this should not be necessary because every notification should have a 'TreatmentStart' or 'DiagnosisMade' event within the first 12 months (i.e. on day 1)
 	--so should all have been dealt with by the clause above
 	IF @TimePeriod > 1
-		INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, IsFinal)
-			SELECT NotificationId, @TimePeriod, 'No outcome recorded', 0  FROM [dbo].[Outcome] o 
+		INSERT INTO [dbo].PeriodicOutcome (NotificationId, TimePeriod, OutcomeValue, DescriptiveOutcome, IsFinal)
+			SELECT NotificationId, @TimePeriod, 'No outcome recorded', 'No outcome recorded', 0  FROM [dbo].[Outcome] o 
 			--find the records that are old enough for inclusion - they should be older by at least one day than the end of the previous time period
-			WHERE GETUTCDATE() > DATEADD(YEAR, @TimePeriod-1, o.TreatmentStartDate)
+			WHERE GETUTCDATE() > DATEADD(YEAR, @TimePeriod-1, o.NotificationStartDate)
 			--and the previous period's outcome was non-final
 			AND o.NotificationId IN 
 			(SELECT po.NotificationId FROM [dbo].[PeriodicOutcome] po 
