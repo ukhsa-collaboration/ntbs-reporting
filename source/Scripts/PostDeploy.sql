@@ -11,3 +11,4 @@ Post-Deployment Script Template
 */
 
 :r .\SetVersionNumber.sql
+:r .\SetEnvironment.sql

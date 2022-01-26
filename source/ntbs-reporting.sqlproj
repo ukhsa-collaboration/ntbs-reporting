@@ -334,6 +334,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwServiceDirectory.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TransfersOut.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetServiceResponsible.sql" />
+    <None Include="Scripts\SetEnvironment.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Environment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
