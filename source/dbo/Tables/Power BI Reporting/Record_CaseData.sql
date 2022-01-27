@@ -70,6 +70,28 @@
 	[HomeVisitDate] date NULL,
 	[HPTReferenceNumber] VARCHAR(40) NULL,
 
+	--individual disease sites
+	[Pulmonary site] VARCHAR(5) NULL,
+	[Spine site] VARCHAR(5) NULL,
+	[Bone/joint: Other site] VARCHAR(5) NULL,
+	[Meningitis site] VARCHAR(5) NULL,
+	[CNS: Other site] VARCHAR(5) NULL,
+	[Ocular site] VARCHAR(5) NULL,
+	[Cryptic disseminated site] VARCHAR(5) NULL,
+	[Gastrointestinal/peritoneal site] VARCHAR(5) NULL,
+	[Genitourinary site] VARCHAR(5) NULL,
+	[Lymph nodes: Intra-thoracic site] VARCHAR(5) NULL,
+	[Lymph nodes: Extra-thoracic site] VARCHAR(5) NULL,
+	[Laryngeal site] VARCHAR(5) NULL,
+	[Miliary site] VARCHAR(5) NULL,
+	[Pleural site] VARCHAR(5) NULL,
+	[Pericardial site] VARCHAR(5) NULL,
+	[Soft tissue/Skin site] VARCHAR(5) NULL,
+	[Other extra-pulmonary site] VARCHAR(5) NULL,
+	[Other extra-pulmonary site description] VARCHAR(1000) NULL,
+
+
+
 	--outcomes
 	[TreatmentOutcome12months] [varchar](30) NULL,
 	[TreatmentOutcome24months] [varchar](30) NULL,
