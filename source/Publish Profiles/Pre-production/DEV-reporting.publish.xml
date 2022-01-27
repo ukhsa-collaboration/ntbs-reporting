@@ -102,5 +102,11 @@
     <SqlCmdVariable Include="ReportServer">
       <Value>ReportServer</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NumberOfReportingYears">
+      <Value>4</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <Value>localhost:5001/</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

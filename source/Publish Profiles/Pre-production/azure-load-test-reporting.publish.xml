@@ -102,5 +102,8 @@
     <SqlCmdVariable Include="ReportServer">
       <Value>ReportServer</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <Value>https://ntbs-test.e32846b1ddf0432eb63f.northeurope.aksapp.io/</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

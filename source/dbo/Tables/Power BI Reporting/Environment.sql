@@ -1,4 +1,4 @@
 ﻿CREATE TABLE [dbo].[Environment]
 (
-	[Name] NVARCHAR(MAX)
+	[URL] NVARCHAR(MAX)
 )
