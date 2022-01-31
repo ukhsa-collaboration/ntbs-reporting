@@ -421,6 +421,8 @@ BEGIN TRY
 
 	EXEC [dbo].uspGenerateRecordOutcome
 
+	EXEC [dbo].uspGenerateReportingCaseDataSitesOfDisease
+
 
 END TRY
 BEGIN CATCH

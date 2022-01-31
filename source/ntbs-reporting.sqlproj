@@ -334,6 +334,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwServiceDirectory.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TransfersOut.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetServiceResponsible.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateReportingCaseDataSitesOfDisease.sql" />
+    <Build Include="dbo\Functions\Power BI Reporting\ufnMapYesNoToBooleanText.sql" />
     <None Include="Scripts\SetEnvironment.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\Environment.sql" />
   </ItemGroup>
