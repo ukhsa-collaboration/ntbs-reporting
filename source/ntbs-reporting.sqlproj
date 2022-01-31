@@ -334,6 +334,8 @@
     <Build Include="dbo\Views\Power BI Reporting\vwServiceDirectory.sql" />
     <Build Include="dbo\Tables\Reusable Notification\TransfersOut.sql" />
     <Build Include="dbo\Functions\Reusable Notification\ufnGetServiceResponsible.sql" />
+    <None Include="Scripts\SetEnvironment.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\Environment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -442,6 +444,10 @@
     <SqlCmdVariable Include="$(ReportServer)">
       <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <DefaultValue>https://ntbs-test.e32846b1ddf0432eb63f.northeurope.aksapp.io/</DefaultValue>
+      <Value>$(SqlCmdVar__23)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
       <DefaultValue>5</DefaultValue>
