@@ -35,7 +35,7 @@ SELECT s.Id AS UserId,
 FROM [$(ETS)].[dbo].[SystemUser] s
 	INNER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth ON eth.Id = s.PermissionId
 	LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth2 ON eth2.Id = eth.ParentId
-WHERE s.AuditDelete IS NULL AND AuditSuspended IS NULL),
+WHERE s.AuditDelete IS NULL),
 --overwrite the permission name
 AliasedPermissions AS (
 SELECT ep.UserId,
