@@ -38,7 +38,7 @@
       ,[Long]
       ,[SymptomOnsetDate]
 	  ,[FirstPresentationDate] AS [PresentedDate]
-	  ,COALESCE(OnsetToFirstPresentationDays, 0) + COALESCE(FirstPresentationToReferralRecievedDays, 0) + COALESCE(ReferralRecievedToTbServiceFirstPresentationDays, 0) AS [OnsetToPresentationDays]
+	  ,COALESCE(OnsetToFirstPresentationDays, 0) + COALESCE(FirstPresentationToReferralReceivedDays, 0) + COALESCE(ReferralReceivedToTbServiceFirstPresentationDays, 0) AS [OnsetToPresentationDays]
       ,[DiagnosisDate]
       ,[PresentationToDiagnosisDays]
       ,[StartOfTreatmentDate]

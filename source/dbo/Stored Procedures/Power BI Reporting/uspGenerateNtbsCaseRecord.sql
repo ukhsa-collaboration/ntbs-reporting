@@ -54,10 +54,10 @@ BEGIN TRY
 		,[SymptomOnsetDate]
 		,[FirstPresentationDate]
 		,[OnsetToFirstPresentationDays]
-		,[TbServiceReferralRecievedDate]
-		,[FirstPresentationToReferralRecievedDays]
+		,[TbServiceReferralReceivedDate]
+		,[FirstPresentationToReferralReceivedDays]
 		,[TbServicePresentationDate]
-		,[ReferralRecievedToTbServiceFirstPresentationDays]
+		,[ReferralReceivedToTbServiceFirstPresentationDays]
 		,[DiagnosisDate]
 		,[PresentationToDiagnosisDays]
 		,[StartOfTreatmentDate]
@@ -203,16 +203,16 @@ BEGIN TRY
 						cd.SymptomStartDate,
 						cd.FirstPresentationDate))
 					AS SMALLINT)								AS OnsetToFirstPresentationDays
-		,cd.TBServiceReferralDate							AS TbServiceReferralRecievedDate
+		,cd.TBServiceReferralDate							AS TbServiceReferralReceivedDate
 		,CAST((DATEDIFF(DAY,
 						cd.FirstPresentationDate,
 						cd.TBServiceReferralDate))
-					AS SMALLINT)								AS FirstPresentationToReferralRecievedDays
+					AS SMALLINT)								AS FirstPresentationToReferralReceivedDays
 		,cd.TBServicePresentationDate							AS TbServicePresentationDate
 		,CAST((DATEDIFF(DAY,
 						cd.TBServiceReferralDate,
 						cd.TBServicePresentationDate))
-					AS SMALLINT)								AS ReferralRecievedToTbServiceFirstPresentationDays
+					AS SMALLINT)								AS ReferralReceivedToTbServiceFirstPresentationDays
 		,cd.DiagnosisDate										AS DiagnosisDate
 		,CAST((DATEDIFF(DAY,
 						cd.TBServicePresentationDate,
