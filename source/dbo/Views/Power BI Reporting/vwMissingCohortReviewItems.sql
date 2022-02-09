@@ -12,7 +12,7 @@
 	CASE WHEN car.CulturePositive = 'No' AND cd.CultureSummary = 'No result' THEN 'Yes' END AS CultureResult,
 	CASE WHEN car.CulturePositive = 'Yes' AND car.DrugResistanceProfile = 'No result' THEN 'Yes' END AS AntibioticSensitivity,
 	CASE WHEN cd.FirstPresentationDate IS NULL AND cd.FirstPresentationSetting IS NULL THEN 'Yes' END AS FirstPresentation,
-	CASE WHEN cd.TbServiceReferralReceivedDate IS NULL THEN 'Yes' END AS ReferralReceivedDate,
+	CASE WHEN cd.TbServiceReferralReceivedDate IS NULL AND n.NotificationDate >= '2022-01-01' THEN 'Yes' END AS ReferralReceivedDate,
 	CASE WHEN cd.TreatmentEndDate IS NULL THEN 'Yes' END AS TreatmentEndDate,
 	CASE WHEN cd.EnhancedCaseManagement IS NULL
 		OR cd.EnhancedCaseManagement = 'Unknown'
