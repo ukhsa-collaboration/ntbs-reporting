@@ -1,68 +1,29 @@
 ﻿CREATE PROCEDURE [dbo].[uspGenerateReportingLegacySitesOfDisease]
 AS
 BEGIN TRY
-	--get the list of all legacy site outputnames
-	WITH cteLegacyDiseaseSites(SiteOutputName) AS
-	(SELECT SiteOutputName FROM
-	[dbo].[LegacySiteMapping]),
 
-	--get the list of notifications from companion table
-	cteNotification(NotificationId) AS
-	(SELECT NotificationId
-	FROM [dbo].[RecordRegister]
-	WHERE SourceSystem = 'NTBS'),
-
-	--then one row per legacy site for the notification. This will group
-	--some sites together under 'NonPulmonaryOther'
-		cteNotificationSites (NotificationId, SiteOutputName, HasSite) AS
-		(SELECT ns.NotificationId, ls.SiteOutputName, 'TRUE' AS 'HasSite'
-		FROM [$(NTBS)].[dbo].[NotificationSite] ns
-		INNER JOIN cteNotification ce ON ce.NotificationId = ns.NotificationId
-		LEFT OUTER JOIN [dbo].[LegacySiteMapping] ls ON ls.SiteId = ns.SiteId
-		GROUP BY ns.NotificationId, ls.SiteOutputName),
-
-	--then cross-join so there is one per notification and site of disease, inserting a zero if the notification does not have that site of disease
-	--also map to output names
-
-	cteAllResults(NotificationId, SiteOutputName, HasSite) AS
-	(SELECT DISTINCT n.NotificationId, cd.SiteOutputName, COALESCE(c.HasSite, 'FALSE') AS HasSite
-		FROM cteNotification n
-		CROSS JOIN cteLegacyDiseaseSites cd
-		LEFT OUTER JOIN cteNotificationSites c
-			ON c.NotificationId = n.NotificationId AND c.SiteOutputName = cd.SiteOutputName),
-
-	--then create a pivot table of the values so there is one row per notificationId
-	ctePivotResults(NotificationId, [SitePulmonary], [SiteBoneSpine], [SiteBoneOther], [SiteCNSMeningitis], [SiteCNSOther], [SiteCryptic], [SiteGI], [SiteGU], [SiteITLymphNodes],
-				[SiteLymphNode], [SiteLaryngeal], [SiteMiliary], [SitePleural], [SiteNonPulmonaryOther]) AS
-	(SELECT * FROM cteAllResults
-		AS SOURCE
-		PIVOT
-		(
-			MAX(HasSite)
-			FOR [SiteOutputName] IN ([SitePulmonary], [SiteBoneSpine], [SiteBoneOther], [SiteCNSMeningitis], [SiteCNSOther], [SiteCryptic], [SiteGI], [SiteGU], [SiteITLymphNodes],
-				[SiteLymphNode], [SiteLaryngeal], [SiteMiliary], [SitePleural], [SiteNonPulmonaryOther])
-		) AS Result)
-
-	--finally perform the update
+	-- perform the update
 	UPDATE le
-		SET SitePulmonary = pr.SitePulmonary,
-		SiteBoneSpine = pr.SiteBoneSpine,
-		SiteBoneOther = pr.SiteBoneOther,
-		SiteCNSMeningitis = pr.SiteCNSMeningitis,
-		SiteCNSOther = pr.SiteCNSOther,
-		SiteCryptic = pr.SiteCryptic,
-		SiteGI = pr.SiteGI,
-		SiteGU = pr.SiteGU,
-		SiteITLymphNodes = pr.SiteITLymphNodes,
-		SiteLymphNode = pr.SiteLymphNode,
-		SiteLaryngeal = pr.SiteLaryngeal,
-		SiteMiliary = pr.SiteMiliary,
-		SitePleural = pr.SitePleural,
-		SiteNonPulmonaryOther = pr.SiteNonPulmonaryOther,
+		SET SitePulmonary = dbo.ufnMapYesNoToBooleanText(cd.[Pulmonary site]),
+		SiteBoneSpine = dbo.ufnMapYesNoToBooleanText(cd.[Spine site]),
+		SiteBoneOther = dbo.ufnMapYesNoToBooleanText(cd.[Bone/joint: Other site]),
+		SiteCNSMeningitis = dbo.ufnMapYesNoToBooleanText(cd.[Meningitis site]),
+		SiteCNSOther = dbo.ufnMapYesNoToBooleanText(cd.[CNS: Other site]),
+		SiteCryptic = dbo.ufnMapYesNoToBooleanText(cd.[Cryptic disseminated site]),
+		SiteGI = dbo.ufnMapYesNoToBooleanText(cd.[Gastrointestinal/peritoneal site]),
+		SiteGU = dbo.ufnMapYesNoToBooleanText(cd.[Genitourinary site]),
+		SiteITLymphNodes = dbo.ufnMapYesNoToBooleanText(cd.[Lymph nodes: Intra-thoracic site]),
+		SiteLymphNode = dbo.ufnMapYesNoToBooleanText(cd.[Lymph nodes: Extra-thoracic site]),
+		SiteLaryngeal = dbo.ufnMapYesNoToBooleanText(cd.[Laryngeal site]),
+		SiteMiliary = dbo.ufnMapYesNoToBooleanText(cd.[Miliary site]),
+		SitePleural = dbo.ufnMapYesNoToBooleanText(cd.[Pleural site]),
+		SiteNonPulmonaryOther = CASE
+			WHEN 'Yes' IN (cd.[Ocular site], cd.[Pericardial site], cd.[Soft tissue/Skin site], cd.[Other extra-pulmonary site]) THEN 'TRUE'
+			ELSE 'FALSE' END,
 		SiteNonPulmonaryUnknown = 'FALSE',
 		SiteUnknown = 'FALSE'
 		FROM [dbo].[Record_LegacyExtract] le
-			INNER JOIN ctePivotResults pr ON pr.NotificationId = le.NotificationId
+			INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = le.NotificationId
 
 	--Add in the OtherExtraPulmonarySite text
 	UPDATE le

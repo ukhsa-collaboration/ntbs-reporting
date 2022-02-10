@@ -105,5 +105,8 @@
     <SqlCmdVariable Include="ReportServer">
       <Value>NTBS_ReportServer_Live</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <Value>https://ntbs.phe.gov.uk/</Value>
+    </SqlCmdVariable>
   </ItemGroup>
 </Project>

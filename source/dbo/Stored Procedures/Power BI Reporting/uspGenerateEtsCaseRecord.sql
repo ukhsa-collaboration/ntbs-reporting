@@ -70,8 +70,10 @@ BEGIN TRY
 		,[SymptomOnsetDate]
 		,[FirstPresentationDate]
 		,[OnsetToFirstPresentationDays]
+		,[TbServiceReferralReceivedDate]
+		,[FirstPresentationToReferralReceivedDays]
 		,[TbServicePresentationDate]
-		,[FirstPresentationToTbServicePresentationDays]
+		,[ReferralReceivedToTbServiceFirstPresentationDays]
 		,[DiagnosisDate]
 		,[PresentationToDiagnosisDays]
 		,[StartOfTreatmentDate]
@@ -208,9 +210,12 @@ BEGIN TRY
 		,DATEDIFF(DAY,
 			te.SymptomOnset,
 			te.DatePresented)											AS OnsetToFirstPresentationDays
+		--TB service referral date doesn't exist in ETS so cannot be set
+		,NULL															AS TbServiceReferralReceivedDate
+		,NULL															AS FirstPresentationToReferralReceivedDays
 		--presentation to TB service doesn't exist in ETS so cannot be set
 		,NULL															AS TbServicePresentationDate
-		,NULL															AS FirstPresentationToTbServicePresentationDays
+		,NULL															AS ReferralReceivedToTbServiceFirstPresentationDays
 		,CONVERT(DATE, te.DateOfDiagnosis)								AS DiagnosisDate
 		,DATEDIFF(DAY,
 			te.DatePresented,
