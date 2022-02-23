@@ -339,6 +339,7 @@
     <Build Include="dbo\Functions\Power BI Reporting\ufnMapYesNoToBooleanText.sql" />
     <None Include="Scripts\SetEnvironment.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\Environment.sql" />
+    <Build Include="dbo\Views\Power BI Reporting\vwApplicationUsage.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
