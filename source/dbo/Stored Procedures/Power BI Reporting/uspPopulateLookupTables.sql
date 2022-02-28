@@ -22,6 +22,14 @@ BEGIN TRY
 	('DotRefused', NULL, 'DOT refused'),
 	('Unknown', NULL, 'Unknown')
 
+	TRUNCATE TABLE [dbo].[ManualTestResultRanking];
+	INSERT INTO [dbo].[ManualTestResultRanking](Rank, SubRank, ResultName, DisplayName)
+	VALUES
+	(1, 1, 'Positive', 'Positive'),
+	(1, 2, 'Negative', 'Negative'),
+	(2, NULL, 'NoResultAvailable', 'No result available'),
+	(3, NULL, 'Awaiting', 'Awaiting')
+
 	TRUNCATE TABLE [dbo].[ChestTestResultLookup]
 	INSERT INTO [dbo].[ChestTestResultLookup](Ranking, Result, FormattedResult)
 	VALUES

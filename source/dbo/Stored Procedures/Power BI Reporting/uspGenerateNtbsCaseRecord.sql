@@ -10,17 +10,6 @@ BEGIN TRY
 		WHERE rr.SourceSystem = 'NTBS'
 		GROUP BY rr.NotificationId;
 
-	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
-		FIRST_VALUE(Result) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
-			CASE WHEN Result = 'Positive' THEN 1
-				WHEN Result = 'ConsistentWithTbOther' THEN 2
-				WHEN Result = 'Negative' THEN 3
-				WHEN Result = 'Awaiting' THEN 4 END) AS Result
-	INTO #TempManualTestResult
-		FROM RecordRegister rr
-			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
-		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7) AND Result <> 'NoResultAvailable';
-
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, venues.[Name] AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
@@ -157,11 +146,6 @@ BEGIN TRY
 		,[BiologicalTherapy]
 		,[Transplantation]
 		,[OtherImmunoSuppression]
-		,[SmearSummary]
-		,[CultureSummary]
-		,[HistologySummary]
-		,[PCRSummary]
-		,[LineProbeAssaySummary]
 		,[MDRExposureToKnownCase]
 		,[MDRRelationshipToCase]
 		,[MDRRelatedNotificationId]
@@ -347,22 +331,6 @@ BEGIN TRY
 		,dbo.ufnYesNo(id.HasBioTherapy)							AS BiologicalTherapy
 		,dbo.ufnYesNo(id.HasTransplantation)					AS Transplantation
 		,dbo.ufnYesNo(id.HasOther)								AS OtherImmunoSuppression
-		-- manual test result summary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
-			, 'No result')										AS SmearSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
-			, 'No result')										AS CultureSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
-			, 'No result')										AS HistologySummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
-			, 'No result')										AS PCRSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 6)
-			, 'No result')										AS LineProbeAssaySummary
 		--mdr details
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
@@ -411,7 +379,6 @@ BEGIN TRY
 	WHERE rr.SourceSystem = 'NTBS'
 
 	DROP TABLE #TempDiseaseSites
-	DROP TABLE #TempManualTestResult
 	DROP TABLE #TempSocialContextVenues
 
 	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
