@@ -48,6 +48,7 @@ BEGIN TRY
 		,[Occupation]
 		,[OccupationCategory]
 		,[BirthCountry]
+		,[WorldRegion]
 		,[UkEntryYear]
 		,[NoFixedAbode]
 		,[Symptomatic]
@@ -192,6 +193,7 @@ BEGIN TRY
 			END)												AS Occupation
 		,occ.[Sector]											AS OccupationCategory
 		,dbo.ufnGetCountryName(p.CountryId)						AS BirthCountry
+		,con.[Name]												AS WorldRegion
 		,p.YearOfUkEntry										AS UkEntryYear
 		,dbo.ufnYesNo(p.NoFixedAbode)							AS NoFixedAbode
 
@@ -390,6 +392,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ContactTracing] ct ON ct.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[PreviousTbHistory] pth ON pth.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] ptc ON pth.PreviousTreatmentCountryId = ptc.CountryId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] bc ON bc.CountryId = p.CountryId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Continent] con ON con.ContinentId = bc.ContinentId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[SocialRiskFactors] srf ON srf.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorDrugs] rfd ON rfd.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorHomelessness] rfh ON rfh.SocialRiskFactorsNotificationId = n.NotificationId
