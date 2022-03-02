@@ -64,6 +64,7 @@ BEGIN TRY
 		,[Occupation]
 		,[OccupationCategory]
 		,[BirthCountry]
+		,[WorldRegion]
 		,[UkEntryYear]
 		,[NoFixedAbode]
 		,[Symptomatic]
@@ -195,6 +196,7 @@ BEGIN TRY
 		,occat.[Name]													AS OccupationCategory
 		-- RP-859 populate birth country consistently
 		,dbo.ufnGetEtsBirthCountryAsNtbsCountry(p.UkBorn, p.BirthCountryId) AS BirthCountry
+		,con.[Name]														AS WorldRegion
 		,p.UkEntryYear													AS UkEntryYear
 		,dbo.ufnYesNo(a.NoFixedAbode)									AS NoFixedAbode
 
@@ -448,6 +450,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
 		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 		LEFT OUTER JOIN [$(migration)].dbo.MdrDetails mdr ON mdr.OldNotificationId = n.LegacyId
+		LEFT OUTER JOIN [$(ETS)].dbo.Country bc ON bc.Id = p.BirthCountryId
+		LEFT OUTER JOIN [$(ETS)].dbo.Continent con ON con.Id = bc.ContinentId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.LegacyId
