@@ -6,14 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-job:
+  build-dacpac:
     runs-on: windows-latest
 
     steps:
-      - name: Set target file name
-        id: set_file_name
-        run: echo '::set-output name=TARGET_FILE::${{ format('reporting-{0}.dacpac', github.sha) }}'
-
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
@@ -23,8 +19,42 @@ jobs:
       - name: Build dacpac
         run: msbuild ".\source\ntbs-reporting.sqlproj"
 
-      - name: Copy dacpac to blob store
-        env:
-          STORAGE_ACCOUNT_KEY: ${{ secrets.DACPAC_STORAGE_KEY }}
-        run: |
-          az storage blob upload --account-name dacpacregistry --container-name reporting --name ${{ steps.set_file_name.outputs.TARGET_FILE }} --file ".\source\bin\Output\ntbs-reporting.dacpac" --auth-mode key --account-key %STORAGE_ACCOUNT_KEY%
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: reporting-dacpac
+          path: source/bin/Output/ntbs-reporting.dacpac
+          if-no-files-found: error
+          retention-days: 5
+
+  publish-docker-image:
+    runs-on: ubuntu-latest
+    needs: build-dacpac
+
+    steps:
+      - name: Set image tag name
+        id: set_tag_name
+        run: echo '::set-output name=TAG_NAME::${{ format('build-{0}', github.sha) }}'
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: reporting-dacpac
+          path: "./source/bin/Output"
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: ghcr.io/publichealthengland/ntbs-reporting:${{ steps.set_tag_name.outputs.TAG_NAME }}
