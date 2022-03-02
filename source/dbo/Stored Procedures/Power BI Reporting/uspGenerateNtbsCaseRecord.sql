@@ -381,7 +381,7 @@ BEGIN TRY
 	DROP TABLE #TempDiseaseSites
 	DROP TABLE #TempSocialContextVenues
 
-	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
+	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray or chest CT
 	UPDATE cd
 		SET SampleTaken = CASE WHEN manualresults.NotificationId IS NULL THEN 'No' ELSE 'Yes' END
 
@@ -390,7 +390,7 @@ BEGIN TRY
 			SELECT mr.NotificationId
 			FROM [$(NTBS)].[dbo].[ManualTestResult] mr
 				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = mr.NotificationId
-			WHERE ManualTestTypeId != 4
+			WHERE ManualTestTypeId NOT IN (4, 7)
 			) AS manualresults ON manualresults.NotificationId = cd.NotificationId
 
 	EXEC [dbo].uspGenerateRecordOutcome
