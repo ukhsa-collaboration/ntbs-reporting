@@ -10,6 +10,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Set target file name
+        id: set_file_name
+        run: echo '::set-output name=TARGET_FILE::${{ format('reporting-{0}.dacpac', github.sha) }}'
+
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
@@ -19,12 +23,8 @@ jobs:
       - name: Build dacpac
         run: msbuild ".\source\ntbs-reporting.sqlproj"
 
-      - name: Copy dacpac to build directory
-        run: Copy-Item ".\source\bin\Output\ntbs-reporting.dacpac" ".\build"
-
-      - name: Push to branch
+      - name: Copy dacpac to blob store
+        env:
+          STORAGE_ACCOUNT_KEY: ${{ secrets.DACPAC_STORAGE_KEY }}
         run: |
-          git config --local user.email "github-actions@example.com"
-          git config --local user.name "github-actions"
-          git commit -am "Build dacpac"
-          git push
+          az storage blob upload --account-name dacpacregistry --container-name reporting --name ${{ steps.set_file_name.outputs.TARGET_FILE }} --file ".\source\bin\Output\ntbs-reporting.dacpac" --auth-mode key --account-key %STORAGE_ACCOUNT_KEY%
