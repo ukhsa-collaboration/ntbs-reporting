@@ -23,6 +23,7 @@
 	[Occupation] [nvarchar](255) NULL,
 	[OccupationCategory] [varchar] (255) NULL,
 	[BirthCountry] [varchar](255) NULL,
+	[WorldRegion] [varchar](50) NULL,
 	[UkEntryYear] [int] NULL,
 	[NoFixedAbode] [varchar](10) NULL,
 

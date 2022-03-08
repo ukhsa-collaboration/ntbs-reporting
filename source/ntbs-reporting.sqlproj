@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -10,8 +10,7 @@
     <ProjectGuid>{00903ab8-5be1-4195-9677-566baa463341}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
-    <RootPath>
-    </RootPath>
+    <RootPath />
     <RootNamespace>Reporting_New</RootNamespace>
     <AssemblyName>Reporting_New</AssemblyName>
     <ModelCollation>1033,CI</ModelCollation>
@@ -52,7 +51,6 @@
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
-    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
     <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
     <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
   </PropertyGroup>
@@ -340,6 +338,8 @@
     <None Include="Scripts\SetEnvironment.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\Environment.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwApplicationUsage.sql" />
+    <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateTestResultSummaries.sql" />
+    <Build Include="dbo\Tables\Power BI Reporting\ManualTestResultRanking.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -348,7 +348,6 @@
     <None Include="Publish Profiles\Pre-production\azure-int-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\azure-load-test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\azure-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-training-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\azure-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />

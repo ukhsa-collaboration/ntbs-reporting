@@ -10,17 +10,6 @@ BEGIN TRY
 		WHERE rr.SourceSystem = 'NTBS'
 		GROUP BY rr.NotificationId;
 
-	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
-		FIRST_VALUE(Result) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
-			CASE WHEN Result = 'Positive' THEN 1
-				WHEN Result = 'ConsistentWithTbOther' THEN 2
-				WHEN Result = 'Negative' THEN 3
-				WHEN Result = 'Awaiting' THEN 4 END) AS Result
-	INTO #TempManualTestResult
-		FROM RecordRegister rr
-			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
-		WHERE rr.SourceSystem = 'NTBS' AND mtr.ManualTestTypeId NOT IN (4, 7) AND Result <> 'NoResultAvailable';
-
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, venues.[Name] AS [Description]
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[SocialContextVenue] scv ON rr.NotificationId = scv.NotificationId
@@ -48,6 +37,7 @@ BEGIN TRY
 		,[Occupation]
 		,[OccupationCategory]
 		,[BirthCountry]
+		,[WorldRegion]
 		,[UkEntryYear]
 		,[NoFixedAbode]
 		,[Symptomatic]
@@ -157,11 +147,6 @@ BEGIN TRY
 		,[BiologicalTherapy]
 		,[Transplantation]
 		,[OtherImmunoSuppression]
-		,[SmearSummary]
-		,[CultureSummary]
-		,[HistologySummary]
-		,[PCRSummary]
-		,[LineProbeAssaySummary]
 		,[MDRExposureToKnownCase]
 		,[MDRRelationshipToCase]
 		,[MDRRelatedNotificationId]
@@ -192,6 +177,7 @@ BEGIN TRY
 			END)												AS Occupation
 		,occ.[Sector]											AS OccupationCategory
 		,dbo.ufnGetCountryName(p.CountryId)						AS BirthCountry
+		,con.[Name]												AS WorldRegion
 		,p.YearOfUkEntry										AS UkEntryYear
 		,dbo.ufnYesNo(p.NoFixedAbode)							AS NoFixedAbode
 
@@ -347,22 +333,6 @@ BEGIN TRY
 		,dbo.ufnYesNo(id.HasBioTherapy)							AS BiologicalTherapy
 		,dbo.ufnYesNo(id.HasTransplantation)					AS Transplantation
 		,dbo.ufnYesNo(id.HasOther)								AS OtherImmunoSuppression
-		-- manual test result summary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 1)
-			, 'No result')										AS SmearSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 2)
-			, 'No result')										AS CultureSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 3)
-			, 'No result')										AS HistologySummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 5)
-			, 'No result')										AS PCRSummary
-		,COALESCE(
-			(SELECT Result FROM #TempManualTestResult WHERE NotificationId = rr.NotificationId AND ManualTestTypeId = 6)
-			, 'No result')										AS LineProbeAssaySummary
 		--mdr details
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
@@ -390,6 +360,8 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[ContactTracing] ct ON ct.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[PreviousTbHistory] pth ON pth.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] ptc ON pth.PreviousTreatmentCountryId = ptc.CountryId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] bc ON bc.CountryId = p.CountryId
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Continent] con ON con.ContinentId = bc.ContinentId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[SocialRiskFactors] srf ON srf.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorDrugs] rfd ON rfd.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorHomelessness] rfh ON rfh.SocialRiskFactorsNotificationId = n.NotificationId
@@ -411,10 +383,9 @@ BEGIN TRY
 	WHERE rr.SourceSystem = 'NTBS'
 
 	DROP TABLE #TempDiseaseSites
-	DROP TABLE #TempManualTestResult
 	DROP TABLE #TempSocialContextVenues
 
-	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray
+	--'Sample taken' should be set if there are any manually-entered test results which are NOT of type chest x-ray or chest CT
 	UPDATE cd
 		SET SampleTaken = CASE WHEN manualresults.NotificationId IS NULL THEN 'No' ELSE 'Yes' END
 
@@ -423,7 +394,7 @@ BEGIN TRY
 			SELECT mr.NotificationId
 			FROM [$(NTBS)].[dbo].[ManualTestResult] mr
 				INNER JOIN [dbo].[Record_CaseData] cd ON cd.NotificationId = mr.NotificationId
-			WHERE ManualTestTypeId != 4
+			WHERE ManualTestTypeId NOT IN (4, 7)
 			) AS manualresults ON manualresults.NotificationId = cd.NotificationId
 
 	EXEC [dbo].uspGenerateRecordOutcome
