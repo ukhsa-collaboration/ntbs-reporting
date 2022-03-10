@@ -1,50 +1,52 @@
 ﻿CREATE VIEW [dbo].[vwUnmatchedSpecimensLinkedNotifications]
 	AS 
 	
-	SELECT us.ReferenceLaboratoryNumber
+	WITH PreviousMatch AS (
+		SELECT us.ReferenceLaboratoryNumber, nsm.NotificationID, nsm.MatchType
+		FROM vwUnmatchedSpecimens us
+		JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
+		WHERE nsm.MatchType = 'Rejected'
+	),
+
+	PreviousPossibleMatch AS (
+		SELECT us.ReferenceLaboratoryNumber, nsm.NotificationID, nsm.MatchType
+		FROM vwUnmatchedSpecimens us
+		JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
+		WHERE nsm.MatchType = 'Rejected-Possible'
+	),
+
+	--PoorQualityMatch AS (
+	--	-- Update this
+	--	SELECT mr.clientsourceID AS ReferenceLaboratoryNumber, mr.rclientsourceID, 'Poor-Quality' AS MatchType 
+	--	FROM [$(NTBS_Specimen_Matching)].dbo.MatchResults mr
+	--),
+
+	AllMatches AS (
+		SELECT * FROM PreviousMatch
+		UNION
+		SELECT * FROM PreviousPossibleMatch
+		--UNION
+		--SELECT * FROM PoorQualityMatch
+	)
+
+	SELECT am.ReferenceLaboratoryNumber
 		,CASE
-			WHEN nsm.MatchType = 'Rejected-Possible' THEN 'Possible match rejected by ' + u.DisplayName + ' on ' + FORMAT(a.AuditDateTime, 'dd MMM yyyy')
-			WHEN nsm.MatchType = 'Rejected' THEN 'Confirmed match rejected by ' + u.DisplayName + ' on ' + FORMAT(a.AuditDateTime, 'dd MMM yyyy')
-		END AS Notes
-		,nsm.NotificationID
+			WHEN am.MatchType = 'Rejected-Possible' THEN 'Rejected possible match'
+			WHEN am.MatchType = 'Rejected' THEN 'Rejected confirmed match'
+			--WHEN am.MatchType = 'Poor-Quality' THEN 'Poor quality potential match'
+		END AS NotificationLinkReason
+		,am.NotificationID
+		,n.NotificationStatus
 		,p.NhsNumber
-		,p.Dob
-		from vwUnmatchedSpecimens us
-	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm on nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
-	JOIN [$(NTBS_AUDIT)].dbo.AuditLogs a on a.OriginalId = nsm.ReferenceLaboratoryNumber
-	JOIN [$(NTBS)].dbo.[User] u on u.Username = a.AuditUser
-	JOIN [$(NTBS)].dbo.Patients p on p.NotificationId = nsm.NotificationId
-	WHERE nsm.MatchType = 'Rejected' or nsm.MatchType = 'Rejected-Possible'
-
-	--,
-
-	--Poor quality matches?
-	--Unmatched by notification?
-	--If any confirmed, don't need any rows?
-
-	--Start at vwUnmatchedSpecimens, join to nsm, join to audit logs
-	--nsm has an edit field? Where to get history?
-	--When matched/unmatched, nsm is just updated.
-	--Could look at alerts?
-	--Could look at audit logs again
-	--Only 400 unmatched specimens
-
-	--AllMatches AS
-	--(
-	--	SELECT * FROM PreviousPossibleMatches 
-	--	UNION 
-	--	SELECT * FROM PreviousConfirmedMatches
-	--)
-	
-	
-	--SELECT ReferenceLaboratoryNumber
-	--		,CASE
-	--			WHEN am.MatchType = 'Rejected-Possible' THEN 'Possible match rejected by ' + am.DisplayName + ' on ' + FORMAT(am.AuditDateTime, 'dd MMM yyyy')
-	--			WHEN am.MatchType = 'Rejected' THEN 'Confirmed match rejected by ' + am.DisplayName + ' on ' + FORMAT(am.AuditDateTime, 'dd MMM yyyy')
-	--		END AS Notes
-	--		,am.NotificationID
-	--		,p.NhsNumber
-	--		,p.Dob
-	--FROM AllMatches am
-	--JOIN [$(NTBS)].dbo.Patients p on p.NotificationId = am.NotificationId
-
+		,p.Dob AS BirthDate
+		,UPPER(p.FamilyName) + ', ' + p.GivenName AS [Name]
+		,sex.[Label] AS [Sex]
+		,p.[Address]
+		,p.PostcodeToLookup AS Postcode
+		,tbs.PHECCode AS RegionCode
+		FROM AllMatches am
+	JOIN [$(NTBS)].dbo.[Notification] n ON am.NotificationID = n.NotificationId
+	JOIN [$(NTBS)].dbo.Patients p ON p.NotificationId = am.NotificationId
+	JOIN [$(NTBS)].ReferenceData.Sex sex ON sex.SexId = p.SexId
+	JOIN [$(NTBS)].dbo.HospitalDetails hd ON hd.NotificationId = am.NotificationID
+	JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hd.TBServiceCode
