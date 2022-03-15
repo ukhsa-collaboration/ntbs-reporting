@@ -157,6 +157,7 @@ BEGIN TRY
 		,[MBovUnpasteurisedMilkConsumption]
 		,[SocialContextVenueCount]
 		,[SocialContextVenueTypeList]
+		,[SecondaryTbService]
 		,[DataRefreshedAt])
 	SELECT
 		rr.NotificationId										AS NotificationId
@@ -346,11 +347,13 @@ BEGIN TRY
 		--social context venues
 		,socialVenues.VenueCount								AS SocialContextVenueCount
 		,socialVenues.Description								AS SocialContextVenueTypeList
+		,stbs.Name												AS SecondaryTbService
 		,GETUTCDATE()											AS DataRefreshedAt
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rr.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[HospitalDetails] hd ON hd.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].TbService tbs ON tbs.Code = hd.TBServiceCode
+		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].TbService stbs ON stbs.Code = hd.SecondaryTBServiceCode
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hd.CaseManagerId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[Patients] p on p.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].Occupation occ ON occ.OccupationId = p.OccupationId
