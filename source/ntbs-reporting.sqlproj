@@ -126,6 +126,8 @@
     <Folder Include="Publish Profiles\Pre-production" />
     <Folder Include="dbo\Tables\Monitoring" />
     <Folder Include="dbo\Stored Procedures\Monitoring" />
+    <Folder Include="dbo\Tables\Report Unmatched Specimens\" />
+    <Folder Include="dbo\Stored Procedures\Unmatched Specimens" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -342,6 +344,12 @@
     <Build Include="dbo\Tables\Power BI Reporting\ManualTestResultRanking.sql" />
     <Build Include="dbo\Views\Lab Results\vwUnmatchedSpecimens.sql" />
     <Build Include="dbo\Views\Lab Results\vwUnmatchedSpecimensLinkedNotifications.sql" />
+    <Build Include="dbo\Tables\Report Unmatched Specimens\RejectSpecimenUsers.sql" />
+    <Build Include="dbo\Tables\Report Unmatched Specimens\UnmatchedSpecimens.sql" />
+    <Build Include="dbo\Tables\Report Unmatched Specimens\UnmatchedSpecimensLinkedNotifications.sql" />
+    <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateRejectSpecimenUsers.sql" />
+    <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateUnmatchedSpecimens.sql" />
+    <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateUnmatchedSpecimensLinkedNotifications.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
