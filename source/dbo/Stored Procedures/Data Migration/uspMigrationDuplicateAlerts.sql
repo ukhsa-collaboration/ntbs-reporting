@@ -20,7 +20,7 @@ AS
 			INNER JOIN [$(NTBS)].[dbo].[Notification] duplicate on duplicate.NotificationId = a.DuplicateId
 			LEFT JOIN [dbo].[MigrationRunResults] dupmrr ON dupmrr.LegacyETSId = duplicate.ETSID
 		WHERE AlertStatus = 'Open'
-			AND AlertType = 'DataQualityPotientialDuplicate'
+			AND AlertType = 'DataQualityPotentialDuplicate'
 			AND mrr.MigrationRunId = @MigrationRun
 	) 
 	SELECT
