@@ -32,7 +32,6 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC uspMigrationDubiousSpecimenMatches
 
 		EXEC dbo.uspGenerateNOIDSWeeklyCount
-		EXEC dbo.uspGenerateRejectSpecimenUsers
 		-- Save last refresh date to footer
 		EXEC dbo.uspGenerateFooter
 

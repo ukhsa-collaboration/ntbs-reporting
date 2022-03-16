@@ -8,12 +8,12 @@ BEGIN TRY
 	TRUNCATE TABLE [dbo].[UnmatchedSpecimensLinkedNotifications]
 	
 	SELECT us.ReferenceLaboratoryNumber, nsm.NotificationID, 'Unmatch' AS EventType INTO #PreviousMatch
-	FROM vwUnmatchedSpecimens us
+	FROM UnmatchedSpecimens us
 	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
 	WHERE nsm.MatchType = 'Rejected'
 
 	SELECT us.ReferenceLaboratoryNumber, nsm.NotificationID, 'RejectPotentialMatch' AS EventType INTO #PreviousPossibleMatch
-	FROM vwUnmatchedSpecimens us
+	FROM UnmatchedSpecimens us
 	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
 	WHERE nsm.MatchType = 'Rejected-Possible'
 
@@ -31,9 +31,9 @@ BEGIN TRY
 	--WHERE mr.weight...
 
 	CREATE TABLE #AllMatches (ReferenceLaboratoryNumber NVARCHAR(50), NotificationID int, EventType NVARCHAR(50))
-	INSERT INTO #AllMatches SELECT  * FROM #PreviousMatch
-	INSERT INTO #AllMatches SELECT  * FROM #PreviousPossibleMatch
-	INSERT INTO #AllMatches SELECT  * FROM #PoorQualityMatch
+	INSERT INTO #AllMatches SELECT * FROM #PreviousMatch
+	INSERT INTO #AllMatches SELECT * FROM #PreviousPossibleMatch
+	INSERT INTO #AllMatches SELECT * FROM #PoorQualityMatch
 
 	INSERT INTO [dbo].[UnmatchedSpecimensLinkedNotifications]
 	SELECT am.ReferenceLaboratoryNumber
@@ -57,7 +57,7 @@ BEGIN TRY
 	JOIN [$(NTBS)].ReferenceData.Sex sex ON sex.SexId = p.SexId
 	JOIN [$(NTBS)].dbo.HospitalDetails hd ON hd.NotificationId = am.NotificationID
 	JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hd.TBServiceCode
-	JOIN dbo.RejectSpecimenUsers u ON u.ReferenceLaboratoryNumber = am.ReferenceLaboratoryNumber AND u.NotificationId = am.NotificationID AND u.EventType = am.EventType
+	LEFT JOIN dbo.RejectSpecimenUsers u ON u.ReferenceLaboratoryNumber = am.ReferenceLaboratoryNumber AND u.NotificationId = am.NotificationID AND u.EventType = am.EventType
 
 	DROP TABLE #PreviousMatch
 	DROP TABLE #PreviousPossibleMatch
