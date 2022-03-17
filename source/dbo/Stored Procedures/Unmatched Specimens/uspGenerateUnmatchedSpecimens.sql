@@ -60,18 +60,12 @@ BEGIN TRY
 			,ls.[PatientAddress]
 			,ls.[PatientPostcode]
 			,ls.[EarliestRecordDate]
-			-- Take first value over partition as each lab name can have multiple mappings, 
-			-- some of which lead to null regions, others which don't
-			,FIRST_VALUE(p.[Code]) OVER (PARTITION BY us.ReferenceLaboratoryNumber ORDER BY p.[Code] DESC) AS RegionCode
-			,FIRST_VALUE(p.[Name]) OVER (PARTITION BY us.ReferenceLaboratoryNumber ORDER BY p.[Code] DESC) AS Region
-			--,(SELECT COUNT(*) FROM vwUnmatchedSpecimensLinkedNotifications n WHERE n.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber) AS NumberOfRelatedNotifications
+			,p.[Code] AS RegionCode
+			,p.[Name] AS Region
 		FROM #UnmatchedSpecimens us
 		JOIN [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls ON ls.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
-		LEFT JOIN [$(ETS)].dbo.LaboratoryHospitalMapping lhm ON lhm.SourceLabName = ls.LaboratoryName
-		LEFT JOIN [$(NTBS)].ReferenceData.Hospital hd ON lhm.HospitalId = hd.HospitalId
-		LEFT JOIN [$(NTBS)].ReferenceData.TbService tb ON hd.TBServiceCode = tb.Code
-		LEFT JOIN [$(NTBS)].ReferenceData.PHEC p ON p.Code = tb.PHECCode
-		WHERE lhm.AuditDelete IS NULL
+		LEFT JOIN [$(NTBS_Specimen_Matching)].dbo.LabRegionMapping lrm ON lrm.LaboratoryName = ls.LaboratoryName
+		LEFT JOIN [$(NTBS)].ReferenceData.PHEC p ON p.Code = lrm.RegionCode
 
 	EXEC dbo.uspGenerateUnmatchedSpecimensLinkedNotifications
 

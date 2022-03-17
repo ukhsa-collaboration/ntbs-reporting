@@ -17,18 +17,13 @@ BEGIN TRY
 	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
 	WHERE nsm.MatchType = 'Rejected-Possible'
 
-	--Some strange results here...
-	--Ie. some unmatched specimens have a linked poor quality match (with weighting of over 50?!) that definitely belongs to same record
-	--Poor quality should be below 35, but lots of confirmed matches with weights in the 20's
-	--Can these be defined as poor quality matches?
 	SELECT mr.clientsourceID AS ReferenceLaboratoryNumber, mr.rclientsourceID AS NotificationID, 'PoorQualityMatch' AS EventType INTO #PoorQualityMatch
 	FROM UnmatchedSpecimens us
 	JOIN [$(NTBS_Specimen_Matching)].dbo.MatchResults mr ON mr.clientsourceID = us.ReferenceLaboratoryNumber
-	--Exclude any poor quality matches that have previously been rejected
+	--Exclude any matches that have previously been rejected (otherwise every rejection has an accompanying match)
 	LEFT JOIN #PreviousMatch pm on pm.NotificationID = mr.rclientsourceID AND pm.ReferenceLaboratoryNumber = mr.clientsourceID
 	LEFT JOIN #PreviousPossibleMatch ppm on ppm.NotificationID = mr.rclientsourceID AND ppm.ReferenceLaboratoryNumber = mr.clientsourceID
 	WHERE pm.EventType IS NULL AND ppm.EventType IS NULL
-	--WHERE mr.weight...
 
 	CREATE TABLE #AllMatches (ReferenceLaboratoryNumber NVARCHAR(50), NotificationID int, EventType NVARCHAR(50))
 	INSERT INTO #AllMatches SELECT * FROM #PreviousMatch
