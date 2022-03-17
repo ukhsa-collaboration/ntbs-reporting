@@ -24,6 +24,7 @@ BEGIN TRY
 	LEFT JOIN #PreviousMatch pm on pm.NotificationID = mr.rclientsourceID AND pm.ReferenceLaboratoryNumber = mr.clientsourceID
 	LEFT JOIN #PreviousPossibleMatch ppm on ppm.NotificationID = mr.rclientsourceID AND ppm.ReferenceLaboratoryNumber = mr.clientsourceID
 	WHERE pm.EventType IS NULL AND ppm.EventType IS NULL
+	AND mr.[weight] < 34.50
 
 	CREATE TABLE #AllMatches (ReferenceLaboratoryNumber NVARCHAR(50), NotificationID int, EventType NVARCHAR(50))
 	INSERT INTO #AllMatches SELECT * FROM #PreviousMatch
