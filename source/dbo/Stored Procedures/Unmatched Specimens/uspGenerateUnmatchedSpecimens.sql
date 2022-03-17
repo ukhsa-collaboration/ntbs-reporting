@@ -60,12 +60,15 @@ BEGIN TRY
 			,ls.[PatientAddress]
 			,ls.[PatientPostcode]
 			,ls.[EarliestRecordDate]
-			,p.[Code] AS RegionCode
-			,p.[Name] AS Region
+			,COALESCE(phec2.[Code], phec1.[Code]) AS RegionCode
+			,COALESCE(phec2.[Name], phec1.[Name]) AS Region
 		FROM #UnmatchedSpecimens us
 		JOIN [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls ON ls.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
-		LEFT JOIN [$(NTBS_Specimen_Matching)].dbo.LabRegionMapping lrm ON lrm.LaboratoryName = ls.LaboratoryName
-		LEFT JOIN [$(NTBS)].ReferenceData.PHEC p ON p.Code = lrm.RegionCode
+		LEFT JOIN [$(NTBS_Specimen_Matching)].dbo.LabHospitalRegionMapping mapping ON mapping.LaboratoryName = ls.LaboratoryName
+		LEFT JOIN [$(NTBS)].ReferenceData.PHEC phec1 ON phec1.Code = mapping.RegionCode
+		LEFT JOIN [$(NTBS)].ReferenceData.Hospital h ON h.HospitalId = mapping.HospitalId
+		LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = h.TBServiceCode
+		LEFT JOIN [$(NTBS)].ReferenceData.PHEC phec2 ON phec2.Code = tbs.PHECCode 
 
 	EXEC dbo.uspGenerateUnmatchedSpecimensLinkedNotifications
 
