@@ -342,10 +342,10 @@
     <Build Include="dbo\Views\Power BI Reporting\vwApplicationUsage.sql" />
     <Build Include="dbo\Stored Procedures\Power BI Reporting\uspGenerateTestResultSummaries.sql" />
     <Build Include="dbo\Tables\Power BI Reporting\ManualTestResultRanking.sql" />
-    <Build Include="dbo\Tables\Report Unmatched Specimens\RejectSpecimenUsers.sql" />
+    <Build Include="dbo\Tables\Report Unmatched Specimens\RejectedSpecimen.sql" />
     <Build Include="dbo\Tables\Report Unmatched Specimens\UnmatchedSpecimens.sql" />
     <Build Include="dbo\Tables\Report Unmatched Specimens\UnmatchedSpecimensLinkedNotifications.sql" />
-    <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateRejectSpecimenUsers.sql" />
+    <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateRejectedSpecimen.sql" />
     <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateUnmatchedSpecimens.sql" />
     <Build Include="dbo\Stored Procedures\Unmatched Specimens\uspGenerateUnmatchedSpecimensLinkedNotifications.sql" />
   </ItemGroup>

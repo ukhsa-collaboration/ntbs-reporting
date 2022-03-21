@@ -19,13 +19,13 @@ BEGIN TRY
 	INSERT INTO #MatchTypeRanking VALUES (2, 'Rejected')
 
 	SELECT ranked.ReferenceLaboratoryNumber INTO #AllMatchesRejected FROM (
-		SELECT DISTINCT nsm.ReferenceLaboratoryNumber, FIRST_VALUE(mtr.ResultName) OVER (PARTITION BY nsm.ReferenceLaboratoryNumber ORDER BY mtr.[rank] ASC) AS [Result]
+		SELECT DISTINCT nsm.ReferenceLaboratoryNumber, FIRST_VALUE(mtr.[Rank]) OVER (PARTITION BY nsm.ReferenceLaboratoryNumber ORDER BY mtr.[rank] ASC) AS [Rank]
 			FROM [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm
 			INNER JOIN [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls ON ls.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
 			INNER JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(ls.SpecimenDate)
 			INNER JOIN #MatchTypeRanking mtr ON mtr.ResultName = nsm.MatchType
 			) ranked
-		WHERE ranked.Result = 'Rejected' OR ranked.Result = 'Rejected-Possible'
+		WHERE ranked.[Rank] = 2
 
 	CREATE TABLE #UnmatchedSpecimens (ReferenceLaboratoryNumber NVARCHAR(50))
 	INSERT INTO #UnmatchedSpecimens SELECT * FROM #NoMatchesFound
@@ -60,23 +60,20 @@ BEGIN TRY
 			,ls.[PatientAddress]
 			,ls.[PatientPostcode]
 			,ls.[EarliestRecordDate]
-			,COALESCE(phec2.[Code], phec1.[Code]) AS RegionCode
-			,COALESCE(phec2.[Name], phec1.[Name]) AS Region
+			,phec.[Code] AS RegionCode
+			,phec.[Name] AS Region
 		FROM #UnmatchedSpecimens us
 		JOIN [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls ON ls.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
 		LEFT JOIN [$(NTBS_Specimen_Matching)].dbo.LabHospitalRegionMapping mapping ON mapping.LaboratoryName = ls.LaboratoryName
-		LEFT JOIN [$(NTBS)].ReferenceData.PHEC phec1 ON phec1.Code = mapping.RegionCode
-		LEFT JOIN [$(NTBS)].ReferenceData.Hospital h ON h.HospitalId = mapping.HospitalId
-		LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = h.TBServiceCode
-		LEFT JOIN [$(NTBS)].ReferenceData.PHEC phec2 ON phec2.Code = tbs.PHECCode 
-
-	EXEC dbo.uspGenerateUnmatchedSpecimensLinkedNotifications
+		LEFT JOIN [$(NTBS)].ReferenceData.PHEC phec ON phec.Code = mapping.RegionCode
 
 	DROP TABLE #NoMatchesFound
 	DROP TABLE #MatchTypeRanking
 	DROP TABLE #AllMatchesRejected
 	DROP TABLE #UnmatchedSpecimens
-	
+
+	EXEC dbo.uspGenerateUnmatchedSpecimensLinkedNotifications
+
 
 END TRY
 BEGIN CATCH

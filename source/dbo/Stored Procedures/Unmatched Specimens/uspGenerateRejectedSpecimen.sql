@@ -1,14 +1,14 @@
-﻿CREATE PROCEDURE [dbo].[uspGenerateRejectSpecimenUsers]
+﻿CREATE PROCEDURE [dbo].[uspGenerateRejectedSpecimen]
 AS
 BEGIN TRY
 
-	TRUNCATE TABLE [dbo].[RejectSpecimenUsers]
+	TRUNCATE TABLE [dbo].[RejectedSpecimen]
 
-	INSERT INTO [dbo].[RejectSpecimenUsers]
+	INSERT INTO [dbo].[RejectedSpecimen]
 		(Id,
 		ReferenceLaboratoryNumber,
 		EventType,
-		RejectionTime,
+		RejectionDate,
 		UserDisplayName,
 		NotificationId)
 
@@ -16,7 +16,7 @@ BEGIN TRY
 		a.Id			AS Id,
 		a.OriginalId	AS ReferenceLaboratoryNumber,
 		a.EventType		AS EventType,
-		a.AuditDateTime AS RejectionTime,
+		a.AuditDateTime AS RejectionDate,
 		u.DisplayName	AS UserDisplayName,
 		a.RootId		AS NotificationId
 
