@@ -3,6 +3,7 @@
 	[ReferenceLaboratoryNumber] NVARCHAR(50) NOT NULL PRIMARY KEY,
 	[NotificationLinkReason] NVARCHAR(255),
 	[RejectionDate] DATETIME2(7),
+	[User] NVARCHAR(256),
 	[NotificationID] INT,
 	[NotificationStatus] NVARCHAR(30),
 	[NhsNumber] NVARCHAR(10),

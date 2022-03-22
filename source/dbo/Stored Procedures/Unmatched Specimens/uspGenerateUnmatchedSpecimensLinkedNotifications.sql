@@ -2,6 +2,9 @@
 AS
 BEGIN TRY
 
+	DECLARE @PoorQualityMatchCutOff DECIMAL(4,2)
+	SELECT @PoorQualityMatchCutOff = mc.AutoMatch FROM [$(NTBS_Specimen_Matching)].dbo.MatchingConfiguration mc WHERE mc.MatchingConfigId=1
+
 	-- First populate RejectSpecimenUsers table
 	EXEC dbo.uspGenerateRejectedSpecimen
 
@@ -23,9 +26,8 @@ BEGIN TRY
 	--Exclude any matches that have previously been rejected (otherwise every rejection has an accompanying match)
 	LEFT JOIN #PreviousMatch pm on pm.NotificationID = mr.rclientsourceID AND pm.ReferenceLaboratoryNumber = mr.clientsourceID
 	LEFT JOIN #PreviousPossibleMatch ppm on ppm.NotificationID = mr.rclientsourceID AND ppm.ReferenceLaboratoryNumber = mr.clientsourceID
-	JOIN [$(NTBS_Specimen_Matching)].dbo.MatchingConfiguration mc ON mr.[weight] < mc.AutoMatch
 	WHERE pm.EventType IS NULL AND ppm.EventType IS NULL
-	-- DACPAC!
+	AND mr.weight < @PoorQualityMatchCutOff
 
 	CREATE TABLE #AllLinks (ReferenceLaboratoryNumber NVARCHAR(50), NotificationID int, EventType NVARCHAR(50))
 	INSERT INTO #AllLinks SELECT * FROM #PreviousMatch
@@ -34,12 +36,9 @@ BEGIN TRY
 
 	INSERT INTO [dbo].[UnmatchedSpecimensLinkedNotifications]
 	SELECT al.ReferenceLaboratoryNumber
-		,CASE
-			WHEN al.EventType = 'RejectPotentialMatch' THEN 'Possible match rejected by ' + rs.UserDisplayName + ' on '
-			WHEN al.EventType = 'Unmatch' THEN 'Confirmed match rejected by ' + rs.UserDisplayName + ' on '
-			WHEN al.EventType = 'PoorQualityMatch' THEN 'Poor quality potential match'
-		END AS NotificationLinkReason
+		,al.EventType AS NotificationLinkReason
 		,rs.RejectionDate
+		,rs.UserDisplayName as [User]
 		,al.NotificationID
 		,n.NotificationStatus
 		,p.NhsNumber
