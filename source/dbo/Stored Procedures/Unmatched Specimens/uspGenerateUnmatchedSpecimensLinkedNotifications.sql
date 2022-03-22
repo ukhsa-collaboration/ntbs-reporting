@@ -38,23 +38,20 @@ BEGIN TRY
 	SELECT al.ReferenceLaboratoryNumber
 		,al.EventType AS NotificationLinkReason
 		,rs.RejectionDate
-		,rs.UserDisplayName as [User]
+		,rs.UserDisplayName AS [User]
 		,al.NotificationID
-		,n.NotificationStatus
-		,p.NhsNumber
-		,p.Dob AS BirthDate
-		,p.FamilyName
-		,p.GivenName
-		,sex.[Label] AS [Sex]
-		,p.[Address]
-		,p.PostcodeToLookup AS Postcode
-		,tbs.PHECCode AS RegionCode
+		,CASE WHEN rr.Denotified = 0 THEN 'No' ELSE 'YES' END AS Denotified
+		,pd.NhsNumber
+		,pd.DateOfBirth AS BirthDate
+		,pd.FamilyName
+		,pd.GivenName
+		,cd.Sex
+		,pd.Postcode
+		,cd.TreatmentPhec AS RegionCode
 		FROM #AllLinks al
-	JOIN [$(NTBS)].dbo.[Notification] n ON al.NotificationID = n.NotificationId
-	JOIN [$(NTBS)].dbo.Patients p ON p.NotificationId = al.NotificationId
-	JOIN [$(NTBS)].ReferenceData.Sex sex ON sex.SexId = p.SexId
-	JOIN [$(NTBS)].dbo.HospitalDetails hd ON hd.NotificationId = al.NotificationID
-	JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hd.TBServiceCode
+	LEFT JOIN RecordRegister rr on rr.NotificationId = al.NotificationID
+	LEFT JOIN Record_PersonalDetails pd ON pd.NotificationId = al.NotificationID
+	LEFT JOIN Record_CaseData cd ON cd.NotificationId = al.NotificationID
 	LEFT JOIN dbo.RejectedSpecimen rs ON rs.ReferenceLaboratoryNumber = al.ReferenceLaboratoryNumber AND rs.NotificationId = al.NotificationID AND rs.EventType = al.EventType
 
 	DROP TABLE #PreviousMatch
