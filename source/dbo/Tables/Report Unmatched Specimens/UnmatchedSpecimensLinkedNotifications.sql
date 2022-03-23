@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[UnmatchedSpecimensLinkedNotifications]
 (
-	[ReferenceLaboratoryNumber] NVARCHAR(50) NOT NULL PRIMARY KEY,
+	[ReferenceLaboratoryNumber] NVARCHAR(50) NOT NULL,
 	[NotificationLinkReason] NVARCHAR(255),
 	[RejectionDate] DATETIME2(7),
 	[User] NVARCHAR(256),
