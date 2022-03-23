@@ -15,7 +15,9 @@ Pre-requisites:
 Steps:
 
 1. Follow the instructions for setting up the NTBS application in the [ntbs_Beta repository](https://github.com/publichealthengland/ntbs_Beta/blob/master/ntbs-service/README.md).
+
 1. Follow the instructions for setting up the NTBS migration database in the [ntbs-data-migration repository](https://github.com/publichealthengland/ntbs-data-migration/blob/master/README.md).
+    - Make sure that you have run the NTBS app, so that the application and audit databases are migrated
 1. Restore a backup of the geography database by carrying out the following steps:
     1. Connect to the `ntbs-ops-dbs.northeurope.cloudapp.azure.com\NTBS` database server in SSMS.
     1. In the `Object Explorer` panel, right-click on the `int-geography` database and select `Tasks` -> `Back Up...`.
@@ -47,6 +49,7 @@ Steps:
         - At this point the NTBS application should run, but some Hangfire jobs and legacy notification importing will not work properly with unpopulated specimen matching and reporting databases.
         - If this stored procedure fails, try creating at least three notifications in the NTBS application. The specimen matching process is quite fragile when there is small amounts of data, previous issues have been caused by: all patients having the same gender, or exactly one patient having a house number at the start of their address.
     1. Run the stored procedure `uspGenerate` in the reporting database.
+        - If this fails with an "expressions services limit" error, set the database to a compatibility level of 140 (SQL Server 2017) by right clicking the database and going to "Properties" and then "Options".
 
 To make a change to the project you should then:
 

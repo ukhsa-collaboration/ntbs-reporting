@@ -25,6 +25,7 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		EXEC dbo.uspGenerateCultureResistance
 		EXEC dbo.uspGenerateOutcomeSummary
 		EXEC dbo.uspGenerateDataQuality
+		EXEC dbo.uspGenerateUnmatchedSpecimens
 
 		-- Populate boilerplate report too (not much overhead, so might as well for demo purposes)
 
