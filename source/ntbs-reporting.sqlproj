@@ -367,6 +367,7 @@
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
