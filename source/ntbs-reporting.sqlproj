@@ -359,10 +359,6 @@
     <None Include="Scripts\RestoreLabbase2.sql" />
     <None Include="Scripts\ReviewProblemSpecimenMatch.sql" />
     <None Include="Publish Profiles\Production\phe-live-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-int-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-load-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\azure-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
