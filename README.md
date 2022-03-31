@@ -19,14 +19,7 @@ Steps:
 1. Follow the instructions for setting up the NTBS migration database in the [ntbs-data-migration repository](https://github.com/publichealthengland/ntbs-data-migration/blob/master/README.md).
     - Make sure that you have run the NTBS app, so that the application and audit databases are migrated
 1. Restore a backup of the geography database by carrying out the following steps:
-    1. Connect to the `ntbs-ops-dbs.northeurope.cloudapp.azure.com\NTBS` database server in SSMS.
-    1. In the `Object Explorer` panel, right-click on the `int-geography` database and select `Tasks` -> `Back Up...`.
-    1. Click `OK`.
-    1. After some time, you should see a message informing you that the back up has been successful.
-    1. Connect to the `ntbs-ops-dbs.northeurope.cloudapp.azure.com` VM via Remote Desktop (the username and password can be found in the `ntbs-ops-dbs-credentials` secret in Azure) and locate the back up file you just created.
-    1. Zip the file.
-    1. Copy the file to a temporary location on your development machine.
-    1. Unzip the file.
+    1. Download a copy of the test-geography database from https://phecloud.sharepoint.com/:f:/r/sites/NTBSResources/Project/Developer%20Guide/Database%20backups?csf=1&web=1&e=WAYaKI
     1. In SSMS, connect to your SQL Server instance.
     1. In the `Object Explorer` panel, right-click on `Databases` and select `Restore Database...`.
     1. Select the `Device` radio button, and add the relevant back up file via the `...` button.
