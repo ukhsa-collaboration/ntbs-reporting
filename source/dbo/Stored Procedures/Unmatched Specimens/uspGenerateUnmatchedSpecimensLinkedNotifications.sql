@@ -34,12 +34,28 @@ BEGIN TRY
 	INSERT INTO #AllLinks SELECT * FROM #PreviousPossibleMatch
 	INSERT INTO #AllLinks SELECT * FROM #PoorQualityMatch
 
-	INSERT INTO [dbo].[UnmatchedSpecimensLinkedNotifications]
+	INSERT INTO [dbo].[UnmatchedSpecimensLinkedNotifications] ([ReferenceLaboratoryNumber]
+      ,[NotificationLinkReason]
+      ,[RejectionDate]
+      ,[User]
+      ,[NotificationID]
+	  ,[NotificationDate]
+      ,[NotificationStatus]
+      ,[NhsNumber]
+      ,[BirthDate]
+      ,[FamilyName]
+      ,[GivenName]
+      ,[Sex]
+      ,[Address]
+      ,[Postcode]
+      ,[RegionCode]
+	  ,[TreatmentStartDate])
 	SELECT al.ReferenceLaboratoryNumber
 		,al.EventType AS NotificationLinkReason
 		,rs.RejectionDate
 		,rs.UserDisplayName as [User]
 		,al.NotificationID
+		, n.NotificationDate
 		,n.NotificationStatus
 		,p.NhsNumber
 		,p.Dob AS BirthDate
@@ -49,11 +65,13 @@ BEGIN TRY
 		,p.[Address]
 		,p.PostcodeToLookup AS Postcode
 		,tbs.PHECCode AS RegionCode
+		,cd.TreatmentStartDate
 		FROM #AllLinks al
 	JOIN [$(NTBS)].dbo.[Notification] n ON al.NotificationID = n.NotificationId
 	JOIN [$(NTBS)].dbo.Patients p ON p.NotificationId = al.NotificationId
 	JOIN [$(NTBS)].ReferenceData.Sex sex ON sex.SexId = p.SexId
 	JOIN [$(NTBS)].dbo.HospitalDetails hd ON hd.NotificationId = al.NotificationID
+	JOIN [$(NTBS)].dbo.ClinicalDetails cd ON cd.NotificationId = al.NotificationID
 	JOIN [$(NTBS)].ReferenceData.TbService tbs ON tbs.Code = hd.TBServiceCode
 	LEFT JOIN dbo.RejectedSpecimen rs ON rs.ReferenceLaboratoryNumber = al.ReferenceLaboratoryNumber AND rs.NotificationId = al.NotificationID AND rs.EventType = al.EventType
 
