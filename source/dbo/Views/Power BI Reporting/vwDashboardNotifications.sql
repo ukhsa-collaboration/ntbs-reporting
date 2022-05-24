@@ -4,7 +4,7 @@
 
 CREATE VIEW [dbo].[vwDashboardNotifications]
 	AS 
-	SELECT 
+	SELECT DISTINCT
 		cd.NotificationId
 		,CASE 
 			WHEN overdueOutcome.NotificationId IS NOT NULL THEN 'Overdue'
