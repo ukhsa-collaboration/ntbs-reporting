@@ -20,4 +20,4 @@ CREATE VIEW [dbo].[vwDashboardNotifications]
 	LEFT OUTER JOIN [dbo].[vwAlert] overdueOutcome ON overdueOutcome.NotificationId = cd.NotificationId AND overdueOutcome.AlertType LIKE '%DataQualityTreatmentOutcome%'
 	LEFT OUTER JOIN [dbo].[vwAlert] openTransfer ON openTransfer.NotificationId = cd.NotificationId AND openTransfer.AlertType LIKE '%TransferRequest%' AND openTransfer.AlertStatus = 'Open'
 	LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = openTransfer.AlertTBServiceCode
-WHERE LastRecordedTreatmentOutcomeDescriptive IN ('No outcome recorded', 'Not evaluated - still on treatment')
+WHERE cd.LastRecordedTreatmentOutcomeDescriptive IN ('No outcome recorded', 'Not evaluated - still on treatment') AND rr.Denotified = 0
