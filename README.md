@@ -6,7 +6,7 @@ This database project is dependent upon multiple other databases to work correct
 
 Pre-requisites:
 
-- Install a SQL Server instance (any version from 2016 onwards should be fine).
+- Install a SQL Server instance (any version from 2016 onwards should be fine) - set the default collation to Latin1_General_CI_AS
 - Install SQL Server Management Studio (SSMS).
 - Install Visual Studio 2017 (or later) - this can be downloaded from https://visualstudio.microsoft.com/downloads/
     - During installation, select "Data storage and processing"

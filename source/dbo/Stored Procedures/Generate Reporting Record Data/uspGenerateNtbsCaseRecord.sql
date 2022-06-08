@@ -338,7 +338,12 @@ BEGIN TRY
 		,mdr.ExposureToKnownCaseStatus							AS MDRExposureToKnownCase
 		,mdr.RelationshipToCase									AS MDRRelationshipToCase
 		,mdr.RelatedNotificationId								AS MDRRelatedNotificationId
-		,dbo.ufnYesNoUnknown(mdr.DiscussedAtMDRForum)			AS MDRDiscussedAtForum
+		,CASE 
+			WHEN mdr.DiscussedAtMDRForum = 0 THEN 'Yes'
+			WHEN mdr.DiscussedAtMDRForum = 1 THEN 'No'
+			WHEN mdr.DiscussedAtMDRForum = 2 THEN 'Unknown'
+			END													AS MDRDiscussedAtForum
+		--Above will need to be changed back to dbo.ufnYesNoUnknown(mdr.DiscussedAtMDRForum) when NTBS_Beta is fixed			AS MDRDiscussedAtForum
 		-- mbovis details
 		,mbov.AnimalExposureStatus								AS MBovAnimalExposure
 		,mbov.ExposureToKnownCasesStatus						AS MBovKnownCaseExposure
