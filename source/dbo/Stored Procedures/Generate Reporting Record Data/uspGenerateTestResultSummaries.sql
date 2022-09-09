@@ -6,7 +6,7 @@ AS
 
 	SELECT DISTINCT rr.NotificationId, ManualTestTypeId,
 		FIRST_VALUE(rra.DisplayName) OVER (PARTITION BY rr.NotificationId, mtr.ManualTestTypeId ORDER BY
-			rra.[Rank], mtr.TestDate, rra.[SubRank]) AS Result
+			rra.[Rank], rra.[SubRank]) AS Result
 	INTO #TempManualTestResult
 		FROM RecordRegister rr
 			INNER JOIN [$(NTBS)].[dbo].[ManualTestResult] mtr ON rr.NotificationId = mtr.NotificationId
