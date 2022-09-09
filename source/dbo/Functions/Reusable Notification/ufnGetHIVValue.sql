@@ -15,7 +15,7 @@ BEGIN
 			WHEN @NTBSHIVValue = 'Offered' THEN 'Offered and done'
 			WHEN @NTBSHIVValue = 'OfferedButNotDone' THEN 'Offered but not done'
 			WHEN @NTBSHIVValue = 'OfferedButRefused' THEN 'Offered but refused'
-			ELSE ''
+			ELSE NULL
 		END
 
 	RETURN @ReturnValue
