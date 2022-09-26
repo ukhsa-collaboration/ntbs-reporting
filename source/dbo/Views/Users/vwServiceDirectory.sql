@@ -7,6 +7,7 @@
 		tbs.Name AS TbServiceName,
 		[DisplayName]
 		,[Notes]
+		,u.Username
 		,COALESCE([EmailPrimary], u.[Username]) AS EmailAddress
 		,[EmailSecondary]
 		,[JobTitle]
