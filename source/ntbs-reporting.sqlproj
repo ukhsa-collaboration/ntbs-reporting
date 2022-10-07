@@ -355,6 +355,7 @@
     <Build Include="dbo\Tables\Reference Data\NtbsTransitionDateLookup.sql" />
     <Build Include="dbo\Tables\Report Unmatched Specimens\RejectedSpecimen.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwDashboardNotifications.sql" />
+    <Build Include="dbo\Views\Reference Data\vwNearestHospitalTBService.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
