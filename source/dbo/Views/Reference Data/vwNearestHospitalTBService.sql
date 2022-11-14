@@ -17,13 +17,13 @@
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tb1 ON
 	tb1.TB_Service_Code = t1.TB_Service_Code
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h2 ON
-	h2.HospitalId = p.Closest_Hospital_ID 
+	h2.HospitalId = p.Second_Closest_Hospital 
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] t2 ON
 	t2.HospitalID = h2.HospitalId
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tb2 ON
 	tb2.TB_Service_Code = t2.TB_Service_Code
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h3 ON
-	h3.HospitalId = p.Closest_Hospital_ID 
+	h3.HospitalId = p.Third_Closest_Hospital 
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] t3 ON
 	t3.HospitalID = h3.HospitalId
 	INNER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tb3 ON
