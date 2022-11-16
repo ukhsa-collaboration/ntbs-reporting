@@ -134,6 +134,7 @@
     <Folder Include="dbo\Views\Users" />
     <Folder Include="dbo\Views\Internal Reports" />
     <Folder Include="dbo\Tables\Reference Data" />
+    <Folder Include="dbo\Views\Unmatched Specimens" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -356,6 +357,7 @@
     <Build Include="dbo\Tables\Report Unmatched Specimens\RejectedSpecimen.sql" />
     <Build Include="dbo\Views\Power BI Reporting\vwDashboardNotifications.sql" />
     <Build Include="dbo\Views\Reference Data\vwNearestHospitalTBService.sql" />
+    <Build Include="dbo\Views\Unmatched Specimens\vwUnmatchedSpecimensRelatedNotificationsList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />

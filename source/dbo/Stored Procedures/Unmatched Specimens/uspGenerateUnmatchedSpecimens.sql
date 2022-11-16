@@ -14,7 +14,7 @@ BEGIN TRY
 	CREATE TABLE #MatchTypeRanking ([Rank] int, ResultName nvarchar(20) )
 
 	INSERT INTO #MatchTypeRanking VALUES (1, 'Confirmed')
-	INSERT INTO #MatchTypeRanking VALUES (1, 'Possible')
+	INSERT INTO #MatchTypeRanking VALUES (2, 'Possible')
 	INSERT INTO #MatchTypeRanking VALUES (2, 'Rejected-Possible')
 	INSERT INTO #MatchTypeRanking VALUES (2, 'Rejected')
 
