@@ -103,7 +103,7 @@
       <Value>https://ntbs-test.apps.ocp-por.unix.phe.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
-      <Value>2</Value>
+      <Value>10</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>NA</Value>

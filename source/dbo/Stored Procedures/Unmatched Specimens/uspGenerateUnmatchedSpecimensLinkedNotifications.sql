@@ -20,6 +20,11 @@ BEGIN TRY
 	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
 	WHERE nsm.MatchType = 'Rejected-Possible'
 
+	SELECT us.ReferenceLaboratoryNumber, nsm.NotificationID, 'PossibleMatch' AS EventType INTO #PossibleMatch
+	FROM UnmatchedSpecimens us
+	JOIN [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm ON nsm.ReferenceLaboratoryNumber = us.ReferenceLaboratoryNumber
+	WHERE nsm.MatchType = 'Possible'
+
 	SELECT mr.clientsourceID AS ReferenceLaboratoryNumber, mr.rclientsourceID AS NotificationID, 'PoorQualityMatch' AS EventType INTO #PoorQualityMatch
 	FROM UnmatchedSpecimens us
 	JOIN [$(NTBS_Specimen_Matching)].dbo.MatchResults mr ON mr.clientsourceID = us.ReferenceLaboratoryNumber
@@ -77,6 +82,7 @@ BEGIN TRY
 
 	DROP TABLE #PreviousMatch
 	DROP TABLE #PreviousPossibleMatch
+	DROP TABLE #PossibleMatch
 	DROP TABLE #PoorQualityMatch
 	DROP TABLE #AllLinks
 
