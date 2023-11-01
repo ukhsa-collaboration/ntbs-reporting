@@ -26,6 +26,7 @@ BEGIN TRY
 		,LocalAuthority = la.LA_Name
 		,ResidencePhec = reside.PHEC_Name
 		,TreatmentPhec = treat.PHEC_Name
+		,AssignedRegion = Coalesce(reside.PHEC_Name,treat.PHEC_Name)
 		,TbService = tbs.TB_Service_Name
 		,Hospital = h.HospitalName
 		,LastRecordedTreatmentOutcome =
