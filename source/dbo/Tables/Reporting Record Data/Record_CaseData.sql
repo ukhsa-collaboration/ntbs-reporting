@@ -20,6 +20,8 @@
 	[LastTransferOutTbServiceCode] [nvarchar](15) NULL,
 	[LastTransferOutRegionCode] [nvarchar](15) NULL,
 	[SecondaryTbService] [nvarchar](150) NULL,
+	[SecondaryTbServiceCode] [nvarchar](15) NULL,
+	[SecondaryTbServiceRegionCode] [nvarchar](15) NULL,
 	[Age] [tinyint] NULL,
 	[Sex] [varchar](10) NULL,
 	[UkBorn] [varchar](10) null,

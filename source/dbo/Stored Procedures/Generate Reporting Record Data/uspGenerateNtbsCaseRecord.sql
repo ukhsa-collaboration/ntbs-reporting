@@ -158,6 +158,8 @@ BEGIN TRY
 		,[SocialContextVenueCount]
 		,[SocialContextVenueTypeList]
 		,[SecondaryTbService]
+		,[SecondaryTBServiceCode]
+		,[SecondaryTbServiceRegionCode]
 		,[DataRefreshedAt])
 	SELECT
 		rr.NotificationId										AS NotificationId
@@ -348,6 +350,8 @@ BEGIN TRY
 		,socialVenues.VenueCount								AS SocialContextVenueCount
 		,socialVenues.Description								AS SocialContextVenueTypeList
 		,stbs.Name												AS SecondaryTbService
+		,stbs.Code												AS SecondaryTbServiceCode
+		,stbs.PHECCode											AS SecondaryTbServiceRegionCode
 		,GETUTCDATE()											AS DataRefreshedAt
 	FROM [dbo].[RecordRegister] rr
 		INNER JOIN [$(NTBS)].[dbo].[Notification] n ON n.NotificationId = rr.NotificationId
