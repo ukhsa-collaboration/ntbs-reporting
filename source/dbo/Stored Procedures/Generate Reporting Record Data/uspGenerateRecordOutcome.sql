@@ -61,7 +61,19 @@ BEGIN TRY
 	(SELECT DISTINCT NotificationId,
 		FIRST_VALUE(TbServiceCode) OVER (PARTITION BY NotificationId ORDER BY EventDate) AS TbServiceCode,
 		FIRST_VALUE(TbServiceName) OVER (PARTITION BY NotificationId ORDER BY EventDate) AS TbServiceName
-	FROM TransfersOut)
+	FROM TransfersOut),
+	
+	LastTransferOutDetails AS
+	(SELECT NotificationId, EventDate, LastTransferOutTbServiceCode,LastTransferOutTbServiceName,LastTransferOutRegionCode FROM (
+  SELECT NotificationId, EventDate, TbServiceCode AS LastTransferOutTbServiceCode,
+			TbServiceName AS LastTransferOutTbServiceName,tbs.PHECCode AS LastTransferOutRegionCode, 
+  SortId = ROW_NUMBER() OVER (PARTITION BY NotificationId order by EventDate desc) 
+  from TransfersOut t
+  left join [$(NTBS)].ReferenceData.TbService tbs on tbs.Code = t.TbServiceCode
+  ) A
+  Where SortId = 1
+
+	)
 
 	UPDATE cd
 	SET
@@ -73,6 +85,9 @@ BEGIN TRY
 		TreatmentOutcome36monthsDescriptive = po3.DescriptiveOutcome,
 		NotifyingTbService = COALESCE(notifyingEvent.TbServiceName, notifyingTransfer.TbServiceName, cd.TbService),
 		NotifyingTbServiceCode = COALESCE(notifyingEvent.TbServiceCode, notifyingTransfer.TbServiceCode, h.TBServiceCode),
+		LastTransferOutTbServiceCode = LastTransfer.LastTransferOutTbServiceCode,
+		LastTransferOutTbService = LastTransfer.LastTransferOutTbServiceName,
+		LastTransferOutRegionCode = LastTransfer.LastTransferOutRegionCode,
 		TbServiceResponsible12Months = [dbo].ufnGetServiceResponsible(1, cd.NotificationId, o.NotificationStartDate, cd.TbService),
 		TbServiceResponsible24Months =
 		CASE
@@ -90,6 +105,7 @@ BEGIN TRY
 		INNER JOIN [$(NTBS)].ReferenceData.Hospital h ON h.HospitalId = cd.HospitalId
 		LEFT OUTER JOIN NotifyingServiceAndCodeFromInitialEvent notifyingEvent ON notifyingEvent.NotificationId = cd.NotificationId
 		LEFT OUTER JOIN NotifyingServiceAndCodeFromTransfer notifyingTransfer ON notifyingTransfer.NotificationId = cd.NotificationId
+		LEFT OUTER JOIN LastTransferOutDetails lastTransfer on LastTransfer.NotificationId = cd.NotificationId 
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po1 ON po1.NotificationId = o.NotificationId AND po1.TimePeriod = 1
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po2 ON po2.NotificationId = o.NotificationId AND po2.TimePeriod = 2
 		LEFT OUTER JOIN [dbo].[PeriodicOutcome] po3 ON po3.NotificationId = o.NotificationId AND po3.TimePeriod = 3
