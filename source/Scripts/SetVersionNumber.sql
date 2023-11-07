@@ -1,4 +1,4 @@
 ﻿TRUNCATE TABLE [dbo].[ReleaseVersion]
 
 INSERT INTO [dbo].[ReleaseVersion]([Version],[Date])
-    VALUES ('1.18.1', '2023-01-12 12:00:00')
+    VALUES ('1.18.2', '2023-11-08 12:00:00')

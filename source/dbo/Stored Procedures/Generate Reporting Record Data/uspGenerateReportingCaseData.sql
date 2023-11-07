@@ -26,6 +26,9 @@ BEGIN TRY
 		,LocalAuthority = la.LA_Name
 		,ResidencePhec = reside.PHEC_Name
 		,TreatmentPhec = treat.PHEC_Name
+		,AssignedRegion = Coalesce(reside.PHEC_Name,treat.PHEC_Name)
+		,TreatmentICB = rph.ICBName
+		,AssignedICB = Coalesce(rp.ICBName,rph.ICBName)
 		,TbService = tbs.TB_Service_Name
 		,Hospital = h.HospitalName
 		,LastRecordedTreatmentOutcome =
@@ -47,6 +50,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] treat ON treat.PHEC_Code = rr.TreatmentPhecCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
+		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] rph ON rph.Pcode = h.Postcode
 
 	UPDATE pd
 	SET Initials = LEFT(pd.GivenName,1) + LEFT(pd.FamilyName,1)
