@@ -38,6 +38,8 @@
 	[ResidencePhec] [varchar](50) NULL,
 	[TreatmentPhec] [varchar](50) NULL,
 	[AssignedRegion] [varchar](50) NULL,
+	[AssignedICB] [varchar](100) NULL,
+	[TreatmentICB] [varchar](100) NULL,
 	[ResolvedResidenceHPU] [nvarchar](100) NULL,
 	[Lat] [nvarchar](50) NULL,
 	[Long] [nvarchar](50) NULL,
