@@ -16,7 +16,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -470,6 +470,10 @@
     <SqlCmdVariable Include="NumberOfReportingYears">
       <DefaultValue>5</DefaultValue>
       <Value>$(SqlCmdVar__22)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportingStartYear">
+      <DefaultValue>2018</DefaultValue>
+      <Value>$(SqlCmdVar__24)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <DefaultValue>ReportServer</DefaultValue>

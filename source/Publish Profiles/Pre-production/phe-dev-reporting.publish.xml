@@ -99,14 +99,17 @@
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>NTBS_Specimen_Matching</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <Value>https://https://ntbs-dev.apps.ocp-por.unix.phe.gov.uk/</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
       <Value>5</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportingStartYear">
+      <Value>2018</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>ReportServer</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://https://ntbs-dev.apps.ocp-por.unix.phe.gov.uk/</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>
