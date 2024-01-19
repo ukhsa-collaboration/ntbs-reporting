@@ -105,6 +105,9 @@
     <SqlCmdVariable Include="NumberOfReportingYears">
       <Value>6</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportingStartYear">
+      <Value>2018</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
       <Value>NTBS_ReportServer_Live</Value>
     </SqlCmdVariable>
