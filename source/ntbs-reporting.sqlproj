@@ -16,7 +16,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -368,6 +368,7 @@
     <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-pseudo-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
