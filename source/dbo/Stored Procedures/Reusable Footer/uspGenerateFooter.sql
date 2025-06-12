@@ -14,6 +14,7 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 		DECLARE @ReportingLastRefreshed AS DATETIME
 		DECLARE @EtsLastRefreshed AS DATETIME
 		DECLARE @NtbsLastRefreshed AS DATETIME
+		DECLARE @ClusterLastRefreshed AS DATETIME
 		DECLARE @ReportingVersion AS VARCHAR(50)
 		DECLARE @ReportingVersionDate AS DATETIME
 		
@@ -26,6 +27,9 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 			WHERE AuditDateTime > DATEADD(DAY, -7, GETUTCDATE())
 				AND RootEntity = 'Notification'
 				AND EventType != 'Read')
+
+		-- When Cluster information was last extracted (based on last backlog release)
+		SET @ClusterLastRefreshed = (SELECT TOP 1 LastExtractionDate FROM [$(NTBS_Specimen_Matching)].[dbo].ForestClusterBuild)
 		
 		-- When were the generated reusable tables last refreshed ?
 		Set @ReportingLastRefreshed = (select top 1 DataRefreshedAt from ReusableNotification n order by DataRefreshedAt desc)
@@ -52,6 +56,11 @@ CREATE PROCEDURE [dbo].[uspGenerateFooter] AS
 			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@NtbsLastRefreshed) + ' ' + FORMAT(@NtbsLastRefreshed, 'HH:mm'))
 		ELSE
 			SET @FooterText = REPLACE(@FooterText, '{NTBS_LAST_REFRESHED}', '"UNKNOWN"')
+
+		IF (@ClusterLastRefreshed IS NOT NULL)
+			SET @FooterText = REPLACE(@FooterText, '{CLUSTER_LAST_REFRESHED}', dbo.ufnFormatDateConsistently(@ClusterLastRefreshed) + ' ' + FORMAT(@ClusterLastRefreshed, 'HH:mm'))
+		ELSE
+			SET @FooterText = REPLACE(@FooterText, '{CLUSTER_LAST_REFRESHED}', '"UNKNOWN"')
 
 		IF (@ReportingVersion IS NOT NULL)
 			SET @FooterText = REPLACE(@FooterText, '{REPORTING_RELEASE_VERSION}', @ReportingVersion)

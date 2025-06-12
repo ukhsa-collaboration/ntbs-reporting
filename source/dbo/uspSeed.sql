@@ -104,7 +104,10 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT INTO [dbo].[TemplateText]([Desc],[Text])
 		VALUES
 			('Footer text to be displayed in each report',
-			'1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED} and the data presented in this report was generated at {REPORTING_LAST_REFRESHED}.
+			'1.1. The source ETS data presented are correct as at {ETS_LAST_REFRESHED}. 
+			1.2. The source NTBS data presented are correct as at {NTBS_LAST_REFRESHED}. 
+			1.3 The source Cluster data presented are correct as at {CLUSTER_LAST_REFRESHED} .
+			1.4 The data presented in this report was generated at {REPORTING_LAST_REFRESHED}.
 			2. The data presented are provisional and are subject to change.
 			3. Source: Reporting Service, Enhanced Tuberculosis Surveillance system (ETS) AND National TB Surveillance system (NTBS). Use of data is covered by ETS and NTBS Data Access and Provision Policies
 			Reporting version: Release-{REPORTING_RELEASE_VERSION}-{REPORTING_RELEASE_DATE}')
