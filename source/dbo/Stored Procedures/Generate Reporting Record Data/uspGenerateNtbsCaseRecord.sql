@@ -54,6 +54,7 @@ BEGIN TRY
 		,[DiagnosisToTreatmentDays]
 		,[OnsetToTreatmentDays]
 		,[HivTestOffered]
+		,[Hiv]
 		,[SiteOfDisease]
 		,[DiseaseSiteList]
 		,[PostMortemDiagnosis]
@@ -62,11 +63,14 @@ BEGIN TRY
 		,[MdrTreatmentDate]
 		,[MdrExpectedDuration]
 		,[HPTReferenceNumber]
+		,[Comments]
 		,[EnhancedCaseManagement]
 		,[EnhancedCaseManagementLevel]
 		,[FirstPresentationSetting]
 		,[DOTOffered]
 		,[DOTReceived]
+		,[VOTOffered]
+		,[VOTReceived]
 		,[TestPerformed]
 		,[ChestXRayResult]
 		,[ChestCTResult]
@@ -217,6 +221,7 @@ BEGIN TRY
 						cd.TreatmentStartDate))
 					AS SMALLINT)								AS OnsetToTreatmentDays
 		,dbo.ufnGetHIVValue (cd.HIVTestState)					AS HivTestOffered
+		,cd.HIVStatus											AS HIV
 		--summarise sites of disease
 		,dbo.ufnGetSiteOfDisease(rr.NotificationId)				AS SiteOfDisease
 		,diseaseSites.[Description]								AS DiseaseSiteList
@@ -226,6 +231,7 @@ BEGIN TRY
 		,mdr.MDRTreatmentStartDate								AS MdrTreatmentDate
 		,mdr.ExpectedTreatmentDurationInMonths					AS MdrExpectedDuration
 		,cd.HealthProtectionTeamReferenceNumber					AS HPTReferenceNumber
+		,cd.Notes												AS Comments
 		,cd.EnhancedCaseManagementStatus						AS EnhancedCaseManagement
 		,cd.EnhancedCaseManagementLevel							AS EnhancedCaseManagementLevel
 		,CASE
@@ -237,6 +243,8 @@ BEGIN TRY
 		END														AS FirstPresentationSetting
 		,cd.IsDotOffered										AS DOTOffered
 		,dl.DOTReceived											AS DOTReceived
+		,cd.IsVotOffered										AS VOTOffered
+		,vl.VOTReceived											AS VOTReceived
 		,dbo.ufnYesNo(ted.HasTestCarriedOut)					AS TestPerformed
 		,ChestXRayResult.ChestTestResult						AS ChestXRayResult
 		,ChestCTResult.ChestTestResult							AS ChestCTResult
@@ -383,6 +391,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[MBovisDetails] mbov ON mbov.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
+		LEFT OUTER JOIN [dbo].[VOTLookup] vl ON vl.SystemValue = cd.DotStatus
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 4, cd.DiagnosisDate) ChestXRayResult

@@ -61,7 +61,7 @@
 	[DiagnosisToTreatmentDays] INT NULL,
 	[OnsetToTreatmentDays] INT NULL,
 	[HivTestOffered] [varchar](30) NULL,
-	[HivStatus]  [varchar](50) NULL,
+	[Hiv]  [varchar](50) NULL,
 	[SiteOfDisease] [varchar](50) NULL,
 	[DiseaseSiteList] [varchar](2000) NULL,
 	[PostMortemDiagnosis] [varchar](10) NULL,
@@ -86,6 +86,7 @@
 	[HomeVisitCarriedOut] [varchar] (10) NULL,
 	[HomeVisitDate] date NULL,
 	[HPTReferenceNumber] VARCHAR(40) NULL,
+	[Comments] VARCHAR(2000) NULL,
 
 	--individual disease sites
 	[Pulmonary site] VARCHAR(5) NULL,

@@ -358,6 +358,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwDashboardNotifications.sql" />
     <Build Include="dbo\Views\Reference Data\vwNearestHospitalTBService.sql" />
     <Build Include="dbo\Views\Unmatched Specimens\vwUnmatchedSpecimensRelatedNotificationsList.sql" />
+    <Build Include="dbo\Tables\Reference Data\VOTLookup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />

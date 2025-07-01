@@ -22,6 +22,14 @@ BEGIN TRY
 	('DotRefused', NULL, 'DOT refused'),
 	('Unknown', NULL, 'Unknown')
 
+	TRUNCATE TABLE [dbo].[VOTLookup]
+	INSERT INTO [dbo].[VOTLookup](SystemValue, VOTOffered, VOTReceived)
+	VALUES
+	--NTBS values - IsDotOffered doesn't require translation for the reporting service
+	('DotReceived', NULL, 'DOT received'),
+	('DotRefused', NULL, 'DOT refused'),
+	('Unknown', NULL, 'Unknown')
+
 	TRUNCATE TABLE [dbo].[ManualTestResultRanking];
 	INSERT INTO [dbo].[ManualTestResultRanking](Rank, SubRank, ResultName, DisplayName)
 	VALUES
