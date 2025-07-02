@@ -27,7 +27,7 @@
 			ELSE 0 
 			END)							AS [Child cases]
 		,SUM(
-			CASE WHEN cd.OccupationCategory = 'Health care' THEN 1 
+			CASE WHEN cd.OccupationCategory = 'Health care worker' THEN 1 
 			ELSE 0 
 			END)							AS [Healthcare workers]
 	FROM Clusters c
