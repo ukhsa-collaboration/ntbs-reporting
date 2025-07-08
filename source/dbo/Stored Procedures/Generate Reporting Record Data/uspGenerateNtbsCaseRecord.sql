@@ -391,7 +391,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[MBovisDetails] mbov ON mbov.NotificationId = n.NotificationId
 		LEFT OUTER JOIN [dbo].[TreatmentRegimenLookup] trl ON trl.TreatmentRegimenCode = cd.TreatmentRegimen
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = cd.DotStatus
-		LEFT OUTER JOIN [dbo].[VOTLookup] vl ON vl.SystemValue = cd.DotStatus
+		LEFT OUTER JOIN [dbo].[VOTLookup] vl ON vl.SystemValue = cd.VotStatus
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = n.NotificationId
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](rr.NotificationId, 4, cd.DiagnosisDate) ChestXRayResult

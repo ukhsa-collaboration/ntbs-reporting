@@ -31,7 +31,33 @@ BEGIN TRY
 	INSERT INTO #UnmatchedSpecimens SELECT * FROM #NoMatchesFound
 	INSERT INTO #UnmatchedSpecimens SELECT * FROM #AllMatchesRejected
 
-	INSERT INTO [dbo].[UnmatchedSpecimens] SELECT DISTINCT ls.[ReferenceLaboratoryNumber]
+	INSERT INTO [dbo].[UnmatchedSpecimens] 
+	([ReferenceLaboratoryNumber]
+      ,[SpecimenDate]
+      ,[SampleType]
+      ,[LaboratoryName]
+      ,[ReferenceLaboratory]
+      ,[Species]
+      ,[INH]
+      ,[RIF]
+      ,[PZA]
+      ,[EMB]
+      ,[MDR]
+      ,[AMINO]
+      ,[QUIN]
+      ,[XDR]
+      ,[PatientNhsNumber]
+	  ,[PatientChiNumber]
+      ,[PatientBirthDate]
+      ,[PatientName]
+      ,[PatientSex]
+      ,[PatientAddress]
+      ,[PatientPostcode]
+      ,[EarliestRecordDate]
+      ,[RegionCode]
+      ,[Region]
+	  )
+	  SELECT DISTINCT ls.[ReferenceLaboratoryNumber]
 			,ls.[SpecimenDate]
 			,ls.[SpecimenTypeCode] AS SampleType
 			,ls.[LaboratoryName]
@@ -54,6 +80,7 @@ BEGIN TRY
 			,ls.[QUIN]
 			,ls.[XDR]
 			,ls.[PatientNhsNumber]
+			,ls.PatientCHINumber
 			,ls.[PatientBirthDate]
 			,ls.[PatientName]
 			,ls.[PatientSex]

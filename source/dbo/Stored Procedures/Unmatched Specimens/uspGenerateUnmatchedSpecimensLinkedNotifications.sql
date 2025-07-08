@@ -47,6 +47,7 @@ BEGIN TRY
 	  ,[NotificationDate]
       ,[NotificationStatus]
       ,[NhsNumber]
+	  ,ChiNumber
       ,[BirthDate]
       ,[FamilyName]
       ,[GivenName]
@@ -63,6 +64,7 @@ BEGIN TRY
 		, n.NotificationDate
 		,n.NotificationStatus
 		,p.NhsNumber
+		,p.ChiNumber
 		,p.Dob AS BirthDate
 		,p.FamilyName
 		,p.GivenName
