@@ -15,6 +15,7 @@
 	[QUIN] NVARCHAR(10),
 	[XDR] NVARCHAR(10),
 	[PatientNhsNumber] NVARCHAR(12),
+	[PatientChiNumber] NVARCHAR(12),
 	[PatientBirthDate] DATETIME,
 	[PatientName] NVARCHAR(150),
 	[PatientSex] NVARCHAR(1),

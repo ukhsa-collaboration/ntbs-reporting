@@ -89,6 +89,7 @@ BEGIN TRY
 		(NotificationId
 		,NhsNumber
 		,NhsNumberToLookup
+		,CHINumber
 		,GivenName
 		,FamilyName
 		,DateOfBirth
@@ -98,6 +99,7 @@ BEGIN TRY
 		rr.NotificationId									AS NotificationId
 		,p.NhsNumber										AS NhsNumber --this will later be reformatted if valid
 		,p.NhsNumber										AS NhsNumberToLookup --this will later be reformatted if valid
+		,p.ChiNumber										AS ChiNumber
 		,p.GivenName										AS Forename
 		,p.FamilyName										AS Surname
 		,CONVERT(DATE, p.Dob)								AS DateOfBirth

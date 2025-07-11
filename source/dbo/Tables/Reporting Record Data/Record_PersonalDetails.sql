@@ -6,6 +6,7 @@
 	[NotificationId] [int] NOT NULL,
 	[NhsNumber] [nvarchar](20) NULL,
 	[NhsNumberToLookup] [nvarchar](20) NULL,
+	[ChiNumber] [nvarchar](20) NULL,
 	[GivenName] [nvarchar](50) NULL,
 	[FamilyName] [nvarchar](50) NULL,
 	[Initials] [nvarchar] (5) NULL,
