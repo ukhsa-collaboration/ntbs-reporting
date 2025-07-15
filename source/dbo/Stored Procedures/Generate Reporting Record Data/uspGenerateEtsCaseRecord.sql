@@ -193,7 +193,10 @@ BEGIN TRY
 			WHEN n.OccupationId IS NULL THEN n.OccupationOther
 			ELSE occ.[Name]
 		END																AS Occupation
-		,occat.[Name]													AS OccupationCategory
+		,CASE	WHEN occat.[Name] = 'Health care worker' 
+						THEN 'Health care' 
+				WHEN occat.[Name] = 'None' 
+				 		THEN 'Other' ELSE occat.[Name] END				AS OccupationCategory
 		-- RP-859 populate birth country consistently
 		,dbo.ufnGetEtsBirthCountryAsNtbsCountry(p.UkBorn, p.BirthCountryId) AS BirthCountry
 		,con.[Name]														AS WorldRegion

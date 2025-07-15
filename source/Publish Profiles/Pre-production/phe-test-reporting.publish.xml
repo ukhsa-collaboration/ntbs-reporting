@@ -100,7 +100,7 @@
       <Value>NTBS_Specimen_Matching_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://ntbs-ntbs-development.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+      <Value>https://ntbs-ntbs-test.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
       <Value>10</Value>

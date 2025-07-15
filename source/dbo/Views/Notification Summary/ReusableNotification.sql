@@ -70,7 +70,7 @@
       ,[TreatmentInUk]
       ,[PreviousId]
       ,[BcgVaccinated]
-      ,[ClusterId]
+      ,rr.[ClusterId]
       ,[AnySocialRiskFactor] 
       ,[AlcoholMisuse]
       ,[DrugMisuse]

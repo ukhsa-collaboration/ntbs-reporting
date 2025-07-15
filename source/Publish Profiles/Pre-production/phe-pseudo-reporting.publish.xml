@@ -2,9 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>NTBS_Reporting_Staging_UAT</TargetDatabaseName>
-    <DeployScriptFileName>phe-ntbs-uat-reporting.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=sqlcluspordc17.phe.gov.uk\dc17;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetDatabaseName>NTBS_Reporting_Staging_Pseudo</TargetDatabaseName>
+    <DeployScriptFileName>phe-ntbs-pseudo-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=SQLCLUSPORNTBS.phe.gov.uk\NTBS;Integrated Security=True;Persist Security Info=False;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=False;Trust Server Certificate=True;Command Timeout=0</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
@@ -76,40 +76,40 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
-      <Value>NTBS_ETS_Live</Value>
+      <Value>NTBS_ETS_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
-      <Value>NTBS_Labbase2_Live</Value>
+      <Value>NTBS_Labbase2_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="LTBR">
-      <Value>NTBS_LondonTBR_Live</Value>
+      <Value>NTBS_LondonTBR_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>NTBS_Migration_UAT</Value>
+      <Value>NTBS_Migration_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>NTBS_UAT</Value>
+      <Value>NTBS_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>NTBS_AuditDB_UAT</Value>
+      <Value>NTBS_AuditDB_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>NTBS_R1_Geography_Staging_UAT</Value>
+      <Value>NTBS_R1_Geography_Staging_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>NTBS_Specimen_Matching_UAT</Value>
+      <Value>NTBS_Specimen_Matching_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://ntbs-ntbs-Staging.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+      <Value>https://ntbs-pseudo.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
-      <Value>2</Value>
+      <Value>10</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportingStartYear">
-      <Value>2021</Value>
+      <Value>2015</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
-      <Value>NTBS_ReportServer_UAT</Value>
+      <Value>NA</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>

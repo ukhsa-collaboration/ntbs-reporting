@@ -16,7 +16,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -358,6 +358,7 @@
     <Build Include="dbo\Views\Power BI Reporting\vwDashboardNotifications.sql" />
     <Build Include="dbo\Views\Reference Data\vwNearestHospitalTBService.sql" />
     <Build Include="dbo\Views\Unmatched Specimens\vwUnmatchedSpecimensRelatedNotificationsList.sql" />
+    <Build Include="dbo\Tables\Reference Data\VOTLookup.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -368,6 +369,7 @@
     <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\phe-pseudo-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />

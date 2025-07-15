@@ -34,6 +34,8 @@
 	[NoFixedAbode] [varchar](10) NULL,
 
 	-- Geographies
+	[LSOACode] [varchar](10) NULL,
+	[LSOAName] [varchar](100) NULL,
 	[LocalAuthority] [varchar](50) NULL,
 	[ResidencePhec] [varchar](50) NULL,
 	[TreatmentPhec] [varchar](50) NULL,
@@ -59,6 +61,7 @@
 	[DiagnosisToTreatmentDays] INT NULL,
 	[OnsetToTreatmentDays] INT NULL,
 	[HivTestOffered] [varchar](30) NULL,
+	[Hiv]  [varchar](50) NULL,
 	[SiteOfDisease] [varchar](50) NULL,
 	[DiseaseSiteList] [varchar](2000) NULL,
 	[PostMortemDiagnosis] [varchar](10) NULL,
@@ -71,6 +74,8 @@
 	[FirstPresentationSetting] [nvarchar] (110) NULL,
 	[DOTOffered] [varchar] (10) NULL,
 	[DOTReceived] [varchar] (20) NULL,
+	[VOTOffered] [varchar] (10) NULL,
+	[VOTReceived] [varchar] (20) NULL,
 	[TestPerformed] [varchar] (10) NULL,
 	[SampleTaken] [varchar] (10) NULL,
 	[InitialSputumSmearResult] [varchar] (20) NULL,
@@ -81,6 +86,7 @@
 	[HomeVisitCarriedOut] [varchar] (10) NULL,
 	[HomeVisitDate] date NULL,
 	[HPTReferenceNumber] VARCHAR(40) NULL,
+	[Comments] VARCHAR(2000) NULL,
 
 	--individual disease sites
 	[Pulmonary site] VARCHAR(5) NULL,

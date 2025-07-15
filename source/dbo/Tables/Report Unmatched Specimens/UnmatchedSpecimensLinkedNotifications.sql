@@ -8,6 +8,7 @@
 	[NotificationDate] [datetime2](7),
 	[NotificationStatus] NVARCHAR(30),
 	[NhsNumber] NVARCHAR(10),
+	[ChiNumber] NVARCHAR(10),
 	[BirthDate] DATETIME2(7),
 	[FamilyName] NVARCHAR(35),
 	[GivenName] NVARCHAR(35),
