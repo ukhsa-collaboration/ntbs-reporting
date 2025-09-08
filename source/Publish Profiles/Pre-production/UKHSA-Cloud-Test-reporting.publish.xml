@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseName>NTBS_Reporting_Staging_Test</TargetDatabaseName>
+    <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=ntbsdevsqlmi.bee1a4cf3766.database.windows.net;Persist Security Info=False;User ID=adil.mirza@ukhsa.gov.uk;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=False;Trust Server Certificate=True;Authentication=ActiveDirectoryInteractive;Command Timeout=0</TargetConnectionString>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
+  </PropertyGroup>
+  <ItemGroup>
+    <SqlCmdVariable Include="ETS">
+      <Value>NTBS_ETS_Test</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="Labbase2">
+      <Value>NTBS_Labbase2_Test</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="LTBR">
+      <Value>NTBS_LondonTBR_Test</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="master">
+      <Value>master</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="migration">
+      <Value>NTBS_Migration_Pseudo</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS">
+      <Value>NTBS_Pseudo</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_AUDIT">
+      <Value>NTBS_AuditDB_Pseudo</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+      <Value>NTBS_R1_Geography_Staging_Pseudo</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_Specimen_Matching">
+      <Value>NTBS_Specimen_Matching_Pseudo</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_URL">
+      <Value>https://ntbs-pseudo.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NumberOfReportingYears">
+      <Value>10</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="ReportingStartYear">
+      <Value>2018</Value>
+    </SqlCmdVariable>
+  </ItemGroup>
+</Project>
