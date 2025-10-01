@@ -9,10 +9,10 @@ AS
 		COALESCE (CAST((Q1.HIVOffered * 100.0) / NULLIF(Q1.HIVDenominator,0) AS DECIMAL(10, 1)), 0.0) As '%HIVOffered',
 		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / NULLIF(Q1.NumberOfPulmonaryNotifications, 0) AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
 
-		FROM [NTBS_R1_Geography_Staging].[dbo].[TB_Service] tbs
-		LEFT JOIN [NTBS_R1_Geography_Staging].[dbo].[TB_Service_to_PHEC] map
+		FROM [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs
+		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] map
 			ON tbs.TB_Service_Code = map.TB_Service_Code
-		LEFT JOIN [NTBS_R1_Geography_Staging].[dbo].[PHEC] phec
+		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] phec
 			ON map.PHEC_Code = phec.PHEC_Code
 		LEFT OUTER JOIN
 			(SELECT rn.TBServiceCode,
