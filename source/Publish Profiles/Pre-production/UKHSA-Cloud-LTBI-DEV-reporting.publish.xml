@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>NTBS_Reporting_Staging_Dev</TargetDatabaseName>
+    <TargetDatabaseName>NTBS_LTBI_Reporting_Staging_Dev</TargetDatabaseName>
     <DeployScriptFileName>ntbs-reporting.sql</DeployScriptFileName>
     <TargetConnectionString>Data Source=ntbsdevsqlmi.bee1a4cf3766.database.windows.net;Persist Security Info=False;User ID=adil.mirza@ukhsa.gov.uk;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=False;Trust Server Certificate=True;Authentication=ActiveDirectoryInteractive;Command Timeout=0</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
@@ -21,25 +21,25 @@
       <Value>master</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>NTBS_Migration_Dev</Value>
+      <Value>NTBS_LTBI_Migration_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>NTBS_Dev</Value>
+      <Value>NTBS_LTBI_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>NTBS_AuditDB_Dev</Value>
+      <Value>NTBS_LTBI_Audit_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <Value>NTBS_R1_Geography_Staging_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>NTBS_Specimen_Matching_Dev</Value>
+      <Value>NTBS_LTBI_Specimen_Matching_Dev</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
       <Value>https://ntbs-ntbs-development.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
-      <Value>10</Value>
+      <Value>5</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportingStartYear">
       <Value>2018</Value>
