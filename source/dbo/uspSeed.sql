@@ -54,6 +54,7 @@ CREATE PROCEDURE [dbo].[uspSeed] AS
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (10, N'Unknown', N'Unknown', 10)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (11, N'PHECWAL', N'Wales', 11)
 		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (12, N'PHECNI', N'Northern Ireland', 12)
+		INSERT dbo.Phec (PhecId, PhecCode, PhecName, SortOrder) VALUES (13, N'PHECSCOT', N'Scotland', 13)
 		SET IDENTITY_INSERT [dbo].[Phec] OFF
 
 		DELETE FROM dbo.AdGroup
