@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{00903ab8-5be1-4195-9677-566baa463341}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath />
     <RootNamespace>Reporting_New</RootNamespace>
@@ -370,6 +370,10 @@
     <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\phe-pseudo-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-DEV-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Pseudo-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-DEV-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
@@ -418,10 +422,10 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SqlSchemas\master.dacpac">
-      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\140\SqlSchemas\master.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\master.dacpac">
+      <HintPath>..\data\DACPAC\master.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+      <DatabaseSqlCmdVariable>master</DatabaseSqlCmdVariable>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
@@ -440,6 +444,10 @@
     <SqlCmdVariable Include="LTBR">
       <DefaultValue>LTBR</DefaultValue>
       <Value>$(SqlCmdVar__19)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="master">
+      <DefaultValue>master</DefaultValue>
+      <Value>$(SqlCmdVar__25)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
       <DefaultValue>migration</DefaultValue>
@@ -476,10 +484,6 @@
     <SqlCmdVariable Include="ReportingStartYear">
       <DefaultValue>2018</DefaultValue>
       <Value>$(SqlCmdVar__24)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="ReportServer">
-      <DefaultValue>ReportServer</DefaultValue>
-      <Value>$(SqlCmdVar__14)</Value>
     </SqlCmdVariable>
   </ItemGroup>
   <ItemGroup>

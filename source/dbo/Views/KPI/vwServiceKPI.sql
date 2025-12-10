@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwServiceKPI]
 
 AS
-	SELECT tbs.TB_Service_Code, tbs.TB_Service_Name,
+	SELECT tbs.TB_Service_Code, tbs.TB_Service_Name, map.PHEC_Code, phec.PHEC_Name,
 		COALESCE (Q1.NumberofNotifications, 0) As NumberOfNotifications,
 		COALESCE (Q1.HIVDenominator, 0) As HIVDenominator,
 		COALESCE (CAST((Q1.CPCount * 100.0) / NULLIF(Q1.NumberOfNotifications,0) AS DECIMAL(10, 1)), 0.0) AS '%Positive',
@@ -10,6 +10,10 @@ AS
 		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / NULLIF(Q1.NumberOfPulmonaryNotifications, 0) AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
 
 		FROM [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs
+		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] map
+			ON tbs.TB_Service_Code = map.TB_Service_Code
+		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] phec
+			ON map.PHEC_Code = phec.PHEC_Code
 		LEFT OUTER JOIN
 			(SELECT rn.TBServiceCode,
 					SUM(CASE WHEN CulturePositive='Yes' THEN 1 ELSE 0 END) AS CPCount,
