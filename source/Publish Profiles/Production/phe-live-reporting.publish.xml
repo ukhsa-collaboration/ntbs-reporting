@@ -84,6 +84,9 @@
     <SqlCmdVariable Include="LTBR">
       <Value>NTBS_LondonTBR_Live</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="master">
+      <Value>master</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
       <Value>NTBS_Migration_Live</Value>
     </SqlCmdVariable>
