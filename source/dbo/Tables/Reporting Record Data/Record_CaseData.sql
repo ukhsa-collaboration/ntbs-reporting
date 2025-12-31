@@ -86,7 +86,7 @@
 	[HomeVisitCarriedOut] [varchar] (10) NULL,
 	[HomeVisitDate] date NULL,
 	[HPTReferenceNumber] VARCHAR(40) NULL,
-	[Comments] VARCHAR(2000) NULL,
+	[Comments] VARCHAR(4000) NULL,
 
 	--individual disease sites
 	[Pulmonary site] VARCHAR(5) NULL,
