@@ -30,7 +30,7 @@
       <Value>NTBS_AuditDB_Pseudo</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>NTBS_R1_Geography_Staging_Pseudo</Value>
+      <Value>NTBS_Geography_Staging_NonProd</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>NTBS_Specimen_Matching_Pseudo</Value>

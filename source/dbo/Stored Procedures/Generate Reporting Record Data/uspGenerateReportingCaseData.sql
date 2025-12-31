@@ -23,8 +23,8 @@ BEGIN TRY
 		,ResolvedResidenceHPU = nacs.HPU
 		,Lat = rp.lat
 		,Long = rp.long
-		,LSOACode = pl.LSOACode
-		,LSOAName = pl.LSOAName
+		,LSOACode = rph.LSOACode
+		,LSOAName = rph.LSOAName
 		,LocalAuthority = la.LA_Name
 		,ResidencePhec = reside.PHEC_Name
 		,TreatmentPhec = treat.PHEC_Name
@@ -53,7 +53,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
 		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] rph ON rph.Pcode = h.Postcode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PostcodeLookup] pl ON pl.postcode = COALESCE(pd.PostcodeToLookup,h.Postcode)
+		--LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PostcodeLookup] pl ON pl.postcode = COALESCE(pd.PostcodeToLookup,h.Postcode)
 
 	UPDATE pd
 	SET Initials = LEFT(pd.GivenName,1) + LEFT(pd.FamilyName,1)
