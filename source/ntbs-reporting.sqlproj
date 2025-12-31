@@ -374,6 +374,7 @@
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Pseudo-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-DEV-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-Test-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
@@ -391,11 +392,6 @@
       <HintPath>..\data\DACPAC\NTBS_Specimen_Matching.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
-      <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
     </ArtifactReference>
     <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
       <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
@@ -426,6 +422,11 @@
       <HintPath>..\data\DACPAC\master.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>master</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
+      <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
@@ -463,7 +464,7 @@
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
       <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>
-      <Value>$(SqlCmdVar__15)</Value>
+      <Value>$(SqlCmdVar__26)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <DefaultValue>NTBS_Specimen_Matching</DefaultValue>

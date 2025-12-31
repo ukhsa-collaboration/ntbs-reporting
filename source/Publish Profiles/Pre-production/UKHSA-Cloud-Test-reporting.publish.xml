@@ -21,22 +21,22 @@
       <Value>master</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>NTBS_Migration_Pseudo</Value>
+      <Value>NTBS_Migration_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>NTBS_Pseudo</Value>
+      <Value>NTBS_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>NTBS_AuditDB_Pseudo</Value>
+      <Value>NTBS_AuditDB_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>NTBS_R1_Geography_Staging_Pseudo</Value>
+      <Value>NTBS_Geography_Staging_NonProd</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>NTBS_Specimen_Matching_Pseudo</Value>
+      <Value>NTBS_Specimen_Matching_Test</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://ntbs-pseudo.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+      <Value>https://ntbs-test.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
       <Value>10</Value>
