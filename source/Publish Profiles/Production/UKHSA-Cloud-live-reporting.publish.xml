@@ -2,9 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
-    <TargetDatabaseName>NTBS_Reporting_Staging_Test</TargetDatabaseName>
-    <DeployScriptFileName>phe-ntbs-test-reporting.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=SQLCLUSPORNTBS.phe.gov.uk\NTBS;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
+    <TargetDatabaseName>NTBS_Reporting_Staging_Live</TargetDatabaseName>
+    <DeployScriptFileName>phe-ntbs-live-reporting.sql</DeployScriptFileName>
+    <TargetConnectionString>Data Source=ntbsprodsqlmi.6b29dfd6a620.database.windows.net;Persist Security Info=False;User ID=adil.mirza@ukhsa.gov.uk;Pooling=False;Multiple Active Result Sets=False;Connect Timeout=60;Encrypt=False;Trust Server Certificate=False;Authentication=ActiveDirectoryInteractive;Command Timeout=0</TargetConnectionString>
     <ProfileVersionNumber>1</ProfileVersionNumber>
     <ScriptDatabaseOptions>False</ScriptDatabaseOptions>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
@@ -76,43 +76,43 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
-      <Value>NTBS_ETS_Test</Value>
+      <Value>NTBS_ETS_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
-      <Value>NTBS_Labbase2_Test</Value>
+      <Value>NTBS_Labbase2_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="LTBR">
-      <Value>NTBS_LondonTBR_Test</Value>
+      <Value>NTBS_LondonTBR_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="master">
       <Value>master</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
-      <Value>NTBS_Migration_Test</Value>
+      <Value>NTBS_Migration_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <Value>NTBS_Test</Value>
+      <Value>NTBS_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>NTBS_Audit_Test</Value>
+      <Value>NTBS_AuditDB_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <Value>NTBS_R1_Geography_Staging_Test</Value>
+      <Value>NTBS_Geography_Staging_Prod</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <Value>NTBS_Specimen_Matching_Test</Value>
+      <Value>NTBS_Specimen_Matching_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://ntbs-ntbs-test.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+      <Value>https://ntbs.phe.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
-      <Value>10</Value>
+      <Value>6</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportingStartYear">
-      <Value>2015</Value>
+      <Value>2018</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="ReportServer">
-      <Value>NA</Value>
+      <Value>NTBS_ReportServer_Live</Value>
     </SqlCmdVariable>
   </ItemGroup>
 </Project>
