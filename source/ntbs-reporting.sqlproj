@@ -375,6 +375,8 @@
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-Test-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-UAT-reporting.publish.xml" />
+    <None Include="Publish Profiles\Production\UKHSA-Cloud-live-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />
