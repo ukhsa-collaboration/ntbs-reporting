@@ -76,10 +76,10 @@
   </PropertyGroup>
   <ItemGroup>
     <SqlCmdVariable Include="ETS">
-      <Value>NTBS_ETS_Live</Value>
+      <Value>ETS</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
-      <Value>NTBS_Labbase2_Live</Value>
+      <Value>Labbase2</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="LTBR">
       <Value>NTBS_LondonTBR_Live</Value>
