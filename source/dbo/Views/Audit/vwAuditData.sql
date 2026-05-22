@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[vwAuditData]
 	AS
 	SELECT DISTINCT EventType, RootId, CONVERT(DATE, AuditDateTime,103) AS AuditDate, AuditUser
-	FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
+	FROM [$(NTBS_Audit)].[dbo].[AuditLogs]
 	WHERE RootEntity = 'Notification' AND EventType = 'Read'
 	UNION
 	--user login events
@@ -9,10 +9,10 @@
 	from [$(NTBS)].[dbo].[UserLoginEvent]
 	UNION
 	SELECT DISTINCT 'Write' AS EventType, RootId, CONVERT(DATE, AuditDateTime,103) AS AuditDate, AuditUser
-	FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
+	FROM [$(NTBS_Audit)].[dbo].[AuditLogs]
 	WHERE RootEntity = 'Notification' AND EventType != 'Read' AND EventType != 'Unmatch'
 	UNION
 	--unmatches
 	SELECT EventType, RootId, CONVERT(DATE, AuditDateTime,103) AS AuditDate, AuditUser
-	FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
+	FROM [$(NTBS_Audit)].[dbo].[AuditLogs]
 	WHERE EventType = 'Unmatch'

@@ -32,7 +32,7 @@ SELECT s.Id AS UserId,
 		WHEN eth.Tier = 1 THEN 'National'
 		ELSE 'Regional'
 	END AS UserType
-FROM [$(ETS)].[dbo].[SystemUser] s
+FROM [$(ets)].[dbo].[SystemUser] s
 	INNER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth ON eth.Id = s.PermissionId
 	LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth2 ON eth2.Id = eth.ParentId
 WHERE s.AuditDelete IS NULL),
@@ -61,8 +61,8 @@ SELECT ap.UserId,
 	COALESCE(tbs.[Name], p.[Name]) AS Membership,
 	COALESCE(p.Code, tbs.PHECCode) AS PhecCode
 FROM AliasedPermissions ap
-	LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalName = ap.PermissionName
-	LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = h.HospitalId
+	LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalName = ap.PermissionName
+	LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = h.HospitalId
 	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[TbService] tbs ON tbs.Code = tbh.TB_Service_Code
 	LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[PHEC] p ON p.[Name] = ap.PermissionName
 WHERE UserType = 'National' OR COALESCE(tbs.[Name], p.[Name]) IS NOT NULL

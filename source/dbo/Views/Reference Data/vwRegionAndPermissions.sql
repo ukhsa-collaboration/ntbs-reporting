@@ -12,7 +12,7 @@ CREATE VIEW [dbo].[vwRegionAndPermissions]
 (
 	SELECT p.PHEC_Code, p.PHEC_Name, Q1.Id
 	FROM 
-	[$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p
+	[$(NTBS_Geography_Staging)].[dbo].[PHEC] p
 		INNER JOIN  
 		(
 			SELECT * 

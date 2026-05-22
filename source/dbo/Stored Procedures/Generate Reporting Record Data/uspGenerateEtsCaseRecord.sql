@@ -5,9 +5,9 @@ BEGIN TRY
 	SELECT n.TuberculosisEpisodeId, STRING_AGG(sites.[Name], N', ') WITHIN GROUP (ORDER BY ord.OrderIndex) AS [Description]
 	INTO #TempDiseaseSites
 		FROM RecordRegister rr
-			INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
-			INNER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
-			INNER JOIN [$(ETS)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
+			INNER JOIN [$(ets)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ets)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
+			INNER JOIN [$(ets)].dbo.DiseaseSite sites ON sites.Id = diseaseSite.DiseaseSiteId
 			LEFT JOIN [$(migration)].dbo.DiseaseSiteMapping dsm ON dsm.EtsID = sites.Id
 			LEFT JOIN [$(NTBS)].ReferenceData.Site ord ON ord.SiteId = dsm.NtbsId
 		WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL
@@ -17,16 +17,16 @@ BEGIN TRY
 		FIRST_VALUE(trl.ResultString) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY trl.ranking) AS [Result]
 	INTO #TempManualTestResult
 		FROM RecordRegister rr
-			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
-			INNER JOIN [$(ETS)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
+			INNER JOIN [$(ets)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ets)].[dbo].[LaboratoryResult] lr ON lr.NotificationId = n.Id
 			INNER JOIN [$(migration)].dbo.ManualTestTypeMapping mttm ON mttm.EtsId = lr.LaboratoryCategoryId
 			INNER JOIN EtsManualTestResultLookup trl ON trl.EtsResult = lr.Result
 		WHERE rr.SourceSystem = 'ETS' AND lr.OpieId IS NULL AND lr.AuditDelete IS NULL;
 
 	WITH venues as (SELECT rr.NotificationId, COUNT(scv.VenueTypeId) AS NumberOfVenues, vm.NtbsLabel AS [Description]
 		FROM RecordRegister rr
-			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
-			INNER JOIN [$(ETS)].[dbo].SocialContextsVenues scv ON scv.NotificationId = n.Id
+			INNER JOIN [$(ets)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ets)].[dbo].SocialContextsVenues scv ON scv.NotificationId = n.Id
 			INNER JOIN [$(migration)].dbo.VenueTypeMapping vm ON vm.EtsID = scv.VenueTypeId
 		WHERE rr.SourceSystem = 'ETS' AND scv.AuditDelete IS NULL
 		GROUP BY rr.NotificationId, vm.NtbsLabel)
@@ -43,7 +43,7 @@ BEGIN TRY
 		,CASE WHEN mBovKnownCase.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasExposureToKnownCase]
 	INTO #TempMBovDetails
 		FROM RecordRegister rr
-			INNER JOIN [$(ETS)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
+			INNER JOIN [$(ets)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
 			LEFT JOIN [$(migration)].dbo.EtsMBovisAnimalExposure mBovAnimal on mBovAnimal.OldNotificationId = n.LegacyId
 			LEFT JOIN [$(migration)].dbo.EtsMBovisUnpasteurisedMilkConsumption mBovMilk on mBovMilk.OldNotificationId = n.LegacyId
 			LEFT JOIN [$(migration)].dbo.EtsMBovisOccupationExposures mBovOccupation on mBovOccupation.OldNotificationId = n.LegacyId
@@ -437,24 +437,24 @@ BEGIN TRY
 		,socialVenues.Description										AS SocialContextVenueTypeList
 		,GETUTCDATE()													AS DataRefreshedAt
 	FROM [dbo].[RecordRegister] rr
-		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
-		INNER JOIN [$(ETS)].[dbo].[Patient] p ON p.Id = n.PatientId
-		LEFT OUTER JOIN [$(ETS)].dbo.Address a ON a.Id = n.AddressId
-		LEFT OUTER JOIN [$(ETS)].dbo.SystemUser s ON s.Id = n.OwnerUserId
-		LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisEpisode te ON te.Id = n.TuberculosisEpisodeId
-		LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisHistory th ON th.Id = n.TuberculosisHistoryId
-		LEFT OUTER JOIN [$(ETS)].dbo.TreatmentOutcome tr12 ON tr12.Id = n.TreatmentOutcomeId
-		LEFT OUTER JOIN [$(ETS)].dbo.TreatmentOutcomeTwentyFourMonth tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
-		LEFT OUTER JOIN [$(ETS)].dbo.TreatmentOutcome36Month tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
-		LEFT OUTER JOIN [$(ETS)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
-		LEFT OUTER JOIN [$(ETS)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
-		LEFT OUTER JOIN [$(ETS)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
-		LEFT OUTER JOIN [$(ETS)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
-		LEFT OUTER JOIN [$(ETS)].dbo.Occupation occ ON occ.Id = n.OccupationId
-		LEFT OUTER JOIN [$(ETS)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
+		INNER JOIN [$(ets)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
+		INNER JOIN [$(ets)].[dbo].[Patient] p ON p.Id = n.PatientId
+		LEFT OUTER JOIN [$(ets)].dbo.Address a ON a.Id = n.AddressId
+		LEFT OUTER JOIN [$(ets)].dbo.SystemUser s ON s.Id = n.OwnerUserId
+		LEFT OUTER JOIN [$(ets)].dbo.TuberculosisEpisode te ON te.Id = n.TuberculosisEpisodeId
+		LEFT OUTER JOIN [$(ets)].dbo.TuberculosisHistory th ON th.Id = n.TuberculosisHistoryId
+		LEFT OUTER JOIN [$(ets)].dbo.TreatmentOutcome tr12 ON tr12.Id = n.TreatmentOutcomeId
+		LEFT OUTER JOIN [$(ets)].dbo.TreatmentOutcomeTwentyFourMonth tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId
+		LEFT OUTER JOIN [$(ets)].dbo.TreatmentOutcome36Month tr36 ON tr36.Id = n.TreatmentOutcome36MonthId
+		LEFT OUTER JOIN [$(ets)].dbo.TreatmentPlanned tp ON tp.Id = n.TreatmentPlannedId
+		LEFT OUTER JOIN [$(ets)].dbo.Comorbidities co ON co.Id = n.ComorbiditiesId
+		LEFT OUTER JOIN [$(ets)].dbo.ContactTracing ct ON ct.Id = n.ContactTracingId
+		LEFT OUTER JOIN [$(ets)].dbo.EthnicGroup eg ON eg.Id = p.EthnicGroupId
+		LEFT OUTER JOIN [$(ets)].dbo.Occupation occ ON occ.Id = n.OccupationId
+		LEFT OUTER JOIN [$(ets)].dbo.OccupationCategory occat ON occat.Id = n.OccupationCategoryId
 		LEFT OUTER JOIN [$(migration)].dbo.MdrDetails mdr ON mdr.OldNotificationId = n.LegacyId
-		LEFT OUTER JOIN [$(ETS)].dbo.Country bc ON bc.Id = p.BirthCountryId
-		LEFT OUTER JOIN [$(ETS)].dbo.Continent con ON con.Id = bc.ContinentId
+		LEFT OUTER JOIN [$(ets)].dbo.Country bc ON bc.Id = p.BirthCountryId
+		LEFT OUTER JOIN [$(ets)].dbo.Continent con ON con.Id = bc.ContinentId
 		LEFT OUTER JOIN [dbo].[DOTLookup] dl ON dl.SystemValue = CONVERT(VARCHAR, tp.DirectObserv)
 		LEFT OUTER JOIN #TempDiseaseSites diseaseSites ON diseaseSites.TuberculosisEpisodeId = te.Id
 		LEFT OUTER JOIN #TempSocialContextVenues socialVenues ON socialVenues.NotificationId = n.LegacyId

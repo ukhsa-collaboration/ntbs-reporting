@@ -4,7 +4,7 @@
 	WITH LocalAuthority AS
 	(SELECT la.[LA_Code]
       ,la.[LA_Name]
-	FROM [$(NTBS_R1_Geography_Staging)].[dbo].[Local_Authority] la
+	FROM [$(NTBS_Geography_Staging)].[dbo].[Local_Authority] la
 	UNION
 	SELECT 'UNKNOWN', 'UNKNOWN'),
 
