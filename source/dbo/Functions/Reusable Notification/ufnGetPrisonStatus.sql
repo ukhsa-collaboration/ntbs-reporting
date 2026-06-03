@@ -21,8 +21,8 @@ AS
 
 		IF (@PrisonAtDiagnosis = 1)
 			SET @ReturnValue = (SELECT 'Yes'
-								FROM [$(ETS)].dbo.RiskFactorPrisonHistoryStatus r
-									INNER JOIN [$(ETS)].dbo.TuberculosisHistoryPrisonHistoryStatus th ON th.PrisonHistoryStatusId = r.Id
+								FROM [$(ets)].dbo.RiskFactorPrisonHistoryStatus r
+									INNER JOIN [$(ets)].dbo.TuberculosisHistoryPrisonHistoryStatus th ON th.PrisonHistoryStatusId = r.Id
 								WHERE th.TuberculosisHistoryId = @TuberculosisHistoryId
 									AND r.LegacyId = @PrisonHistoryStatusId)
 
