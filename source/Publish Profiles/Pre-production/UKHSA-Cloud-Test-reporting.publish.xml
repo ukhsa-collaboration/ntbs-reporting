@@ -11,6 +11,9 @@
     <SqlCmdVariable Include="ETS">
       <Value>NTBS_ETS_Test</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="ets">
+      <Value>NTBS_ETS_Test</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>NTBS_Labbase2_Test</Value>
     </SqlCmdVariable>
@@ -26,10 +29,10 @@
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_Test</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_AUDIT">
+    <SqlCmdVariable Include="NTBS_Audit">
       <Value>NTBS_AuditDB_Test</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+    <SqlCmdVariable Include="NTBS_Geography_Staging">
       <Value>NTBS_Geography_Staging_NonProd</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">

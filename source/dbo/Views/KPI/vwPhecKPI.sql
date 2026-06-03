@@ -9,7 +9,7 @@ AS
 		COALESCE (CAST((Q1.HIVOffered * 100.0) / NULLIF(Q1.HIVDenominator,0) AS DECIMAL(10, 1)), 0.0) As '%HIVOffered',
 		COALESCE (CAST((Q1.TreatmentDelays * 100.0) / NULLIF(Q1.NumberOfPulmonaryNotifications, 0) AS DECIMAL(10, 1)), 0.0) As '%TreatmentDelay'
 
-		FROM [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p
+		FROM [$(NTBS_Geography_Staging)].[dbo].[PHEC] p
 		LEFT OUTER JOIN
 			(SELECT rn.TreatmentPhecCode,
 					SUM(CASE WHEN CulturePositive='Yes' THEN 1 ELSE 0 END) AS CPCount,
