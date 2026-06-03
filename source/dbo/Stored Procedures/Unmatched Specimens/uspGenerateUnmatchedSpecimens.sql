@@ -19,7 +19,7 @@ BEGIN TRY
 	INSERT INTO #MatchTypeRanking VALUES (2, 'Rejected')
 
 	SELECT ranked.ReferenceLaboratoryNumber INTO #AllMatchesRejected FROM (
-		SELECT DISTINCT nsm.ReferenceLaboratoryNumber, FIRST_VALUE(mtr.[Rank]) OVER (PARTITION BY nsm.ReferenceLaboratoryNumber ORDER BY mtr.[rank] ASC) AS [Rank]
+		SELECT DISTINCT nsm.ReferenceLaboratoryNumber, FIRST_VALUE(mtr.[Rank]) OVER (PARTITION BY nsm.ReferenceLaboratoryNumber ORDER BY mtr.[Rank] ASC) AS [Rank]
 			FROM [$(NTBS_Specimen_Matching)].dbo.NotificationSpecimenMatch nsm
 			INNER JOIN [$(NTBS_Specimen_Matching)].dbo.LabSpecimen ls ON ls.ReferenceLaboratoryNumber = nsm.ReferenceLaboratoryNumber
 			INNER JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(ls.SpecimenDate)

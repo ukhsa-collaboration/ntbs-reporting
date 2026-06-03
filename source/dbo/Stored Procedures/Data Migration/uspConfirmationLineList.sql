@@ -15,9 +15,9 @@ AS
 	WITH NotificationGroups AS
 	(SELECT DISTINCT(GroupId) 
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
-		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
-		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
-		LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+		LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
+		LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
+		LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)
 	WHERE 
 		mn.GroupId IS NOT NULL
@@ -49,10 +49,10 @@ AS
 		tbs.TB_Service_Name		AS 'TBServiceName', 
 		ln.LinkedNotifications	AS 'LinkedNotifications'
 	FROM [$(migration)].[dbo].[MergedNotifications] mn 
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = tbh.TB_Service_Code
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = mn.NtbsHospitalId
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = tbh.TB_Service_Code
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 		LEFT OUTER JOIN NotificationGroups ng ON ng.GroupId = mn.GroupId
 		LEFT OUTER JOIN LinkedNotifications ln ON ln.GroupId = mn.GroupId
 		LEFT JOIN vwNotificationYear ny ON ny.NotificationYear = YEAR(mn.NotificationDate)

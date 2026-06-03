@@ -165,8 +165,8 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[ReferenceData].Hospital hospital ON hospitalDetails.HospitalId = hospital.HospitalId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Ethnicity ethnicity ON ethnicity.EthnicityId = patient.EthnicityId
 		LEFT JOIN [$(NTBS)].[ReferenceData].Country country ON country.CountryId = patient.CountryId
-		LEFT JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = patient.PostcodeToLookup
-		LEFT JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
+		LEFT JOIN [$(NTBS_Geography_Staging)].[dbo].[Reduced_Postcode_file] pl ON pl.Pcode = patient.PostcodeToLookup
+		LEFT JOIN [$(ets)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = pl.PctCode
 		LEFT JOIN @TempDiseaseSites diseaseSites ON diseaseSites.NotificationId = patient.NotificationId
 		OUTER APPLY [dbo].[ufnGetCaseRecordChestTestResults](n.NotificationId, 4, clinicalDetails.DiagnosisDate) ChestXrayResult
 		WHERE nsm.MatchType = 'Confirmed'
@@ -180,7 +180,7 @@ BEGIN
 
 		WITH LegacyVntrCluster AS
 		(SELECT DISTINCT CaseId, ReferenceLaboratoryNumber, VntrProfile, ClusterNumber
-		 FROM [$(ETS)].[dbo].[ETSOxfordExtract]
+		 FROM [$(ets)].[dbo].[ETSOxfordExtract]
 		 WHERE VntrProfile IS NOT NULL AND ReferenceLaboratoryNumber IS NOT NULL)
 
 		--set VNTR and Cluster
