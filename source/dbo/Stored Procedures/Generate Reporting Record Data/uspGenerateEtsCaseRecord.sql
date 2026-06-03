@@ -14,7 +14,7 @@ BEGIN TRY
 		GROUP BY n.TuberculosisEpisodeId;
 
 	SELECT DISTINCT rr.NotificationId, mttm.NtbsId AS ManualTestTypeId,
-		FIRST_VALUE(trl.ResultString) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY trl.ranking) AS [Result]
+		FIRST_VALUE(trl.ResultString) OVER (PARTITION BY rr.NotificationId, mttm.NtbsId ORDER BY trl.Ranking) AS [Result]
 	INTO #TempManualTestResult
 		FROM RecordRegister rr
 			INNER JOIN [$(ets)].[dbo].[Notification] n ON rr.NotificationId = n.LegacyId
@@ -36,7 +36,7 @@ BEGIN TRY
 		GROUP BY NotificationId;
 
 	SELECT DISTINCT rr.NotificationId
-		,CASE WHEN COALESCE(mBovAnimal.Oldnotificationid, mBovMilk.Oldnotificationid, mBovOccupation.Oldnotificationid, mBovKnownCase.Oldnotificationid) IS NOT NULL THEN 1 ELSE 0 END AS [IsMBovis]
+		,CASE WHEN COALESCE(mBovAnimal.OldNotificationId, mBovMilk.OldNotificationId, mBovOccupation.OldNotificationId, mBovKnownCase.OldNotificationId) IS NOT NULL THEN 1 ELSE 0 END AS [IsMBovis]
 		,CASE WHEN mBovAnimal.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasAnimalExposure]
 		,CASE WHEN mBovMilk.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasUnpMilkExposure]
 		,CASE WHEN mBovOccupation.OldNotificationId IS NOT NULL THEN 'Yes' ELSE 'Unknown' END AS [HasOccupationExposure]

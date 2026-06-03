@@ -11,7 +11,7 @@
 		a.CreationDate,
 		a.DuplicateId,
 		a.SpecimenId,
-		a.TBServiceCode AS AlertTBServiceCode,
+		a.TbServiceCode AS AlertTBServiceCode,
 		hd.TBServiceCode
 
   FROM [$(NTBS)].[dbo].Alert a

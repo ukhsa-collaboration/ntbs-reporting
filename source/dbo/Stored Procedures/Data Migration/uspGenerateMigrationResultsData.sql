@@ -133,14 +133,14 @@ BEGIN TRY
 
 	WITH EpisodicOutcome AS
 	(
-		SELECT DISTINCT CONCAT(pe_patientId, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
+		SELECT DISTINCT CONCAT(pe_PatientID, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
 		FIRST_VALUE(pe_TreatmentOutcome) OVER (PARTITION BY pe_PatientID, pe_DiseasePeriod ORDER BY pe_EndDate DESC) AS EpisodeOutcome
 		FROM [$(LTBR)].[dbo].[dbt_PatientEpisode]
 	),
 	DiseasePeriodOutcome AS
 	(
 
-		SELECT CONCAT(dp_patientId, '-', dp_DiseasePeriod) AS 'OldNotificationId',
+		SELECT CONCAT(dp_PatientID, '-', dp_DiseasePeriod) AS 'OldNotificationId',
 		COALESCE(dp.dp_Outcome3Years, dp_Outcome2Years, dp_Outcome1Year, dp_TreatmentOutcome) AS DiseasePeriodOutcome
 		FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod] dp
 

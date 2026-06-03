@@ -89,7 +89,7 @@ BEGIN TRY
 		(NotificationId
 		,NhsNumber
 		,NhsNumberToLookup
-		,CHINumber
+		,ChiNumber
 		,GivenName
 		,FamilyName
 		,DateOfBirth
