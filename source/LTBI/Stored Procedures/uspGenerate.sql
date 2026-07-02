@@ -15,6 +15,7 @@ CREATE PROCEDURE [LTBI].[uspGenerate] AS
 		EXEC [LTBI].[uspSeed]
 
 		EXEC LTBI.uspGenerateTestingandTreatment
+		EXEC LTBI.uspUpdateEligiblePatientHasRecord
 		 
 		-- Save last refresh date to footer
 		EXEC LTBI.uspGenerateFooter 
