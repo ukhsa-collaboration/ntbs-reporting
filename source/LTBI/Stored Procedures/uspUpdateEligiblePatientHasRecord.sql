@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[uspUpdateEligiblePatientHasRecord]
+﻿CREATE PROCEDURE [LTBI].[uspUpdateEligiblePatientHasRecord]
 	
 AS
 
