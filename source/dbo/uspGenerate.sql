@@ -35,6 +35,8 @@ CREATE PROCEDURE [dbo].[uspGenerate] AS
 		-- Save last refresh date to footer
 		EXEC dbo.uspGenerateFooter
 
+		EXEC LTBI.uspGenerate
+
 		COMMIT
 	END TRY
 	BEGIN CATCH
