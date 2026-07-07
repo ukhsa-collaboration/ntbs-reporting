@@ -5,37 +5,20 @@ Desc:    This pre-calculates and pre-generates most reporting data.
 
 
 **************************************************************************************************/
-CREATE PROCEDURE [dbo].[uspGenerate] AS
+CREATE PROCEDURE [LTBI].[uspGenerate] AS
 	SET NOCOUNT ON
 
 	BEGIN TRY
 		-- If any "Generate" procs errors, then roll back all "Generate" procs !
 		BEGIN TRANSACTION
 
-		-- Re-seed drop-downs (in case data has changed)
-		EXEC dbo.uspSeed
-		EXEC dbo.uspGenerateTB_Service
+		EXEC [LTBI].[uspSeed]
 
-		-- Populate manual lab result tables
-
-		EXEC [dbo].[uspGenerateReportingRecords]
-
-
-		-- Populate report-specific tables
-		EXEC dbo.uspGenerateCultureResistance
-		EXEC dbo.uspGenerateOutcomeSummary
-		EXEC dbo.uspGenerateDataQuality
-		EXEC dbo.uspGenerateUnmatchedSpecimens
-
-		-- Populate boilerplate report too (not much overhead, so might as well for demo purposes)
-
-		EXEC uspMigrationDubiousSpecimenMatches
-
-		EXEC dbo.uspGenerateNOIDSWeeklyCount
+		EXEC LTBI.uspGenerateTestingandTreatment
+		EXEC LTBI.uspUpdateEligiblePatientHasRecord
+		 
 		-- Save last refresh date to footer
-		EXEC dbo.uspGenerateFooter
-
-		EXEC LTBI.uspGenerate
+		EXEC LTBI.uspGenerateFooter 
 
 		COMMIT
 	END TRY

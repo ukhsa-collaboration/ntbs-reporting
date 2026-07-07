@@ -135,6 +135,11 @@
     <Folder Include="dbo\Views\Internal Reports" />
     <Folder Include="dbo\Tables\Reference Data" />
     <Folder Include="dbo\Views\Unmatched Specimens" />
+    <Folder Include="LTBI" />
+    <Folder Include="LTBI\Stored Procedures" />
+    <Folder Include="LTBI\Tables" />
+    <Folder Include="LTBI\Views" />
+    <Folder Include="LTBI\Schema" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ContinuousDeployment\StoredProcedures\sp_generate_merge.sql" />
@@ -359,6 +364,18 @@
     <Build Include="dbo\Views\Reference Data\vwNearestHospitalTBService.sql" />
     <Build Include="dbo\Views\Unmatched Specimens\vwUnmatchedSpecimensRelatedNotificationsList.sql" />
     <Build Include="dbo\Tables\Reference Data\VOTLookup.sql" />
+    <Build Include="LTBI\Schema\LTBI.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerate.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateFooter.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateTestingandTreatment.sql" />
+    <Build Include="LTBI\Stored Procedures\uspSeed.sql" />
+    <Build Include="LTBI\Tables\FooterText.sql" />
+    <Build Include="LTBI\Tables\LTBIBulkUploadTestingandTreatment.sql" />
+    <Build Include="LTBI\Tables\TemplateText.sql" />
+    <Build Include="LTBI\Views\vwUserPermissions.sql" />
+    <Build Include="LTBI\Tables\EligiblePatientData.sql" />
+    <Build Include="LTBI\Views\vwEligiblePatientData.sql" />
+    <Build Include="LTBI\Stored Procedures\uspUpdateEligiblePatientHasRecord.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
