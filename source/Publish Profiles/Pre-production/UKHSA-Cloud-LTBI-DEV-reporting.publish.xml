@@ -8,8 +8,8 @@
     <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
   <ItemGroup>
-    <SqlCmdVariable Include="ETS">
-      <Value>ETS</Value>
+    <SqlCmdVariable Include="ets">
+      <Value>ets</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
       <Value>Labbase2</Value>
@@ -26,17 +26,17 @@
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_LTBI_DEV</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_AUDIT">
-      <Value>NTBS_LTBI_AuditDB_DEV</Value>
+    <SqlCmdVariable Include="NTBS_Audit">
+      <Value>NTBS_LTBI_AuditDB_Dev</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
+    <SqlCmdVariable Include="NTBS_Geography_Staging">
       <Value>NTBS_Geography_Staging_NonProd</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_Specimen_Matching">
       <Value>NTBS_LTBI_Specimen_Matching_DEV</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
-      <Value>https://ntbs-ntbs-staging.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
+      <Value>https://ntbs-ltbi-dev.apps.ocp-az-uks.ukhsa.gov.uk/</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NumberOfReportingYears">
       <Value>10</Value>

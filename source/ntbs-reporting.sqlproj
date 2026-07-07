@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{00903ab8-5be1-4195-9677-566baa463341}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql140DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath />
     <RootNamespace>Reporting_New</RootNamespace>
@@ -388,96 +388,96 @@
     <None Include="Scripts\RefreshReporting.sql" />
   </ItemGroup>
   <ItemGroup>
-    <ArtifactReference Include="..\data\DACPAC\Labbase2.dacpac">
-      <HintPath>..\data\DACPAC\Labbase2.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\Azure\ets.dacpac">
+      <HintPath>..\data\DACPAC\Azure\ets.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>ets</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Azure\Labbase2.dacpac">
+      <HintPath>..\data\DACPAC\Azure\Labbase2.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>Labbase2</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS_Specimen_Matching.dacpac">
-      <HintPath>..\data\DACPAC\NTBS_Specimen_Matching.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\ETS.dacpac">
-      <HintPath>..\data\DACPAC\ETS.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>ETS</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS.dacpac">
-      <HintPath>..\data\DACPAC\NTBS.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\LTBR.dacpac">
-      <HintPath>..\data\DACPAC\LTBR.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\Azure\LTBR.dacpac">
+      <HintPath>..\data\DACPAC\Azure\LTBR.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>LTBR</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS_AUDIT.dacpac">
-      <HintPath>..\data\DACPAC\NTBS_AUDIT.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS_AUDIT</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\migration.dacpac">
-      <HintPath>..\data\DACPAC\migration.dacpac</HintPath>
-      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
-    </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\master.dacpac">
-      <HintPath>..\data\DACPAC\master.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\Azure\master.dacpac">
+      <HintPath>..\data\DACPAC\Azure\master.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseSqlCmdVariable>master</DatabaseSqlCmdVariable>
     </ArtifactReference>
-    <ArtifactReference Include="..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac">
-      <HintPath>..\data\DACPAC\NTBS_R1_Geography_Staging.dacpac</HintPath>
+    <ArtifactReference Include="..\data\DACPAC\Azure\migration.dacpac">
+      <HintPath>..\data\DACPAC\Azure\migration.dacpac</HintPath>
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseSqlCmdVariable>NTBS_R1_Geography_Staging</DatabaseSqlCmdVariable>
+      <DatabaseSqlCmdVariable>migration</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Azure\NTBS_Audit.dacpac">
+      <HintPath>..\data\DACPAC\Azure\NTBS_Audit.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_Audit</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Azure\NTBS_Geography_Staging.dacpac">
+      <HintPath>..\data\DACPAC\Azure\NTBS_Geography_Staging.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_Geography_Staging</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Azure\NTBS_Specimen_Matching.dacpac">
+      <HintPath>..\data\DACPAC\Azure\NTBS_Specimen_Matching.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS_Specimen_Matching</DatabaseSqlCmdVariable>
+    </ArtifactReference>
+    <ArtifactReference Include="..\data\DACPAC\Azure\NTBS.dacpac">
+      <HintPath>..\data\DACPAC\Azure\NTBS.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseSqlCmdVariable>NTBS</DatabaseSqlCmdVariable>
     </ArtifactReference>
   </ItemGroup>
   <ItemGroup>
-    <SqlCmdVariable Include="ETS">
-      <DefaultValue>ETS</DefaultValue>
-      <Value>$(SqlCmdVar__16)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="Labbase2">
-      <DefaultValue>Labbase2</DefaultValue>
-      <Value>$(SqlCmdVar__9)</Value>
+    <SqlCmdVariable Include="ets">
+      <DefaultValue>ets</DefaultValue>
+      <Value>$(SqlCmdVar__28)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="$(NTBS_R1_Geography_Staging)">
       <DefaultValue>$(NTBS_R1_Geography_Staging)</DefaultValue>
       <Value>$(SqlCmdVar__10)</Value>
     </SqlCmdVariable>
+    <SqlCmdVariable Include="Labbase2">
+      <DefaultValue>Labbase2</DefaultValue>
+      <Value>$(SqlCmdVar__29)</Value>
+    </SqlCmdVariable>
     <SqlCmdVariable Include="LTBR">
       <DefaultValue>LTBR</DefaultValue>
-      <Value>$(SqlCmdVar__19)</Value>
+      <Value>$(SqlCmdVar__30)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="master">
       <DefaultValue>master</DefaultValue>
-      <Value>$(SqlCmdVar__25)</Value>
+      <Value>$(SqlCmdVar__31)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="migration">
       <DefaultValue>migration</DefaultValue>
-      <Value>$(SqlCmdVar__21)</Value>
+      <Value>$(SqlCmdVar__32)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS">
-      <DefaultValue>test-ntbs</DefaultValue>
-      <Value>$(SqlCmdVar__17)</Value>
+      <DefaultValue>NTBS</DefaultValue>
+      <Value>$(SqlCmdVar__36)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_AUDIT">
-      <DefaultValue>NTBS_AUDIT</DefaultValue>
-      <Value>$(SqlCmdVar__20)</Value>
+    <SqlCmdVariable Include="NTBS_Audit">
+      <DefaultValue>NTBS_Audit</DefaultValue>
+      <Value>$(SqlCmdVar__33)</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_R1_Geography_Staging">
-      <DefaultValue>NTBS_R1_Geography_Staging</DefaultValue>
-      <Value>$(SqlCmdVar__26)</Value>
-    </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_Specimen_Matching">
-      <DefaultValue>NTBS_Specimen_Matching</DefaultValue>
-      <Value>$(SqlCmdVar__11)</Value>
+    <SqlCmdVariable Include="NTBS_Geography_Staging">
+      <DefaultValue>NTBS_Geography_Staging</DefaultValue>
+      <Value>$(SqlCmdVar__34)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="$(ReportServer)">
       <DefaultValue>$(ReportServer)</DefaultValue>
       <Value>$(SqlCmdVar__14)</Value>
+    </SqlCmdVariable>
+    <SqlCmdVariable Include="NTBS_Specimen_Matching">
+      <DefaultValue>NTBS_Specimen_Matching</DefaultValue>
+      <Value>$(SqlCmdVar__35)</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_URL">
       <DefaultValue>https://ntbs-test.e32846b1ddf0432eb63f.northeurope.aksapp.io/</DefaultValue>

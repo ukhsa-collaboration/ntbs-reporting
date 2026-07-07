@@ -7,8 +7,8 @@
 		SELECT c.ISOYearWeek AS YearWeek, SUM(Q1.NumberOfRows) AS NumberOfAudits
 		FROM [Calendar] c
 			LEFT OUTER JOIN 
-			(SELECT CONVERT(DATE, [AuditDateTime]) AS AuditDate, COUNT(ID) AS NumberOfRows
-			FROM [$(NTBS_AUDIT)].[dbo].[AuditLogs]
+			(SELECT CONVERT(DATE, [AuditDateTime]) AS AuditDate, COUNT(Id) AS NumberOfRows
+			FROM [$(NTBS_Audit)].[dbo].[AuditLogs]
 			WHERE AuditUser != 'SYSTEM'
 			GROUP BY CONVERT(DATE, [AuditDateTime])) AS q1 ON q1.AuditDate = c.DateValue
 			WHERE c.DateValue BETWEEN '2021-07-10' AND GETUTCDATE()

@@ -75,7 +75,7 @@ BEGIN TRY
 		,cd.TreatmentStartDate
 		FROM #AllLinks al
 	JOIN [$(NTBS)].dbo.[Notification] n ON al.NotificationID = n.NotificationId
-	JOIN [$(NTBS)].dbo.Patients p ON p.NotificationId = al.NotificationId
+	JOIN [$(NTBS)].dbo.Patients p ON p.NotificationId = al.NotificationID
 	JOIN [$(NTBS)].ReferenceData.Sex sex ON sex.SexId = p.SexId
 	JOIN [$(NTBS)].dbo.HospitalDetails hd ON hd.NotificationId = al.NotificationID
 	JOIN [$(NTBS)].dbo.ClinicalDetails cd ON cd.NotificationId = al.NotificationID

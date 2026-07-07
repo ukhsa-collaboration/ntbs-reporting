@@ -87,7 +87,7 @@ CREATE PROCEDURE [dbo].[uspGenerateDataQuality] AS
 		INSERT INTO dbo.DataQuality (NotificationId,Postcode)
 		SELECT distinct NotificationId,1
 								 FROM dbo.ReusableNotification n WITH (NOLOCK)
-								LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = n.Postcode
+								LEFT OUTER JOIN [$(NTBS_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = n.Postcode
 								WHERE 
 								NoFixedAbode = 'No' AND
 								 (ResidencePhec IS NULL OR  ResidencePhec = 'Unknown')

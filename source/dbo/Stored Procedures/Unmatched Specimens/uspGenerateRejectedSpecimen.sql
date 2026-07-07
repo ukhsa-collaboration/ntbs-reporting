@@ -20,7 +20,7 @@ BEGIN TRY
 		u.DisplayName	AS UserDisplayName,
 		a.RootId		AS NotificationId
 
-	FROM [$(NTBS_AUDIT)].dbo.AuditLogs a
+	FROM [$(NTBS_Audit)].dbo.AuditLogs a
 	JOIN [$(NTBS)].dbo.[User] u on u.Username = a.AuditUser
 	WHERE a.EntityType='Specimen' and (a.EventType = 'Unmatch' or a.EventType = 'RejectPotentialMatch')
 

@@ -29,11 +29,11 @@ BEGIN TRY
 			,CASE WHEN n.DenotificationId IS NOT NULL THEN 1 ELSE 0 END	AS Denotified
 			,tbh.TB_Service_Code										AS TBServiceCode
 			,REPLACE(po.Pcd2, ' ', '')									AS Postcode
-		FROM  [$(ETS)].dbo.[Notification] n
-			LEFT OUTER JOIN [$(ETS)].dbo.Patient p ON p.Id = n.PatientId
-			LEFT OUTER JOIN [$(ETS)].dbo.[Address] a ON a.Id = n.AddressId
-			LEFT OUTER JOIN [$(ETS)].dbo.Postcode po ON po.Id = a.PostcodeId
-			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = n.HospitalId
+		FROM  [$(ets)].dbo.[Notification] n
+			LEFT OUTER JOIN [$(ets)].dbo.Patient p ON p.Id = n.PatientId
+			LEFT OUTER JOIN [$(ets)].dbo.[Address] a ON a.Id = n.AddressId
+			LEFT OUTER JOIN [$(ets)].dbo.Postcode po ON po.Id = a.PostcodeId
+			LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = n.HospitalId
 			LEFT OUTER JOIN [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = n.LegacyId
 		WHERE n.Submitted = 1
 			AND n.AuditDelete IS NULL
@@ -78,9 +78,9 @@ BEGIN TRY
 			cluster.ClusterId
 		FROM NotificationsToLookup ntl
 			LEFT OUTER JOIN [$(NTBS_Specimen_Matching)].[dbo].[NotificationClusterMatch] cluster ON cluster.NotificationId = ntl.NotificationId
-			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = ntl.Postcode
-			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.LA_to_PHEC reside ON reside.LA_Code = r.LA_Code
-			LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].dbo.TB_Service_to_PHEC treat  ON treat.TB_Service_Code = ntl.TBServiceCode
+			LEFT OUTER JOIN [$(NTBS_Geography_Staging)].dbo.Reduced_Postcode_file r ON r.Pcode = ntl.Postcode
+			LEFT OUTER JOIN [$(NTBS_Geography_Staging)].dbo.LA_to_PHEC reside ON reside.LA_Code = r.LA_Code
+			LEFT OUTER JOIN [$(NTBS_Geography_Staging)].dbo.TB_Service_to_PHEC treat  ON treat.TB_Service_Code = ntl.TBServiceCode
 		WHERE (cluster.ClusterId IS NOT NULL OR YEAR(ntl.NotificationDate) IN (SELECT NotificationYear FROM vwNotificationYear))
 
 		--then populate the personal details table for NTBS records
@@ -89,7 +89,7 @@ BEGIN TRY
 		(NotificationId
 		,NhsNumber
 		,NhsNumberToLookup
-		,CHINumber
+		,ChiNumber
 		,GivenName
 		,FamilyName
 		,DateOfBirth
@@ -132,10 +132,10 @@ BEGIN TRY
 		,po.Pcd2											AS Postcode --this will later be reformatted if valid
 	FROM
 		[dbo].[RecordRegister] rr
-		INNER JOIN [$(ETS)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
-		INNER JOIN [$(ETS)].[dbo].[Patient] p ON p.Id = n.PatientId
-		LEFT OUTER JOIN [$(ETS)].[dbo].[Address] a ON a.Id = n.AddressId
-		LEFT OUTER JOIN [$(ETS)].[dbo].[Postcode] po ON po.Id = a.PostcodeId
+		INNER JOIN [$(ets)].[dbo].[Notification] n ON n.LegacyId = rr.NotificationId
+		INNER JOIN [$(ets)].[dbo].[Patient] p ON p.Id = n.PatientId
+		LEFT OUTER JOIN [$(ets)].[dbo].[Address] a ON a.Id = n.AddressId
+		LEFT OUTER JOIN [$(ets)].[dbo].[Postcode] po ON po.Id = a.PostcodeId
 	WHERE rr.SourceSystem = 'ETS'
 
 	--now create a standardised nhsnumber when possible

@@ -52,10 +52,10 @@ EtsNotifications AS (
 		phec.[Name] AS PhecName,
 		REPLACE(STUFF(p.NhsNumber, 1, PATINDEX('%[0-9]%', p.NhsNumber)-1, ''),' ','') AS NhsNumber,
 		COALESCE(su.Email, su.Username) AS CaseManager
-	FROM [$(ETS)].dbo.[Notification] n
-		INNER JOIN [$(ETS)].dbo.Patient p ON n.PatientId = p.Id
-		LEFT JOIN [$(ETS)].dbo.TuberculosisEpisode te ON n.TuberculosisEpisodeId = te.Id
-		LEFT JOIN [$(ETS)].dbo.SystemUser su ON n.OwnerUserId = su.Id
+	FROM [$(ets)].dbo.[Notification] n
+		INNER JOIN [$(ets)].dbo.Patient p ON n.PatientId = p.Id
+		LEFT JOIN [$(ets)].dbo.TuberculosisEpisode te ON n.TuberculosisEpisodeId = te.Id
+		LEFT JOIN [$(ets)].dbo.SystemUser su ON n.OwnerUserId = su.Id
 		LEFT JOIN [$(NTBS)].dbo.[Notification] ntbsNotification ON n.LegacyId = ntbsNotification.ETSID
 		LEFT JOIN [$(NTBS)].ReferenceData.Hospital h ON n.HospitalId = h.HospitalId
 		LEFT JOIN [$(NTBS)].ReferenceData.TbService tbs ON h.TBServiceCode = tbs.Code
