@@ -174,6 +174,9 @@
 	[SmokerMoreThan5YearsAgo] [varchar](10) NULL,
 	[MentalHealth] [varchar](10) NULL,
 	[AsylumSeeker] [varchar](10) NULL,
+	[CurrentAsylumSeeker] [varchar](10) NULL,
+	[AsylumSeekerInLast5Years] [varchar](10) NULL,
+    [AsylumSeekerMoreThan5Years] [varchar](10) NULL,
 	[ImmigrationDetainee] [varchar](10) NULL,
 
 	--travel and visitor

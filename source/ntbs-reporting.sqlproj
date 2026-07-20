@@ -12,7 +12,7 @@
     <OutputType>Database</OutputType>
     <RootPath />
     <RootNamespace>Reporting_New</RootNamespace>
-    <AssemblyName>Reporting_New</AssemblyName>
+    <AssemblyName>ntbs-reporting</AssemblyName>
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -26,6 +26,7 @@
     <Recovery>SIMPLE</Recovery>
     <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
     <TargetFrameworkProfile />
+    <GenerateCreateScript>False</GenerateCreateScript>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
