@@ -73,9 +73,9 @@ BEGIN TRY
 			,region.[Name]
 		FROM [$(NTBS)].[dbo].[LegacyImportNotificationOutcome] lino
 			INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = lino.OldNotificationId
-			LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
-			LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
-			LEFT OUTER JOIN  [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
+			LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON CONVERT(NVARCHAR(200), tbh.HospitalID) = mn.OldHospitalId
+			LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_PHEC] tbsp ON tbsp.TB_Service_Code = tbh.TB_Service_Code
+			LEFT OUTER JOIN  [$(NTBS_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Code = tbsp.PHEC_Code
 			LEFT OUTER JOIN  [$(NTBS)].[dbo].[Notification] ntbs ON ntbs.ETSID = mn.EtsId
 			LEFT OUTER JOIN  [$(NTBS)].[dbo].[HospitalDetails] h ON h.NotificationId = ntbs.NotificationId
 			LEFT OUTER JOIN  [$(NTBS)].[dbo].[User] u ON u.Id = h.CaseManagerId
@@ -122,25 +122,25 @@ BEGIN TRY
 				END)
 	FROM  [dbo].[MigrationRunResults] mrr
 	INNER JOIN [$(migration)].[dbo].[MergedNotifications] mn ON mn.PrimaryNotificationId = mrr.MigrationNotificationId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
-	LEFT OUTER JOIN  [$(ETS)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
+	LEFT OUTER JOIN  [$(ets)].[dbo].[Notification] n ON n.LegacyId = mrr.LegacyETSId
+	LEFT OUTER JOIN  [$(ets)].[dbo].[TuberculosisEpisode] te ON te.Id = n.TuberculosisEpisodeId
+	LEFT OUTER JOIN  [$(ets)].[dbo].[TreatmentOutcome] tr12 ON tr12.Id = n.TreatmentOutcomeId AND tr12.Submitted = 1
+	LEFT OUTER JOIN  [$(ets)].[dbo].[TreatmentOutcomeTwentyFourMonth] tr24 ON tr24.Id = n.TreatmentOutcomeTwentyFourMonthId AND tr24.Submitted = 1
+	LEFT OUTER JOIN  [$(ets)].[dbo].[TreatmentOutcome36Month] tr36 ON tr36.Id = n.TreatmentOutcome36MonthId AND tr36.Submitted = 1
 	WHERE mrr.MigrationRunId = @MigrationRunID AND mn.PrimarySource = 'ETS';
 
 	--use LTBR as the source of the previous outcome, rather than ETS
 
 	WITH EpisodicOutcome AS
 	(
-		SELECT DISTINCT CONCAT(pe_patientId, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
+		SELECT DISTINCT CONCAT(pe_PatientID, '-', pe_DiseasePeriod) AS 'OldNotificationId', 
 		FIRST_VALUE(pe_TreatmentOutcome) OVER (PARTITION BY pe_PatientID, pe_DiseasePeriod ORDER BY pe_EndDate DESC) AS EpisodeOutcome
 		FROM [$(LTBR)].[dbo].[dbt_PatientEpisode]
 	),
 	DiseasePeriodOutcome AS
 	(
 
-		SELECT CONCAT(dp_patientId, '-', dp_DiseasePeriod) AS 'OldNotificationId',
+		SELECT CONCAT(dp_PatientID, '-', dp_DiseasePeriod) AS 'OldNotificationId',
 		COALESCE(dp.dp_Outcome3Years, dp_Outcome2Years, dp_Outcome1Year, dp_TreatmentOutcome) AS DiseasePeriodOutcome
 		FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod] dp
 
@@ -279,7 +279,7 @@ BEGIN TRY
    --now we can mark the migration runs as imported
 	UPDATE [dbo].[MigrationRun]
 		SET ImportedDate = GETUTCDATE(),
-		EtsDate = (SELECT CONVERT(DATE, MAX(NotificationDate)) AS EtsDate FROM [$(ETS)].[dbo].[Notification]),
+		EtsDate = (SELECT CONVERT(DATE, MAX(NotificationDate)) AS EtsDate FROM [$(ets)].[dbo].[Notification]),
 		LtbrDate = (SELECT CONVERT(DATE, MAX(dp_NotifiedDate)) AS LtbrDate FROM [$(LTBR)].[dbo].[dbt_DiseasePeriod]),
 		LabbaseDate = (SELECT CONVERT(DATE, MAX(AuditCreate)) AS LabbaseDate FROM [$(Labbase2)].[dbo].[Anonymised])
 		WHERE MigrationRunId = @MigrationRunID

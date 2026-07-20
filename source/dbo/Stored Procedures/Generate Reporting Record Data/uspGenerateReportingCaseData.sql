@@ -45,15 +45,15 @@ BEGIN TRY
 	FROM [dbo].[Record_CaseData] cd
 		INNER JOIN [dbo].[Record_PersonalDetails] pd ON pd.NotificationId = cd.NotificationId
 		INNER JOIN [dbo].[RecordRegister] rr ON rr.NotificationId = cd.NotificationId
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] rp ON rp.Pcode = pd.PostcodeToLookup
-		LEFT OUTER JOIN [$(ETS)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = rp.PctCode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Local_Authority] la ON la.LA_Code = rp.LA_Code
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] reside ON reside.PHEC_Code = rr.ResidencePhecCode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] treat ON treat.PHEC_Code = rr.TreatmentPhecCode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Reduced_Postcode_file] rph ON rph.Pcode = h.Postcode
-		--LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PostcodeLookup] pl ON pl.postcode = COALESCE(pd.PostcodeToLookup,h.Postcode)
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Reduced_Postcode_file] rp ON rp.Pcode = pd.PostcodeToLookup
+		LEFT OUTER JOIN [$(ets)].[dbo].[NACS_pctlookup] nacs ON nacs.PCT_code = rp.PctCode
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Local_Authority] la ON la.LA_Code = rp.LA_Code
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[PHEC] reside ON reside.PHEC_Code = rr.ResidencePhecCode
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[PHEC] treat ON treat.PHEC_Code = rr.TreatmentPhecCode
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = rr.TBServiceCode
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalId = cd.HospitalId
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Reduced_Postcode_file] rph ON rph.Pcode = h.Postcode
+		--LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[PostcodeLookup] pl ON pl.postcode = COALESCE(pd.PostcodeToLookup,h.Postcode)
 
 	UPDATE pd
 	SET Initials = LEFT(pd.GivenName,1) + LEFT(pd.FamilyName,1)

@@ -162,7 +162,7 @@ BEGIN TRY
 		,[SocialContextVenueCount]
 		,[SocialContextVenueTypeList]
 		,[SecondaryTbService]
-		,[SecondaryTBServiceCode]
+		,[SecondaryTbServiceCode]
 		,[SecondaryTbServiceRegionCode]
 		,[DataRefreshedAt])
 	SELECT

@@ -21,8 +21,8 @@ AS
 
 		IF (@Homeless = 1)
 			SET @ReturnValue = (SELECT 'Yes'
-								FROM [$(ETS)].dbo.RiskFactorHomelessStatus r
-									INNER JOIN [$(ETS)].dbo.TuberculosisHistoryHomelessStatus th ON th.HomelessStatusId = r.Id
+								FROM [$(ets)].dbo.RiskFactorHomelessStatus r
+									INNER JOIN [$(ets)].dbo.TuberculosisHistoryHomelessStatus th ON th.HomelessStatusId = r.Id
 								WHERE th.TuberculosisHistoryId = @TuberculosisHistoryId
 									AND r.LegacyId = @HomelessStatusId)
 

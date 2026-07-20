@@ -34,7 +34,7 @@ ETSPermissions AS (
 			WHEN eth.Tier = 1 THEN 'National'
 			ELSE 'Regional'
 		END AS UserType
-	FROM [$(ETS)].[dbo].[SystemUser] s
+	FROM [$(ets)].[dbo].[SystemUser] s
 		LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth ON eth.Id = s.PermissionId
 		LEFT OUTER JOIN [$(migration)].[dbo].[EtsLocationHierarchy] eth2 ON eth2.Id = eth.ParentId
 	WHERE s.AuditDelete IS NULL
@@ -64,12 +64,12 @@ EtsUserDetails AS (
 		COALESCE(tbs.TB_Service_Name, p.PHEC_Name) AS Membership,
 		rphec.Name AS TBServicePHEC
 	FROM AliasedPermissions ap
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalName = ap.PermissionName
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = h.HospitalId
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = tbh.TB_Service_Code
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[Hospital] h ON h.HospitalName = ap.PermissionName
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service_to_Hospital] tbh ON tbh.HospitalID = h.HospitalId
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[TB_Service] tbs ON tbs.TB_Service_Code = tbh.TB_Service_Code
 		LEFT OUTER JOIN [$(NTBS)].ReferenceData.TbService rtbs ON rtbs.Code = tbs.TB_Service_Code
 		LEFT OUTER JOIN [$(NTBS)].ReferenceData.PHEC rphec ON rphec.Code = rtbs.PHECCode
-		LEFT OUTER JOIN [$(NTBS_R1_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Name = ap.PermissionName
+		LEFT OUTER JOIN [$(NTBS_Geography_Staging)].[dbo].[PHEC] p ON p.PHEC_Name = ap.PermissionName
 )
 SELECT n.NotificationId,
 	n.ETSID,
@@ -99,6 +99,6 @@ FROM [$(NTBS)].dbo.[Notification] n
 
 	LEFT JOIN [$(NTBS)].dbo.CaseManagerTbService cmtbs ON cmtbs.CaseManagerId = u.Id AND cmtbs.TbServiceCode = tbs.[Code]
 
-	INNER JOIN [$(ETS)].dbo.[Notification] en ON en.LegacyId = n.ETSID
-	LEFT OUTER JOIN [$(ETS)].dbo.SystemUser su ON su.Id = en.OwnerUserId
+	INNER JOIN [$(ets)].dbo.[Notification] en ON en.LegacyId = n.ETSID
+	LEFT OUTER JOIN [$(ets)].dbo.SystemUser su ON su.Id = en.OwnerUserId
 	LEFT OUTER JOIN EtsUserDetails ON EtsUserDetails.Id = su.Id

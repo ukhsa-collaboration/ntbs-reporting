@@ -30,8 +30,8 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
     (
         SELECT n.LegacyId AS NotificationId, sites.NtbsLabel AS SiteName
         FROM RecordRegister rr
-            INNER JOIN [$(ETS)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
-            LEFT OUTER JOIN [$(ETS)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
+            INNER JOIN [$(ets)].dbo.[Notification] n ON rr.NotificationId = n.LegacyId
+            LEFT OUTER JOIN [$(ets)].dbo.TuberculosisEpisodeDiseaseSite diseaseSite ON n.TuberculosisEpisodeId = diseaseSite.TuberculosisEpisodeId
             LEFT OUTER JOIN [$(migration)].dbo.DiseaseSiteMapping sites ON sites.EtsID = diseaseSite.DiseaseSiteId
             INNER JOIN [dbo].vwNotificationYear ny ON ny.NotificationYear = YEAR(rr.NotificationDate)
         WHERE rr.SourceSystem = 'ETS' AND diseaseSite.AuditDelete IS NULL AND ny.Id > -2 AND rr.Denotified = 0
@@ -150,7 +150,7 @@ CREATE VIEW [dbo].[vwNOIDSExtract]
             INNER JOIN [dbo].Record_CaseData cd ON cd.NotificationId = rr.NotificationId
             INNER JOIN [dbo].Record_PersonalDetails pd ON pd.NotificationId = rr.NotificationId
             INNER JOIN SpecificityCode s ON s.NotificationId = rr.NotificationId
-            LEFT JOIN [$(NTBS_R1_Geography_Staging)].dbo.Reduced_Postcode_file p on p.Pcode = Replace(pd.Postcode,' ','')
+            LEFT JOIN [$(NTBS_Geography_Staging)].dbo.Reduced_Postcode_file p on p.Pcode = Replace(pd.Postcode,' ','')
             LEFT JOIN [$(migration)].dbo.ETS_Hospital etsh ON etsh.Id = cd.HospitalId
        --coalesce residence phec code to ensure NULL entries (i.e. no fixed abode) are not dropped
        WHERE rr.Denotified = 0 AND COALESCE(rr.ResidencePhecCode, 'NULL VALUE') NOT IN ('PHECSCOT', 'PHECNI')
