@@ -384,10 +384,6 @@
     <None Include="Publish Profiles\Production\phe-live-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-pseudo-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Pseudo-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-Test-reporting.publish.xml" />
