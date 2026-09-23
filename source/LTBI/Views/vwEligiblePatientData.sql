@@ -2,7 +2,10 @@
 	AS 
 SELECT
       [Flag4FileName]                                                   AS SourceFileName
-    , CASE WHEN HasPatientRecord = 1 THEN 'Yes' ELSE 'No' END           AS HasPatientRecord
+    , [IsValidRecord]                                                    AS IsValidRecord
+    , [PatMatchCritId]                                                   AS PatientMatchCriteriaId
+    , [PatientId]                                                        AS PatientId
+    , [InvalidRecordReason]                                              AS InvalidRecordReason
     , [RecordNo]                                                        AS RecordNumber
     , [TestReason]                                                      AS TestReason
     , [SICBCode]                                                        AS SICBCode
@@ -33,4 +36,5 @@ SELECT
     , [ICBFromCurrGP]                                                   AS ICB_From_CurrentGP
     , [ICBFromFlag4GP]                                                  AS ICB_From_Flag4GP
     , [ICBFromPcode]                                                    AS ICB_From_Postcode
-	FROM [LTBI].[EligiblePatientData];
+    FROM [LTBI].[EligiblePatientData]
+    WHERE [IsValidRecord] = 1;

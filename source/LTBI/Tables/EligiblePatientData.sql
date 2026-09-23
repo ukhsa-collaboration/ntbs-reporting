@@ -1,6 +1,9 @@
 ﻿CREATE TABLE [LTBI].[EligiblePatientData](
 	[Flag4FileName] [varchar](255) NOT NULL,
-	[HasPatientRecord] [bit] NOT NULL,
+	[IsValidRecord] [bit] NULL,
+	[PatMatchCritId] [tinyint] NULL,
+	[PatientId] [int] NULL,
+	[InvalidRecordReason] [nvarchar](max) NULL,
 	[RecordNo] [int] NOT NULL,
 	[TestReason] [varchar](255) NULL,
 	[SICBCode] [varchar](255) NULL,
