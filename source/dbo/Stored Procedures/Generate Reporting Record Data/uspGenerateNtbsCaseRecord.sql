@@ -125,6 +125,10 @@ BEGIN TRY
 		,[SmokerMoreThan5YearsAgo]
 		,[MentalHealth]
 		,[AsylumSeeker]
+		,[CurrentAsylumSeeker]
+		,[AsylumSeekerInLast5Years]
+		,[AsylumSeekerMoreThan5Years]
+
 		,[ImmigrationDetainee]
 		,[TravelledOutsideUk]
 		,[ToHowManyCountries]
@@ -314,7 +318,10 @@ BEGIN TRY
 		,dbo.ufnYesNo(rfs.InPastFiveYears)						AS SmokerInLast5Years
 		,dbo.ufnYesNo(rfs.MoreThanFiveYearsAgo)					AS SmokerMoreThan5YearsAgo
 		,srf.MentalHealthStatus									AS MentalHealth
-		,srf.AsylumSeekerStatus									AS AsylumSeeker
+		,rad.[Status]								            AS AsylumSeeker
+		,dbo.ufnYesNo(rad.IsCurrent)                            AS CurrentAsylumSeeker
+		,dbo.ufnYesNo(rad.InPastFiveYears)                      AS AsylumSeekerInLast5Years
+		,dbo.ufnYesNo(rad.MoreThanFiveYearsAgo)                 AS AsylumSeekerMoreThan5Years
 		,srf.ImmigrationDetaineeStatus							AS ImmigrationDetainee
 
 		--travel and visitors
@@ -378,6 +385,7 @@ BEGIN TRY
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Country] bc ON bc.CountryId = p.CountryId
 		LEFT OUTER JOIN [$(NTBS)].[ReferenceData].[Continent] con ON con.ContinentId = bc.ContinentId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[SocialRiskFactors] srf ON srf.NotificationId = n.NotificationId
+		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorAsylumSeeker] rad ON rad.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorDrugs] rfd ON rfd.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorHomelessness] rfh ON rfh.SocialRiskFactorsNotificationId = n.NotificationId
 		LEFT OUTER JOIN [$(NTBS)].[dbo].[RiskFactorImprisonment] rfp ON rfp.SocialRiskFactorsNotificationId = n.NotificationId

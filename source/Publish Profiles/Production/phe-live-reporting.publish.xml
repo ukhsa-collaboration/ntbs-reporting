@@ -75,7 +75,7 @@
     <DropExtendedPropertiesNotInSource>False</DropExtendedPropertiesNotInSource>
   </PropertyGroup>
   <ItemGroup>
-    <SqlCmdVariable Include="ETS">
+    <SqlCmdVariable Include="ets">
       <Value>NTBS_ETS_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="Labbase2">
@@ -93,7 +93,7 @@
     <SqlCmdVariable Include="NTBS">
       <Value>NTBS_Live</Value>
     </SqlCmdVariable>
-    <SqlCmdVariable Include="NTBS_AUDIT">
+    <SqlCmdVariable Include="NTBS_Audit">
       <Value>NTBS_AuditDB_Live</Value>
     </SqlCmdVariable>
     <SqlCmdVariable Include="NTBS_R1_Geography_Staging">

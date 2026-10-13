@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -12,7 +12,7 @@
     <OutputType>Database</OutputType>
     <RootPath />
     <RootNamespace>Reporting_New</RootNamespace>
-    <AssemblyName>Reporting_New</AssemblyName>
+    <AssemblyName>ntbs-reporting</AssemblyName>
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -26,6 +26,7 @@
     <Recovery>SIMPLE</Recovery>
     <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
     <TargetFrameworkProfile />
+    <GenerateCreateScript>False</GenerateCreateScript>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -366,6 +367,7 @@
     <Build Include="dbo\Tables\Reference Data\VOTLookup.sql" />
     <Build Include="LTBI\Schema\LTBI.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerate.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateEligiblePatientData.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerateFooter.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerateTestingandTreatment.sql" />
     <Build Include="LTBI\Stored Procedures\uspSeed.sql" />
@@ -375,7 +377,9 @@
     <Build Include="LTBI\Views\vwUserPermissions.sql" />
     <Build Include="LTBI\Tables\EligiblePatientData.sql" />
     <Build Include="LTBI\Views\vwEligiblePatientData.sql" />
-    <Build Include="LTBI\Stored Procedures\uspUpdateEligiblePatientHasRecord.sql" />
+    <Build Include="LTBI\Views\vwInvalidEligiblePatientData.sql" />
+    <Build Include="LTBI\Tables\LTBILineList.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateLTBILineList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -383,10 +387,6 @@
     <None Include="Publish Profiles\Production\phe-live-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\DEV-USER-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-dev-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-uat-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-test-reporting.publish.xml" />
-    <None Include="Publish Profiles\Pre-production\phe-pseudo-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Pseudo-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-Test-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-Test-reporting.publish.xml" />
@@ -397,6 +397,7 @@
     <None Include="Publish Profiles\Pre-production\UKHSA-Cloud-LTBI-Test-Chris-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Sean-reporting.publish.xml" />
     <None Include="Publish Profiles\Pre-production\UKHSA-Adil-reporting.publish.xml" />
+    <None Include="Publish Profiles\Pre-production\UKHSA-Pipeline-Cloud-UAT-reporting.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ContinuousDeployment\StaticTables\StaticTableExample.sql" />

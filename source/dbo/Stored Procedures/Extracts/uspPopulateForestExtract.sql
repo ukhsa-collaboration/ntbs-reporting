@@ -63,6 +63,9 @@ BEGIN
 			,AlcoholUse
 			,MentalHealth
 			,AsylumSeeker
+		    ,[CurrentAsylumSeeker]
+            ,[AsylumSeekerInLast5Years]
+            ,[AsylumSeekerMoreThan5Years]
 			,ImmigrationDetainee
 			,TreatmentRegion
 			,SmearSample
@@ -130,7 +133,10 @@ BEGIN
 			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(smoking.MoreThanFiveYearsAgo)				AS SmokingMoreThan5YearsAgo,
 			socialRiskFactors.AlcoholMisuseStatus															AS AlcoholUse,
 			socialRiskFactors.MentalHealthStatus															AS MentalHealth,
-			socialRiskFactors.AsylumSeekerStatus															AS AsylumSeeker,
+			rad.[Status]															                        AS AsylumSeeker,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(rad.IsCurrent)                            AS CurrentAsylumSeeker,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(rad.InPastFiveYears)                      AS AsylumSeekerInLast5Years,
+			dbo.ufnGetFormattedSiteDiseaseDurationStatusForForest(rad.MoreThanFiveYearsAgo)                 AS AsylumSeekerMoreThan5Years,
 			socialRiskFactors.ImmigrationDetaineeStatus														AS ImmigrationDetainee,
 			servicePhec.Name																				AS TreatmentRegion,
 			lab.[SpecimenTypeCode]																			AS SmearSample,
@@ -155,6 +161,7 @@ BEGIN
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorImprisonment prison ON prison.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].RiskFactorSmoking smoking ON smoking.SocialRiskFactorsNotificationId = patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].SocialRiskFactors socialRiskFactors ON socialRiskFactors.NotificationId = patient.NotificationId
+		LEFT JOIN [$(NTBS)].[dbo].RiskFactorAsylumSeeker rad on rad.SocialRiskFactorsNotificationId=patient.NotificationId
 		LEFT JOIN [$(NTBS)].[dbo].[User] u ON u.Id = hospitalDetails.CaseManagerId
 		LEFT JOIN [$(NTBS)].[ReferenceData].TbService tbService ON tbService.Code = hospitalDetails.TBServiceCode
 		LEFT JOIN [$(NTBS)].[ReferenceData].PostcodeLookup postcodeLookup ON postcodeLookup.Postcode = patient.PostcodeToLookup

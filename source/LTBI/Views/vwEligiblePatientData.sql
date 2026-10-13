@@ -2,10 +2,15 @@
 	AS 
 SELECT
       [Flag4FileName]                                                   AS SourceFileName
-    , CASE WHEN HasPatientRecord = 1 THEN 'Yes' ELSE 'No' END           AS HasPatientRecord
+    , [IsValidRecord]                                                   AS IsValidRecord
+    , [PatMatchCritId]                                                  AS PatientMatchCriteriaId
+    ,PatientMatchCriteriaDescription									AS PatientMatchCriteriaDescription
+    , [PatientId]                                                       AS PatientId
+   -- , [InvalidRecordReason]                                             AS InvalidRecordReason
     , [RecordNo]                                                        AS RecordNumber
     , [TestReason]                                                      AS TestReason
     , [SICBCode]                                                        AS SICBCode
+    ,SICBHCode														    AS SICBCodeH
     , [SICBName]                                                        AS SICBName
     , [CurrGPCode]                                                      AS CurrentGPCode
     , [CurrGPName]                                                      AS CurrentGPName
@@ -29,8 +34,11 @@ SELECT
     , [TelNo]                                                           AS TelephoneNumber
     , [MobTelNo]                                                        AS MobileNumber
     , [EmailAddr]                                                       AS EmailAddress
-    , [ICBFromSICB]                                                     AS ICB_From_SICB
+    , [ICBFromSICB]                                                     AS ICB_From_SICBCode
+    ,ICBNameFromSICB                                                    AS ICBNameFromSICB
     , [ICBFromCurrGP]                                                   AS ICB_From_CurrentGP
     , [ICBFromFlag4GP]                                                  AS ICB_From_Flag4GP
     , [ICBFromPcode]                                                    AS ICB_From_Postcode
-	FROM [LTBI].[EligiblePatientData];
+    , [LTBIURL]                                                         AS LTBIURL 
+    FROM [LTBI].[EligiblePatientData]
+    WHERE [IsValidRecord] = 1;

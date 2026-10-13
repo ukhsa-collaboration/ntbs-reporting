@@ -1,9 +1,14 @@
 ﻿CREATE TABLE [LTBI].[EligiblePatientData](
 	[Flag4FileName] [varchar](255) NOT NULL,
-	[HasPatientRecord] [bit] NOT NULL,
+	[IsValidRecord] [bit] NULL,
+	[PatMatchCritId] [tinyint] NULL,
+	[PatientMatchCriteriaDescription] [varchar](255) NULL,
+	[PatientId] [int] NULL,
+	[InvalidRecordReason] [nvarchar](max) NULL,
 	[RecordNo] [int] NOT NULL,
 	[TestReason] [varchar](255) NULL,
 	[SICBCode] [varchar](255) NULL,
+	[SICBHCode] [varchar](255) NULL,
 	[SICBName] [varchar](255) NULL,
 	[CurrGPCode] [varchar](255) NULL,
 	[CurrGPName] [varchar](255) NULL,
@@ -28,7 +33,9 @@
 	[MobTelNo] [varchar](255) NULL,
 	[EmailAddr] [varchar](255) NULL,
 	[ICBFromSICB] [varchar](10) NULL,
+	ICBNameFromSICB [varchar](255) NULL,
 	[ICBFromCurrGP] [varchar](10) NULL,
 	[ICBFromFlag4GP] [varchar](10) NULL,
-	[ICBFromPcode] [varchar](10)  NULL
+	[ICBFromPcode] [varchar](10)  NULL,
+	LTBIURL [varchar](255) NULL
 )
