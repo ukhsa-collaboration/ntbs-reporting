@@ -2,13 +2,15 @@ CREATE VIEW [LTBI].[vwInvalidEligiblePatientData]
 	AS 
 SELECT
 	  [Flag4FileName]                                                   AS SourceFileName
-	, [IsValidRecord]                                                    AS IsValidRecord
-	, [PatMatchCritId]                                                   AS PatientMatchCriteriaId
-	, [PatientId]                                                        AS PatientId
-	, [InvalidRecordReason]                                              AS InvalidRecordReason
+	, [IsValidRecord]                                                   AS IsValidRecord
+	, [PatMatchCritId]                                                  AS PatientMatchCriteriaId
+	,PatientMatchCriteriaDescription									AS PatientMatchCriteriaDescription
+	, [PatientId]                                                       AS PatientId
+	, [InvalidRecordReason]                                             AS InvalidRecordReason
 	, [RecordNo]                                                        AS RecordNumber
 	, [TestReason]                                                      AS TestReason
 	, [SICBCode]                                                        AS SICBCode
+	,SICBHCode														    AS SICBCodeH
 	, [SICBName]                                                        AS SICBName
 	, [CurrGPCode]                                                      AS CurrentGPCode
 	, [CurrGPName]                                                      AS CurrentGPName

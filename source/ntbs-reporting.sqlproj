@@ -378,6 +378,8 @@
     <Build Include="LTBI\Tables\EligiblePatientData.sql" />
     <Build Include="LTBI\Views\vwEligiblePatientData.sql" />
     <Build Include="LTBI\Views\vwInvalidEligiblePatientData.sql" />
+    <Build Include="LTBI\Tables\LTBILineList.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateLTBILineList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
@@ -515,4 +517,3 @@
     <PostDeploy Include="Scripts\PostDeploy.sql" />
   </ItemGroup>
 </Project>
-
