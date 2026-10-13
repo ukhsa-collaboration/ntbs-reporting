@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -367,6 +367,7 @@
     <Build Include="dbo\Tables\Reference Data\VOTLookup.sql" />
     <Build Include="LTBI\Schema\LTBI.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerate.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateEligiblePatientData.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerateFooter.sql" />
     <Build Include="LTBI\Stored Procedures\uspGenerateTestingandTreatment.sql" />
     <Build Include="LTBI\Stored Procedures\uspSeed.sql" />
@@ -376,7 +377,9 @@
     <Build Include="LTBI\Views\vwUserPermissions.sql" />
     <Build Include="LTBI\Tables\EligiblePatientData.sql" />
     <Build Include="LTBI\Views\vwEligiblePatientData.sql" />
-    <Build Include="LTBI\Stored Procedures\uspUpdateEligiblePatientHasRecord.sql" />
+    <Build Include="LTBI\Views\vwInvalidEligiblePatientData.sql" />
+    <Build Include="LTBI\Tables\LTBILineList.sql" />
+    <Build Include="LTBI\Stored Procedures\uspGenerateLTBILineList.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\RestoreLabbase2.sql" />
