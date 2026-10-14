@@ -4,6 +4,83 @@ AS
 
 BEGIN TRY	
 
+
+----------------------------------------------------------------------------------------------------------
+
+
+SELECT [IGRATestPatID]
+			  ,[IsIGRAReTest]
+			  ,[IsIGRATestAccept]
+			  ,[IGRADate]
+			  ,[IGRATestNotAcceptRsnId] INTO #it FROM (
+		SELECT   [IGRATestPatID]
+			  ,[IsIGRAReTest]
+			  ,[IsIGRATestAccept]
+			  ,[IGRADate]
+			  ,[IGRATestNotAcceptRsnId], sortId = ROW_NUMBER() OVER (PARTITION BY [IGRATestPatID] ORDER BY [IsIGRATestAccept] DESC,[IsIGRAReTest] )
+		  FROM [$(NTBS)].[LTBI].[IGRATest] WITH (NOLOCK)) a WHERE sortId = 1
+
+CREATE CLUSTERED INDEX IX_#it_IGRATestPatID ON #it(IGRATestPatID)
+----------------------------------------------------------------------------------------------------------
+
+SELECT IGRATestResultID,IGRATestResultPatID, IGRATestResultCode,IGRATestResultDate,DisplayMapping INTO #itr FROM (
+					SELECT IGRATestResultID,IGRATestResultPatID, IGRATestResultCode,IGRATestResultDate,DisplayMapping, 
+					SortId = ROW_NUMBER() OVER (PARTITION BY tr.IGRATestResultPatID ORDER BY c.TranNHSCode)
+					FROM [$(NTBS)].[LTBI].[IGRATestResult] tr WITH (NOLOCK) 
+					INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook c on c.TranLTBI = tr.IGRATestResultCode) a WHERE SortId = 1
+CREATE CLUSTERED INDEX IX_#itr_IGRATestResultPatID ON #itr(IGRATestResultPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT tsXRAY.TBTreatPatID,tsXRAY.[TBTreatStatDate],tsXRAY.[TBTreatStatNote], clXRAY.DisplayMapping  INTO #tsXRAY
+					FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] tsXRAY WITH (NOLOCK) 
+					INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook clXRAY on 
+					clXRAY.TranLTBI = tsXRAY.TBTreatStatCode AND clXRAY.TranCategory = 'XRAY' 
+CREATE CLUSTERED INDEX IX_#tsXRAY_TBTreatPatID ON #tsXRAY(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT [TBTreatPatID],[TBTreatStatCode],[TBTreatStatDate],[TBTreatStatNote],
+CASE	WHEN TranText = 'TB treatment accepted' THEN 'Accepted'
+		WHEN TranText = 'TB treatment not accepted' THEN 'Not Accepted' 
+		WHEN TranText = 'TB treatment deferred' THEN 'Deferred' END as Patienttreatmentdecision INTO #cldecision
+        FROM (
+				SELECT [TBTreatPatID],[TBTreatStatCode],[TBTreatStatDate],[TBTreatStatNote], cl.TranText, 
+				SortId = ROW_NUMBER() OVER (PARTITION BY ts.[TBTreatPatID] ORDER BY cl.TranText)
+				FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
+				INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode
+				where TBTreatStatCode in ('IGRATREAT1','IGRATREAT11','IGRATREAT6') 
+			   ) a WHERE SortId = 1  
+CREATE CLUSTERED INDEX IX_#cldecision_TBTreatPatID ON #cldecision(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT ts.TBTreatPatID,STRING_AGG(cl.DisplayMapping, ';') 
+        WITHIN GROUP (ORDER BY cl.DisplayMapping) AS Treatmentnotacceptedreason INTO #tnd
+			FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
+			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl ON cl.TranLTBI = ts.TBTreatStatCode
+			WHERE cl.TranCategory = 'TRNOAC'
+			GROUP BY ts.TBTreatPatID
+CREATE CLUSTERED INDEX IX_#tnd_TBTreatPatID ON #tnd(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+select TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote INTO #td from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
+			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode
+			where  TranCategory = 'TRDEF'
+CREATE CLUSTERED INDEX IX_#td_TBTreatPatID ON #td(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote,ts.TBTreatStatDate INTO #trp from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
+			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode AND cl.TranCategory = 'IGTR'
+CREATE CLUSTERED INDEX IX_#trp_TBTreatPatID ON #trp(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote,ts.TBTreatStatDate INTO #trst from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
+			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode AND cl.TranCategory = 'TRST'
+CREATE CLUSTERED INDEX IX_#trst_TBTreatPatID ON #trst(TBTreatPatID)
+----------------------------------------------------------------------------------------------------------
+SELECT tse.[TBTreatSeffPatID],STRING_AGG(cl.TranText, ';') 
+        WITHIN GROUP (ORDER BY cl.DisplayMapping) AS Sideeffects INTO #tse
+			FROM [$(NTBS)].[LTBI].[TBTreatmentSideEffect] tse WITH (NOLOCK)
+			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl ON cl.TranLTBI = tse.TBTreatSeffCode
+			WHERE cl.TranCategory = 'SIDE'
+			GROUP BY tse.[TBTreatSeffPatID]
+CREATE CLUSTERED INDEX IX_#tse_TBTreatSeffPatID ON #tse(TBTreatSeffPatID)
+----------------------------------------------------------------------------------------------------------
+
+----------------------------------------------------------------------------------------------------------
+
 SELECT  
 	--ICB.ICBCode							AS ICBCode, 
 	lp.PatID																		AS PatID,
@@ -105,8 +182,9 @@ CASE	WHEN adv.TBTreatStatCode  = 'ADVREA0009'   THEN 'No'
 			ELSE NULL END															AS Adversereactiontomedication,
 tse.Sideeffects																		AS Sideeffects,
 SortId = ROW_NUMBER() OVER (PARTITION BY lp.PatID ORDER BY [ICBCode])
-
 into #t
+
+
 
   FROM [$(NTBS)].[LTBI].[LTBIPatient] lp WITH (NOLOCK) 
   INNER JOIN [$(NTBS)].[LTBIReferenceData].LookICB ICB on ICB.ICBId = lp.PatICB
@@ -122,62 +200,21 @@ into #t
   LEFT JOIN [$(NTBS)].[LTBI].IGRATestInvite ti1 WITH (NOLOCK) on ti1.IGRATestInvitePatID = lp.PatID and ti1.IGRATestInviteNumber = 1
   LEFT JOIN [$(NTBS)].[LTBI].IGRATestInvite ti2 WITH (NOLOCK) on ti2.IGRATestInvitePatID = lp.PatID and ti2.IGRATestInviteNumber = 2
   LEFT JOIN [$(NTBS)].[LTBI].IGRATestInvite ti3 WITH (NOLOCK) on ti3.IGRATestInvitePatID = lp.PatID and ti3.IGRATestInviteNumber = 3
-  LEFT JOIN (SELECT [IGRATestPatID]
-			  ,[IsIGRAReTest]
-			  ,[IsIGRATestAccept]
-			  ,[IGRADate]
-			  ,[IGRATestNotAcceptRsnId] FROM (
-		SELECT   [IGRATestPatID]
-			  ,[IsIGRAReTest]
-			  ,[IsIGRATestAccept]
-			  ,[IGRADate]
-			  ,[IGRATestNotAcceptRsnId], sortId = ROW_NUMBER() OVER (PARTITION BY [IGRATestPatID] ORDER BY [IsIGRATestAccept] DESC,[IsIGRAReTest] )
-		  FROM [$(NTBS)].[LTBI].[IGRATest] WITH (NOLOCK)) a WHERE sortId = 1) it on it.IGRATestPatID = lp.PatID
+  LEFT JOIN #it it on it.IGRATestPatID = lp.PatID
   LEFT JOIN [$(NTBS)].[LTBIReferenceData].CodeLook clTSTNOAC on clTSTNOAC.TranLTBI = it.IGRATestNotAcceptRsnId AND clTSTNOAC.TranCategory = 'TSTNOAC'
-  LEFT JOIN (SELECT IGRATestResultID,IGRATestResultPatID, IGRATestResultCode,IGRATestResultDate,DisplayMapping FROM (
-					SELECT IGRATestResultID,IGRATestResultPatID, IGRATestResultCode,IGRATestResultDate,DisplayMapping, 
-					SortId = ROW_NUMBER() OVER (PARTITION BY tr.IGRATestResultPatID ORDER BY c.TranNHSCode)
-					FROM [$(NTBS)].[LTBI].[IGRATestResult] tr WITH (NOLOCK) 
-					INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook c on c.TranLTBI = tr.IGRATestResultCode) a WHERE SortId = 1) 
-					itr on itr.IGRATestResultPatID = lp.PatID
+  LEFT JOIN #itr itr on itr.IGRATestResultPatID = lp.PatID
   LEFT JOIN [$(NTBS)].[LTBI].[IGRAReferral] ir WITH (NOLOCK) on ir.IGRATestResultId =itr.IGRATestResultID
   LEFT JOIN [$(NTBS)].[LTBIReferenceData].CodeLook clNoReferRsn on clNoReferRsn.TranLTBI = ir.IGRATreatNoReferRsnCode AND clNoReferRsn.TranCategory = 'NOTREF' 
-  LEFT JOIN (SELECT tsXRAY.TBTreatPatID,tsXRAY.[TBTreatStatDate],tsXRAY.[TBTreatStatNote], clXRAY.DisplayMapping 
-					FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] tsXRAY WITH (NOLOCK) 
-					INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook clXRAY on 
-					clXRAY.TranLTBI = tsXRAY.TBTreatStatCode AND clXRAY.TranCategory = 'XRAY' ) tsXRAY on tsXRAY.TBTreatPatID = lp.PatID
- LEFT JOIN (SELECT [TBTreatPatID],[TBTreatStatCode],[TBTreatStatDate],[TBTreatStatNote],
-CASE	WHEN TranText = 'TB treatment accepted' THEN 'Accepted'
-		WHEN TranText = 'TB treatment not accepted' THEN 'Not Accepted' 
-		WHEN TranText = 'TB treatment deferred' THEN 'Deferred' END as Patienttreatmentdecision FROM (
-				SELECT [TBTreatPatID],[TBTreatStatCode],[TBTreatStatDate],[TBTreatStatNote], cl.TranText, 
-				SortId = ROW_NUMBER() OVER (PARTITION BY ts.[TBTreatPatID] ORDER BY cl.TranText)
-				FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
-				INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode
-				where TBTreatStatCode in ('IGRATREAT1','IGRATREAT11','IGRATREAT6') 
-			   ) a WHERE SortId = 1) cldecision ON cldecision.TBTreatPatID = lp.PatID
- LEFT JOIN (SELECT ts.TBTreatPatID,STRING_AGG(cl.DisplayMapping, ';') 
-        WITHIN GROUP (ORDER BY cl.DisplayMapping) AS Treatmentnotacceptedreason
-			FROM [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
-			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl ON cl.TranLTBI = ts.TBTreatStatCode
-			WHERE cl.TranCategory = 'TRNOAC'
-			GROUP BY ts.TBTreatPatID) tnd on tnd.TBTreatPatID = lp.PatID
- LEFT JOIN (select TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
-			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode
-			where  TranCategory = 'TRDEF') td on td.TBTreatPatID = lp.PatID
+  LEFT JOIN #tsXRAY tsXRAY on tsXRAY.TBTreatPatID = lp.PatID
+ LEFT JOIN #cldecision cldecision ON cldecision.TBTreatPatID = lp.PatID
+ LEFT JOIN #tnd tnd on tnd.TBTreatPatID = lp.PatID
+ LEFT JOIN #td td on td.TBTreatPatID = lp.PatID
   LEFT JOIN [$(NTBS)].[LTBI].[TBTreatmentStatus] tsts WITH (NOLOCK) on tsts.TBTreatPatID = lp.PatID and tsts.TBTreatStatCode in ('IGRATREAT5','NOTSTARTTREAT1')
-  LEFT JOIN (SELECT TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote,ts.TBTreatStatDate from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
-			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode AND cl.TranCategory = 'IGTR') trp on trp.TBTreatPatID = lp.PatID
+  LEFT JOIN #trp trp on trp.TBTreatPatID = lp.PatID
  LEFT JOIN [$(NTBS)].[LTBI].[TBTreatmentStatus] tro WITH (NOLOCK) on tro.TBTreatPatID = lp.PatID and tro.TBTreatStatCode  IN ('IGRATREAT3', 'IGRATREAT4', 'IGRATREAT7')
-  LEFT JOIN (SELECT TBTreatPatID, cl.DisplayMapping, ts.TBTreatStatNote,ts.TBTreatStatDate from [$(NTBS)].[LTBI].[TBTreatmentStatus] ts WITH (NOLOCK)
-			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl on cl.TranLTBI = ts.TBTreatStatCode AND cl.TranCategory = 'TRST') trst on trst.TBTreatPatID = lp.PatID
+  LEFT JOIN #trst trst on trst.TBTreatPatID = lp.PatID
 LEFT JOIN [$(NTBS)].[LTBI].[TBTreatmentStatus] adv WITH (NOLOCK) on adv.TBTreatPatID = lp.PatID and adv.TBTreatStatCode in ('ADVREA0001','ADVREA0009')
-LEFT JOIN (SELECT tse.[TBTreatSeffPatID],STRING_AGG(cl.TranText, ';') 
-        WITHIN GROUP (ORDER BY cl.DisplayMapping) AS Sideeffects
-			FROM [$(NTBS)].[LTBI].[TBTreatmentSideEffect] tse WITH (NOLOCK)
-			INNER JOIN [$(NTBS)].[LTBIReferenceData].CodeLook cl ON cl.TranLTBI = tse.TBTreatSeffCode
-			WHERE cl.TranCategory = 'SIDE'
-			GROUP BY tse.[TBTreatSeffPatID]) tse on tse.TBTreatSeffPatID = lp.PatID;
+LEFT JOIN #tse tse on tse.TBTreatSeffPatID = lp.PatID;
 
 
 TRUNCATE TABLE [LTBI].[LTBIBulkUploadTestingandTreatment];
